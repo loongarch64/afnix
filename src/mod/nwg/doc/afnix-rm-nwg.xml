@@ -1,0 +1,1400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-rm-nwg.xml                                                   = -->
+<!-- = standard nwg services module - reference manual                    = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix module="nwg" number="i">
+  <title>Standard Network Working Group Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = uri object                                                      = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:nwg">
+    <name>Uri</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Uri</code> class is a base object used to parse or build
+      a uniform resource identifier as defined by RFC 3986. The URI can
+      be built by specifying each component or by parsing a
+      string. When a string is given in the constructor, the class
+      parses the string and extract all components. The uri components
+      are the scheme, the authority, the path, the query and the
+      fragment. The class also takes care of the character escaping.
+    </p>
+
+    <!-- predicate -->
+    <pred>uri-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Uri</name>
+	<args>none</args>
+	<p>
+	  The <code>Uri</code> constructor creates an empty uri object.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Uri</name>
+	<args>String</args>
+	<p>
+	  The <code>Uri</code> constructor create a uri object by value.
+	  The string argument is the uri to parse at the object construction.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Uri</name>
+	<args>String String Integer</args>
+	<p>
+	  The <code>Uri</code> constructor create a uri object by scheme
+	  host and port. The first argument is the uri scheme. The second
+	  argument is the uri host name. The third argument is the uri
+	  port. The uri base name can be reconstructed from this information.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>parse</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>parse</code> method reset the uri object, parse the
+	  string argument and fill the uri object with the result.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-scheme</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-scheme</code> method returns the scheme of the
+	  parsed uri object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-authority</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-authority</code> method returns the authority part
+	  of the parsed uri.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-path</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-path</code> method returns the path of the parsed
+	  uri.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-path-target</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-path-target</code> method returns the path target
+	  of the parsed uri. The path target is the last element of the
+	  uri path.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-query</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-query</code> method returns the complete query
+	  string of the parsed uri. Note that characters are not escaped
+	  when getting the string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-fragment</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-fragment</code> method returns the complete query
+	  string of the parsed uri.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-base</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-base</code> method returns the combined uri scheme
+	  and authority.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-rname</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-rname</code> method returns the reference uri name
+	  with the combined uri scheme, authority and path all percent encoded.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-hname</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-hname</code> method returns the combined uri scheme,
+	  authority and path.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-aname</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-aname</code> method returns the almost combined
+	  uri name with the scheme, authority, path and query.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-path</name>
+	<retn>Uri</retn>
+	<args>String</args>
+	<p>
+	  The <code>add-path</code> method adds a path to the calling uri
+	  and returns a new uri with the new path added to the old one.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-href</name>
+	<retn>Uri</retn>
+	<args>String</args>
+	<p>
+	  The <code>get-href</code> method returns a new uri by eventually
+	  combining the string argument. If the string argument correspond
+	  to an uri, the corresponding uri is built. Otherwise, the string
+	  argument is considered as a path to be added to the current uri
+	  in order to build a new uri.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-system-path</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-system-path</code> method returns the system path
+	  representation of the uri path. This function works only if the
+	  scheme if a file scheme.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-path-encoded</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-path-encoded</code> method returns the uri in the
+	  encoded form. Normally the <code>get-path</code> removes the
+	  percent-encoded characters which might not be appropriate with
+	  some protocol such like the http protocol. The
+	  <code>get-path-encoded</code> returns the original path. Note
+	  that getting the path with <code>getpath</code> and doing a
+	  percent coding might result in a different result since the
+	  internal representation uses normalized string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-host</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-host</code> method returns the authority or path
+	  host name if any can be found with respect to the scheme. With a
+	  ftp, http or https scheme, the host is extracted from the
+	  authority. With a mailto scheme, the host is extracted from the
+	  path.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-port</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-port</code> method returns the authority port if
+	  any can be found with respect to the scheme.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = uri query object                                                = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:nwg">
+    <name>UriQuery</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>UriQuery</code> class is a simple class that parses a
+      uri query string and build property list. during the parsing
+      process, a special transliteration process is done as specified by
+      RFC 3986. This class is primarily used with <em>cgi</em>
+      scripts. Note that the string to parse is exactly the one produced
+      by the <code>get-query</code> method of the <code>Uri</code> class. 
+    </p>
+
+    <!-- predicate -->
+    <pred>uri-query-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Plist</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>UriQuery</name>
+	<args>none</args>
+	<p>
+	  The <code>UriQuery</code> constructor creates an empty uri query
+	  object.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>UriQuery</name>
+	<args>String</args>
+	<p>
+	  The <code>UriQuery</code> constructor create a uri object by value.
+	  The string argument is the uri query string to parse at the
+	  object construction. The query string is the one obtained from
+	  the <code>get-query</code> method of the <code>Uri</code> class.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>parse</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>parse</code> method reset the uri query object, parses the
+	  string argument and fill the property list object with the result.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-query</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-query</code> method returns the original query string.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = uri path object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:nwg">
+    <name>UriPath</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>UriPath</code> class is a class designed for the management
+      of file system path associated with a uri. Typically, this class will
+      be used with a http server or client when an association between a uri
+      and a file name needs to be made. The general operation principle is to
+      associate a path with a uri authority. The uri path is then concatanated
+      to produce a new path. If the uri path is empty, it can be eventually
+      replaced by a file name, known as the diretory index in the http 
+      terminology.
+    </p>
+
+    <!-- predicate -->
+    <pred>uri-path-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>UriPath</name>
+	<args>none</args>
+	<p>
+	  The <code>UriPath</code> constructor creates an empty uri path
+	  object.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>UriPath</name>
+	<args>String</args>
+	<p>
+	  The <code>UriPath</code> constructor create a uri object by root
+	  path. The string argument is the uri root path.
+	</p>
+      </ctor>
+
+     <ctor>
+	<name>UriPath</name>
+	<args>String String</args>
+	<p>
+	  The <code>UriPath</code> constructor create a uri object by root
+	  and index. The first string argument is the uri root path and the
+	  second string argument is the directory index path.
+	</p>
+      </ctor>
+
+    <ctor>
+	<name>UriPath</name>
+	<args>String String String</args>
+	<p>
+	  The <code>UriPath</code> constructor create a uri object by root,
+	  index and authority. The first string argument is the uri root path,
+	  the second string argument is the directory index path and the third
+	  argument is the authority.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-root</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-root</code> method returns the root path.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-index</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-index</code> method returns the index path.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-authority</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-authority</code> method returns the uri authority.
+	</p>
+      </meth>
+
+      <meth>
+	<name>map-request-uri</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>map-request-uri</code> map a request uri into a system
+	  path. The string argument is the request uri. The request uri
+	  must be an absolute path. The result string is the system path
+	  build with the root path.
+	</p>
+      </meth>
+
+      <meth>
+	<name>normalize</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>normalize</code> method build a system from a request
+	  path. The request path is associated with the root path and then
+	  normalized to produce a complete system path.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = http proto object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:nwg">
+    <name>HttpProto</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>HttpProto</code> class is a base class that ease the
+      deployment of the http protocol. The base class is built with a
+      property list which is used to define the message header. The
+      class also defines the write methods which are used to write a
+      message either on an output stream or into a buffer.
+    </p>
+
+    <!-- predicate -->
+    <pred>http-proto-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the http protocol object by
+	  clearing the protocol version and header.
+	</p>
+      </meth>
+
+      <meth>
+	<name>parse</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>parse</code> method parse the input stream bound to
+	  the http protocol. In order to operate, an input stream must be
+	  associated with the protocol object or an exception is
+	  raised. After a stream has been parsed, the protocol version and
+	  the header are set.
+	</p>
+      </meth>
+
+      <meth>
+	<name>write</name>
+	<retn>none</retn>
+	<args>none|OutputStream|Buffer</args>
+	<p>
+	  The <code>write</code> method formats and writes the http protocol
+	  object to an output stream or a buffer. Without argument, the
+	  default output stream is used. With an argument, an output
+	  stream or a buffer object can be used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>header-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>header-length</code> method returns the number of
+	  properties in the header.
+	</p>
+      </meth>
+
+      <meth>
+	<name>header-exists-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>header-exists-p</code> predicate returns true if the
+	  property exists in the header. The string argument is the
+	  property name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>header-set</name>
+	<retn>none</retn>
+	<args>String Literal</args>
+	<p>
+	  The <code>header-set</code> method sets a new property to the
+	  http header. The first argument is the property name. The second
+	  argument is a literal object which is internally converted to a
+	  string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>header-get</name>
+	<retn>Property</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>header-get</code> method returns a property object by
+	  index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>header-map</name>
+	<retn>String</retn>
+	<args>String</args>
+	<p>
+	  The <code>header-map</code> method returns a property value by
+	  name. The string argument is the property name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>header-find</name>
+	<retn>Property</retn>
+	<args>String</args>
+	<p>
+	  The <code>header-find</code> method returns a property object by
+	  name. The string argument is the property name. If the property
+	  is not found, the nil object is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>header-lookup</name>
+	<retn>Property</retn>
+	<args>String</args>
+	<p>
+	  The <code>header-lookup</code> method returns a property object by
+	  name. The string argument is the property name. If the property
+	  is not found, an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>header-plist</name>
+	<retn>Plist</retn>
+	<args>none</args>
+	<p>
+	  The <code>header-plist</code> method returns the header in the form
+	  of a property list.
+	</p>
+      </meth>
+
+      <meth>
+	<name>content-length-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>content-length-p</code> predicate returns true if the
+	  content length is defined in the protocol header.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-content-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-content-length</code> method returns the content
+	  length defined in the protocol header. If the content length is
+	  not defined in the header, the null value is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>media-type-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>media-type-p</code> predicate returns true if the
+	  content type is defined in the protocol header.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-media-type</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-media-type</code> method returns the media type
+	  defined in the protocol header. If the media type is not defined
+	  in the header, the default media type is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>encoding-mode-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>encoding-mode-p</code> predicate returns true if the 
+	  encoding mode is defined in the protocol header.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-encoding-mode</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-encoding-mode</code> method returns the protocol
+	  encoding mode. If the encoding mode is not defined in the
+	  protocol header, the default encoding mode is returned.      
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = http request object                                             = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:nwg">
+    <name>HttpRequest</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>HttpRequest</code> class is a base class designed to
+      handle a http request. The class operates with the protocol
+      version 1.1 as defined by RFC 2616. For a server request, the
+      request is built by reading an input stream and setting the
+      request command with its associated header. For a client request,
+      the request is formatted with a request command and a eventually a
+      uri. In both cases, the header is filled automatically depending
+      on the request side. 
+    </p>
+
+    <!-- predicate -->
+    <pred>http-request-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>HttpProto</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>HttpRequest</name>
+	<args>none</args>
+	<p>
+	  The <code>HttpRequest</code> constructor creates a default http
+	  request. By default, the request object is built with
+	  the <em>GET</em> method and the request uri set to the root value.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>HttpRequest</name>
+	<args>String</args>
+	<p>
+	  The <code>HttpRequest</code> constructor creates a http request
+	  object with a specific command. By default, the request uri is
+	  set to root, except for the <em>OPTIONS</em> method
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>HttpRequest</name>
+	<args>Uri</args>
+	<p>
+	  The <code>HttpRequest</code> constructor creates a http request
+	  object with a uri. The default request method is <em>GET</em>.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>HttpRequest</name>
+	<args>InputStream</args>
+	<p>
+	  The <code>HttpRequest</code> constructor creates a http request
+	  object with a specific input stream. At construction, the
+	  request header is cleared and the input stream is bound to the
+	  object.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>HttpRequest</name>
+	<args>String String</args>
+	<p>
+	  The <code>HttpRequest</code> constructor creates a http request
+	  object with a specific method and a uri name. The first string
+	  argument is the request method to use. The second string
+	  argument is the uri attached to the command. Note that the term
+	  <em>uri</em> should be understood as a <em>request uri</em>.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>HttpRequest</name>
+	<args>String Uri</args>
+	<p>
+	  The <code>HttpRequest</code> constructor creates a http request
+	  object with a specific method and a uri. The first string
+	  argument is the request method to use. The second argument is
+	  the uri attached to the method. 
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-method</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-method</code> method sets the request method.
+	  This method does not check that the command is a valid HTTP
+	  method and thus leaves plenty of room for server 
+	  development. As a matter of fact, RFC 2616 does not prohibit the
+	  existence of such extension.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-method</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-method</code> method returns the request method
+	  string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-uri</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-uri</code> method sets the request uri. The
+	  argument string does not have to be a valid uri string since
+	  some commands might accept special string such like "*" to
+	  indicate all applicable uri.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-uri</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-uri</code> method returns the request uri string.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = http response object                                            = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:nwg">
+    <name>HttpResponse</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>HttpResponse</code> class is a base class designed to
+      handle a http response. The class operates with the protocol version 1.1 
+      as defined by RFC 2616. For a client response, the response is built by
+      reading an input stream and setting the response status code with its 
+      associated header. For a server response, the response is formatted 
+      with a response status and additional header information. In both cases,
+      the header is filled automatically depending on the response side. On
+      the other hand, trying to set some header with an input stream bound to
+      the response object might render the response object unusable.
+    </p>
+
+    <!-- predicate -->
+    <pred>http-response-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>HttpProto</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>HttpResponse</name>
+	<args>none</args>
+	<p>
+	  The <code>HttpResponse</code> constructor creates a default http
+	  response object. The response is marked valid with a
+	  default <em>text/plain</em> media type.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>HttpResponse</name>
+	<args>Integer</args>
+	<p>
+	  The <code>HttpResponse</code> constructor creates a http
+	  response object with a status code. The response code is
+	  associated with the default <em>text/plain</em> media type.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>HttpResponse</name>
+	<args>InputStream</args>
+	<p>
+	  The <code>HttpResponse</code> constructor creates a http response
+	  object with a specific input stream. At construction, the
+	  response header is cleared and the input stream is bound to the
+	  object.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>HttpResponse</name>
+	<args>Integer String</args>
+	<p>
+	  The <code>HttpResponse</code> constructor creates a http
+	  response object with a status code and a media type. The first
+	  argument is the status code. The second argument is the
+	  associated media type.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-status-code</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-status-code</code> method sets the response
+	  status code.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-status-code</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-status-code</code> method returns the response
+	  status code.
+	</p>
+      </meth>
+
+      <meth>
+	<name>map-status-code</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>map-status-code</code> method returns a string 
+	  representation of the response status code.
+	</p>
+      </meth>
+
+      <meth>
+	<name>status-ok-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>status-ok-p</code> predicate returns true if the response
+	  status code is valid (aka status 200).
+	</p>
+      </meth>
+
+      <meth>
+	<name>status-error-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>status-error-p</code> predicate returns true if the response
+	  status code is an error code.
+	</p>
+      </meth>
+
+      <meth>
+	<name>location-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>location-p</code> predicate returns true is the response
+	  status code indicates that a request should be made at another
+	  location. The location can be found with the
+	  <code>get-location</code> method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-location</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-location</code> method returns the location uri
+	  found in the response header. This method is equivalent to a
+	  header query.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-location</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-location</code> method set the redirect location
+	  in the response header. The string argument is the location uri.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-cookie</name>
+	<retn>none</retn>
+	<args>Cookie</args>
+	<p>
+	  The <code>set-cookie</code> method sets a cookie object to the
+	  http header. The cookie version is properly handled by the
+	  method.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = cookie object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:nwg">
+    <name>Cookie</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Cookie</code> class is a special class designed to
+      handle cookie setting within a http transaction. A cookie is
+      <em>name/value</em> pair that is set by the server and stored by
+      the http client. Further connection with the client will result
+      with the cookie value transmitted by the client to the server. A
+      cookie has various parameters that controls its existence and
+      behavior. The most important one is the <em>cookie maximum age</em>
+      that is defined in seconds. A null value tells the client to
+      discard the cookie. A cookie without maximum age is valid only
+      during the http client session. A cookie can be added to the 
+      <code>HttpReply</code> object with the <code>set-cookie</code>
+      method. A cookie can be constructed with a <em>name/value</em>
+      pair. An optional third argument is the maximum age. The default
+      cookie version is 1 as specified by RFC 2965. With a version 1,
+      the maximum age is interpreted as the number of seconds before the
+      cookie expires. With version 0, the maximum age is the absolute
+      time.
+    </p>
+
+    <!-- predicate -->
+    <pred>cookie-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Cookie</name>
+	<args>String String</args>
+	<p>
+	  The <code>Cookie</code> constructor creates a cookie with a name
+	  value pair. The first argument is the cookie name. The second
+	  argument is the cookie value.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Cookie</name>
+	<args>String String Integer</args>
+	<p>
+	  The <code>Cookie</code> constructor creates a cookie with a name
+	  value pair and a maximum age. The first argument is the cookie
+	  name. The second argument is the cookie value. The third
+	  argument is the cookie maximum age.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-version</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-version</code> method returns the cookie version.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-version</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-version</code> method sets the cookie version. The
+	  version number can only be 0 or 1.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the cookie name. This
+	  is the name store on the http client.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the cookie name. This is
+	  the name store on the http client.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-value</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-value</code> method returns the cookie value. This
+	  is the value stored on the http client bounded by the cookie name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-value</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-value</code> method sets the cookie value. This is
+	  the value store on the http client bounded by the cookie name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-maximum-age</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-maximum-age</code> method returns the cookie
+	  maximum age. The default value is -1, that is, no maximum age is
+	  set and the cookie is valid only for the http client session.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-maximum-age</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-maximum-age</code> method sets the cookie maximum
+	  age. A negative value is reset to -1. A 0 value tells the http
+	  client to discard the cookie. A positive value tells the http
+	  client to store the cookie for the remaining seconds.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-path</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-path</code> method returns the cookie path
+	  value. The path determines for which http request the cookie is
+	  valid. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-path</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-path</code> method sets the cookie path value. The
+	  path determines for which http request the cookie is valid.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-domain</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-domain</code> method returns the cookie domain
+	  value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-domain</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-domain</code> method sets the cookie domain
+	  value. It is string recommended to use the originator domain
+	  name since many http client can reject cookie those domain name
+	  does not match the originator name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-port</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-port</code> method returns the cookie port number.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-port</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-port</code> method sets the cookie port
+	  number. This value is not used with a cookie version 0.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-comment</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-comment</code> method returns the cookie comment
+	  value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-comment</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-comment</code> method sets the cookie comment value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-comment-url</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-comment-url</code> method returns the cookie comment
+	  url value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-comment-url</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-comment-url</code> method sets the cookie comment
+	  url value. This value is not used with cookie version 0.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-discard</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-discard</code> method returns the cookie discard flag.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-discard</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>set-discard</code> method sets the cookie discard
+	  flag. The discard flag the tells the user agent to destroy the
+	  cookie when it terminates. This value is not used with cookie
+	  version 0.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-secure</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-secure</code> method returns the cookie secure flag.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-secure</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>set-secure</code> method sets the cookie secure
+	  flag. When a cookie is secured, it is only returned by the http
+	  client if a connection has been secured (i.e use https).
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a string formatted for
+	  the http reply header. Normally this method should not be
+	  called since the <code>set-cookie</code> method of the
+	  <code>httpReply</code> takes care of such thing. 
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = global functions                                                = -->
+  <!-- =================================================================== -->
+  
+  <functions>
+    <func nameset="afnix:nwg">
+      <name>mime-extension-p</name>
+      <retn>Boolean</retn>
+      <args>String</args>
+      <p>
+	The <code>mime-extension-p</code> predicates returns true if a
+	media type extension - mime extension - is defined. Most of the
+	time, media type extension can be seen as a file extension.
+      </p>
+    </func>
+
+    <func nameset="afnix:nwg">
+      <name>mime-value-p</name>
+      <retn>Boolean</retn>
+      <args>String</args>
+      <p>
+	The <code>mime-value-p</code> predicates returns true if a
+	media type - mime value - is defined.
+      </p>
+    </func>
+
+    <func nameset="afnix:nwg">
+      <name>extension-to-mime</name>
+      <retn>String</retn>
+      <args>String [Boolean]</args>
+      <p>
+	The <code>extension-to-mime</code> function converts a media type
+	extension into a media type. In the first form, without a second
+	argument, if the media type extension does not exist, an exception
+	is raised. In the second form, with the second argument set to
+	true, if the media type extension does not exist, the default
+	media type is returned. If the flag is set to false, an exception
+	is raised like the first form.
+      </p>
+    </func>
+
+    <func nameset="afnix:nwg">
+      <name>string-uri-p</name>
+      <retn>Boolean</retn>
+      <args>String</args>
+      <p>
+	The <code>string-uri-p</code> predicates returns true if the
+	string argument is a uri.
+      </p>
+    </func>
+
+    <func nameset="afnix:nwg">
+      <name>normalize-uri-name</name>
+      <retn>String</retn>
+      <args>String</args>
+      <p>
+	The <code>normalize-uri-name</code> function normalizes the string
+	argument by adding a uri scheme if missing in the original
+	string. If the function detects that the name starts with a host
+	name, the "http" scheme is added. If the function detects that the
+	string starts with a path, the "file" scheme is added. otherwise,
+	the name argument is left untouched.
+      </p>
+    </func>
+
+    <func nameset="afnix:nwg">
+      <name>system-uri-name</name>
+      <retn>String</retn>
+      <args>String</args>
+      <p>
+	The <code>system-uri-name</code> function normalizes the string
+	argument by prioritizing the system name. The function attempts to
+	find a file that match the string argument and eventually build a
+	uri file scheme. If the file is not fond, the normalization
+	process occurs with the <code>normalize-uri-name</code> function.
+      </p>
+    </func>
+
+    <func nameset="afnix:nwg">
+      <name>path-uri-name</name>
+      <retn>String</retn>
+      <args>String</args>
+      <p>
+	The <code>path-uri-name</code> function normalizes the string
+	argument by extracting a path associated with the uri
+	string. If the string is a valid uri string, the path is the
+	uri path component. If the uri path is empty, it is normalized
+	to a /. If the string argument is not a uri string, the string is
+	assumed to be a partial uri and both query and fragment parts
+	are removed if present.
+      </p>
+    </func>
+
+    <func nameset="afnix:nwg">
+      <name>normalize-uri-host</name>
+      <retn>String</retn>
+      <args>String</args>
+      <p>
+	The <code>normalize-uri-host</code> function normalizes the string
+	argument uri host name. This function is useful with certain
+	class of host representation which uses extra characters.
+      </p>
+    </func>
+
+    <func nameset="afnix:nwg">
+      <name>normalize-uri-port</name>
+      <retn>String</retn>
+      <args>String</args>
+      <p>
+	The <code>normalize-uri-port</code> function normalizes the string
+	argument uri port value. This function is useful with certain
+	class of host representation which uses extra characters.
+      </p>
+    </func>
+  </functions>
+</appendix>

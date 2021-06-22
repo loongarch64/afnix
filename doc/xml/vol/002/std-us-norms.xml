@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE afnix PUBLIC "-//AFNIX//DTD AFNIX//EN"
+"http://www.afnix.org/dtd/afnix.dtd">
+
+<!-- ====================================================================== -->
+<!-- = std-us-norms.xml                                                   = -->
+<!-- = afnix reference manual                                             = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<axdoc xmlns:xi="http://www.w3.org/2001/XInclude">
+  <!-- book information -->
+  <info>
+    <title>AFNIX Reference Manual</title>
+    <header section="7">
+      <name>STD-US-NORMS</name>
+      <desc>AFNIX Users Manual</desc>
+    </header>
+    <copyright>
+      <author>
+        <name>Amaury Darsch</name>
+        <year>1999-2021</year>
+      </author>
+    </copyright>
+  </info>
+
+  <!-- book body -->
+  <body>
+    <!-- main matter -->
+    <main>
+      <xi:include href="std-01-norms.xml"/>
+      <xi:include href="std-02-norms.xml"/>
+      <xi:include href="std-03-norms.xml"/>
+      <xi:include href="std-04-norms.xml"/>
+    </main>
+  </body>
+</axdoc>

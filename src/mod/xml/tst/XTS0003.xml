@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = XTS0003.xml                                                        = -->
+<!-- = afnix xml test suite reference                                     = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<!-- formatting element class -->
+<!ENTITY % frmt.char.class 
+           "em |
+	    tt |
+            nl">
+
+<!-- technical elements class -->
+<!ENTITY % tech.char.class 
+           "file    | 
+	    extn    |
+	    path    |
+	    code    |
+	    mail    |
+            link    |
+            option  |
+            product | 
+            package | 
+            command"> 
+
+<!-- private element class -->
+<!ENTITY % priv.char.class 
+           "afnix   |
+	    major   |
+	    minor   |
+	    patch">
+
+<!ENTITY % priv.char.mix 
+           "#PCDATA | 
+            %priv.char.class;">
+
+<!-- block elements class -->
+<!ENTITY % blok.char.class 
+           "p        |
+            list     |
+            table    |
+            syntax   |
+            example">
+
+<!-- synopsis elements class -->
+<!ENTITY % sect.snps.class
+           "remark">
+
+<!-- chapter elements class -->
+<!ENTITY % sect.chap.class 
+           "object   |
+	    keyword  |
+	    control  |
+            section  |
+            function">
+
+<!-- paragraph mix -->
+<!ENTITY % para.char.mix   
+           "#PCDATA | 
+            %frmt.char.class; | 
+            %tech.char.class; | 
+            %priv.char.class;">
+
+<!-- table data mix -->
+<!ENTITY % td.char.mix   
+           "#PCDATA | 
+            %frmt.char.class; | 
+            %tech.char.class; | 
+            %priv.char.class;">
+
+<!-- item mix -->
+<!ENTITY % item.char.mix   
+           "#PCDATA | 
+            %frmt.char.class; | 
+            %tech.char.class; | 
+            %priv.char.class;">
+
+<!-- syntax mix -->
+<!ENTITY % syntax.char.mix 
+           "#PCDATA |
+            %frmt.char.class;">
+
+<!-- example mix -->
+<!ENTITY % example.char.mix   
+           "#PCDATA           | 
+            %frmt.char.class; |
+            %tech.char.class; | 
+            %priv.char.class;">
+
+<!-- xmlns:xi attribute -->
+<!ENTITY % xmlns-xi.attrib
+           "xmlns:xi  CDATA  #IMPLIED">
+
+<!-- id attribute -->
+<!ENTITY % id.attrib
+           "id        ID     #IMPLIED">
+
+<!-- common attributes -->
+<!ENTITY % common.attrib
+           "%xmlns-xi.attrib;
+            %id.attrib;">
+
+<!-- document attributes -->
+<!ENTITY % axmxa.attrib
+           "%common.attrib;">
+
+<!-- document structure attributes -->
+<!ENTITY % info.attrib
+           "%common.attrib;">
+<!ENTITY % body.attrib
+           "%common.attrib;">
+
+<!-- document info attributes -->
+<!ENTITY % copyright.info.attrib
+           "%common.attrib;">
+
+<!-- document body attributes -->
+<!ENTITY % front.attrib
+           "%common.attrib;">
+<!ENTITY % main.attrib
+           "%common.attrib;">
+<!ENTITY % back.attrib
+           "%common.attrib;">
+
+<!-- sectionning attribute -->
+<!ENTITY % client.attrib
+           "client    CDATA        #IMPLIED">
+<!ENTITY % volume.attrib
+           "volume    CDATA        #IMPLIED">
+<!ENTITY % module.attrib
+           "module    CDATA        #IMPLIED">
+
+<!-- number attribute -->
+<!ENTITY % number.attrib
+           "number    CDATA        #IMPLIED">
+
+<!-- preface attributes -->
+<!ENTITY % preface.attrib
+           "%common.attrib;">
+
+<!-- synopsis attributes -->
+<!ENTITY % synopsis.attrib
+           "%common.attrib;">
+
+<!-- client attributes -->
+<!ENTITY % client.attrib
+           "%common.attrib;">
+<!ENTITY % opts.attrib
+           "%common.attrib;">
+<!ENTITY % remark.attrib
+           "%common.attrib;">
+
+<!-- chapter attribute -->
+<!ENTITY % chapter.attrib
+           "%common.attrib;
+            %client.attrib;
+            %volume.attrib;
+            %module.attrib;
+            %number.attrib;">
+<!ENTITY % appendix.attrib
+           "%common.attrib;
+            %client.attrib;
+            %volume.attrib;
+            %module.attrib;
+            %number.attrib;">
+<!ENTITY % section.attrib
+           "%common.attrib;">
+<!ENTITY % subsect.attrib
+           "%common.attrib;">
+
+<!-- keyword attributes -->
+<!ENTITY % keyword.attrib
+           "%common.attrib;">
+
+<!-- control attributes -->
+<!ENTITY % nameset.control.attrib
+           "nameset   CDATA        #REQUIRED">
+<!ENTITY % control.attrib
+           "%common.attrib;
+            %nameset.control.attrib;">
+
+<!-- object attributes -->
+<!ENTITY % type.object.attrib
+           "type      CDATA        #IMPLIED">
+<!ENTITY % nameset.object.attrib
+           "nameset   CDATA        #IMPLIED">
+<!ENTITY % object.attrib
+           "%common.attrib;
+            %type.object.attrib;
+            %nameset.object.attrib;">
+
+<!ENTITY % inherit.attrib
+           "%common.attrib;">
+<!ENTITY % ctor.attrib
+           "%common.attrib;">
+<!ENTITY % operator.attrib
+           "%common.attrib;">
+<!ENTITY % constant.attrib
+           "%common.attrib;">
+<!ENTITY % method.attrib
+           "%common.attrib;">
+
+<!-- function attributes -->
+<!ENTITY % nameset.function.attrib
+           "nameset   CDATA        #IMPLIED">
+<!ENTITY % function.attrib
+           "%common.attrib;
+            %nameset.object.attrib;">
+
+<!-- table attributes -->
+<!ENTITY % table.attrib
+           "%common.attrib;">
+
+<!-- list item attribute -->
+<!ENTITY % item.attrib
+           "ref        CDATA       #IMPLIED">
+
+<!-- link attributes -->
+<!ENTITY % link.attrib
+           "url        CDATA       #REQUIRED">
+
+<!-- mail attributes -->
+<!ENTITY % mail.attrib
+           "address    CDATA       #REQUIRED">

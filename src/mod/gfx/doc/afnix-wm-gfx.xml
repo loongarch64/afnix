@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-wm-gfx.xml                                                   = -->
+<!-- = standard graph module - writer manual                              = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter module="gfx" number="1">
+  <title>Standard Graph Module</title>
+  
+  <p>
+    The <em>Standard Graph</em> module is an original implementation dedicated
+    to the graph moddeling and manipulation. At the heart of this module is the
+    concept of edges and vertices.
+  </p>
+
+  <!-- graph concepts -->
+  <section>
+    <title>Graph concepts</title>
+
+    <p>
+      The <code>afnix-gfx</code> module provides the support for manipulating
+      graphs. Formally a graph is a collection of edges and vertices. In
+      a normal graph, an edge connects two vertices. On the other hand,
+      a vertex can have several edges. When an edge connects several
+      vertices, it is called an hyperedge and the resulting structure is
+      called an hypergraph.
+    </p>
+
+    <!-- edge class -->
+    <subsect>
+      <title>Edge class</title>
+
+      <p>
+	The <code>Edge</code> class is a class used for a graph
+	construction in association with the <code>Vertex</code> class. 
+	An edge is used to connect vertices. Normally, an edge connects
+	two vertices. The number of vertices attached to an edge is
+	called the cardinality of that edge. When the edge cardinality
+	is one, the edge is called a self-loop. This mean that the edge
+	connects the vertex to itself. This last point is merely a
+	definition but present the advantage of defining an hyperedge as
+	a set of vertices.
+      </p>
+    </subsect>
+
+    <!-- vertex class -->
+    <subsect>
+      <title>Vertex class </title>
+
+      <p>
+	The <code>Vertex</code> is the other class used for the
+	graph construction. and operates with the <code>edge</code>
+	class. A vertex is used to reference edges. the number of edges
+	referenced by a vertex is called the degree of that vertex.
+      </p>
+    </subsect>
+
+    <!-- graph class -->
+    <subsect>
+      <title>Graph</title>
+
+      <p>
+	The <code>Graph</code> class is class that represent either a
+	graph or a hypergraph. By definition, a graph is collection of
+	edges and vertices. There are numerous property attached to
+	graph. Formally, a graph consists of a set of edges, a set of
+	vertices and the associated endpoints. However, the implementation
+	is designed in a way so that each edge and vertex carry its
+	associated objects. This method ensures that the graph is fully
+	defined by only its two sets.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- graph construction -->
+  <section>
+    <title>Graph construction</title>
+
+    <p>
+      The graph construction is quite simple and proceed by adding edges
+      and vertices. The base system does not enforce rules on the graph
+      structure. it is possible to add con connected vertices as well as
+      unreferenced edges.
+    </p>
+
+    <!-- edge construction -->
+    <subsect>
+      <title>Edge construction</title>
+
+      <p>
+	An edge is constructed by simply invoking the default
+	constructor. Optionally, a client object can be attached to the
+	edge.
+      </p>
+
+      <example>
+	# create a default edge
+	const edge (afnix:gfx:Edge)
+	
+	# create an edge with a client object
+	const hello (afnix:gfx:Edge "hello")
+      </example>
+
+      <p>
+	The <code>edge-p</code> predicate can be used to check for the
+	object type. When an edge is created with client object, the
+	<code>get-client</code> method can be used to access that object.
+      </p>
+    </subsect>
+
+    <!-- vertex construction -->
+    <subsect>
+      <title>Vertex construction</title>
+
+      <p>
+	A vertex is constructed  a way similar to the <code>Edge></code>
+	object. The vertex is constructed by simply invoking the default
+	constructor. Optionally, a client object can be attached to the
+	edge.
+      </p>
+
+      <example>
+	# create a default vertex
+	const vrtx (afnix:gfx:Vertex)
+	
+	# create an vertex with a client object
+	const world (afnix:gfx:Vertex "world")
+      </example>
+
+      <p>
+	The <code>vertex-p</code> predicate can be used to check for the
+	object type. When a vertex is created with a client object, the
+	<code>get-client</code> method can be used to access that object.
+      </p>
+    </subsect>
+
+    <!-- graph construction -->
+    <subsect>
+      <title>Graph construction</title>
+
+      <p>
+	A graph is constructed by simply adding edges and vertices to
+	it. The <code>graph-p</code> predicate can be use to assert the
+	graph type. the graph class also supports the concept of client
+	object which can be attached at construction or with the
+	<code>set-client</code> method.
+      </p>
+
+      <example>
+	const graph (afnix:gfx:Graph)
+      </example>
+      
+      <p>
+	The <code>add</code> method can be used to add edges or vertices
+	to the graph. The important point is that during the
+	construction process, the graph structure is updated with the
+	proper number of edge and vertices.
+      </p>
+
+      <example>
+	# create a graph
+	const  g    (afnix:gfx:Graph)
+	assert true (afnix:gfx:graph-p g)
+
+	# create an edge and add vertices
+	const edge (afnix:gfx:Edge)
+	edge:add   (afnix:gfx:Vertex "hello") 
+	edge:add   (afnix:gfx:Vertex "world")
+	assert 2   (edge:degree)
+
+	# add the edge to the graph and check
+	g:add edge
+	assert 1 (g:number-of-edges)
+	assert 2 (g:number-of-vertices)
+
+	# check for nodes and edges
+	assert true (afnix:gfx:edge-p   (g:get-edge   0))
+	assert true (afnix:gfx:vertex-p (g:get-vertex 0))
+	assert true (afnix:gfx:vertex-p (g:get-vertex 1))
+      </example>
+    </subsect>
+  </section>
+</chapter>

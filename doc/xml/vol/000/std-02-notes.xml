@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = std-02-notes.xml                                                   = -->
+<!-- = afnix installation guide chapter 2                                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter id="std-02-notes">
+  <title>Maintainer notes</title>
+
+  <p>
+    This chapter contains additional notes for the package
+    maintainer. They are also useful for anybody who is in charge of
+    integrating the distribution in a build process. The
+    chapter describes the distribution tree with more details.
+  </p>
+
+  <!-- distribution tree -->
+  <section>
+    <title>The distribution tree</title>
+
+    <p>
+      The distribution tree is composed of various directories. Each of them
+      has a <file>Makefile</file> which can be called locally or from the
+      top level.
+    </p>
+
+    <list>
+      <item ref="cnf">
+	This directory contains the configuration distribution and
+	various utilities. Normally you should not touch it, unless you
+	are using a compiler different than <command>gcc</command>.
+      </item>
+      <item ref="src">
+	This directory contains the complete source tree. The source
+	code is written in C++. Normally this directory is left
+	untouched. If there are good reasons to modify it, please
+	contact the development team.
+      </item>
+      <item ref="tst">
+	This directory contains the complete test suites. The  test suites
+	are used by various programs including the main interpreter, the
+	compiler and the debugger. It shall be noted that the library
+	distribution also includes specific test suites.
+      </item>
+      <item ref="doc">
+	This directory contains the complete documentation written in
+	in XML with a special DTD. It should be left untouched.
+      </item>
+      <item ref="etc">
+	This directory contains various files associated with the
+	distribution. Some files are useful to be copied.
+      </item>
+      <item ref="exp">
+	This directory contains various examples. They are included for
+	illustration purpose.
+      </item>
+    </list>
+
+    <p>
+      The process of building a package solely depends on the
+      distribution type. Most likely, the standard distribution
+      should contain the binary executables as well as some configuration
+      file and the manual pages. The documentation and the development
+      header files can put in separate packages.
+    </p>
+  </section>
+  
+  <!-- configuration and setup -->
+  <section>
+    <title>Configuration and setup</title>
+
+    <p>
+      The configuration process involves the use of the
+      <command>afnix-setup</command> command located in the
+      <path>cnf/bin</path> directory. This command is used to
+      configure the distribution. Package maintainers are encouraged to use
+      it with specific options.
+    </p>
+
+    <!-- platform detection -->
+    <subsect>
+      <title>Platform detection</title>
+      
+      <p>
+	The <command>afnix-guess</command> command is used during the
+	configuration process to detect a supported platform. This
+	command can be run in stand-alone mode. Various options can
+	be used to tune the type of information requested.
+      </p>
+
+      <table>
+	<title>Platform detection options</title>
+	<tr>
+	  <th>Option</th><th>Description</th>
+	</tr>
+	<tr>
+	  <td>-h</td><td>Print a help message</td> 
+	</tr>
+	<tr>
+	  <td>-n</td><td>Print the platform name</td> 
+	</tr>
+	<tr>
+	  <td>-v</td><td>Print the platform version</td> 
+	</tr>
+	<tr>
+	  <td>-M</td><td>Print the platform major number</td> 
+	</tr>
+	<tr>
+	  <td>-m</td><td>Print the platform minor number</td> 
+	</tr>
+	<tr>
+	  <td>-p</td><td>Print the processor name</td> 
+	</tr>
+      </table>
+
+      <p>
+	Without option, the utility prints a platform and processor
+	description string.
+      </p>
+
+      <example>
+	zsh&gt; ./cnf/bin/afnix-guess
+	linux-5.4-x64
+      </example>
+    </subsect>
+
+    <!-- platform defaults -->
+    <subsect>
+      <title>Platform defaults</title>
+
+      <p>
+	The directory <path>cnf/def</path> contains a platform specific
+	default file. The file determines what is the default compiler
+	and linking mode. This file is used by the
+	<command>afnix-setup</command> command. For example, the
+	<file>afnix-darwin.def</file> file contains: 
+      </p>
+      
+      <example>
+	compiler: gcc
+	lktype  : dynamic
+	lkmode  : dylib
+      </example>
+
+      <p>
+	Such options instructs the configuration utility, that the default
+	compiler is <command>gcc</command> and the linking mode should
+	operates in dynamic mode by using the <option>dylib</option>
+	rule. These default values can be overwritten with the equivalent
+	option of the <command>afnix-setup</command> command. Note that
+	the compiler version is automatically detected by the system. The
+	<command>afnix-vcomp</command> command will return the
+	appropriate compiler version running on the target system.
+      </p>
+    </subsect>
+
+    <!-- C++ conventions -->
+    <subsect>
+      <title>C++ source file conventions</title>
+
+      <p>
+	THe source tree has two types of C++ files. The first type has the
+	extension <extn>.cxx</extn> and the second type has the extension
+	<extn>.cpp</extn>. The <extn>.cxx</extn> -- and the associated
+	<extn>.hxx</extn> -- files are only used to indicate a system
+	dependency. These files are found only in the
+	<path>src/lib/plt</path> directory. The <extn>.cxx</extn> 
+	extension indicates that the file might use system specific
+	include files. The <extn>.cpp</extn> -- and the associated
+	<extn>.hpp</extn> -- files are the normal C++ source files. The
+	<extn>.cpp</extn> extension is used to indicate that these files
+	will not use a system specific file. By default this rule is
+	enforced in the compiler configuration file by specifying some
+	compiler flags which do not authorize such access.
+      </p>
+    </subsect>
+
+    <!-- configuration files -->
+    <subsect>   
+      <title>Configuration files</title>
+
+      <p>
+	The configurations files are located in the <path>cnf/mak</path>
+	directory. Normally they should be left untouched. The most important
+	one is the <file>afnix-rule.mak</file> file that defines most of
+	the compilation and linking rules. Additionally, during the setup
+	operation, the <command>afnix-setup</command> command creates several
+	files in the <path>bld/cnf</path> directory. The <path>bld</path>
+	is the build directory. The <file>afnix-plat.mak</file> file is
+	the platform configuration file and the
+	<file>afnix-comp.mak</file> is a link to the appropriate compiler
+	configuration file.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- compilation -->
+  <section>
+    <title>Compilation</title>
+
+    <p>
+      Normally, the compilation process is immediate. Just invoking the
+      <command>make</command> command will do the job. However, some
+      package maintainer have the desire to overwrite some flags. Some
+      options are provided to facilitate this task.
+    </p>
+
+    <list>
+      <item ref="EXTCPPFLAGS">
+	This flag can be used to add some compilation flags for all
+	<extn>.cpp</extn> files.
+      </item>
+      <item ref="EXTCXXFLAGS">
+	This flag can be used to add some compilation flags for all
+	<extn>.cxx</extn> files.
+      </item>
+      <item ref="EXTCCDEFINE">
+	This flag can be used to add some compilation definitions for all
+	source files.
+      </item>
+      <item ref="EXTINCLUDES">
+	This flag can be used to add some compilation paths for the
+	<extn>.cxx</extn> files.
+      </item>
+    </list>
+
+    <p>
+      For example, it is common to have some maintainer to compile with both
+      the debug and optimize flags. This can be done with the following
+      command (assuming an optimized configuration):
+    </p>
+
+    <example>
+      make EXTCPPFLAGS=-g EXTCXXFLAGS=-g
+    </example>
+
+    <p>
+      All include files, compiled libraries and executables are placed in
+      the <path>bld</path> directory. This directory contains the
+      <path>bld/bin</path> for binaries, <path>bld/lib</path> for
+      libraries and <path>bld/hdr</path> for the header files.
+    </p>
+  </section>
+
+  <!-- building the package -->
+  <section>
+    <title>Building the package</title>
+
+    <p>
+      The package can be built by accessing the <path>bld</path>
+      directory or by invoking the <command>install</command> rule. The
+      second method is not recommended for package construction, since it
+      might trigger some file installation without any control.
+    </p>
+
+    <p>
+      The <path>etc/unx</path> directory contains some special files that
+      might be used for the package construction. A sample list of them
+      is given hereafter.
+    </p>
+
+    <list>
+      <item ref="afnix-mode.el">
+	This file is the Emacs mode.
+      </item>
+      <item ref="afnix-gud.el">
+	This file is the debugger Emacs gud mode.
+      </item>
+    </list>
+  </section>
+
+  <!-- other make rules -->
+  <section>
+    <title>Specific makefile rules</title>
+
+    <p>
+      The top level <file>Makefile</file> contains several rules that
+      might be useful for the package maintainer.
+    </p>
+
+    <list>
+      <item ref="status">
+	This rule show the configuration status for each parameters with
+	the version.
+      </item>
+      <item ref="debug">
+	This rule invokes the default configuration in debug mode.
+      </item>
+      <item ref="optimized">
+	This rule invokes the default configuration in optimized mode.
+      </item>
+      <item ref="build">
+	This rule invokes the default configuration in debug mode and
+	compile the whole distribution. The default install directory
+	is <path>/usr/local</path>.
+      </item>
+      <item ref="world">
+	This rule invokes the default configuration in optimized mode and
+	compile the whole distribution. The default install directory
+	is <path>/usr/local</path>.
+      </item>
+      <item ref="test">
+	This rule runs all test suites.
+      </item>
+      <item ref="doc">
+	This rule builds the documentation.
+      </item>
+      <item ref="distri">
+	This rule builds the distribution.
+      </item>
+      <item ref="install">
+	This rule installs the distribution.
+      </item>
+      <item ref="publish">
+	This rule installs the documentation.
+      </item>
+      <item ref="clean">
+	This rule cleans the distribution but keep the configuration.
+      </item>
+      <item ref="reset">
+	This rule resets the distribution including the configuration.
+      </item>
+    </list>
+  </section>
+</chapter>

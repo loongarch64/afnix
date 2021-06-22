@@ -1,0 +1,86 @@
+#! /bin/sh
+# ----------------------------------------------------------------------------
+# - afnix-fxdir                                                              -
+# - fix directory name                                                       -
+# ----------------------------------------------------------------------------
+# - This program is  free software;  you can  redistribute it and/or  modify -
+# - it provided that this copyright notice is kept intact.                   -
+# -                                                                          -
+# - This  program  is  distributed in the hope  that it  will be useful, but -
+# - without  any   warranty;  without  even   the   implied    warranty   of -
+# - merchantability  or fitness for a particular purpose. In not event shall -
+# - the copyright holder be  liable for  any direct, indirect, incidental or -
+# - special damages arising in any way out of the use of this software.      -
+# ----------------------------------------------------------------------------
+# - copyright (c) 1999-2021 amaury darsch                                    -
+# ----------------------------------------------------------------------------
+
+# the directory list
+srcdir=
+# the fixed directories
+fixdir=
+# the current directory
+curdir=`pwd`
+
+# ----------------------------------------------------------------------------
+# - local function always make life easier                                   -
+# ----------------------------------------------------------------------------
+
+# print a usage message
+usage () {
+    echo "usage: afnix-fxdir [options] dir"
+    echo "       -h           print this help message"
+    exit 0
+}
+
+# print an error message
+error () {
+    echo $1
+    exit 1
+}
+
+# fix the directory name
+fxdir () {
+    cd  $1
+    argdir=`pwd`
+    fixdir="$fixdir $argdir" 
+}
+
+# ----------------------------------------------------------------------------
+# - parse options - this is where we really start                            -
+# ----------------------------------------------------------------------------
+
+preopt=
+for nxtopt
+do
+    # assign the previous option argument
+    if test -n "$preopt"; then
+	eval "$preopt=\$nxtopt"
+	preopt=
+	continue
+    fi
+
+    # extract options
+    case "$nxtopt" in
+    -*=*) argopt=`echo "$nxtopt" | sed 's/[-_a-zA-Z0-9]*=//'`;;
+       *) argopt=;;
+    esac
+
+    # process options now
+    case "$nxtopt" in
+    -h | --help)   usage;;
+    -*)            error "illegal option $nxtopt" ;;
+     *)            srcdir="$srcdir $nxtopt" ;;
+    esac
+done
+
+# loop in the directory list
+for d in $srcdir ; do
+    fxdir $d
+done
+# restore directory
+cd $curdir
+
+# that's all folks
+echo $fixdir
+exit 0

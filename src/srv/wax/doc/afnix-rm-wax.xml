@@ -1,0 +1,1734 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-rm-wax.xml                                                   = -->
+<!-- = web application extension service - reference manual               = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix service="wax" number="i">
+  <title>Web Application Extension Service Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml root object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlRoot</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlRoot</code> class is a xml root node used for the
+      design of a xhtml document page. At construction, the root node is
+      initialized with a default xml processing instruction, and xhmtl
+      node with head and body The head and body nodes can be used to add
+      more nodes in order to build the document. The construction
+      argument is the page title.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-root-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlRoot</name>
+      <name>Mime</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlRoot</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlRoot</code> constructor creates a default xhtml
+	  page with a head and a body. The head node is set with the
+	  string title argument.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-head</name>
+	<retn>XhtmlHead</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-head</code> method returns the xhtml head node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-body</name>
+	<retn>XhtmlBody</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-body</code> method returns the xhtml body node.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml html object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlHtml</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlHtml</code> class is a xhtml html node used for the
+      design of a xhtml document page. At construction, the html node is
+      initialized with a head node and a body node. Because a valid
+      xhtml document must contain a title the constructor takes at least
+      a title argument.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-html-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlHtml</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlHtml</code> constructor creates a default xhtml
+	  html node with a head and a body. The head node is set with the
+	  string title argument.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-head</name>
+	<retn>XhtmlHead</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-head</code> method returns the xhtml head node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-body</name>
+	<retn>XhtmlBody</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-body</code> method returns the xhtml body node.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml head object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlHead</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlHead</code> class is a xhtml head node used for the
+      design of a xhtml document page. At construction, the head node is
+      initialized with a with a title node. The class is designed to
+      hold as well meta nodes and style nodes.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-head-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlHead</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlHead</code> constructor creates a default xhtml
+	  head node with a title. The string argument is the head title.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add-meta</name>
+	<retn>none</retn>
+	<args>String String</args>
+	<p>
+	  The <code>add-meta</code> method adds a <code>XhtmlMeta</code>
+	  node to the head node. The first argument is the meta
+	  descriptor. The second argument is the meta contents.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-style</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>add-style</code> method adds a <code>XhtmlLink</code>
+	  node to the head node. The string argument is the style url
+	  path. The link node is automatically configured to reference a
+	  'text/css' mime type.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml body object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlBody</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlBody</code> class is a xhtml body node used for the
+      design of a xhtml document page. The class is designed to be
+      filled with other xhtml nodes.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-body-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlBody</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlBody</code> constructor creates a default xhtml
+	  body node.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml title object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlTitle</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlTitle</code> class is a xhtml title node used in
+      the head node.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-title-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlTitle</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlTitle</code> constructor creates a xhtml
+	  title node. The string argument is the title value. The title
+	  node is designed for the <code>XhtmlHead</code> class.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-title</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-title</code> method set the node title by value.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml meta object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlMeta</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlMeta</code> class is a xhtml meta node used in the
+      head node. The meta data node is an empty node with two
+      attributes which are the descriptor and content value. The meta
+      data is stored internally as a xml attribute.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-meta-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlMeta</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlMeta</code> constructor creates a xhtml
+	  meta node with a descriptor name and content value. The first
+	  argument is he descriptor name which is used as the node attribute
+	  name. The second argument is the content vale which is the
+	  attribute value.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml link object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlLink</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlLink</code> class is a xhtml link node used in the
+      head node. The link node is an empty node with several
+      attributes. The most important one is the 'href' attribute that
+      specifies the link uri. Other attributes like 'type' or 'rel' can
+      also be set at construction.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-link-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlLink</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlLink</code> constructor creates a xhtml
+	  link node by reference. The first argument is the link reference.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlLink</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlLink</code> constructor creates a xhtml
+	  link node by reference and type. The first argument is the
+	  link reference. The second argument is the link type. The link
+	  type is defined as a mime type.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlLink</name>
+	<args>String String String</args>
+	<p>
+	  The <code>XhtmlLink</code> constructor creates a xhtml
+	  link node by reference, type and relation. The first argument is
+	  the link reference. The second argument is the link type. The
+	  link type is defined as a mime type. The third argument is the
+	  link relation.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml style object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlStyle</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlStyle</code> class is a xhtml style node used in
+      the head node. The style node is built with a xml text node that
+      holds the formatted url string.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-style-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlStyle</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlStyle</code> constructor creates a xhtml
+	  style node with a url path. The string argument is the url path
+	  of the style sheet file.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml script object                                             = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlScript</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlScript</code> class is a xhtml script node used in
+      the head and body node. The script node is built with a xml tag
+      node that holds the script content. Sometimes it is recommended to
+      place the script inside a CDATA node that is stored as a child
+      node of the script node. A boolean flag controls this feature at
+      construction.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-script-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlScript</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlScript</code> constructor creates a xhtml
+	  script node with a type. The string argument is the mime type
+	  string such like 'text/javascript'.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlScript</name>
+	<args>String Boolean</args>
+	<p>
+	  The <code>XhtmlScript</code> constructor creates a xhtml
+	  script node with a type and a CDATA node control flag. The first
+	  argument is the mime type string such like 'text/javascript'. The second
+	  argument is the CDATA node control flag. If the flag is true,
+	  all scripts attached to the node are placed into a 'CDATA' node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlScript</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlScript</code> constructor creates a xhtml
+	  script node with a type and a url. The first argument is the
+	  mime type string such like 'text/javascript'. The second
+	  argument is the script source url.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml paragraph object                                          = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlPara</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlPara</code> class is a xhtml paragraph node used in
+      the body element of a xhtml page. The paragraph node can be
+      created with a style name or as an empty node.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-para-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlPara</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlPara</code> constructor creates a default xhtml
+	  paragraph node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlPara</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlPara</code> constructor creates a xhtml paragraph
+	  node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlPara</name>
+	<args>Boolean</args>
+	<p>
+	  The <code>XhtmlPara</code> constructor creates an empty xhtml
+	  paragraph if the boolean argument is true.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml emphasize object                                          = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlEmph</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlEmph</code> class is a xhtml emphasize node used in
+      the body element of a xhtml page. The emphasize node can be
+      created with a style name.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-emph-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors> 
+      <ctor>
+	<name>XhtmlEmph</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlEmph</code> constructor creates a default xhtml
+	  emphasize node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlEmph</name>
+	<args>String</args>
+	<p>
+	  The <code>Xhtmlemph</code> constructor creates a xhtml emphasize
+	  node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml reference object                                          = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlRef</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlRef</code> class is a xhtml reference node
+      used in the body element of a xhtml page. The node can be used to
+      create hyperlink that references object by a uri. 
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-ref-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlRef</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlRef</code> constructor creates a default xhtml
+	  reference node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlRef</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlRef</code> constructor creates a xhtml reference
+	  node with a uri. The string argument is the uri to use.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlRef</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlRef</code> constructor creates a xhtml reference
+	  node with a uri and a reference text. The first argument is the
+	  uri. The second argument is the reference text.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml image object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlImg</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlImg</code> class is a xhtml image node used in the
+      html body. The image node is an empty node with several attributes
+      including the image source, the image width and height and an
+      alternate string.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-img-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlImg</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlImg</code> constructor creates a xhtml image node
+	  by source and alternate name. The first argument is the image
+	  uri. The second argument is the alternate name.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-width</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-width</code> method set the image width attribute.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-height</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-height</code> method set the image height attribute.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-geometry</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-geometry</code> method set the image width and
+	  height attribute in one call. 
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml div object                                                = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlDiv</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlDiv</code> class is a xhtml <em>div</em> node used in
+      the body element of a xhtml page. The <em>div</em> node is a xhtml
+      grouping element.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-div-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlDiv</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlDiv</code> constructor creates a default xhtml
+	  div node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlDiv</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlDiv</code> constructor creates a xhtml div
+	  node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml pre object                                                = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlPre</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlPre</code> class is a xhtml <em>pre</em> node used in
+      the body element of a xhtml page. The <em>pre</em> node is a xhtml
+      formatting element.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-pre-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlPre</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlPre</code> constructor creates a default xhtml
+	  pre node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlPre</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlPre</code> constructor creates a xhtml pre
+	  node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml hr object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlHr</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlHr</code> class is a xhtml <em>hr</em> node used in
+      the body element of a xhtml page. The <em>hr</em> node is a xhtml
+      horizontal ruler element.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-hr-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlHr</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlHr</code> constructor creates a default xhtml
+	  hr node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlHr</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlHr</code> constructor creates a xhtml hr
+	  node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml colgroup object                                           = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlCgr</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlCgr</code> class is a xhtml column group node used
+      in the table element. The column group is designed to hold the column
+      definition bound by the <code>XhtmlCol</code> class.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-cgr-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlCgr</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlCgr</code> constructor creates a default xhtml
+	  <em>colgroup</em> node.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml col object                                                = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlCol</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlCol</code> class is a xhtml column node used
+      in the table column group element.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-col-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlCol</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlCol</code> constructor creates a default xhtml
+	  <em>col</em> node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlCol</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlCol</code> constructor creates a xhtml
+	  <em>col</em> node with a string width argument. The argument is
+	  the <em>width</em> attribute value.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml th object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlTh</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlTh</code> class is a xhtml <em>th</em> node used in the
+      table row. The object can be built with a style name.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-th-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlTh</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlTh</code> constructor creates a default xhtml
+	  th node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTh</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlTh</code> constructor creates a xhtml th
+	  node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml td object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlTd</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlTd</code> class is a xhtml <em>td</em> node used in the
+      table row. The object can be built with a style name.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-td-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlTd</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlTd</code> constructor creates a default xhtml
+	  td node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTd</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlTd</code> constructor creates a xhtml td
+	  node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml tr object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlTr</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlTr</code> class is a xhtml <em>tr</em> node used in the
+      table node. The table row node is designed to accumulate table
+      head or table data nodes.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-tr-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlTr</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlTr</code> constructor creates a default xhtml
+	  tr node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTr</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlTr</code> constructor creates a xhtml tr
+	  node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTr</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlTr</code> constructor creates a xhtml tr
+	  node with a style and a default table data style. The string
+	  argument is the table row style name. The second argument is the
+	  default table data style.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>new-head</name>
+	<retn>XhtmlTh</retn>
+	<args>none | String</args>
+	<p>
+	  The <code>new-head</code> method returns a new table head data
+	  object. Without argument, a default <code>XhtmlTh</code> object
+	  is created. With a string argument, the  <code>XhtmlTh</code>
+	  object is constructed with a style name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>new-data</name>
+	<retn>XhtmlTd</retn>
+	<args>none | String</args>
+	<p>
+	  The <code>new-data</code> method returns a new table data
+	  object. Without argument, a default <code>XhtmlTd</code> object
+	  is created. With a string argument, the  <code>XhtmlTd</code>
+	  object is constructed with a style name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-head-class</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-head-class</code> method sets the default table
+	  head style. The default style is use with the
+	  <code>new-head</code> method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-data-class</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-data-class</code> method sets the default table
+	  data style. The default style is use with the
+	  <code>new-data</code> method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-xdef-class</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-xdef-class</code> method sets the default table
+	  head and data style. The default style is use with the
+	  <code>new-head</code> and <code>new-data</code> methods. This
+	  method combines the <code>set-head-class</code> and the
+	  <code>set-head-class</code> 
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml table element object                                      = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlTelem</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlTelem</code> class is an abstract class that
+      implements the node behavior for the table head, body, foot and table
+      elements. The table element node is designed to accumulate
+      table row nodes. This class cannot be constructed directly.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-telem-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlTag</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>new-row</name>
+	<retn>XhtmlTr</retn>
+	<args>none | String</args>
+	<p>
+	  The <code>new-row</code> method returns a new table row
+	  object. Without argument, a default <code>XhtmlTr</code> object 
+	  is created. With a string argument, the <code>XhtmlTr</code>
+	  object is constructed with a style name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-table</name>
+	<retn>none</retn>
+	<args>PrintTable [Boolean]</args>
+	<p>
+	  The <code>add-table</code> method adds a print table into the
+	  table element by adding automatically the row and the associated
+	  formatting information such like the data direction. The optional
+	  second argument controls whether or not the table tag shall be used
+	  to build reference node for the table elements.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-xrow-class</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-xrow-class</code> method sets the default table row
+	  data style. The default row style is use with the
+	  <code>new-row</code> method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-xdef-class</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-xdef-class</code> method sets the default table
+	  head and data style. The default style is use with the
+	  <code>new-row</code> method to set the table head and data
+	  default style.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml thead object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlThead</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlThead</code> class is a xhtml thead node. The table
+      head node is designed to accumulate table rows nodes. The class acts
+      almost like the xhtml table class.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-thead-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XhtmlTelem</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlThead</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlThead</code> constructor creates a default xhtml
+	  table head node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlThead</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlThead</code> constructor creates a xhtml table
+	  head node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlThead</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlThead</code> constructor creates a xhtml table
+	  head node with a style and a default table row style. The string
+	  argument is the table head style name. The second argument is the
+	  default table row style.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlThead</name>
+	<args>String String String</args>
+	<p>
+	  The <code>XhtmlThead</code> constructor creates a xhtml table
+	  head node with a style, a default table row style and a default
+	  table data style. The string argument is the table head style
+	  name. The second argument is the default table row style. The
+	  third argument is the table data style.      
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml tbody object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlTbody</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlTbody</code> class is a xhtml tbody node. The table
+      body node is designed to accumulate table rows nodes. The class acts
+      almost like the xhtml table class.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-tbody-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XhtmlTelem</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlTbody</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlTbody</code> constructor creates a default xhtml
+	  table body node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTbody</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlTbody</code> constructor creates a xhtml table
+	  body node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTbody</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlTbody</code> constructor creates a xhtml table
+	  body node with a style and a default table row style. The string
+	  argument is the table body style name. The second argument is the
+	  default table row style.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTbody</name>
+	<args>String String String</args>
+	<p>
+	  The <code>XhtmlTbody</code> constructor creates a xhtml table
+	  body node with a style, a default table row style and a default
+	  table data style. The string argument is the table body style
+	  name. The second argument is the default table row style. The
+	  third argument is the table data style.      
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml tfoot object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlTfoot</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlTfoot</code> class is a xhtml tfoot node. The table
+      foot node is designed to accumulate table rows nodes. The class acts
+      almost like the xhtml table class.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-tfoot-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XhtmlTelem</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlTfoot</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlTfoot</code> constructor creates a default xhtml
+	  table foot node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTfoot</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlTfoot</code> constructor creates a xhtml table
+	  foot node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTfoot</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlTfoot</code> constructor creates a xhtml table
+	  foot node with a style and a default table row style. The string
+	  argument is the table foot style name. The second argument is the
+	  default table row style.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTfoot</name>
+	<args>String String String</args>
+	<p>
+	  The <code>XhtmlTfoot</code> constructor creates a xhtml table
+	  foot node with a style, a default table row style and a default
+	  table data style. The string argument is the table foot style
+	  name. The second argument is the default table row style. The
+	  third argument is the table data style.      
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml table object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlTable</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlTable</code> class is a xhtml table node. The table
+      node is designed to accumulate table row nodes or column group
+      nodes. The table can also be designed with a table head, body and
+      foot nodes. 
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-table-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XhtmlTelem</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlTable</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlTable</code> constructor creates a default xhtml
+	  table foot node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTable</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlTable</code> constructor creates a xhtml table
+	  foot node with a style. The string argument is the style name.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTable</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlTable</code> constructor creates a xhtml table
+	  foot node with a style and a default table row style. The string
+	  argument is the table foot style name. The second argument is the
+	  default table row style.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlTable</name>
+	<args>String String String</args>
+	<p>
+	  The <code>XhtmlTable</code> constructor creates a xhtml table
+	  foot node with a style, a default table row style and a default
+	  table data style. The string argument is the table foot style
+	  name. The second argument is the default table row style. The
+	  third argument is the table data style.      
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-caption</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-caption</code> method sets the table caption. A
+	  new <code>XhtmlCaption</code> node is automatically added to the
+	  table tree during this method call.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml mime object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XmlMime</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlMime</code> class is a generic xml mime document
+      class. The class is used to construct a mime version of a xml
+      document which can be obtained from a file name, or an input
+      stream. By default, the mime type 'application/xml'.
+    </p>
+
+    <!-- predicate -->
+    <pred>xml-mime-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlDocument</name>
+      <name>Mime</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlMime</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlMime</code> constructor creates a default xml
+	  mime document.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlMime</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlMime</code> constructor creates a xml mime document
+	  by parsing a file. The file name is the string argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlMime</name>
+	<args>String InputStream</args>
+	<p>
+	  The <code>XmlMime</code> constructor creates a xml mime document
+	  by name and by parsing the input stream. The first argument is
+	  the xml document name. The second argument is the input stream
+	  to parse.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml mime object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlMime</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlMime</code> class is a generic xhtml mime document
+      class. The class is used to construct a mime version of a xhtml
+      document which can be obtained from a file name, or an input
+      stream. By default, the mime type 'application/xhtml+xml'.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-mime-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlMime</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlMime</name>
+	<args>none</args>
+	<p>
+	  The <code>XhtmlMime</code> constructor creates a default xhtml
+	  mime document.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlMime</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlMime</code> constructor creates a xhtml mime document
+	  by parsing a file. The file name is the string argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XhtmlMime</name>
+	<args>String InputStream</args>
+	<p>
+	  The <code>XhtmlMime</code> constructor creates a xhtml mime document
+	  by name and by parsing the input stream. The first argument is
+	  the xhtml document name. The second argument is the input stream
+	  to parse.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml form object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlForm</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlForm</code> class is a generic xhtml form
+      object. A form is defined by an action and a method. When the
+      form is created, it is appropriate to add other xhtml objects.      
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-form-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XhtmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlForm</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlForm</code> constructor creates a xhtml form
+	  by action and method. The first argument is the uri path for
+	  the action while the second argument is the method to use
+	  for the action.	  
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml text object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlText</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlText</code> class is a generic xhtml input text
+      object. An input text is a form element which is used to capture
+      text in a field. The text value is attached with the name attribute.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-text-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XhtmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlText</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlText</code> constructor creates a xhtml input
+	  text by name.
+	</p>
+      </ctor>
+      <ctor>
+	<name>XhtmlText</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlText</code> constructor creates a xhtml input
+	  text by name and size. The first argument is the input text
+	  name and the second argument is the text field size.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-size</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-size</code> method sets the input text size.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xhtml submit object                                             = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wax">
+    <name>XhtmlSubmit</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XhtmlSubmit</code> class is a generic xhtml input submit
+      object. An input submit object is a button which is used inside
+      a form generally as a condition to activate the form.
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-submit-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XhtmlTag</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XhtmlSubmit</name>
+	<args>String</args>
+	<p>
+	  The <code>XhtmlSubmit</code> constructor creates a xhtml submit
+	  button by value.
+	</p>
+      </ctor>
+      <ctor>
+	<name>XhtmlText</name>
+	<args>String String</args>
+	<p>
+	  The <code>XhtmlText</code> constructor creates a xhtml submit
+	  button by value and size. The first argument is the input submit
+	  value and the second argument is the submit size.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-size</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-size</code> method sets the submit button size.
+	</p>
+      </meth>
+    </methods>
+  </object>
+</appendix>

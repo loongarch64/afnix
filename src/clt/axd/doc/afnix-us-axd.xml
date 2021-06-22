@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE axdoc PUBLIC "-//AFNIX//DTD AXDOC//EN"
+"http://www.afnix.org/dtd/axdoc.dtd">
+
+<!-- ====================================================================== -->
+<!-- = afnix-us-axd.xml                                                   = -->
+<!-- = afnix cross debugger - client documentation                        = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<axdoc xmlns:xi="http://www.w3.org/2001/XInclude">
+  <!-- book information -->
+  <info>
+    <title>AFNIX Cross Debugger</title>
+    <header section="1">
+      <name>axd</name>
+      <desc>AFNIX Client</desc>
+    </header>
+    <copyright>
+      <author>
+        <name>Amaury Darsch</name>
+        <year>1999-2021</year>
+      </author>
+    </copyright>
+  </info>
+
+  <!-- book body -->
+  <body>
+    <!-- front matter -->
+    <front>
+      <xi:include href="afnix-rm-axd.xml"/>
+    </front> 
+    <!-- main matter -->
+    <main>
+      <xi:include href="afnix-01-axd.xml"/>
+      <xi:include href="afnix-02-axd.xml"/>
+    </main>
+    <!-- back matter -->
+    <back>
+      <xi:include href="afnix-xi-axd.xml"/>
+    </back>
+  </body>
+</axdoc>

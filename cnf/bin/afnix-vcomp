@@ -1,0 +1,220 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# - afnix-vcomp                                                              -
+# - afnix compiler version detection                                         -
+# ----------------------------------------------------------------------------
+# - This program is  free software;  you can  redistribute it and/or  modify -
+# - it provided that this copyright notice is kept intact.                   -
+# -                                                                          -
+# - This  program  is  distributed in the hope  that it  will be useful, but -
+# - without  any   warranty;  without  even   the   implied    warranty   of -
+# - merchantability  or fitness for a particular purpose. In not event shall -
+# - the copyright holder be  liable for  any direct, indirect, incidental or -
+# - special damages arising in any way out of the use of this software.      -
+# ----------------------------------------------------------------------------
+# - author (c) 1999-2021 amaury darsch                                       -
+# - author (c) 2016-2016 martin michlmayr                              GCC 5 -
+# - author (c) 2017-2017 nobuhiro iwamatsu                             GCC 7 -
+# - author (c) 2018 2018 nobuhiro iwamatsu                             GCC 8 -
+# ----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+# - set default variables                                                    -
+# ----------------------------------------------------------------------------
+
+# the program name
+prgnam="$0"
+# the sdk name
+sdknam=
+# the sdk dir
+sdkdir=
+# the platform name
+pltnam=
+# the ccname to check
+ccname=
+# the cc name to map
+ccmake=
+# result version
+ccvers=
+
+# ----------------------------------------------------------------------------
+# - local function always make life easier                                   -
+# ----------------------------------------------------------------------------
+
+# print a usage message
+usage () {
+    echo "usage: afnix-vcomp [options]"
+    echo "       -h           print this help message"
+    echo
+    echo "       --ccname     set the compiler name"
+    echo "       --sdknam     set the target sdk by name"
+    echo "       --sdkdir     set the target sdk directory"
+    exit 0
+}
+
+# print an error message
+error () {
+    echo "error: $1"
+    exit 1
+}
+
+# get the platform and the ccname
+getdef () {
+    # precompute guess option
+    if test -n "$sdknam"; then
+	pltopt="--sdknam=$sdknam"
+	if test -z "$sdkdir"; then
+	    sdkdir=$AFNIX_SDK
+	fi
+	if test -n "$sdkdir"; then
+	    pltopt="$pltopt --sdkdir=$sdkdir"
+	fi
+    fi
+    if test -z "$pltnam"; then
+	# get the platform name
+	basdir=`dirname $prgnam`
+	pltexe="$basdir/afnix-guess $pltopt"
+	pltnam=`$pltexe -n`
+    fi
+    # get the compiler name if not defined
+    if test -z "$ccname" ; then
+	qryexe="$basdir/afnix-query --pltname=$pltnam"
+	ccname=`$qryexe --default=gcc ccname`
+    fi
+}
+
+# get the compiler makefile
+getccm () {
+    # check for android cross compiler
+    if test "$ccname" = "acc" ; then
+	ccmake="accs"
+    fi
+    # check for gcc
+    if test "$ccname" = "gcc" ; then
+	cctype="gc"
+    fi
+    # check for g++
+    if test "$ccname" = "g++" ; then
+	cctype="gc"
+    fi
+    # check for clang
+    if test "$ccname" = "clang"; then
+	cctype="cc"
+    fi
+    # check for clang++
+    if test "$ccname" = "clang++"; then
+	cctype="cc"
+    fi
+
+    # check for gcc version
+    if test "$ccname" = "gcc" ; then
+        # get gcc version 
+	vers=`gcc -dumpversion`
+	case $vers in
+	6*) ccvers=06 ;;
+	7*) ccvers=07 ;;
+	8*) ccvers=08 ;;
+	9*) ccvers=09 ;;
+       10*) ccvers=10 ;;
+	esac
+    fi
+    # check for g++ version
+    if test "$ccname" = "g++" ; then
+        # get gcc version 
+	vers=`g++ -dumpversion`
+	case $vers in
+	6*) ccvers=06 ;;
+	7*) ccvers=07 ;;
+	8*) ccvers=08 ;;
+	9*) ccvers=09 ;;
+       10*) ccvers=10 ;;
+	esac
+    fi
+    # check for clang version
+    if test "$ccname" = "clang" ; then
+        # get clang version 
+	vers=`clang -v 2>&1 | grep version | awk '{print $3}'`
+	if test "$vers" = "version" ; then
+	    vers=`clang -v 2>&1 | grep version | awk '{print $4}'`
+	fi
+	case $vers in
+	6*) ccvers=06 ;;
+	7*) ccvers=07 ;;
+	8*) ccvers=08 ;;
+	9*) ccvers=09 ;;
+       10*) ccvers=10 ;;
+	esac
+    fi
+    # check for clang++ version
+    if test "$ccname" = "clang++" ; then
+        # get clang version 
+	vers=`clang++ -v 2>&1 | grep version | awk '{print $3}'`
+	if test "$vers" = "version" ; then
+	    vers=`clang -v 2>&1 | grep version | awk '{print $4}'`
+	fi
+	case $vers in
+	6*) ccvers=06 ;;
+	7*) ccvers=07 ;;
+	8*) ccvers=08 ;;
+	9*) ccvers=09 ;;
+       10*) ccvers=10 ;;
+	esac
+    fi
+    # assemble ccmake
+    if test -z "$ccmake" ; then
+	if test -z "$cctype" ; then
+	    error "cannot find compile type for $ccname"
+	fi
+	if test -z "$ccvers" ; then
+	    error "cannot find version for compiler $ccname"
+	fi
+	ccmake=${cctype}${ccvers}
+    fi
+}
+
+# ----------------------------------------------------------------------------
+# - parse options - this is where we really start                            -
+# ----------------------------------------------------------------------------
+
+# parse the options
+preopt=
+for nxtopt
+do
+    # assign the previous option argument
+    if test -n "$preopt"; then
+	eval "$preopt=\$nxtopt"
+	preopt=
+	continue
+    fi
+
+    # extract options
+    case "$nxtopt" in
+    -*=*) argopt=`echo "$nxtopt" | sed 's/[-_a-zA-Z0-9]*=//'`;;
+       *) argopt=;;
+    esac
+
+    # process options now
+    case "$nxtopt" in
+    -h | --help)   usage ;;
+
+    --ccname)      preopt=ccname;;
+    --ccname=*)    ccname="$argopt";;
+    --sdknam)      preopt=sdknam;;
+    --sdknam=*)    sdknam="$argopt";;
+    --sdkdir)      preopt=sdkdir;;
+    --sdkdir=*)    sdkdir="$argopt";;
+    
+    *)             error "illegal option $nxtopt";;
+    esac
+done
+
+# get the default settings
+getdef
+# get the cc make/version
+getccm
+# check for final result
+if test -z "$ccmake" ; then
+    error "cannot find compile makefile for $ccname"
+fi
+echo $ccmake
+exit 0

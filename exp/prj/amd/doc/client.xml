@@ -1,0 +1,76 @@
+<?xml version='1.0'?>
+
+<!-- ====================================================================== -->
+<!-- = client.xml                                                         = -->
+<!-- = afnix:amd client manual                                            = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<client>
+  <!-- client name -->
+  <name>amd</name>
+  <!-- synopsis -->
+  <synopsis>amd [options] uri</synopsis>
+  <!-- options -->
+  <options>
+   <optn>
+    <name>-h</name>
+    <p>
+    prints the help message
+    </p>
+   </optn>
+
+   <optn>
+    <name>-v</name>
+    <p>
+    prints the program version
+    </p>
+   </optn>
+
+   <optn>
+    <name>-o name</name>
+    <p>
+    set the output file name
+    </p>
+   </optn>
+  </options>
+
+  <!-- description -->
+  <remark>
+    <title>Description</title>
+    
+    <p>
+    <product>amd</product> is an <afnix/> application which download into
+    a file, a media content as specified by an uri.
+    </p>
+  </remark>
+
+  <!-- version -->
+  <remark>
+    <title>Version</title>
+    
+    <p>
+    The current version is the <major/>.<minor/>.<patch/> release.
+    </p>
+  </remark>
+
+  <!-- author -->
+  <remark>
+    <title>Author</title>
+    
+    <p>
+    The <product>amd</product> client has been written by
+    <mail address="amaury@afnix.org">Amaury Darsch</mail>.
+    </p>
+  </remark>
+</client>

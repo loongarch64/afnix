@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = std-03-guide.xml                                                   = -->
+<!-- = afnix programmer's guide chapter 3                                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter volume="1" number="3">
+  <title>Container objects</title>
+
+  <p>
+    This chapter covers the standard container objects and more
+    specifically, <em>iterable</em> objects such like
+    <code>Cons</code>, <code>List</code> and <code>Vector</code>.
+    Special objects like <code>Fifo</code>, <code>Queue</code> and
+    <code>Bitset</code> are treated at the end of this
+    chapter. Although the name container is sufficient enough to
+    describe the object functionality, it is clear that a container is
+    more than a simple object reservoir. In particular, the choice of
+    a container object is often associated to the underlying algorithm
+    used to store the object. For example, a vector is appropriate
+    when storing by index is important. If the order of storage must
+    be preserved, then a fifo object might be more appropriate. In any
+    case, the choice of a container is always a question of
+    compromise, so is the implementation.<ie>Container</ie>
+  </p>
+
+  <!-- cons built-in object -->
+  <section>
+    <title>Cons object</title>
+
+    <p>
+      Originally, a <code>Cons</code> object or <em>cons cell</em> have
+      been the fundamental object of the Lisp or Scheme machine. The
+      cons cell is the building block for list and is similar in some respect
+      to the <em>cons cell</em> found in traditional functional
+      programming language. A <code>Cons</code> object 
+      is a simple element used to build linked list. The cons cell holds
+      an object and a pointer to the next cons cell. The cons cell
+      object is called <em>car</em> and the next cons cell is called the
+      <em>cdr</em>. This original Lisp notation is maintained here for
+      the sake of tradition. Although a cons cell is the building
+      block for single linked list, the cell itself is not a list
+      object. When a list object is needed, the <code>List</code>
+      double linked list object might be more appropriate.
+      <ie>Cons</ie><ie>car</ie><ie>cdr</ie>
+    </p>
+
+    <!-- cons cell constructor -->
+    <subsect>
+      <title>Cons cell constructors</title>
+      
+      <p>
+	The default constructor creates a cons cell those car is
+	initialized to the nil object. The constructor can also take one
+	or several objects.
+      </p>
+      
+      <example>
+	const nil-cons (Cons)
+	const lst-cons (Cons 1 'a' "hello")
+      </example>
+
+      <p>
+	The constructor can take any kind of objects. When all objects
+	have the same type, the result list is said to be
+	<em>homogeneous</em>. If  all objects do not have the same type,
+	the result list is said to be <em>heterogeneous</em>. List
+	can also be constructed directly by the parser. Since
+	all internal forms are built with cons cell, the construction
+	can be achieved by simply <em>protecting</em> the form from
+	being interpreted.
+      </p>
+
+      <example>
+	const blist (protect ((1) ((2) ((3)))))
+      </example>
+    </subsect>
+
+    <!-- cons cell method -->
+    <subsect>
+      <title>Cons cell methods</title>
+
+      <p>
+	A <code>Cons</code> object provides several methods to access
+	the <em>car</em> and the <em>cdr</em> of a cons cell. Other
+	methods allows access to a list by index.
+      </p>
+
+      <example>
+	const c (Cons "hello" "world")
+	c:length   # 2
+	c:get-car  # "hello"
+	c:get-cadr # "world"
+	c:get 0    # "hello"
+	c:get 1    # "world"
+      </example>
+
+      <p>
+	The <code>set-car</code> method set the car of the cons
+	cell. The <code>add</code> method adds a new cons cell at
+	the end of the cons list and set the car with the specified
+	object.<ie>set-car</ie><ie>add</ie>
+      </p>
+    </subsect>
+  </section>
+
+  <!-- list object -->
+  <section>
+    <title>List object</title>
+
+    <p>
+      The <code>List</code> object provides the facility of a
+      double-link list. The <code>List</code> object is another example
+      of <em>iterable object</em>. The <code>List</code> object provides
+      support for forward and backward iteration.
+      <ie>List</ie>
+    </p>
+
+    <!-- list constructors -->
+    <subsect>
+      <title>List construction</title>
+
+      <p>
+	A list is constructed like a cons cell with zero or more
+	arguments. Unlike the cons cell, the <code>List</code> can have
+	a null size.
+      </p>
+
+      <example>
+	const nil-list (List)
+	const dbl-list (List 1 'a' "hello")
+      </example>
+    </subsect>
+
+    <!-- list methods -->
+    <subsect>
+      <title>List methods</title>
+      
+      <p>
+	The <code>List</code> object methods are similar the
+	<code>Cons</code> object. The <code>add</code> method adds
+	an object at the end of the list. The <code>insert</code> method
+	inserts an object at the beginning of the list.
+	<ie>add</ie><ie>insert</ie>
+      </p>
+
+      <example>
+	const list (List "hello" "world")
+	list:length      # 2
+	list:get 0       # "hello"
+	list:get 1       # "world"
+	list:add "folks" # "hello" "world" "folks"
+      </example>
+    </subsect>
+  </section>
+
+  <!-- vector object -->
+  <section>
+    <title>Vector object</title>
+
+    <p>
+      The <code>Vector</code> object provides the facility of an
+      index array of objects. The <code>Vector</code> object is another
+      example of <em>iterable object</em>. The <code>Vector</code>
+      object provides support for forward and backward iteration.
+      <ie>Vector</ie>
+    </p>
+
+    <!-- vector constructor -->
+    <subsect>
+      <title>Vector construction</title>
+
+      <p>
+	A vector is constructed like a cons cell or a list. The default
+	constructor creates a vector with 0 objects.
+      </p>
+
+      <example>
+	const nil-vector (Vector)
+	const obj-vector (Vector 1 'a' "hello")
+      </example>
+    </subsect>
+
+    <!-- vector methods -->
+    <subsect>
+      <title>Vector methods</title>
+
+      <p>
+	The <code>Vector</code> object methods are similar to the
+	<code>List</code> object. The <code>add</code> method appends
+	an object at the end of the vector. The <code>set</code> method
+	set a vector position by index.
+	<ie>add</ie><ie>set</ie><ie>get</ie>
+      </p>
+
+      <example>
+	const vec (Vector "hello" "world")
+	vec:length          # 2
+	vec:get 0           # "hello"
+	vec:get 1           # "world"
+	vec:add "folks"     # "hello" "world" "folks"
+	vec:set 0 "bonjour" # "bonjour" "world" "folks"
+      </example>
+    </subsect>
+  </section>
+
+  <!-- set object -->
+  <section>
+    <title>Set object</title>
+
+    <p>
+      The <code>Set</code> object provides the facility of an
+      object container. The <code>Set</code> object is another
+      example of <em>iterable object</em>. The <code>Set</code>
+      object provides support for forward iteration. One of the property
+      of a set is that there is only one object representation per
+      set. Adding two times the same object results in one object only.
+      <ie>Set</ie>
+    </p>
+
+    <!-- set constructor -->
+    <subsect>
+      <title>Set construction</title>
+
+      <p>
+	A set is constructed like a vector. The default constructor
+	creates a set with 0 objects. 
+      </p>
+
+      <example>
+	const nil-set (Set)
+	const obj-set (Set 1 'a' "hello")
+      </example>
+    </subsect>
+
+    <!-- set methods -->
+    <subsect>
+      <title>Set methods</title>
+
+      <p>
+	The <code>Set</code> object methods are similar to the
+	<code>Vector</code> object. The <code>add</code> method adds
+	an object in the set. If the object is already in the set, the
+	object is not added. The <code>length</code> method returns
+	the number of elements in the set.
+	<ie>length</ie>
+      </p>
+
+      <example>
+	const set       (Set "hello" "world")
+	set:get-size    # 2
+	set:add "folks" # "hello" "world" "folks"
+      </example>
+    </subsect>
+  </section>
+
+  <!-- iteration -->
+  <section>
+    <title>Iteration</title>
+
+    <p>
+      When an object is <em>iterable</em>, it can be used with the
+      reserved keyword <code>for</code>. The <code>for</code> keyword
+      iterates on one or several objects and binds associated symbols
+      during each step of the iteration process. All iterable objects
+      provides also the method <code>iterator</code> which returns
+      an iterator for a given object. The use of iterator is justified
+      during backward iteration, since <code>for</code> only perform
+      forward iteration.
+      <ie>iterable</ie><ie>for</ie><ie>iterator</ie>
+    </p>
+
+    <!-- function mapping -->
+    <subsect>
+      <title>Function mapping</title>
+
+      <p>
+	Given a function <code>func</code>, it is relatively easy to
+	apply this function to all objects of an iterable object. The
+	result is a list of successive calls with the function. Such
+	function is called a mapping function and is generally called
+	<code>map</code>.<ie>map</ie>
+      </p> 
+
+      <example>
+	const map (obj func) {
+          trans result (Cons)
+	  for (car) (obj) (result:link (func car))
+	  eval result
+        }
+      </example>
+
+      <p>
+	The <code>link</code> method differs from the <code>add</code>
+	method in the sense that the object to append is set to the cons
+	cell car if the car and cdr is nil.<ie>link</ie>
+      </p>
+    </subsect>
+
+    <!-- multiple iteration -->
+    <subsect>
+      <title>Multiple iteration</title>
+
+      <p>
+	Multiple iteration can be done with one call to
+	<code>for</code>. The computation of a scalar product is a
+	simple but illustrative example. 
+      </p>
+
+      <example>
+	# compute the scalar product of two vectors
+	const scalar-product (u v) {
+          trans result 0
+	  for (x y) (u v) (result:+= (* x y))
+	  eval result
+        }
+      </example>
+
+      <p>
+	Note that the function <code>scalar-product</code> does not make
+	any assumption about the object to iterate. One could compute
+	the scalar product between a vector a list for example.
+	<ie>scalar-product</ie>
+      </p>
+
+      <example>
+	const u (Vector 1 2 3)
+	const v (List   2 3 4)
+	scalar-product u v
+      </example>
+    </subsect>
+
+    <!-- conversion of iterable objects -->
+    <subsect>
+      <title>Conversion of iterable objects</title>
+
+      <p>
+	The use of an iterator is suitable for direct conversion between
+	one object and another. The conversion to a vector can be simply
+	defined as indicted below.
+      </p>
+
+      <example>
+	# convert an iterable object to a vector
+	const to-vector (obj) {
+          trans result (Vector)
+	  for (i) (obj) (result:add i)
+          eval result
+        }
+      </example>
+    </subsect>
+    
+    <!-- explicit iterator -->
+    <subsect>
+      <title>Explicit iterator</title>
+      
+      <p>
+	An explicit iterator is constructed with the
+	<code>iterator</code> method. At construction, the iterator
+	is reset to the beginning position. The <code>get-object</code>
+	method returns the object at the current iterator position. The
+	<code>next</code> advances the iterator to its next
+	position. The <code>valid-p</code> method returns
+	<code>true</code>  if the iterator is in a valid position. When
+	the iterator supports backward operations, the <code>prev</code>
+	method move the iterator to the previous position. Note that
+	<code>Cons</code> objects do not support backward iteration. The
+	<code>begin</code> method reset the iterator to the
+	beginning. The <code>end</code> method moves the iterator the
+	last  position. This method is available only with backward
+	iterator.
+      </p>
+
+      <example>
+	# reverse a list
+	const reverse-list (obj) {
+          trans result (List)
+	  trans itlist (obj:iterator)
+	  itlist:end
+	  while (itlist:valid-p) {
+	    result:add (itlist:get-object))
+	    itlist:prev
+          }
+          eval result
+	}
+      </example>
+    </subsect>
+  </section>
+
+  <!-- special objects -->
+  <section>
+    <title>Special Objects</title>
+
+    <p>
+      The engine incorporates other container objects. To name a few,
+      such objects are the <code>Queue</code>, <code>Bitset</code> or
+      <code>Fifo</code> objects.
+    </p>
+    
+    <!-- queue object -->
+    <subsect>
+      <title>Queue object</title>
+      
+      <p>
+	A <em>queue</em> is a special object which acts as container
+	with a <em>fifo policy</em>. When an object is placed in the
+	queue, it remains there until it has been dequeued. The
+	<code>Fifo</code> and <code>Queue</code> objects are somehow
+	similar, with the fundamental difference that the queue
+	resize itself if needed.
+	<ie>Queue</ie>
+      </p>
+      
+      <example>
+	# create a queue with objects
+	const q (Queue "hello" "world")
+	q:empty-p # false
+	q:length  # 2 
+	
+	# dequeue some object
+	q:dequeue # hello
+	q:dequeue # world
+	q:empty-p # true
+      </example>
+    </subsect>
+
+    <!-- bitset object -->
+    <subsect>
+      <title>Bitset object</title>
+      
+      <p>    
+	A <em>bit set</em> is a special container for bit. A bit set can
+	be constructed with a specific size. When the bit set is
+	constructed, each bit can be marked and tested by
+	index. Initially, the bitset size is null.
+	<ie>Bitset</ie>
+      </p>
+      
+      <example>
+	# create a bit set by size
+	const bs (Bitset 8)
+	bitset-p bs # true
+	
+	# check, mark and clear
+	assert false (bs:marked-p 0)
+	bs:mark 0
+	assert true  (bs:marked-p 0)
+	bs:clear 0
+	assert false (bs:marked-p 0)
+      </example>
+    </subsect>
+  </section>
+</chapter>

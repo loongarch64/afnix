@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-rm-txt.xml                                                   = -->
+<!-- = standard text processing module - reference manual                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix module="txt" number="i">
+  <title>Standard Text Processing Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = pattern object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:txt">
+    <name>Pattern</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Pattern</code> class is a pattern matching class based
+      either on regular expression or balanced string. In the regex
+      mode, the pattern is defined with a regex and a matching is said
+      to occur when a regex match is achieved. In the balanced string
+      mode, the pattern is defined with a start pattern and end pattern
+      strings. The balanced mode can be a single or
+      recursive. Additionally, an escape character can be associated
+      with the class. A name and a tag is also bound to the pattern
+      object as a mean to ease the integration within a scanner.
+    </p>
+
+    <!-- predicate -->
+    <pred>pattern-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Pattern</name>
+	<args>none</args>
+	<p>
+	  The <code>Pattern</code> constructor creates an empty pattern.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Pattern</name>
+	<args>String|Regex</args>
+	<p>
+	  The <code>Pattern</code> constructor creates a pattern object
+	  associated with a regular expression. The argument can be either
+	  a string or a regular expression object. If the argument is a
+	  string, it is converted into a regular expression object.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Pattern</name>
+	<args>String String</args>
+	<p>
+	  The <code>Pattern</code> constructor creates a balanced
+	  pattern. The first argument is the start pattern string. The
+	  second argument is the end balanced string.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Pattern</name>
+	<args>String String Character</args>
+	<p>
+	  The <code>Pattern</code> constructor creates a balanced
+	  pattern with an <em>escape character</em>. The first argument is
+	  the start pattern string. The second argument is the end
+	  balanced string. The third character is the <em>escape
+	  character</em>.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Pattern</name>
+	<args>String String Boolean</args>
+	<p>
+	  The <code>Pattern</code> constructor creates a recursive balanced
+	  pattern. The first argument is the start pattern string. The
+	  second argument is the end balanced string.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- constants -->
+    <constants>
+      <const>
+	<name>REGEX</name>
+	<p>
+	  The <code>REGEX</code> constant indicates that the pattern is a
+	  regular expression.
+	</p>
+      </const>
+
+      <const>
+	<name>BALANCED</name>
+	<p>
+	  The <code>BALANCED</code> constant indicates that the pattern is a
+	  balanced pattern.
+	</p>
+      </const>
+
+      <const>
+	<name>RECURSIVE</name>
+	<p>
+	  The <code>RECURSIVE</code> constant indicates that the pattern is a
+	  recursive balanced pattern.
+	</p>
+      </const>
+    </constants>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>check</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>check</code> method checks the pattern against the
+	  input string. If the verification is successful, the method
+	  returns true, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>match</name>
+	<retn>String</retn>
+	<args>String|InputStream</args>
+	<p>
+	  The <code>match</code> method attempts to match an input string
+	  or an input stream. If the matching occurs, the matching string
+	  is returned. If the input is a string, the end of string is used
+	  as an end condition. If the input stream is used, the end of
+	  stream is used as an end condition.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-tag</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-tag</code> method sets the pattern tag. The tag
+	  can be further used inside a scanner.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-tag</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-tag</code> method returns the pattern tag.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the pattern name. The name
+	  is symbol identifier for that pattern.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the pattern name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-regex</name>
+	<retn>none</retn>
+	<args>String|Regex</args>
+	<p>
+	  The <code>set-regex</code> method sets the pattern regex either
+	  with a string or with a regex object. If the method is
+	  successfully completed, the pattern type is switched to the REGEX type.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-escape</name>
+	<retn>none</retn>
+	<args>Character</args>
+	<p>
+	  The <code>set-escape</code> method sets the pattern escape
+	  character. The escape character is used only in balanced mode.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-escape</name>
+	<retn>Character</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-escape</code> method returns the escape character.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-balanced</name>
+	<retn>none</retn>
+	<args>String| String String</args>
+	<p>
+	  The <code>set-balanced</code> method sets the pattern balanced
+	  string. With one argument, the same balanced string is used for
+	  starting and ending. With two arguments, the first argument is
+	  the starting string and the second is the ending string.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = lexeme object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:txt">
+    <name>Lexeme</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Lexeme</code> class is a literal object that is designed
+      to hold a matching pattern. A lexeme consists in string (i.e. the
+      lexeme value), a tag and eventually a source name (i.e. file name)
+      and a source index (line number).
+    </p>
+
+    <!-- predicate -->
+    <pred>lexeme-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Literal</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Lexeme</name>
+	<args>none</args>
+	<p>
+	  The <code>Lexeme</code> constructor creates an empty lexeme.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Lexeme</name>
+	<args>String</args>
+	<p>
+	  The <code>Lexeme</code> constructor creates a lexeme by
+	  value. The string argument is the lexeme value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-tag</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-tag</code> method sets the lexeme tag. The tag can
+	  be further used inside a scanner.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-tag</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-tag</code> method returns the lexeme tag.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-value</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-value</code> method sets the lexeme value. The
+	  lexeme value is generally the result of a matching operation. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-value</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-value</code> method returns the lexeme value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-index</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-index</code> method sets the lexeme source
+	  index. The lexeme source index can be for instance the source
+	  line number.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-index</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-index</code> method returns the lexeme source index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-source</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-source</code> method sets the lexeme source
+	  name. The lexeme source name can be for instance the source file
+	  name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-source</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-source</code> method returns the lexeme source
+	  name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = scanner object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:txt">
+    <name>Scanner</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Scanner</code> class is a text scanner or <em>lexical
+      analyzer</em>  that operates on an input stream and permits to
+      match one or several patterns. The scanner is built by adding
+      patterns to the scanner object. With an input stream, the scanner
+      object attempts to build a buffer that match at least one
+      pattern. When such matching occurs, a lexeme is built. When
+      building a lexeme, the pattern tag is used to mark the lexeme.
+    </p>
+
+    <!-- predicate -->
+    <pred>scanner-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Scanner</name>
+	<args>none</args>
+	<p>
+	  The <code>Scanner</code> constructor creates an empty scanner.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>Pattern*</args>
+	<p>
+	  The <code>add</code> method adds 0 or more pattern objects to
+	  the scanner. The priority of the pattern is determined by the
+	  order in which the patterns are added.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the number of pattern
+	  objects in this scanner.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Pattern</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns a pattern object by index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>check</name>
+	<retn>Lexeme</retn>
+	<args>String</args>
+	<p>
+	  The <code>check</code> method checks that a string is matched by the
+	  scanner and returns the associated lexeme.
+	</p>
+      </meth>
+
+      <meth>
+	<name>scan</name>
+	<retn>Lexeme</retn>
+	<args>InputStream</args>
+	<p>
+	  The <code>scan</code> method scans an input stream until a
+	  pattern is matched. When a matching occurs, the associated
+	  lexeme is returned.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = literate object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:txt">
+    <name>Literate</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Literate</code> class is transliteration mapping
+      class. Transliteration is the process of changing characters my
+      mapping one to another one. The transliteration process operates
+      with a character source and produces a target character with the
+      help of a mapping table. This transliteration object can also
+      operate with an escape table. In the presence of an escape
+      character, an escape mapping table is used instead of the regular
+      one.
+    </p>
+
+    <!-- predicate -->
+    <pred>literate-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Literate</name>
+	<args>none</args>
+	<p>
+	  The <code>Literate</code> constructor creates a default
+	  transliteration object.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Literate</name>
+	<args>Character</args>
+	<p>
+	  The <code>Literate</code> constructor creates a default
+	  transliteration object with an <em>escape character</em>. The
+	  argument is the escape character.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>read</name>
+	<retn>Character</retn>
+	<args>InputStream</args>
+	<p>
+	  The <code>read</code> method reads a character from the input
+	  stream and translate it with the help of the mapping table. A
+	  second character might be consumed from the stream if the first
+	  character is an escape character.
+	</p>
+      </meth>
+
+      <meth>
+	<name>getu</name>
+	<retn>Character</retn>
+	<args>InputStream</args>
+	<p>
+	  The <code>getu</code> method reads a Unicode character from the input
+	  stream and translate it with the help of the mapping table. A
+	  second character might be consumed from the stream if the first
+	  character is an escape character.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets all the mapping table and
+	  install a default identity one.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-map</name>
+	<retn>none</retn>
+	<args>Character Character</args>
+	<p>
+	  The <code>set-map</code> method set the mapping table by using a
+	  source and target character. The first character is the source
+	  character. The second character is the target character.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-map</name>
+	<retn>Character</retn>
+	<args>Character</args>
+	<p>
+	  The <code>get-map</code> method returns the mapping character by
+	  character. The source character is the argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>translate</name>
+	<retn>String</retn>
+	<args>String</args>
+	<p>
+	  The <code>translate</code> method translate a string by
+	  transliteration and returns a new string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-escape</name>
+	<retn>none</retn>
+	<args>Character</args>
+	<p>
+	  The <code>set-escape</code> method set the escape character.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-escape</name>
+	<retn>Character</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-escape</code> method returns the escape character.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-escape-map</name>
+	<retn>none</retn>
+	<args>Character Character</args>
+	<p>
+	  The <code>set-escape-map</code> method set the escape mapping
+	  table by using a source and target character. The first
+	  character is the source character. The second character is the
+	  target character.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-escape-map</name>
+	<retn>Character</retn>
+	<args>Character</args>
+	<p>
+	  The <code>get-escape-map</code> method returns the escape
+	  mapping character by character. The source character is the
+	  argument.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = global functions                                                = -->
+  <!-- =================================================================== -->
+
+  <functions>
+    <func nameset="afnix:txt">
+      <name>sort-ascent</name>
+      <retn>none</retn>
+      <args>Vector</args>
+      <p>
+	The <code>sort-ascent</code> function sorts in ascending order the
+	vector argument. The vector is sorted in place.
+      </p>
+    </func>
+
+    <func nameset="afnix:txt">
+      <name>sort-descent</name>
+      <retn>none</retn>
+      <args>Vector</args>
+      <p>
+	The <code>sort-descent</code> function sorts in descending order the
+	vector argument. The vector is sorted in place.
+      </p>
+    </func>
+
+    <func nameset="afnix:txt">
+      <name>sort-lexical</name>
+      <retn>none</retn>
+      <args>Vector</args>
+      <p>
+	The <code>sort-lexical</code> function sorts in lexicographic
+	order the vector argument. The vector is sorted in place.
+      </p>
+    </func>
+  </functions>
+</appendix>

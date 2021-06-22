@@ -1,0 +1,417 @@
+<!-- ===================================================================== -->
+<!-- = std-us-afnix.dtd                                                  = -->
+<!-- = afnix documention dtd                                             = -->
+<!-- ===================================================================== -->
+<!-- = This  program  is  free  software; you can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.     = -->
+<!-- = This program is distributed in the hope that it will be useful but= -->
+<!-- = without  any  warranty; without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for a  particular purpose. In no event = -->
+<!-- = shall  the  copyright holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special damages arising  in any way out of the use = -->
+<!-- = of this software.                                                 = -->
+<!-- ===================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                           = -->
+<!-- ===================================================================== -->
+
+<!-- formatting element class -->
+<!ENTITY % frmt.char.class 
+           "em |
+            tt">
+
+<!-- technical elements class -->
+<!ENTITY % tech.char.class 
+           "file    | 
+	    extn    |
+	    path    |
+	    code    |
+	    mail    |
+            link    |
+            option  |
+            product | 
+            package | 
+            command"> 
+
+<!-- private element class -->
+<!ENTITY % priv.char.class 
+           "afnix   |
+	    major   |
+	    minor   |
+	    patch">
+
+<!ENTITY % priv.char.mix 
+           "#PCDATA | 
+            %priv.char.class;">
+
+<!-- block elements class -->
+<!ENTITY % blok.char.class 
+           "p        |
+            list     |
+            table    |
+            syntax   |
+            example">
+
+<!-- synopsis elements class -->
+<!ENTITY % sect.snps.class
+           "remark">
+
+<!-- chapter elements class -->
+<!ENTITY % sect.chap.class 
+           "object   |
+	    keyword  |
+	    control  |
+            section  |
+            function">
+
+<!-- paragraph mix -->
+<!ENTITY % para.char.mix   
+           "#PCDATA | 
+            %frmt.char.class; | 
+            %tech.char.class; | 
+            %priv.char.class;">
+
+<!-- table data mix -->
+<!ENTITY % td.char.mix   
+           "#PCDATA | 
+            %frmt.char.class; | 
+            %tech.char.class; | 
+            %priv.char.class;">
+
+<!-- item mix -->
+<!ENTITY % item.char.mix   
+           "#PCDATA | 
+            %frmt.char.class; | 
+            %tech.char.class; | 
+            %priv.char.class;">
+
+<!-- syntax mix -->
+<!ENTITY % syntax.char.mix 
+           "#PCDATA |
+            %frmt.char.class;">
+
+<!-- example mix -->
+<!ENTITY % example.char.mix   
+           "#PCDATA           | 
+            %frmt.char.class; |
+            %tech.char.class; | 
+            %priv.char.class;">
+
+<!-- xmlns:xi attribute -->
+<!ENTITY % xmlns-xi.attrib
+           "xmlns:xi  CDATA  #IMPLIED">
+
+<!-- id attribute -->
+<!ENTITY % id.attrib
+           "id        ID     #IMPLIED">
+
+<!-- common attributes -->
+<!ENTITY % common.attrib
+           "%xmlns-xi.attrib;
+            %id.attrib;">
+
+<!-- document attributes -->
+<!ENTITY % axdoc.attrib
+           "%common.attrib;">
+
+<!-- document structure attributes -->
+<!ENTITY % info.attrib
+           "%common.attrib;">
+<!ENTITY % body.attrib
+           "%common.attrib;">
+
+<!-- document info attributes -->
+<!ENTITY % copyright.info.attrib
+           "%common.attrib;">
+
+<!-- document body attributes -->
+<!ENTITY % front.attrib
+           "%common.attrib;">
+<!ENTITY % main.attrib
+           "%common.attrib;">
+<!ENTITY % back.attrib
+           "%common.attrib;">
+
+<!-- sectionning attribute -->
+<!ENTITY % client.attrib
+           "client    CDATA        #IMPLIED">
+<!ENTITY % volume.attrib
+           "volume    CDATA        #IMPLIED">
+<!ENTITY % module.attrib
+           "module    CDATA        #IMPLIED">
+
+<!-- number attribute -->
+<!ENTITY % number.attrib
+           "number    CDATA        #IMPLIED">
+
+<!-- preface attributes -->
+<!ENTITY % preface.attrib
+           "%common.attrib;">
+
+<!-- synopsis attributes -->
+<!ENTITY % synopsis.attrib
+           "%common.attrib;">
+
+<!-- client attributes -->
+<!ENTITY % client.attrib
+           "%common.attrib;">
+<!ENTITY % options.attrib
+           "%common.attrib;">
+<!ENTITY % optn.attrib
+           "%common.attrib;">
+<!ENTITY % remark.attrib
+           "%common.attrib;">
+
+<!-- chapter attribute -->
+<!ENTITY % chapter.attrib
+           "%common.attrib;
+            %client.attrib;
+            %volume.attrib;
+            %module.attrib;
+            %number.attrib;">
+<!ENTITY % appendix.attrib
+           "%common.attrib;
+            %client.attrib;
+            %volume.attrib;
+            %module.attrib;
+            %number.attrib;">
+<!ENTITY % section.attrib
+           "%common.attrib;">
+<!ENTITY % subsect.attrib
+           "%common.attrib;">
+
+<!-- keyword attributes -->
+<!ENTITY % keyword.attrib
+           "%common.attrib;">
+
+<!-- control attributes -->
+<!ENTITY % nameset.control.attrib
+           "nameset   CDATA        #REQUIRED">
+<!ENTITY % control.attrib
+           "%common.attrib;
+            %nameset.control.attrib;">
+
+<!-- object attributes -->
+<!ENTITY % type.object.attrib
+           "type      CDATA        #IMPLIED">
+<!ENTITY % nameset.object.attrib
+           "nameset   CDATA        #IMPLIED">
+<!ENTITY % object.attrib
+           "%common.attrib;
+            %type.object.attrib;
+            %nameset.object.attrib;">
+
+<!ENTITY % inherit.attrib
+           "%common.attrib;">
+<!ENTITY % ctors.attrib
+           "%common.attrib;">
+<!ENTITY % ctor.attrib
+           "%common.attrib;">
+<!ENTITY % otors.attrib
+           "%common.attrib;">
+<!ENTITY % oper.attrib
+           "%common.attrib;">
+<!ENTITY % constants.attrib
+           "%common.attrib;">
+<!ENTITY % const.attrib
+           "%common.attrib;">
+<!ENTITY % methods.attrib
+           "%common.attrib;">
+<!ENTITY % method.attrib
+           "%common.attrib;">
+
+<!-- function attributes -->
+<!ENTITY % functions.attrib
+           "%common.attrib;">
+<!ENTITY % nameset.func.attrib
+           "nameset   CDATA        #IMPLIED">
+<!ENTITY % func.attrib
+           "%common.attrib;
+            %nameset.func.attrib;">
+
+<!-- table attributes -->
+<!ENTITY % table.attrib
+           "%common.attrib;">
+
+<!-- list item attribute -->
+<!ENTITY % item.attrib
+           "ref        CDATA       #IMPLIED">
+
+<!-- link attributes -->
+<!ENTITY % link.attrib
+           "url        CDATA       #REQUIRED">
+
+<!-- mail attributes -->
+<!ENTITY % mail.attrib
+           "address    CDATA       #REQUIRED">
+
+<!-- document base hierarchy -->
+<!ELEMENT axdoc     (info,body*)>
+<!ATTLIST axdoc     %axdoc.attrib;>
+
+<!-- document information -->
+<!ELEMENT info      (title,copyright*)>
+<!ATTLIST info      %info.attrib;>
+
+<!-- document copyright -->
+<!ELEMENT copyright (author*)>
+<!ATTLIST copyright %copyright.info.attrib;>
+
+<!ELEMENT author    (name,year)>
+
+<!-- document body element -->
+<!ELEMENT body      (front?,main?,back?)>
+<!ATTLIST body      %body.attrib;>
+
+<!-- front matter element -->
+<!ELEMENT front     (preface?,synopsis?)>
+<!ATTLIST front     %front.attrib;>
+
+<!-- main matter element -->
+<!ELEMENT main      (chapter*)>
+<!ATTLIST main      %main.attrib;>
+
+<!-- back matter element -->
+<!ELEMENT back      (appendix*)>
+<!ATTLIST back      %back.attrib;>
+
+<!-- sectionning elements -->
+<!ELEMENT preface   (title?,(%blok.char.class;)*)>
+<!ATTLIST preface   %preface.attrib;>
+
+<!ELEMENT synopsis  (client,(%sect.snps.class;|%blok.char.class;)*)>
+<!ATTLIST synopsis  %synopsis.attrib;>
+
+<!ELEMENT chapter   (title,(%sect.chap.class;|%blok.char.class;)*)>
+<!ATTLIST chapter   %chapter.attrib;>
+
+<!ELEMENT appendix  (title,(%sect.chap.class;|%blok.char.class;)*)>
+<!ATTLIST appendix  %appendix.attrib;>
+
+<!ELEMENT section   (title,(subsect | %blok.char.class;)*)>
+<!ATTLIST section   %section.attrib;>
+
+<!ELEMENT subsect   (title,(%blok.char.class;)*)>
+<!ATTLIST subsect   %subsect.attrib;>
+
+<!-- synopsis element -->
+<!ELEMENT client    (name,(%blok.char.class;)*,options?)>
+<!ATTLIST client    %client.attrib;>
+
+<!ELEMENT options   (optn+)>
+<!ATTLIST options   %options.attrib;>
+
+<!ELEMENT optn      (name,args,p)>
+<!ATTLIST optn      %optn.attrib;>
+
+<!ELEMENT remark    (title,(%blok.char.class;)*)>
+<!ATTLIST remark    %info.attrib;>
+
+<!-- reference element -->
+<!ELEMENT keyword   (name,(%blok.char.class;)*)>
+<!ATTLIST keyword   %keyword.attrib;>
+
+<!ELEMENT control   (name,(%blok.char.class;)*)>
+<!ATTLIST control   %control.attrib;>
+
+<!ELEMENT object    (name,(%blok.char.class;)*,
+                     pred?,inherit?,ctors?,otors?,constants?,methods?)>
+<!ATTLIST object    %object.attrib;>
+
+<!ELEMENT inherit   (name+)>
+<!ATTLIST inherit   %inherit.attrib;>
+
+<!ELEMENT ctors     (ctor+)>
+<!ATTLIST ctors     %ctors.attrib;>
+
+<!ELEMENT otors     (oper+)>
+<!ATTLIST otors     %otors.attrib;>
+
+<!ELEMENT constants (const+)>
+<!ATTLIST constants %constants.attrib;>
+
+<!ELEMENT methods   (meth+)>
+<!ATTLIST methods   %methods.attrib;>
+
+<!ELEMENT ctor      (name,args,p)>
+<!ATTLIST ctor      %ctor.attrib;>
+
+<!ELEMENT oper      (name,retn,args,p)>
+<!ATTLIST oper      %oper.attrib;>
+
+<!ELEMENT const     (name,p)>
+<!ATTLIST const     %const.attrib;>
+
+<!ELEMENT meth      (name,retn,args,p)>
+<!ATTLIST meth      %meth.attrib;>
+
+<!ELEMENT functions (func+)>
+<!ATTLIST functions %functions.attrib;>
+
+<!ELEMENT func      (name,retn,args,p)>
+<!ATTLIST func      %func.attrib;>
+
+<!-- title element -->
+<!ELEMENT title     (%priv.char.mix;)*>
+
+<!-- infor element -->
+<!ELEMENT year      (#PCDATA)>
+
+<!-- object elements -->
+<!ELEMENT name      (#PCDATA)>
+<!ELEMENT pred      (#PCDATA)>
+<!ELEMENT retn      (#PCDATA)>
+<!ELEMENT args      (#PCDATA)>
+
+<!-- paragraph element -->
+<!ELEMENT p         (%para.char.mix;)*>
+
+<!-- table element -->
+<!ELEMENT table     (title,(thead|tbody|tfoot)*)>
+<!ATTLIST table     %table.attrib;>
+
+<!ELEMENT thead     (tr+)>
+<!ELEMENT tbody     (tr+)>
+<!ELEMENT tfoot     (tr+)>
+<!ELEMENT tr        (td+)>
+<!ELEMENT td        (%td.char.mix;)*>
+
+<!-- list element -->
+<!ELEMENT list      (item+)>
+
+<!ELEMENT item      (%item.char.mix;)*>
+<!ATTLIST item      %item.attrib;>
+
+<!-- syntax element -->
+<!ELEMENT syntax    (%syntax.char.mix;)*>
+
+<!-- example element -->
+<!ELEMENT example   (%example.char.mix;)*>
+
+<!-- linking and hypertext -->
+<!ELEMENT link      (%priv.char.mix;)*>
+<!ATTLIST link      %link.attrib;>
+
+<!-- mail address reference -->
+<!ELEMENT mail      (%priv.char.mix;)*>
+<!ATTLIST mail      %mail.attrib;>
+
+<!-- formatting element -->
+<!ELEMENT em        (#PCDATA)>
+<!ELEMENT tt        (#PCDATA)>
+
+<!-- technical elements -->
+<!ELEMENT file      (#PCDATA)>
+<!ELEMENT extn      (#PCDATA)>
+<!ELEMENT path      (#PCDATA)>
+<!ELEMENT code      (#PCDATA)>
+<!ELEMENT option    (#PCDATA)>
+<!ELEMENT product   (#PCDATA)>
+<!ELEMENT package   (#PCDATA)>
+<!ELEMENT command   (#PCDATA)>
+
+<!-- private elements -->
+<!ELEMENT afnix     EMPTY>
+<!ELEMENT major     EMPTY>
+<!ELEMENT minor     EMPTY>
+<!ELEMENT patch     EMPTY>
+

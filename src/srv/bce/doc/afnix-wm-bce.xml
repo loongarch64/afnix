@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-wm-bce.xml                                                   = -->
+<!-- = standard bce service - writer manual                               = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter service="bce" number="1">
+  <title>Standard Block Chain Engineering Service</title>
+  
+  <p>
+    The <em>Standard Block Chain Engineering</em> service is an
+    original implementation of various objects dedicated to the management
+    of a block chain. At the bottom of the hierarchy is the the part
+    which is assembled in a bill of parts (BOP). The bill is
+    associated with a transaction which is time-stamped and
+    signed. The transactions are linked together to form a chain.
+  </p>
+
+  <!-- general concepts -->
+  <section>
+    <title>General concepts</title>
+
+    <p>
+      The <code>afnix-bce</code> provides the support for manipulating
+      block-chain.
+    </p>
+
+    <!-- part -->
+    <subsect>
+      <title>Part</title>
+      
+      <p>
+	The concept of part is central in the <em>bce</em> service. A
+	part is any serializable object which is used to assemble a
+	bill of parts (BOP).
+      </p>
+    </subsect>
+  </section>
+</chapter>

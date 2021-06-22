@@ -1,0 +1,1332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-rm-sps.xml                                                   = -->
+<!-- = standard spreadsheet module - reference manual                     = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix module="sps" number="i">
+  <title>Standard Spreadsheet Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = cell object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sps">
+    <name>Cell</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Cell</code> class is a data container. There is only one
+      data element per cell. Eventually a name can be associated with a
+      cell. The cell data can be any kind of literals. Such literals are
+      integer, real, boolean, character or strings. A cell is the basic
+      block used to build a spreadsheet.
+    </p>
+
+    <!-- predicate -->
+    <pred>cell-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Cell</name>
+	<args>none</args>
+	<p>
+	  The <code>Cell</code> constructor create a default cell with no
+	  name and no value. When evaluated, the cell returns nil.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Cell</name>
+	<args>Literal</args>
+	<p>
+	  The <code>Cell</code> constructor create a default cell by value.
+	  The argument is a literal object which can be viewed with its
+	  string representation.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Cell</name>
+	<args>String Literal</args>
+	<p>
+	  The <code>Cell</code> constructor create a default cell by name
+	  and value. The first argument is the cell name. The second
+	  argument is a literal object which can be viewed with its 
+	  string representation.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get</name>
+	<retn>Literal</retn>
+	<args>none</args>
+	<p>
+	  The <code>get</code> method returns the cell literal value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>Literal</args>
+	<p>
+	  The <code>set</code> method sets the cell literal value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the cell name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the cell name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = persist object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sps">
+    <name>Persist</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Persist</code> class is a base class for the <afnix/>
+      spreadsheet module. The class defines the  methods that are used
+      to read of write a particular persistent object. When saving, the
+      object name is retreived with the get name method. The saveas
+      method does the same as save but takes a file name argument.
+    </p>
+
+    <!-- predicate -->
+    <pred>persist-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>save</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>save</code> method saves the current object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>saveas</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>saveas</code> method saves the current object into the
+	  file those name is the string argument.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = record object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sps">
+    <name>Record</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Record</code> class is a cell container. A record can be
+      created by adding cell or simply by adding data. If the record has
+      a predefined size, the cell or data can be set by indexing. A name
+      can be attached to the record. Facilities are provided to access
+      directly the cell associated with the record. A record can also be
+      created by name.
+    </p>
+
+    <!-- predicate -->
+    <pred>record-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Persist</name>
+    </inherit>
+
+    <!-- constructor -->
+    <ctors>
+      <ctor>
+	<name>Record</name>
+	<args>none</args>
+	<p>
+	  The <code>Record</code> constructor create an empty record with no
+	  name and no cell.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Record</name>
+	<args>String</args>
+	<p>
+	  The <code>Record</code> constructor create an empty record by name
+	  name. The argument is the record name to use.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>Cell|Literal...</args>
+	<p>
+	  The <code>add</code> method adds one or several cell objects to
+	  the record. In the first form, the argument is a cell that is
+	  added in the record. In the second form, the argument is a
+	  literal that is used to create a cell by value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Cell</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns a record cell by index. The
+	  index must be within the record range or an exception is
+	  raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>map</name>
+	<retn>Literal</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>map</code> method map a record cell by index. The
+	  index must be within the record range or an exception is
+	  raised. The cell is mapped to a literal object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>Integer Cell|Literal</args>
+	<p>
+	  The <code>set</code> method sets the record cell by index. The
+	  record index must be valid in order to succeed. A new cell is
+	  created prior the record update. The previous cell data is lost
+	  including its name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>sort</name>
+	<retn>none</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>sort</code> method sorts a record in place. Without
+	  argument, the record is sorted in ascending order. The optional
+	  boolean argument specifies the sorting mode. If true, the record
+	  is sorting in ascending order and in descending order if false.
+	</p>
+      </meth>
+
+      <meth>
+	<name>find</name>
+	<retn>Cell</retn>
+	<args>String</args>
+	<p>
+	  The <code>find</code> method finds a cell by name. If the cell
+	  is not found, the nil object is returned. This method is similar
+	  to the <code>lookup</code> method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-index</name>
+	<retn>Integer</retn>
+	<args>String</args>
+	<p>
+	  The <code>get-index</code> method finds a cell index by name. If
+	  the cell is not found, an exception is raised. The index is the
+	  cell position in the record.
+	</p>
+      </meth>
+
+      <meth>
+	<name>lookup</name>
+	<retn>Cell</retn>
+	<args>String</args>
+	<p>
+	  The <code>lookup</code> method finds a cell by name. If the cell
+	  is not found, an exception is raised. This method is similar to
+	  the <code>find</code> method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the record length.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the record name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method rest the record. The record name
+	  is not changed but all record cells are removed.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the record name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = sheet object                                                    = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sps">
+    <name>Sheet</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Sheet</code> class is a record container. A sheet can
+      be created by adding records. Similarly, if the sheet has a
+      predefined size, record cell or data can be added by indexing. A
+      sheet can be also seen as a 2 dimensional array of cells. Like a
+      record, a sheet can be named. Without argument, a default sheet is
+      created. With a string argument, the sheet is created with an
+      initial name.
+    </p>
+
+    <!-- predicate -->
+    <pred>sheet-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Persist</name>
+    </inherit>
+
+    <!-- constructor -->
+    <ctors>
+      <ctor>
+	<name>Sheet</name>
+	<args>none</args>
+	<p>
+	  The <code>Sheet</code> constructor create an empty sheet with no
+	  name and no cell.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Sheet</name>
+	<args>String</args>
+	<p>
+	  The <code>Sheet</code> constructor create an empty sheet by name.
+	  The argument is the sheet name to use.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Sheet</name>
+	<args>String String</args>
+	<p>
+	  The <code>Sheet</code> constructor create an empty sheet by name
+	  and info. The first argument is the sheet name to use. The
+	  second argument is the sheet information string.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>Record</args>
+	<p>
+	  The <code>add</code> method adds a record to the sheet.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Record</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns a sheet record by index. The
+	  index must be within the sheet range or an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>Integer Record</args>
+	<p>
+	  The <code>set</code> method sets the sheet record by index. The
+	  sheet index must be valid in order to succeed.
+	</p>
+      </meth>
+
+      <meth>
+	<name>sort</name>
+	<retn>none</retn>
+	<args>none|Integer|Boolean|Integer Boolean</args>
+	<p>
+	  The <code>sort</code> method sorts the sheet in place. By
+	  default, the sheet is sorted in ascending order with column
+	  0. With one argument, the argument can be either the sorting
+	  mode or the column number. If the mode is true, the sheet is
+	  sorted in ascending mode. If the mode is false, the sheet is
+	  sorted in descending mode. With two arguments, the first
+	  argument is the column number and the second is the sorting
+	  mode.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the sheet length.
+	</p>
+      </meth>
+
+      <meth>
+	<name>convert</name>
+	<retn>PrintTable</retn>
+	<args>[Integer [Integer [Boolean]]]</args>
+	<p>
+	  The <code>convert</code> method converts the sheet into a
+	  print-table representation. Without argument, the whole sheet is
+	  converted. With one argument, the sheet is converted unto a
+	  maximum of rows. The second optional argument is the start index
+	  that default to 0. The third optional argument is the literal
+	  format. By default, the literal is formatted as a string. If the
+	  flag is true, the literal is formatted as a literal string
+	  representation.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-data</name>
+	<retn>none</retn>
+	<args>[Cell|Literal]+</args>
+	<p>
+	  The <code>add-data</code> method adds one or several cell object
+	  to a sheet record. The sheet record is initially created and the
+	  object elements are added sequentially to the record. In the
+	  first form, the argument is a cell that is added in the
+	  record. In the second form, the argument is a literal that is
+	  used to create a cell by value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-marker</name>
+	<retn>none</retn>
+	<args>[Literal]+</args>
+	<p>
+	  The <code>add-marker</code> method adds one or several literal objects
+	  to a sheet marker record.
+	</p>
+      </meth>
+
+      <meth>
+	<name>marker-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>marker-length</code> method returns the number of markers
+	  defined for this sheet.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-marker</name>
+	<retn>Cell</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-marker</code> method returns a marker cell by
+	  index from the sheet marker record.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-marker</name>
+	<retn>none</retn>
+	<args>Integer Literal</args>
+	<p>
+	  The <code>set-marker</code> method set the sheet marker record by
+	  index and literal.
+	</p>
+      </meth>
+
+      <meth>
+	<name>find-marker</name>
+	<retn>Integer</retn>
+	<args>String</args>
+	<p>
+	  The <code>find-marker</code> method find the marker index. The
+	  argument is the marker string value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-sign</name>
+	<retn>none</retn>
+	<args>[Literal]+</args>
+	<p>
+	  The <code>add-sign</code> method adds one or several literal objects
+	  to a sheet sign record.
+	</p>
+      </meth>
+
+      <meth>
+	<name>signature-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>signature-length</code> method returns the number of signs
+	  defined for this sheet.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-sign</name>
+	<retn>Cell</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-sign</code> method returns a sign cell by
+	  index from the sheet sign record.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-sign</name>
+	<retn>none</retn>
+	<args>Integer Literal</args>
+	<p>
+	  The <code>set-sign</code> method set the sheet sign record by
+	  index and literal.
+	</p>
+      </meth>
+
+      <meth>
+	<name>find-sign</name>
+	<retn>Integer</retn>
+	<args>String</args>
+	<p>
+	  The <code>find-sign</code> method find the sign index. The
+	  argument is the sign string value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-header</name>
+	<retn>none</retn>
+	<args>Cell|Literal...</args>
+	<p>
+	  The <code>add-header</code> method adds one or several cell
+	  object to a sheet header record. In the first form, the argument
+	  is a cell that is added in the record. In the second form, the
+	  argument is a literal that is used to create a cell by value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-header</name>
+	<retn>Cell</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-header</code> method returns a header cell by
+	  index from the sheet header record.
+	</p>
+      </meth>
+
+      <meth>
+	<name>map-header</name>
+	<retn>Literal</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>map-header</code> method maps to a literal object a
+	  header cell by index from the sheet header record. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-header</name>
+	<retn>none</retn>
+	<args>Integer Literal</args>
+	<p>
+	  The <code>set-header</code> method set the header record by
+	  index and literal. The cell associated with the header record is
+	  updated with the literal value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-footer</name>
+	<retn>none</retn>
+	<args>[Cell|Literal]+</args>
+	<p>
+	  The <code>add-footer</code> method adds one or several cell
+	  object to a sheet footer record. In the first form, the argument
+	  is a cell that is added in the record. In the second form, the
+	  argument is a literal that is used to create a cell by value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-footer</name>
+	<retn>Cell</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-footer</code> method returns a footer cell by
+	  index from the sheet footer record.
+	</p>
+      </meth>
+
+      <meth>
+	<name>map-footer</name>
+	<retn>Literal</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>map-footer</code> method maps to a literal object an
+	  footer cell by index from the sheet footer record.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-footer</name>
+	<retn>none</retn>
+	<args>Integer Literal</args>
+	<p>
+	  The <code>set-footer</code> method set the footer record by
+	  index and literal. The cell associated with the footer record is
+	  updated with the literal value.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the sheet name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the sheet name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-info</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-info</code> method returns the sheet info.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-info</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-info</code> method sets the sheet info.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-tag</name>
+	<retn>none</retn>
+	<args>[String]+</args>
+	<p>
+	  The <code>add-tag</code> method adds a tag into the tags
+	  vector. The tag can be used to mark a sheet in a folio.
+	</p>
+      </meth>
+
+      <meth>
+	<name>tag-p</name>
+	<retn>Boolean</retn>
+	<args>string</args>
+	<p>
+	  The <code>tag-p</code> method returns true if the given tag is
+	  defined for this sheet.
+	</p>
+      </meth>
+
+      <meth>
+	<name>tag-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>tag-length</code> method returns the number of tags
+	  defined for this sheet.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-tag</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-tag</code> method returns a tag by index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-tag</name>
+	<retn>none</retn>
+	<args>Integer Literal</args>
+	<p>
+	  The <code>set-tag</code> method set the sheet tag record by
+	  index and literal.
+	</p>
+      </meth>
+
+      <meth>
+	<name>find-tag</name>
+	<retn>Integer</retn>
+	<args>String</args>
+	<p>
+	  The <code>find-tag</code> method find the tag index. The
+	  argument is the tag string value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the sheet. The name and
+	  information is unchanged during this operation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = folio object                                                    = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sps">
+    <name>Folio</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Folio</code> class is a sheet container. A folio of
+      sheets can be structured to handle various data organization. 
+      Since all objects are named, it is possible to index them for fast
+      data search. An empty folio can be created by name or filled with
+      an input stream.
+    </p>
+
+    <!-- predicate -->
+    <pred>folio-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Persist</name>
+    </inherit>
+
+    <!-- constructor -->
+    <ctors>
+      <ctor>
+	<name>Folio</name>
+	<args>none</args>
+	<p>
+	  The <code>Folio</code> constructor create an empty folio with no
+	  name and no cell.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Folio</name>
+	<args>String</args>
+	<p>
+	  The <code>Folio</code> constructor create an empty folio by name.
+	  The argument is the folio name to use.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Folio</name>
+	<args>String String</args>
+	<p>
+	  The <code>Folio</code> constructor create an empty folio by name
+	  and info. The first argument is the folio name to use. The
+	  second argument is the folio information string.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Folio</name>
+	<args>InputStream</args>
+	<p>
+	  The <code>Folio</code> constructor create an empty folio and
+	  fill it by reading the data from the input stream. The input
+	  stream must have the data in a serialized form.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>write</name>
+	<retn>none</retn>
+	<args>OutputStream</args>
+	<p>
+	  The <code>write</code> method write the folio contents to an
+	  output stream. The written form is a serialized form.
+	</p>
+      </meth>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>Sheet</args>
+	<p>
+	  The <code>add</code> method adds a sheet to the folio.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Sheet</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns a sheet by index. The index
+	  must be within the folio range or an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>Integer Sheet</args>
+	<p>
+	  The <code>set</code> method sets the folio by index and
+	  sheet. The index must be within the folio range or an exception
+	  is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>tag-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>tag-p</code> method returns true if a sheet with the
+	  tag argument exists in the folio.
+	</p>
+      </meth>
+
+      <meth>
+	<name>find</name>
+	<retn>Sheet</retn>
+	<args>String</args>
+	<p>
+	  The <code>find</code> method finds a sheet by tag. The first
+	  found sheet those tag is matched is returned. In the case that
+	  multiple sheet share the same tag, the <code>filter</code>
+	  should be used. If no sheet is found the method return the nil object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>lookup</name>
+	<retn>Sheet</retn>
+	<args>String</args>
+	<p>
+	  The <code>lookup</code> method finds a sheet by tag. The first
+	  found sheet those tag is matched is returned. In the case that
+	  multiple sheet share the same tag, the <code>filter</code>
+	  should be used. If no sheet is found the method throws an
+	  exception. This method is similar to the <code>find</code>
+	  method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>filter</name>
+	<retn>Folio</retn>
+	<args>String</args>
+	<p>
+	  The <code>filter</code> method return a new folio with sheets
+	  that match the argument tag. If no sheet is found, the folio is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the folio. The name and
+	  information is unchanged during this operation.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the folio length.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the folio name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the folio name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-info</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-info</code> method returns the folio info.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-info</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-info</code> method sets the folio info.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-xref</name>
+	<retn>Xref</retn>
+	<args>none|Integer|String|Integer Integer</args>
+	<p>
+	  The <code>get-xref</code> method returns a cross-reference table
+	  from the folio. Without argument, the whole folio is scanned and
+	  all named cells are added in the cross-reference table. With an
+	  integer argument, all cells that matches the cell index argument
+	  are added in the cross-reference table. With a string argument,
+	  all cells that have the same name are added in the
+	  table. Finally, with two arguments that represents the cell
+	  index and the record index are used, all cells are added in the
+	  table with these two coordinates.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = index object                                                    = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sps">
+    <name>Index</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Index</code> class is a class that maintain a cell index at the
+      folio level. A cell index is composed of the sheet index, the record
+      index and the cell index. The index object can be used to access in
+      a generic way a particular cell. Additionally, the folio name can also
+      be stored in the index. It is possible to have multiple records
+      that represents the same cell.
+    </p>
+
+    <!-- predicate -->
+    <pred>index-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructor -->
+    <ctors>
+      <ctor>
+	<name>Index</name>
+	<args>none</args>
+	<p>
+	  The <code>Index</code> constructor creates an empty index.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Index</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Index</code> constructor creates an index with a
+	  cell index as its coordinate.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Index</name>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>Integer</code> constructor creates an index with a
+	  cell and record indexes as its coordinate. The first argument is
+	  the cell index. The second argument is the record index.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Index</name>
+	<args>Integer Integer Integer</args>
+	<p>
+	  The <code>Index</code> constructor creates an index with a
+	  cell, record  and sheet indexes as its coordinate. The first
+	  argument is the cell index. The second argument is the record
+	  index. The third argument is the sheet index.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>Integer|Integer Integer|Integer Integer Integer</args>
+	<p>
+	  The <code>add</code> method adds a new index coordinate in the
+	  index object. In the first form, the cell index is used as the
+	  coordinate. In the second form, the cell and record indexes are
+	  used as the coordinate. In the third form, the cell, record and
+	  sheet indexes are used as the coordinate.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset the index by removing all
+	  attached coordinates.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the index length. The
+	  index length is the number of coordinate entries in the index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>exists-p</name>
+	<retn>Boolean</retn>
+	<args>Integer|Integer Integer|Integer Integer Integer</args>
+	<p>
+	  The <code>exists-p</code> predicate returns true if a coordinate
+	  entry exists in the index. In the first form, the cell index is
+	  used as the coordinate. In the second form, the cell and record
+	  indexes are used as the coordinate. In the third form, the cell,
+	  record and sheet indexes are used as the coordinate.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-index-cell</name>
+	<retn>none</retn>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>set-index-cell</code> method sets the cell index by
+	  position. The first argument is the coordinate position. The
+	  second argument is the cell index to use.
+	</p>
+      </meth>
+
+      <meth>
+	<name>update-index-cell</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>update-index-cell</code> method updates the cell index
+	  for all entries in the index. The argument is the new cell index
+	  to use for the update process.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-index-cell</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-index-cell</code> method returns the cell index
+	  for a particular entry. The argument is the entry position.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-index-record</name>
+	<retn>none</retn>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>set-index-record</code> method sets the record index by
+	  position. The first argument is the coordinate position. The
+	  second argument is the record index to use.
+	</p>
+      </meth>
+
+      <meth>
+	<name>update-index-record</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>update-index-record</code> method updates the record index
+	  for all entries in the index. The argument is the new record index
+	  to use for the update process.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-index-record</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-index-record</code> method returns the record index
+	  for a particular entry. The argument is the entry position.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-index-sheet</name>
+	<retn>none</retn>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>set-index-sheet</code> method sets the sheet index by
+	  position. The first argument is the coordinate position. The
+	  second argument is the cell sheet to use.
+	</p>
+      </meth>
+
+      <meth>
+	<name>update-index-sheet</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>update-index-sheet</code> method updates the sheet index
+	  for all entries in the index. The argument is the new sheet index
+	  to use for the update process.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-index-sheet</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-index-sheet</code> method returns the sheet index
+	  for a particular entry. The argument is the entry position.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xref object                                                    = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sps">
+    <name>Xref</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Xref</code> class is a cross-reference class. The class
+      maintains the association between a name and an index. with a
+      particular name, an index entry is created if it does not
+      exists. Such entry can be later used to access the cell content by
+      index.
+    </p>
+
+    <!-- predicate -->
+    <pred>xref-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructor -->
+    <ctors>
+      <ctor>
+	<name>Xref</name>
+	<args>none</args>
+	<p>
+	  The <code>Xref</code> constructor creates an empty
+	  cross-reference object.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>String [Integer|Integer Integer|Integer Integer Integer]</args>
+	<p>
+	  The <code>add</code> method adds a new reference in the
+	  table. The first argument is always the index name. In the first
+	  form, the cell index is used as the coordinate. In the second
+	  form, the cell and record indexes are used as the coordinate. In
+	  the third form, the cell, record and sheet indexes are used as
+	  the coordinate.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Index</retn>
+	<args>Integer|String</args>
+	<p>
+	  The <code>get</code> method returns an <code>Index</code> object
+	  either by name or position. With an integer argument, the index
+	  is obtained by position. With a string argument, the index with
+	  the matching name is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the cross-reference table.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the
+	  cross-reference table.
+	</p>
+      </meth>
+
+      <meth>
+	<name>lookup</name>
+	<retn>Index</retn>
+	<args>String</args>
+	<p>
+	  The <code>lookup</code> method returns an index those name is
+	  the matching argument. If the index cannot be found, an
+	  exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>exists-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>exists-p</code> predicate returns true if an index
+	  those name is the matching argument exists in the
+	  cross-reference table.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-name</code> method returns the index name by position.
+	</p>
+      </meth>
+    </methods>
+  </object>
+</appendix>

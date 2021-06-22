@@ -1,0 +1,2695 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-rm-xml.xml                                                   = -->
+<!-- = standard xml module - reference manual                             = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix module="xml" number="i">
+  <title>Standard XML Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = xml node object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlNode</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlNode</code> class is the base class used to represent
+      the xml tree. The tree is built as a vector of nodes. Each node owns 
+      as well its parent node. Walking in the tree is achieved by taking
+      the child node and then moving to the child and/or next node. The
+      node also manages an empty flags. It the empty flag is set, it is
+      an error to add child nodes.
+    </p>
+
+    <!-- predicate -->
+    <pred>node-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-text</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-text</code> method returns a text representation of
+	  the tree content. Unlike the write method, the tag are not
+	  generated, but rather the text content is accumulated. This
+	  method is useful tor read the node content. If a node does not
+	  have text, the nil string is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>write</name>
+	<retn>none</retn>
+	<args>none|OutputStream|Buffer</args>
+	<p>
+	  The <code>write</code> method write the node contents as well as
+	  the child nodes to an output stream argument or a buffer. When
+	  node is written, the method attempts to use the stream encoding
+	  in such way that the contents fits into the requested output
+	  encoding. Without argument, the node is written to the
+	  interpreter output stream. with one argument, the node is
+	  written to the specified stream or buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>name-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>name-p</code> predicate checks if the name matches the
+	  node name. Care should be taken that not all node have a name,
+	  and in such case, the false value is returned. This method is
+	  useful when the node is a tag.
+	</p>
+      </meth>
+
+      <meth>
+	<name>attribute-p</name>
+	<retn>Boolean</retn>
+	<args>String| String String</args>
+	<p>
+	  The <code>attribute-p</code> predicate checks if there is a node
+	  attribute that matches the string argument name. In the first
+	  form, the predicate returns true is an attribute exists with the
+	  name argument. In the second form, the predicate returns true if
+	  the attribute name and value matches the arguments. The first
+	  argument is the attribute name. The second argument is the
+	  attribute value. Not all nodes have attributes. In such case, the
+	  predicate always returns false.
+	</p>
+      </meth>
+
+      <meth>
+	<name>parse</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>parse</code> method parses the string argument and
+	  adds the results as a set of child node to the calling node. If
+	  the node is an empty node, the method will almost fail. This
+	  method should be used when an attempt is made to add some text
+	  that may contain some xml tags.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-parent</name>
+	<retn>XmlNode</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-parent</code> method returns the parent node. If
+	  the node is the root node, nil is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-parent</name>
+	<retn>none</retn>
+	<args>XmlNode</args>
+	<p>
+	  The <code>set-parent</code> method sets the parent node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>copy</name>
+	<retn>XmlNode</retn>
+	<args>none</args>
+	<p>
+	  The <code>copy</code> method copy the node tree by regenerating 
+	  a new tree.
+	</p>
+      </meth>
+
+      <meth>
+	<name>del-child</name>
+	<retn>none</retn>
+	<args>Integer | String | String String | String String String</args>
+	<p>
+	  The <code>del-child</code> method deletes one or several
+	  child nodes. In the first form, the children is deleted
+	  either by index or by name. When a string argument is used,
+	  several node might be removed. In the second form, the child
+	  node name and attribute name must be matched. In the third
+	  form, the child node name, attribute name and value must be
+	  matched.
+	</p>
+      </meth>
+
+      <meth>
+	<name>del-attribute-child</name>
+	<retn>none</retn>
+	<args>String | String String</args>
+	<p>
+	  The <code>del-attribute-child</code> method deletes one or several
+	  child nodes. In the first form, the children are deleted
+	  by attribute name. In the second form, the children are
+	  delete by attribute name and value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>clear-child</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>clear-child</code> method clear the child node list,
+	  leaving the node without child node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-child</name>
+	<retn>none</retn>
+	<args>XmlNode|XmlNode Integer</args>
+	<p>
+	  The <code>add-child</code> method adds a node argument as a
+	  child node to the calling node. In the first form, the node is
+	  added at the end of the node list. In the second form, the node
+	  is added by index and all subsequent nodes are shifted by one
+	  position.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-child</name>
+	<retn>XmlNode</retn>
+	<args>Integer String</args>
+	<p>
+	  The <code>get-child</code> method returns a child node by index or
+	  by name. If the calling argument is an integer, the node is
+	  returned by index. If the calling argument is a string, the node
+	  is returned by name. If the node cannot be found, nil is returned
+	  raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-index</name>
+	<retn>Integer</retn>
+	<args>XmlNode</args>
+	<p>
+	  The <code>gett-index</code> method returns a child node
+	  index. The node argument is the node to find as a child node. If
+	  the node is not found, an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>merge</name>
+	<retn>none</retn>
+	<args>XmlNode Integer</args>
+	<p>
+	  The <code>merge</code> method merge an existing node with
+	  another one. The first argument is the source node used for
+	  merging. The second argument  the child node index to merge. The
+	  method operates by first removing the child node at the specified
+	  index and then add in position, the child nodes of the source node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>nil-child-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>nil-child-p</code> predicate returns true if the node
+	  does not have a child node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>child-p</name>
+	<retn>Boolean</retn>
+	<args>String | String String | String String String</args>
+	<p>
+	  The <code>child-p</code> predicate returns true if the node
+	  has a child with a node name argument. In the first form,
+	  the name is to be matched by the predicate. In the second
+	  form, the node nae and the attribute name must be
+	  matched. In the third form, the node name, attribute name
+	  and value must be matched.
+	</p>
+      </meth>
+
+      <meth>
+	<name>attribute-child-p</name>
+	<retn>Boolean</retn>
+	<args>String String | String String String</args>
+	<p>
+	  The <code>attribute-child-p</code> predicate returns true if
+	  the node has a child with an attribute name argument. In the
+	  first form, the attribute name must be matched. In the
+	  second form, the attribute name and value must be matched.
+	</p>
+      </meth>
+
+      <meth>
+	<name>lookup-child</name>
+	<retn>XmlNode</retn>
+	<args>String</args>
+	<p>
+	  The <code>lookup-child</code> method returns a child node by
+	  name. Unlike the <code>get-child</code> method, the method
+	  raises an exception if the node cannot be found.
+	</p>
+      </meth>
+
+      <meth>
+	<name>child-length</name>
+	<retn>Integer</retn>
+	<args>none|String</args>
+	<p>
+	  The <code>child-length</code> method returns the number of
+	  children nodes. In the first form, without argument, the total
+	  number of children nodes is returned. In the second form, the 
+	  total number of nodes that match the tag argument name is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-source-line</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-source-line</code> method returns the node source
+	  line number if any.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-source-line</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-source-line</code> method sets the node source
+	  line number.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-source-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-source-name</code> method returns the node source
+	  name if any.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-source-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-source-name</code> method sets the node source
+	  name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml tag object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlTag</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlTag</code> class is the base class used to represent
+      a xml tag. A tag is defined with a name and an attribute list. The
+      tag is derived from the xml node class and is not marked empty by
+      default.
+    </p>
+
+    <!-- predicate -->
+    <pred>tag-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlTag</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlTag</code> constructor creates a tag node. The node
+	  is not marked empty.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlTag</name>
+	<args>String Boolean</args>
+	<p>
+	  The <code>XmlTag</code> constructor creates a tag node. The
+	  first argument is the tag name. The second argument is the empty
+	  flag.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the tag name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the tag name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>clear-attribute</name>
+	<retn>none</retn>
+	<args>node</args>
+	<p>
+	  The <code>clear-attribute</code> method clear the node attribute list.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-attribute</name>
+	<retn>none</retn>
+	<args>Property</args>
+	<p>
+	  The <code>add-attribute</code> method adds a new attribute to
+	  the tag. The attribute must be new for this method to
+	  succeed. In doubt, the <code>set-attribute</code> is
+	  preferable.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-attribute</name>
+	<retn>none</retn>
+	<args>String Literal</args>
+	<p>
+	  The <code>set-attribute</code> method sets an attribute to
+	  the tag. The first argument is the attribute name. The second
+	  argument is the attribute value. If the attribute already exists,
+	  the old value is replaced with the new one.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-attribute</name>
+	<retn>Property</retn>
+	<args>Integer|String</args>
+	<p>
+	  The <code>get-attribute</code> method returns a tag attribute in
+	  the form o a property object. With an integer object, the
+	  attribute is returned by index. With a string object, the
+	  property is return by name. If the property is not found, nil is
+	  returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-attribute-value</name>
+	<retn>String</retn>
+	<args>String</args>
+	<p>
+	  The <code>get-attribute-value</code> method returns a tag
+	  attribute value by name. The string argument is the attribute
+	  name. If the property is not found, an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>lookup-attribute</name>
+	<retn>Property</retn>
+	<args>String</args>
+	<p>
+	  The <code>lookup-attribute</code> method returns a tag
+	  attribute by name in the form of a property. The string argument
+	  is the attribute name. If the property is not found, an
+	  exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>attribute-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>attribute-length</code> method returns the number of
+	  attributes.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml text object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlText</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlText</code> class is the xml text node. A text node
+      is directly built by the xml reader and the content placed into a
+      string. By definition, a text node is an empty node.
+    </p>
+
+    <!-- predicate -->
+    <pred>text-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlText</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlText</code> constructor creates a default text
+	  node. By definition, a text node is an empty node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlText</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlText</code> constructor creates a text node with the
+	  string argument.  
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-xval</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-xval</code> method sets the text node value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-xval</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-xval</code> method returns the text node value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-normal</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-normal</code> method returns the normalized text
+	  node value.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml data object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlData</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlData</code> class is the xml CDATA node. A data node
+      differs from the text node in the sense that the data node
+      contains characters that could be reserved characters such like
+      markup delimiters. The data node is most of the time used to hold
+      text used for scripting. The data node is an empty node.
+    </p>
+
+    <!-- predicate -->
+    <pred>data-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlData</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlData</code> constructor creates a default data
+	  node. By definition, a data node is an empty node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlData</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlData</code> constructor creates a data node with the
+	  string argument.  
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-xval</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-xval</code> method sets the data node value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-xval</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-xval</code> method returns the data node value.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml comment object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlComment</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlComment</code> class is the xml comment node. The
+      comment node is a special node that holds the comment text. The
+      comment node is an empty node.
+    </p>
+
+    <!-- predicate -->
+    <pred>comment-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlComment</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlComment</code> constructor creates a default comment
+	  node. By definition, a comment node is an empty node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlComment</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlComment</code> constructor creates a comment node with the
+	  string argument.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-xval</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-xval</code> method sets the comment node value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-xval</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-xval</code> method returns the comment node value.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml doctype object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlDoctype</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlDoctype</code> class is the xml document type node.
+      In its simplest form, the document type has just a name which acts
+      the starting tag for the document. The document type can also be
+      associated with a system or a public identifier. Note also that a
+      local root node can be attached to this node.
+    </p>
+
+    <!-- predicate -->
+    <pred>doctype-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlDoctype</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlDoctype</code> constructor creates a document type
+	  with a starting tag name as the string argument. This is the
+	  simplest form of a document type definition.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlDoctype</name>
+	<args>String String</args>
+	<p>
+	  The <code>XmlDoctype</code> constructor creates a document type
+	  with a starting tag name and a system identifier. The first
+	  string argument is the tag name. The second argument is the
+	  system identifier.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlDoctype</name>
+	<args>String String String</args>
+	<p>
+	  The <code>XmlDoctype</code> constructor creates a document type
+	  with a starting tag name, a public and a system identifier. The first
+	  string argument is the tag name. The second argument is the
+	  public identifier. The third argument is the system identifier.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-xval</name>
+	<retn>String</retn>
+	<args>none</args> 
+	<p>
+	  The <code>get-xval</code> method returns the document type
+	  starting tag name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-public-id</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-public-id</code> method returns the document type
+	  public identifier.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-system-id</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-system-id</code> method returns the document type
+	  system identifier.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml processing object                                           = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlPi</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlPi</code> class is the xml processing node. The
+      processing node is a tag node. Although a processing node is seen
+      as tag with attributes, the specification describes the processing
+      node as a special tag with a string value. The processing node is
+      an empty node.
+    </p>
+
+    <!-- predicate -->
+    <pred>pi-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlPi</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlPi</code> constructor creates a processing node with the
+	  name string argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlPi</name>
+	<args>String String</args>
+	<p>
+	  The <code>XmlPi</code> constructor creates a processing node with the
+	  name string argument and the string value. The first argument is
+	  the tag name. The second argument is the processing node value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the xml pi node name.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the pi node name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-xval</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-xval</code> method sets the processing node value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-xval</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-xval</code> method returns the processing node value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>map-xval</name>
+	<retn>Plist</retn>
+	<args>String</args>
+	<p>
+	  The <code>map-xval</code> method map the processing node value
+	  to a property list.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml declaration object                                          = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlDecl</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlDecl</code> class is the xml declaration node. The
+      declaration node is a processing node. A declaration node is
+      defined with a version id, an encoding string and a standalone
+      flag. Each value is represented by an attribute at the tag level.
+    </p>
+
+    <!-- predicate -->
+    <pred>decl-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlPi</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlDecl</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlDecl</code> constructor creates a default
+	  declaration node. By default, the declaration node is set with
+	  the xml version 1.0, the UTF-8 encoding and the standalone flag
+	  is not set.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlDecl</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlDecl</code> constructor creates a declaration
+	  node with a version. The string argument is the xml version
+	  version which must be a supported one.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlDecl</name>
+	<args>String String</args>
+	<p>
+	  The <code>XmlDecl</code> constructor creates a declaration
+	  node with a version and an encoding. The string argument is the
+	  xml version version which must be a supported one. The second
+	  argument is the xml encoding.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlDecl</name>
+	<args>String String String</args>
+	<p>
+	  The <code>XmlDecl</code> constructor creates a declaration
+	  node with a version, an encoding and a standalone flag. The
+	  string argument is the xml version version which must be a
+	  supported one. The second argument is the xml encoding. The
+	  third argument is the standalone flag.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml reference object                                            = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlRef</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlRef</code> class is the xml reference node
+      class. This class is a base class which cannot be instantiated
+      directly. The class is designed to hold reference, the only
+      element which is in common is the string representation.
+    </p>
+
+    <!-- predicate -->
+    <pred>ref-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlNode</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-xref</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-xref</code> method sets the node reference name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-xref</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-xref</code> method returns the node reference name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml character reference object                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlCref</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlCref</code> class is the xml character reference node
+      class. Normally this class should only be used when building a xml
+      tree manually. During a parsing process, the character reference is
+      automatically expanded.
+    </p>
+
+    <!-- predicate -->
+    <pred>cref-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlRef</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlCref</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlCref</code> constructor creates a default
+	  character reference those value is the null character.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlCref</name>
+	<args>Character|Integer</args>
+	<p>
+	  The <code>XmlCref</code> constructor creates a character
+	  reference those value is the character or integer argument.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-value</name>
+	<retn>none</retn>
+	<args>Character|Integer</args>
+	<p>
+	  The <code>set-value</code> method sets the character reference
+	  value by character or integer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-value</name>
+	<retn>Character</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-value</code> method returns the character
+	  reference value.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml entity reference object                                     = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlEref</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlEref</code> class is the xml entity reference node
+      class. The entity reference is defined with a reference name.
+    </p>
+
+    <!-- predicate -->
+    <pred>eref-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlRef</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlEref</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlCref</code> constructor creates an empty 
+	  entity reference.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlCref</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlEref</code> constructor creates an entity
+	  reference those value is the string argument.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml section node object                                         = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlSection</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlSection</code> class is the xml section type node. A
+      section node is used to model conditional section that are part of
+      a DTD. The section value is a string that is evaluated by the xml
+      processor. Most of the time, it is a parameter entity reference
+      which corresponds to the keyword INCLUDE or IGNORE , but it could
+      be anything else. A node is also attached to this section.
+    </p>
+
+    <!-- predicate -->
+    <pred>section-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>xmlNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlSection</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlSection</code> constructor creates a xml section
+	  node by value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-xval</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-xval</code> method returns the section node value.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml attribute list object                                       = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlAttlist</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlAttlist</code> class is the xml attribute list node
+      class. A xml attribute list  is primarily defined with two
+      names. The first name is the element and the second name is the
+      attribute name. There are 3 types of attribute list. The string
+      type, the token type and the enumeration type. The class manages
+      each type by associating a type descriptor which is detected at
+      construction.
+    </p>
+
+    <!-- predicate -->
+    <pred>attlist-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlAttlist</name>
+	<args>String String</args>
+	<p>
+	  The <code>XmlAttlist</code> constructor creates an attribute list
+	  by element name and attribute name. The first argument is the
+	  element name. The second argument is the attribute name.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-element-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-element-name</code> method sets the attribute list
+	  element name.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>get-element-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-element-name</code> method returns the attribute list
+	  element name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-attribute-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-attribute-name</code> method sets the attribute list
+	  name.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>get-attribute-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-attribute-name</code> method returns the attribute list
+	  name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-type</name>
+	<retn>none</retn>
+	<args>String | Vector Boolean</args>
+	<p>
+	  The <code>set-type</code> method set the attribute type by
+	  string or enumeration vector. In its first form, the attribute
+	  type is defined by a string. The type can be either, "CDATA",
+	  "ID", "IDREF", "IDREFS", "ENTITY", "ENTITIES", "NMTOKEN" or
+	  "NMTOKENS". In the second form, the attribute type is an
+	  enumeration those values are defined in the argument vector. The
+	  boolean argument controls the notation flag for that enumeration.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-default</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-default</code> method set the attribute value by
+	  string. The string can be any value or the special value
+	  "#IMPLIED" and "#REQUIRED". If the default value is fixed, the
+	  <code>set-fixed</code> is the preferred method. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-fixed</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-fixed</code> method set the fixed attribute
+	  default value by string. 
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml root node object                                            = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlRoot</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlRoot</code> class is the top level root instantiated
+      by the xml reader when starting to parse a stream. There should be
+      only one root node in a tree. The root node does not have a parent
+      node.
+    </p>
+
+    <!-- predicate -->
+    <pred>root-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlRoot</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlRoot</code> constructor creates a default xml root
+	  node which is empty.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>dup-body</name>
+	<retn>XmlBody</retn>
+	<args>none</args>
+	<p>
+	  The <code>dup-body</code> method duplicates the root node by
+	  duplicating the root body without the declaration node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>declaration-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>declaration-p</code> predicate returns true if a declaration
+	  node exists in the root node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-declaration</name>
+	<retn>XmlDecl</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-declaration</code> method returns the declaration
+	  node associated with the root node. Normally, the declaration
+	  node is the first child node. If the declaration node does not
+	  exist, an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-encoding</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-encoding</code> method returns the root encoding mode.
+	  The root encoding mode is extracted from the declaration node,
+	  if such node exists, or the default xml system encoding is returned.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml document object                                             = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlDocument</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlDocument</code> class is the xml document class.
+      The document class is the root document class that maintains a
+      xml document along with its associated tree and other useful
+      information. Generally the class is constructed with a file name or
+      a name and an input stream that is used for parsing the input data.
+      The document can also be designed by constructing manually the
+      document tree. In that case, the document name must be set explicitly.
+    </p>
+
+    <!-- predicate -->
+    <pred>document-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlDocument</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlDocument</code> constructor creates a default xml
+	  document.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlDocument</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlDocument</code> constructor creates a xml document
+	  by parsing the file. The file name is the string argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlDocument</name>
+	<args>String InputStream</args>
+	<p>
+	  The <code>XmlDocument</code> constructor creates a xml document
+	  by name and by parsing the input stream. The first argument is
+	  the xml document name. The second argument is the input stream
+	  to parse.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlDocument</name>
+	<args>String XmlRoot</args>
+	<p>
+	  The <code>XmlDocument</code> constructor creates a xml document
+	  by name and root node. The first argument is the xml document
+	  name. The second argument is the xml root node.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the xml document name. The
+	  <code>get-name</code> method is available from the
+	  <code>nameable</code> base class.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>get-root</name>
+	<retn>XmlRoot</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-root</code> method returns the document xml root
+	  node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-body</name>
+	<retn>XmlRoot</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-body</code> method returns the document xml root
+	  node body without the declaration node.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml element object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlElement</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlElement</code> class is the xml element class
+      node. A xml element is represented with a name and a value. It is
+      during the processing phase that the element value is
+      interpreted. An element is built with a name and a value.
+    </p>
+
+    <!-- predicate -->
+    <pred>element-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlElement</name>
+	<args>String String</args>
+	<p>
+	  The <code>XmlElement</code> constructor creates a xml element by
+	  name and value. The first argument is the element name. The
+	  second argument is the argument value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the xml element name.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the element name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-xval</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-xval</code> method sets the xml element value.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>get-xval</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-xval</code> method returns the element value.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml entity object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlEntity</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlEntity</code> class is the base class for the xml
+      entity representation. A xml entity can be either a general entity
+      or a parameter entity. They differ initially with the presence of
+      the '%' character. Both entity model have a name which is path of
+      the base class.
+    </p>
+
+    <!-- predicate -->
+    <pred>entity-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlNode</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the entity name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the entity name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml general entity object                                       = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlGe</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlGe</code> class is the xml general entity node.
+      In its simplest form, the general entity has a name and a
+      value. The entity type can also be associated with a system or a
+      public identifier with or without an extra type name.
+    </p>
+
+    <!-- predicate -->
+    <pred>ge-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlEntity</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlGe</name>
+	<args>String String</args>
+	<p>
+	  The <code>XmlGe</code> constructor creates a xml entity by
+	  name and value. The first argument is the entity name. The
+	  second argument is the entity value. Most of the time, the
+	  entity value is a parameter entity.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlGe</name>
+	<args>String String String</args>
+	<p>
+	  The <code>XmlGe</code> constructor creates a xml entity by
+	  name and identifier. The first argument is the entity name. The
+	  second argument is the entity public identifier. The third
+	  argument is the entity system identifier.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlGe</name>
+	<args>String String String String</args>
+	<p>
+	  The <code>XmlGe</code> constructor creates a xml entity by
+	  name, identifier and data type. The first argument is the entity
+	  name. The second argument is the entity public identifier. the
+	  third argument is the entity system identifier. The fourth
+	  argument is the entity type name.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-xval</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-xval</code> method returns the entity value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-data</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-data</code> method returns the entity data type.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-public-id</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-public-id</code> method returns the entity public
+	  identifier.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-system-id</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-system-id</code> method returns the entity system
+	  identifier.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml parameter entity object                                     = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlPe</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlPe</code> class is the xml parameter entity node. In
+      its simplest form, the parameter entity has a name and a
+      value. The entity type can also be associated with a system or a
+      public identifier.
+    </p>
+
+    <!-- predicate -->
+    <pred>ge-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlEntity</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlPe</name>
+	<args>String String</args>
+	<p>
+	  The <code>XmlGe</code> constructor creates a xml entity by
+	  name and value. The first argument is the entity name. The
+	  second argument is the entity value.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlPe</name>
+	<args>String String String</args>
+	<p>
+	  The <code>XmlGe</code> constructor creates a xml entity by
+	  name and identifier. The first argument is the entity name. The
+	  second argument is the entity public identifier. The third
+	  argument is the entity system identifier.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-xval</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-xval</code> method returns the entity value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-public-id</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-public-id</code> method returns the entity public
+	  identifier.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-system-id</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-system-id</code> method returns the entity system
+	  identifier.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml reader object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XmlReader</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlReader</code> class is the xml parser that operates
+      on an input stream. The reader creates a tree of nodes by reading
+      the input stream and returns the root node when an end-of-stream
+      is reached. Multiple read can be done sequentially. If the reset
+      method is not called between multiple read passes, the reader will
+      accumulate the nodes in the current tree.
+    </p>
+
+    <!-- predicate -->
+    <pred>reader-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlReader</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlReader</code> constructor creates a default xml reader.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the xml reader. In
+	  particular, the root node is restored to the nil node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>parse</name>
+	<retn>none</retn>
+	<args>InputStream|String</args>
+	<p>
+	  The <code>parse</code> method parses an input stream or a file.
+	  During the parsing process, the root node is filled with the
+	  parsed nodes.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-root</name>
+	<retn>XmlRoot</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-root</code> method returns the parsed root node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-node</name>
+	<retn>XmlNode</retn>
+	<args>String</args>
+	<p>
+	  The <code>get-node</code> method parse a string and returns a node.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xne system object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>Xne</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Xne</code> is a nameset that binds constants used
+      by the xne system.
+    </p>
+
+    <!-- constants -->
+    <constants>
+      <const>
+	<name>ID</name>
+	<p>
+	  The <code>ID</code> constant defines a node access by id.
+	</p>
+      </const>
+
+      <const>
+	<name>PI</name>
+	<p>
+	  The <code>PI</code> constant defines an access selector for a processing
+	  instruction node.
+	</p>
+      </const>
+
+      <const>
+	<name>GE</name>
+	<p>
+	  The <code>GE</code> constant defines an access selector for a general
+	  entity node.
+	</p>
+      </const>
+
+      <const>
+	<name>TAG</name>
+	<p>
+	  The <code>TAG</code> constant defines an access selector for a tag
+	  node.
+	</p>
+      </const>
+
+      <const>
+	<name>ENT</name>
+	<p>
+	  The <code>ENT</code> constant defines an access selector for an entity
+	  node.
+	</p>
+      </const>
+
+      <const>
+	<name>EREF</name>
+	<p>
+	  The <code>EREF</code> constant defines an access selector for an entity
+	  reference node.
+	</p>
+      </const>
+
+      <const>
+	<name>CREF</name>
+	<p>
+	  The <code>CREF</code> constant defines an access selector for an
+	  character reference node.
+	</p>
+      </const>
+
+      <const>
+	<name>ELEM</name>
+	<p>
+	  The <code>ELEM</code> constant defines an access selector for an
+	  element node.
+	</p>
+      </const>
+
+      <const>
+	<name>TEXT</name>
+	<p>
+	  The <code>TEXT</code> constant defines an access selector for a
+	  text node.
+	</p>
+      </const>
+
+      <const>
+	<name>NAME</name>
+	<p>
+	  The <code>NAME</code> constant defines a node access by name.
+	</p>
+      </const>
+
+      <const>
+	<name>CDATA</name>
+	<p>
+	  The <code>CDATA</code> constant defines an access selector for a
+	  character data node.
+	</p>
+      </const>
+
+      <const>
+	<name>INDEX</name>
+	<p>
+	  The <code>INDEX</code> constant defines a node access by child
+	  index. The child index is node index seen from the parent.
+	</p>
+      </const>
+    </constants>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xne tree object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XneTree</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XneTree</code> is the xne node tree manipulation
+      class. The class operates with a node and provides numerous
+      methods to manipulate the tree as well as  changing it. Before a
+      tree is manipulated, it is recommended to make a copy of such tree
+      with the help of the node <code>copy</code> method. 
+    </p>
+
+    <!-- predicate -->
+    <pred>xne-tree-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlTree</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlTree</code> constructor creates a default tree
+	  without a node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlTree</name>
+	<args>XmlNode</args>
+	<p>
+	  The <code>XmlTree</code> constructor creates a tree with a xml
+	  node. The node stored in the object is the root of the tree
+	  subject to the operations.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>depth</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>depth</code> method returns the depth of the tree.
+	</p>
+      </meth>
+
+      <meth>
+	<name>generate-id</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>generate-id</code> method generate a unique id for all
+	  node in the tree. The id attribute is set by this method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-node</name>
+	<retn>none</retn>
+	<args>XmlNode</args>
+	<p>
+	  The <code>set-node</code> method sets the root tree node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-node</name>
+	<retn>XmlNode</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-node</code> method returns the root tree node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-attribute</name>
+	<retn>none</retn>
+	<args>none|String</args>
+	<p>
+	  The <code>set-attribute</code> method sets an attribute to the
+	  whole tree. In the first form, the attribute is set to the whole
+	  tree. In the second form with a string argument, the attribute
+	  is set only on the tag node those name matches the name argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>clear-attribute</name>
+	<retn>none</retn>
+	<args>none|String</args>
+	<p>
+	  The <code>clear-attribute</code> method clear all attributes of
+	  the nodes in the tree. In the first form, the node attributes
+	  are cleared for all nodes in the tree. In the second form with a
+	  string argument, the attributes are cleared only with the tag
+	  node those name matches the name argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-prefix</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-prefix</code> method sets a prefix on all nodes
+	  in the tree.
+	</p>
+      </meth>
+
+      <meth>
+	<name>clear-prefix</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>clear-prefix</code> method clear the prefix for all
+	  nodes in the tree.
+	</p>
+      </meth>
+
+      <meth>
+	<name>select</name>
+	<retn>Vector</retn>
+	<args>XneCond [Boolean]</args>
+	<p>
+	  The <code>select</code> method selects the node in the tree that
+	  matches the condition argument. In the first form, with one
+	  argument, the whole tree is searched. In the second form, with a
+	  boolean argument, the whole tree is searched if the second
+	  argument is false. If the boolean argument is true, the method
+	  call behaves like a call with the condition only.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = xne condition object                                            = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XneChild</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XneCond</code> is the xne condition class. The sole
+      purpose of this class is to define one or several condition that a
+      node must satisfy in order to be selected. The condition are
+      accumulated in a list and later checked for a particular
+      node. Note that an empty condition always succeeds.
+    </p>
+
+    <!-- predicate -->
+    <pred>xne-cond-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XneCond</name>
+	<args>none</args>
+	<p>
+	  The <code>XneCond</code> constructor creates a default
+	  condition. The default condition is empty. The empty condition
+	  always succeeds.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>Xne [String|Integer]</args>
+	<p>
+	  The <code>add</code> adds a condition by type. The first
+	  argument is the condition type. The second argument is a
+	  condition information such like a string or an integer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>valid-p</name>
+	<retn>Boolean</retn>
+	<args>XmlNode</args>
+	<p>
+	  The <code>valid-p</code> predicate checks that a node
+	  matches a condition. If the condition succeeds, the predicate
+	  returns true.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xsm node object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XsmNode</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XsmNode</code> is a base class which is part of the xml
+      simple model (xsm). In this model, a xml (or sgml, or html) text
+      is represented by a node which can be either a tag, a text or a
+      reference node. There is no concept of tree. The node content is
+      stored in the form of a text string. This simple model is designed
+      to parse weak data representation such like html text and later
+      process it at the user discretion. The default representation is
+      an empty text node.
+    </p>
+
+    <!-- predicate -->
+    <pred>xsm-node-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constants -->
+    <constants>
+      <const>
+	<name>TXT</name>
+	<p>
+	  The <code>TXT</code> constant defines a xsm text node.
+	</p>
+      </const>
+
+      <const>
+	<name>TAG</name>
+	<p>
+	  The <code>TAG</code> constant defines a xsm tag node.
+	</p>
+      </const>
+
+      <const>
+	<name>REF</name>
+	<p>
+	  The <code>REF</code> constant defines a xsm reference node.
+	</p>
+      </const>
+
+      <const>
+	<name>END</name>
+	<p>
+	  The <code>END</code> constant defines a xsm end node.
+	</p>
+      </const>
+    </constants>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XsmNode</name>
+	<args>none</args>
+	<p>
+	  The <code>XsmNode</code> constructor creates a default xsm node
+	  which is an empty text node.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XsmNode</name>
+	<args>String</args>
+	<p>
+	  The <code>XsmNode</code> constructor creates a xsm text node by value.
+	  The string argument is the text node value
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XsmNode</name>
+	<args>Item String</args>
+	<p>
+	  The <code>XsmNode</code> constructor creates a xsm text node by
+	  type and value. The first argument is the node type. The second
+	  argument is the node text value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>text-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>text-p</code> predicate returns true if the node is a
+	  text node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>tag-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>tag-p</code> predicate returns true if the node is a
+	  tag node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>ref-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>reference-p</code> predicate returns true if the node is a
+	  reference node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>end-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>end-p</code> predicate returns true if the node is a
+	  reference node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>normal-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>normal-p</code> predicate returns true if the node is a
+	  normal tag node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reserved-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>reserved-p</code> predicate returns true if the node is a
+	  reserved tag node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>textable-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>textable-p</code> predicate returns true if the node is a
+	  textable node, that is a text node or a reference node.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-source-line</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-source-line</code> method returns the node source
+	  line number if any.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-source-line</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-source-line</code> method sets the node source
+	  line number.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-source-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-source-name</code> method returns the node source
+	  name if any.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-source-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-source-name</code> method sets the node source
+	  name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the next available name.
+	  name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xsm reader object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XsmReader</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlReader</code> class is the simple model node reader.
+      The reader operates with the <code>parse</code> method and returns
+      a node or nil if the end of stream is reached. Unlike the xml
+      reader, this reader does not build a tree and the node content is
+      not even parsed. In this model, the node content is to be
+      interpreted at the user discretion.
+    </p>
+
+    <!-- predicate -->
+    <pred>xsm-reader-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XsmReader</name>
+	<args>none</args>
+	<p>
+	  The <code>XsmReader</code> constructor creates a default xsm
+	  reader. The reader is not bound to any stream.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XsmReader</name>
+	<args>InputStream</args>
+	<p>
+	  The <code>XsmReader</code> constructor creates a xsm
+	  reader with an input stream. The argument is the input bound to
+	  the reader.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XsmReader</name>
+	<args>String</args>
+	<p>
+	  The <code>XsmReader</code> constructor creates a xsm
+	  reader with an input string stream. The argument is a string
+	  which is used to create an input string stream bound to the reader.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-input-stream</name>
+	<retn>none</retn>
+	<args>InputStream</args>
+	<p>
+	  The <code>set-input-stream</code> method bind a new input stream
+	  to the reader. Subsequent read will use the newly bound stream
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-node</name>
+	<retn>XsmNode</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-node</code> method parses the input stream and
+	  returns the available node.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xsm document object                                             = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XsmDocument</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XsmDocument</code> class is the document class that
+      maintains a xsm document along with its associated list of nodes
+      and other useful information. Generally the class is constructed
+      with a file name or a name and an input stream that is used for
+      parsing the input data. When the input stream has been parsed, the
+      nodes are stored in a vector which can be access by index.
+    </p>
+
+    <!-- predicate -->
+    <pred>document-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XsmDocument</name>
+	<args>none</args>
+	<p>
+	  The <code>XsmDocument</code> constructor creates a default xsm
+	  document.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XsmDocument</name>
+	<args>String</args>
+	<p>
+	  The <code>XsmDocument</code> constructor creates a xsm document
+	  by name. The string argument is the file name to parse.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XsmDocument</name>
+	<args>String InputStream</args>
+	<p>
+	  The <code>XsmDocument</code> constructor creates a xsm document
+	  by name and by parsing the input stream. The first argument is
+	  the xsm document name. The second argument is the input stream
+	  to parse.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the xsm document name. The
+	  <code>get-name</code> method is available from the
+	  <code>nameable</code> base class.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the xsm document
+	  length. The document length is the number of nodes parsed and
+	  stored in the document.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-node</name>
+	<retn>XsmNode</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-node</code> method returns a document node by
+	  index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-info</name>
+	<retn>XsoInfo</retn>
+	<args>Integer [Boolean]</args>
+	<p>
+	  The <code>get-info</code> method returns a node info object by
+	  index. The info object is evaluated dynamically from the
+	  document node. In the first form, the node name is used to find
+	  the node end tag in order to construct the info text value. In
+	  the second form, the boolean argument, if true, forces the node
+	  name to be converted to lower case prior any comparison.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-info-vector</name>
+	<retn>XsoInfo</retn>
+	<args>String [Boolean]</args>
+	<p>
+	  The <code>get-info-vetcor</code> method returns an info
+	  object vector by name. Each info object have their name that
+	  matches the string argument. The info object is evaluated
+	  dynamically from the document node. In the first form, the node
+	  name is used to match a tag node and then find the node end tag
+	  in order to construct the info text value. In the second form,
+	  the boolean argument, if true, forces the node name to be
+	  converted to lower case prior any comparison.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xso info object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xml">
+    <name>XsoInfo</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XsoInfo</code> class is a xml/xsm information node used
+      to carry simple information about a tag. The node is constructed
+      by name, with a set of attributes and eventually a text associated
+      with the node. The text information is generally the one
+      associated between the start tag and the end tag. In the case of
+      complex tree, such text data might be empty.
+    </p>
+
+    <!-- predicate -->
+    <pred>xso-info-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XsoInfo</name>
+	<args>none</args>
+	<p>
+	  The <code>XsoInfo</code> constructor creates a default info
+	  object.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XsoInfo</name>
+	<args>String</args>
+	<p>
+	  The <code>XsoInfo</code> constructor creates an info object by
+	  name. The string argument is the node info name.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XsoInfo</name>
+	<args>String String</args>
+	<p>
+	  The <code>XsoInfo</code> constructor creates an info object by
+	  name and text. The first argument is the node info name. The
+	  second argument is the node text information.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the info object name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-attribute</name>
+	<retn>none</retn>
+	<args>String Literal</args>
+	<p>
+	  The <code>set-attribute</code> method sets an attribute by name
+	  and value. The first argument is the attribute name. The second
+	  argument is the attribute value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-attribute-list</name>
+	<retn>Plist</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-attribute-list</code> method returns the node
+	  attribute list in the form of a property list object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-attribute-value</name>
+	<retn>String</retn>
+	<args>String</args>
+	<p>
+	  The <code>get-attribute-value</code> method returns the attribute
+	  value by name. The string argument is the attribute name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-text</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-text</code> method sets the info object text.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-text</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-text</code> method returns the text information.
+	</p>
+      </meth>
+    </methods>
+  </object>
+</appendix>

@@ -1,0 +1,1915 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = std-04-norms.xml                                                   = -->
+<!-- = afnix reference manual - chapter 4                                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter volume="2" number="4">
+  <title>Special objects</title>
+
+  <p>
+    This chapter is a reference of the reserved special objects
+    with their respective built-in methods. Special objects are those
+    objects which interact with the interpreter.
+  </p>
+
+  <!-- =================================================================== -->
+  <!-- = object object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Object</name>
+
+    <p>
+      The base object <code>Object</code> provides several methods which are
+      common to all objects.
+    </p>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>repr</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>repr</code> method returns the object name in the form of
+	  a string. The result string is called the <em>representation
+	  string</em>.
+	</p>
+      </meth>
+
+      <meth>
+	<name>rdlock</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>rdlock</code> method try to acquire the object in
+	  read-lock mode. If the object is currently locked in write mode by
+	  another thread, the calling thread is suspended until the lock is
+	  released.
+	</p>
+      </meth>
+
+      <meth>
+	<name>wrlock</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>wrlock</code> method try to acquire the object in
+	  write-lock mode. If the object is currently locked by another
+	  thread, the calling thread is suspended until the lock is released.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>unlock</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>unlock</code> method try to unlock an object. An object
+	  will be unlocked if and only if the calling thread is the one who
+	  acquired the lock.
+	</p>
+      </meth>
+
+      <meth>
+	<name>clone</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>clone</code> method returns a clone of the calling
+	  object. If the object cannot be cloned, an exception is raised.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = interp object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Interp</name>
+
+    <p>
+      The <code>Interp</code> is the interpreter object which is
+      automatically bounded for each executable program. There is no
+      constructor for this object. The current interpreter is bounded to
+      the <code>interp</code> reserved symbol.
+    </p>
+
+    <!-- predicate -->
+    <pred>interp-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Runnable</name>
+    </inherit>
+
+    <!-- members -->
+    <constants>
+      <const>
+	<name>argv</name>
+	<p>
+	  The <code>argv</code> data member holds the interpreter argument
+	  vector. The vector is initialized when the interpreter is created.
+	  Each argument is stored as a string object.
+	</p>
+      </const>
+
+      <const>
+	<name>os-name</name>
+	<p>
+	  The <code>os-name</code> data member holds the operating system
+	  name. The data member evaluates as a string.
+	</p>
+      </const>
+      
+      <const>
+	<name>os-type</name>
+	<p>
+	  The <code>os-type</code> data member holds the operating system
+	  type. The data member evaluates as a string.
+	</p>
+      </const>
+
+      <const>
+	<name>version</name>
+	<p>
+	  The <code>version</code> data member holds the full engine version.
+	  The data member evaluates as a string.
+	</p>
+      </const>
+
+      <const>
+	<name>program-name</name>
+	<p>
+	  The <code>program-name</code> data member holds the interpreter
+	  program name. The data member evaluates as a string.
+	</p>
+      </const>
+
+      <const>
+	<name>major-version</name>
+	<p>
+	  The <code>major-version</code> data member holds the interpreter
+	  major revision number. The data member evaluates as an integer.
+	</p>
+      </const>
+
+      <const>
+	<name>minor-version</name>
+	<p>
+	  The <code>minor-version</code> data member holds the interpreter
+	  minor revision number. The data member evaluates as an integer.
+	</p>
+      </const>
+
+      <const>
+	<name>patch-version</name>
+	<p>
+	  The <code>patch-version</code> data member holds the interpreter
+	  patch revision number. The data member evaluates as an integer.
+	</p>
+      </const>
+
+      <const>
+	<name>afnix-uri</name>
+	<p>
+	  The <code>afnix-uri</code> data member holds the official
+	  uri. The data member evaluates as a string.
+	</p>
+      </const>
+
+      <const>
+	<name>machine-size</name>
+	<p>
+	  The <code>machine-size</code> data member holds the interpreter
+	  machine size expressed in bits. Most of the time, the machine
+	  size is either 32 or 64 bits. If something else is returned, it
+	  certainly reflects an exotic platform.
+	</p>
+      </const>
+
+      <const>
+	<name>loader</name>
+	<p>
+	  The <code>loader</code> data member holds the interpreter
+	  library loader. Under normal circumstances, the library loader
+	  should not be used and the standard <code>interp:library</code>
+	  form should be used.      
+	</p>
+      </const>
+
+      <const>
+	<name>resolver</name>
+	<p>
+	  The <code>resolver</code> data member holds the interpreter
+	  resolver. The resolver can be used to add dynamically a librarian
+	  or a directory to the interpreter module resolver.
+	</p>
+      </const>
+    </constants>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>load</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>load</code> method opens a file those name is the method
+	  argument and executes each form in the file by doing a read-eval
+	  loop. When all forms have been executed, the file is closed and the
+	  method returns true. In case of exception, the file is closed and the
+	  method returns false. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>library</name>
+	<retn>Library</retn>
+	<args>String</args>
+	<p>
+	  The <code>library</code> method opens a shared library and a returns
+	  a shared library object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>launch</name>
+	<retn>Thread</retn>
+	<args>form|thread form</args>
+	<p>
+	  The <code>launch</code> method executes the form argument in a
+	  normal thread. The normal thread is created by cloning the current
+	  interpreter. In the first form, a thread object is created by
+	  the method and return when the thread as been launched. In the
+	  second form, a thread is started by binding a form to the thread
+	  object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>daemon</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>dameon</code> method put the running interpreter in
+	  dameon mode. A new detached processed is spawned with the
+	  interpreter attached to it. The boolean result indicates
+	  whether or not the operation was successful.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-epsilon</name>
+	<retn>none</retn>
+	<args>Real</args>
+	<p>
+	  The <code>set-epsilon</code> method sets the interpreter epsilon
+	  which corresponds to the real precision. The <em>real precision</em>
+	  is used by the <code>?=</code> operator to compare real values.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-epsilon</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-real precision</code> method returns the interpreter
+	  epsilon which correspond to the real precision. The
+	  <em>real-precision</em> is used by the <code>?=</code> operator to
+	  compare real values.
+	</p>
+      </meth>
+
+      <meth>
+	<name>dup</name>
+	<retn>Interp</retn>
+	<args>none|Terminal</args>
+	<p>
+	  The <code>dup</code> method returns a clone of the current
+	  interpreter by binding the terminal steam argument. Without
+	  argument, a new terminal object is automatically created and
+	  bound to the newly created interpreter.
+	</p>
+      </meth>
+
+      <meth>
+	<name>loop</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>loop</code> method executes the interpreter main loop
+	  by reading the interpreter input stream. The loop is finished
+	  when the end-of-stream is reached with the input stream. The
+	  method returns a boolean flag to indicate whether or not the
+	  loop was successful.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-primary-prompt</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-primary-prompt</code> method sets the interpreter
+	  terminal primary prompt which is used during the interpreter
+	  main loop.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-secondary-prompt</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-secondary-prompt</code> method sets the
+	  interpreter terminal secondary prompt which is used during the
+	  interpreter main loop.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-primary-prompt</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-primary-prompt</code> method returns the
+	  interpreter terminal primary prompt.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-secondary-prompt</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-secondary-prompt</code> method returns the
+	  interpreter terminal secondary prompt.
+	</p>
+      </meth>
+
+      <meth>
+	<name>read-line</name>
+	<retn>String</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>read-line</code> method reads a line from the interpreter
+	  terminal. If no terminal is bound to the interpreter, the empty
+	  string is returned. In the first form, a line is read after printing
+	  the primary prompt. In the second form, a boolean flag controls the
+	  prompt disply, which can be primary or secondary.
+	</p>
+      </meth>
+      <meth>
+	<name>read-passphrase</name>
+	<retn>String</retn>
+	<args>none|String</args>
+	<p>
+	  The <code>read-passphrase</code> method reads a pass-phrase from the
+	  interpreter terminal. If no terminal is bound to the interpreter, 
+	  the empty string is returned. With a string argument, the string is
+	  displayed as a prompt, before reading the passphrase.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = thread object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Thread</name>
+
+    <p>
+      The <code>Thread</code> object is a special object which acts as a
+      thread descriptor. Such object is created with the <code>launch</code>
+      reserved keyword.
+    </p>
+
+    <!-- predicate -->
+    <pred>thread-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Thread</name>
+	<args>none</args>
+	<p>
+	  The <code>Thread</code> constructor create a default thread
+	  object without any form bound to it. The object can be later
+	  used with the <code>launch</code> command.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>end-p</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>end-p</code> predicate returns true if the thread
+	  argument has finished. This predicate indicates that the thread
+	  result is a valid one.
+	</p>
+      </meth>
+
+      <meth>
+	<name>wait</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>wait</code> method suspends the calling thread until the
+	  thread argument as completed. The <code>wait</code> method is the
+	  primary mechanism to detect a thread completion.
+	</p>
+      </meth>
+
+      <meth>
+	<name>result</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>result</code> method returns the thread result. If the
+	  thread is not completed, the <code>nil</code> value is
+	  returned. However, this method should not be used to check if a
+	  thread has completed and the <code>wait</code> method must be
+	  used because a thread result might be <code>nil</code>.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = condvar object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Condvar</name>
+    
+    <p>
+      The condition variable <code>Condvar</code> object is a special
+      object which provides a mean of synchronization between one and
+      several threads. The condition is said to be false unless it has
+      been marked. When a condition is marked, all threads waiting for
+      that condition to become true are notified and one thread is
+      activated with that condition.
+    </p>
+
+    <!-- predicate -->
+    <pred>condvar-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Condvar</name>
+	<args>none</args>
+	<p>
+	  The <code>Condvar</code> constructor creates a default condition
+	  variable.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>lock</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>lock</code> method locks the condition variable mutex. If
+	  the mutex is already locked, the calling thread is suspended until
+	  the lock is released. When the method returns, the resumed thread
+	  owns the condition variable lock. It is the thread responsibility to
+	  reset the condition variable and unlock it.
+	</p>
+      </meth>
+
+      <meth>
+	<name>mark</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>mark</code> method marks the condition variable and notify
+	  all pending threads of such change. The mark method is the basic
+	  notification mechanism.
+	</p>
+      </meth>
+
+      <meth>
+	<name>wait</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>wait</code> method waits for a condition variable to be
+	  marked. When such condition occurs, the suspended thread is
+	  run. When the method returns, the resumed thread owns the condition
+	  variable lock. It is the thread responsibility to reset the
+	  condition variable and unlock it.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method acquires the condition variable mutex,
+	  reset the mark, and unlock it. If the lock has been taken, the
+	  calling thread is suspended.
+	</p>
+      </meth>
+
+      <meth>
+	<name>unlock</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>unlock</code> method unlock the condition variable
+	  mutex. This method should be used after a call to <code>lock</code>
+	  or <code>wait</code>.
+	</p>
+      </meth>
+
+      <meth>
+	<name>wait-unlock</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>wait-unlock</code> method wait until a condition variable
+	  is marked.  When such condition occurs, the suspended thread is
+	  run. Before the method returns, the condition variable is reset and
+	  the mutex unlocked. With two threads to synchronize, this is the
+	  preferred method compared to <code>wait</code>. 
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = lexical object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Lexical</name>
+
+    <p>
+      The <code>Lexical</code> object is a special object built by the
+      reader. A lexical name is also a literal object. Although
+      the best way to create a lexical name is with a form, the lexical
+      object can also be constructed with a string name. A lexical name
+      can be mapped to a symbol by using the <code>map</code> method.
+    </p>
+
+    <!-- predicate -->
+    <pred>lexical-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Literal</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Lexical</name>
+	<args>none</args>
+	<p>
+	  The <code>Lexical</code> constructor create an empty lexical object
+	  which evaluates to <code>nil</code>.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Lexical</name>
+	<args>String</args>
+	<p>
+	  The <code>Lexical</code> constructor create a lexical object using
+	  the string argument as the lexical name.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>map</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>map</code> method returns the object that is mapped by the
+	  lexical name. Most of the time, a symbol object is returned since it
+	  is the kind of object stored in a nameset. Eventually the mapping
+	  might returns an argument object if used inside a closure.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = qualified object                                                = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Qualified</name>
+
+    <p>
+      The <code>Qualified</code> object is a special object built by the
+      reader. A qualified object is similar to a lexical
+      object. It is also a literal object. Like a lexical name, a
+      qualified name can be created with a form or by direct construction
+      with a name. Like a lexical name, the <code>map</code> method can be
+      used to retrieve the symbol associated with that name.
+    </p>
+
+    <!-- predicate -->
+    <pred>qualified-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Literal</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Qualified</name>
+	<args>none</args>
+	<p>
+	  The <code>Qualifed</code> constructor create an empty qualified name
+	  object which evaluates to <code>nil</code>.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Qualified</name>
+	<args>String</args>
+	<p>
+	  The <code>Qualified</code> constructor create a qualified name
+	  object using the string argument as the qualified name. The name is
+	  parse for qualified name syntax adherence.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>map</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>map</code> method returns the object that is mapped by the
+	  qualified name. Most of the time, a symbol object is returned since
+	  it is the kind of object stored in a nameset. Eventually the mapping
+	  might returns an argument object if used inside a closure.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = symbol object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Symbol</name>
+
+    <p>
+      The <code>Symbol</code> object is a special object used by nameset
+      to map a name with an object. Generally a symbol is obtained by
+      mapping a lexical or qualified name. As an object, the symbol holds
+      a name, an object and a <em>constant flag</em>. The symbol name
+      cannot be changed since it might introduce inconsistencies in the
+      containing nameset. On the other hand, the <em>constant flag</em>
+      and the object can be changed. A symbol is a literal object. A
+      symbol that is not bounded to a nameset can be constructed
+      dynamically. Such symbol is said to be <em>not interned</em>.
+    </p>
+
+    <!-- predicate -->
+    <pred>symbol-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Literal</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Symbol</name>
+	<args>String</args>
+	<p>
+	  The <code>Symbol</code> constructor create a symbol by name. The
+	  associated object is marked as <code>nil</code>.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Symbol</name>
+	<args>String Object</args>
+	<p>
+	  The <code>Symbol</code> constructor create a symbol by name and bind
+	  the object argument to the symbol.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-const</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-const</code> method returns the symbol const flag. If
+	  the flag is true, the symbol object cannot be changed unless that
+	  flags is reset with the <code>set-const</code> method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-const</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>set-const</code> method set the symbol const flag. This
+	  method is useful to mark a symbol as const or to make a const symbol
+	  mutable.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-object</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-object</code> method returns the symbol object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-object</name>
+	<retn>none</retn>
+	<args>Object</args>
+	<p>
+	  The <code>set-object</code> method set the symbol object. The object
+	  can be obtained by evaluating the symbol.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = closure object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Closure</name>
+
+    <p>
+      The <code>Closure</code> object is a special object that represents
+      a lambda or gamma expression. A closure is represented by a set of
+      arguments, a set of closed variables and a form to execute. A
+      boolean flag determines the type of closure. The closure predicate
+      <code>lambda-p</code> returns true if the closure is a lambda
+      expression. Closed variables can be defines and evaluated with the
+      use of the qualified name mechanism. Closure mutation is achieved
+      with the <code>add-argument</code> and <code>set-form</code>
+      method. An empty closure can be defined at construction as well.
+    </p>
+
+    <!-- predicate -->
+    <pred>closure-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Closure</name>
+	<args>none</args>
+	<p>
+	  The <code>Closure</code> constructor create a default closure. When
+	  the closure is created, a local set of arguments and closed
+	  variables is generated. Note that such local set is dynamic. There
+	  is no restriction to reconfigure a particular lambda at
+	  run-time. The difference between a lambda and a gamma expression
+	  resides in the nameset binding when the closure is called. With a
+	  lambda, the closure nameset parent is the calling nameset. With a
+	  gamma expression, the parent nameset is always the top-level
+	  interpreter nameset. Note also, that the symbol <code>self</code> is
+	  automatically bounded for this closure.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Closure</name>
+	<args>Boolean</args>
+	<p>
+	  The <code>Closure</code> constructor create a closure which acts as
+	  lambda expression if the boolean argument is true. If the boolean
+	  argument is false, the closure will behave like a gamma expression.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>gamma-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>gamma-p</code> predicate returns true if the closure is a
+	  gamma expression. The predicate returns true for a lambda expression.
+	</p>
+      </meth>
+
+      <meth>
+	<name>lambda-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>lambda-p</code> predicate returns true if the closure is a
+	  lambda expression. The predicate returns false for a gamma expression.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-form</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-form</code> method returns the closure form object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-form</name>
+	<retn>none</retn>
+	<args>Object</args>
+	<p>
+	  The <code>set-form</code> method sets the closure form object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-argument</name>
+	<retn>none</retn>
+	<args>String|Lexical|form</args>
+	<p>
+	  The <code>add-argument</code> method adds an argument to the
+	  closure. The argument object can be either a string, a lexical
+	  object of a simple form that defines a constant lexical name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = librarian object                                                = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Librarian</name>
+
+    <p>
+      The <code>Librarian</code> object is a special object that read or
+      write a librarian. Without argument, a librarian is created for
+      writing purpose. With one file name argument, the librarian is
+      created for reading.
+    </p>
+
+    <!-- predicate -->
+    <pred>librarian-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Librarian</name>
+	<args>none</args>
+	<p>
+	  The <code>Librarian</code> constructor creates a librarian for
+	  writing. Initially, the librarian is empty and files must be added
+	  with the <code>add</code> method.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Librarian</name>
+	<args>String</args>
+	<p>
+	  The <code>Librarian</code> constructor creates a librarian for
+	  reading using the name as the librarian file name.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>add</code> method adds a file into the librarian. The
+	  librarian must have been opened in write mode.
+	</p>
+      </meth>
+
+      <meth>
+	<name>write</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>write</code> method writes a librarian to a file those
+	  name is the argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the number of file in the
+	  librarian. This method work, no matter how the librarian has been
+	  opened.
+	</p>
+      </meth>
+
+      <meth>
+	<name>exists-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>exists-p</code> predicate returns true if the file
+	  argument exists in the librarian.
+	</p>
+      </meth>
+
+      <meth>
+	<name>extract</name>
+	<retn>InputMapped</retn>
+	<args>String</args>
+	<p>
+	  The <code>extract</code> method returns an input stream mapped to
+	  the file name argument.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = resolver object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Resolver</name>
+
+    <p>
+      The <code>Resolver</code> object is a special object that gives the
+      ability to open a file based on a file path resolver. The resolver
+      maintains a list of valid path and returns an input stream for a
+      file on demand.
+    </p>
+
+    <!-- predicate -->
+    <pred>resolver-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Resolver</name>
+	<args>none</args>
+	<p>
+	  The <code>Resolver</code> constructor creates a default
+	  resolver. Once created, the <code>add</code> method can be used to
+	  add path to the resolver.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>add</code> method adds a path into the resolver. The path
+	  can points either to a directory or a librarian.
+	</p>
+      </meth>
+
+      <meth>
+	<name>lookup</name>
+	<retn>InputStream</retn>
+	<args>String</args>
+	<p>
+	  The <code>lookup</code> method resolves the file name argument and
+	  returns an input stream for that file.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>String</args>
+	<p>
+	  The <code>to-string</code> method resolves the file name argument and
+	  returns a string respresentation for that file.
+	</p>
+      </meth>
+
+      <meth>
+	<name>valid-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>valid-p</code> predicate returns true if the file name
+	  argument can be resolved. If the file name can be resolved, the
+	  <code>lookup</code> method can be called to get an input stream.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = print-table object                                              = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>PrintTable</name>
+
+    <p>
+      The PrintTable class is a formatting class for tables. The table is
+      constructed with the number of columns -- default to 1 -- and
+      eventually the number of rows. Once the table is created, element
+      are added to the table with the <code>add</code> method. Specific
+      table element can be set with the <code>set</code> method. The class
+      provide a <code>format</code> method those default is to print the
+      table on the interpreter standard output. With an output stream
+      argument or a buffer, the table is formatted to these objects. The
+      table formatting includes an optional column width, a filling
+      character and a filling direction flag. By default, the column width
+      is 0. This means that the column width is computed as the maximum
+      length of all column elements. If the column width is set with the
+      <code>set-column-size</code> method, the string element might be
+      truncated to the left or right -- depending on the filling flag --
+      to fit the column width. Each table element can also be associated
+      with a tag. The <code>tag-p</code> method can be used to test for the
+      presence of a tag, while the <code>set-tag</code> and 
+      <code>get-tag</code> methods can be used to set or get the tag by row 
+      and column coordinates.
+    </p>
+
+    <!-- predicate -->
+    <pred>print-table-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>PrintTable</name>
+	<args>none</args>
+	<p>
+	  The <code>PrintTable</code> constructor creates a default
+	  table with one column.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>PrintTable</name>
+	<args>Integer</args>
+	<p>
+	  The <code>PrintTable</code> constructor creates a table with a
+	  pre-defined number of columns specified in the constructor argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>PrintTable</name>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>PrintTable</code> constructor creates a table with a
+	  pre-defined number of columns and rows specified in the constructor
+	  arguments. 
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>head-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>head-p</code> predicate returns true if the table
+	  header is defined.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-head</name>
+	<retn>none</retn>
+	<args>[String+]</args>
+	<p>
+	  The <code>add-head</code> method add to the table header the
+	  string arguments. The number of arguments must be equal to the
+	  number of columns.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-head</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-head</code> method returns a table header element by
+	  column index. The integer argument is the header row index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-head</name>
+	<retn>none</retn>
+	<args>Integer String</args>
+	<p>
+	  The <code>set-head</code> method sets a table header element by
+	  column index. The first argument is the header column index and
+	  the second is the header string value to set.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>Integer</retn>
+	<args>none|[Literal...]</args>
+	<p>
+	  The <code>add</code> method serves several purposes. Without
+	  argument, a new row is added and the row index is returned. The
+	  row index can be later used with the <code>set</code> method to
+	  set a particular table element. With one or several literal
+	  arguments, those length must match the number of columns, a new
+	  row is created and those arguments added to the table. The row
+	  number is also returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>String</retn>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>get</code> method returns a particular table element by
+	  row and column. The first argument is the table row index and the
+	  second is the table column index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>Integer Integer Literal</args>
+	<p>
+	  The <code>set</code> method sets a particular table element by row
+	  and column. The first argument is the table row index and the second
+	  is the table column index. The last argument is a literal object
+	  that is converted to a string prior its insertion.
+	</p>
+      </meth>
+
+      <meth>
+	<name>tag-p</name>
+	<retn>Boolean</retn>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>tag-p</code> predicate returns true if a tag is present
+	  at a particular table element. The first argument is the table row
+	  index and the second is the table column index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-tag</name>
+	<retn>none</retn>
+	<args>Integer Integer String</args>
+	<p>
+	  The <code>set-tag</code> method sets a particular table tag by row
+	  and column. The first argument is the table row index and the second
+	  is the table column index. The last argument is the tag value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-tag</name>
+	<retn>String</retn>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>get-tag</code> method returns a particular table tag by
+	  row and column. The first argument is the table row index and the
+	  second is the table column index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>dump</name>
+	<retn>none|String</retn>
+	<args>none|Integer|OutputStream|Buffer</args>
+	<p>
+	  The <code>dump</code> method dumps the table to an output stream
+	  or a buffer. Without argument, the default interpreter output
+	  stream is used. With an integer argument, the specified row is
+	  used and a string is returned. With a buffer or an output
+	  stream, the whole table is written and nothing is returned.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>merge</name>
+	<retn>none</retn>
+	<args>PrintTable[Boolean Boolean]</args>
+	<p>
+	  The <code>merge</code> method merge a table into the calling
+	  one. In the first for, only the table content is merged. In
+	  the second form, the boolean arguments controls whether the
+	  header and footer shall be merge as well.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>format</name>
+	<retn>none|String</retn>
+	<args>none|Integer|OutputStream|Buffer</args>
+	<p>
+	  The <code>format</code> method writes the formatted table to an
+	  output stream or a buffer. Without argument, the default interpreter
+	  output stream is used. With an integer argument, the specified row is
+	  used and a string is returned. With a buffer or an output
+	  stream, the whole table is written and nothing is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-rows</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-rows</code> method returns the number of rows in the
+	  table.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-columns</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>add-columns</code> method adds 1 or more columns
+	  at the end of the table.
+	</p>
+      </meth>
+      <meth>
+	<name>get-columns</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-columns</code> method returns the number of columns in
+	  the table.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>set-column-size</name>
+	<retn>none</retn>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>set-column-size</code> method sets the desired width for a
+	  particular column. The first argument is the column index and the
+	  second argument is the column width.If 0 is given, the column width
+	  is computed as the maximum of the column elements.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-column-size</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-column-size</code> method returns the desired width
+	  for a particular column.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-column-fill</name>
+	<retn>none</retn>
+	<args>Integer Character</args>
+	<p>
+	  The <code>set-column-fill</code> method sets the filling character
+	  for a particular column. The first argument is the column index and
+	  the second argument is a character to use when filling a particular
+	  column element. The default filling character is the blank
+	  character.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-column-fill</name>
+	<retn>Character</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-column-fill</code> method returns the filling
+	  character for a particular column.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-column-direction</name>
+	<retn>none</retn>
+	<args>Integer Boolean</args>
+	<p>
+	  The <code>set-column-direction</code> method sets the direction flag
+	  for a particular column. The first argument is the column index and
+	  the second argument is a boolean. A false value indicates a filling
+	  by the left while a true value indicates a filling by the right. The
+	  column filling character is used for this operation.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-column-direction</name>
+	<retn>Boolean</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-column-direction</code> method returns the direction
+	  flag for a particular column.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = logger object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Logger</name>
+
+    <p>
+      The Looger class is a message logger that stores messages in a
+      buffer with a level. The default level is the level 0. A negative level
+      generally indicates a warning or an error message but this is just
+      a convention which is not enforced by the class. A high level generally
+      indicates a less important message. The messages are stored in a circular
+      buffer. When the logger is full, a new message replace the oldest one.
+      By default, the logger is initialized with a 256 messages capacity
+      that can be resized.
+    </p>
+
+    <!-- predicate -->
+    <pred>logger-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Logger</name>
+	<args>none</args>
+	<p>
+	  The <code>Logger</code> constructor creates a default logger.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Logger</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Logger</code> constructor creates a logger with a
+	  specific size specified as the constructor argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Logger</name>
+	<args>String</args>
+	<p>
+	  The <code>Logger</code> constructor creates a logger with an
+	  information argument. The information string is later used to
+	  format the logged messages.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Logger</name>
+	<args>Integer String</args>
+	<p>
+	  The <code>Logger</code> constructor creates a logger with a
+	  specific size and an information argument. The first argument is
+	  the logger size. The second argument is the information
+	  string. The information string is later used to format the
+	  logged messages.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>String|String Integer</args>
+	<p>
+	  The <code>add</code> method adds a message in the logger. With
+	  one argument, the method take a single string message. with two
+	  arguments, the first arguments is the message and the second
+	  argument is the message level.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset the logger class by 
+	  removing all messages.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the number of messages
+	  stored in the logger object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>resize</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>resize</code> method resize the logger class by
+	  increasing the size of the message buffer. The old messages are
+	  kept during the resizing operation.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-info</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-info</code> method sets the logger information
+	  string. The information string is used by the derived classes
+	  when a message is printed.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-info</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-info</code> method returns the logger information
+	  string. The information string is used by the derived classes
+	  when a message is printed.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-default-level</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-default-level</code> method sets the default level
+	  use for storing message. This parameter is used with the
+	  <code>add</code> method in conjunction with the message
+	  argument. When the message level is specified, the default
+	  message level is ignored.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-default-level</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-default-level</code> method returns the default
+	  message level used by the logger. The default message level is
+	  used by the <code>add</code> method when the message level is
+	  not specified directly.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>get-message</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-message</code> method returns a logger message by
+	  index. The integer argument is the message index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-full-message</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-full-message</code> method returns a fully
+	  formatted logger message by index. The integer argument is the
+	  message index. The message includes the time and contents.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-message-time</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-message-time</code> method returns the logger
+	  message time by index. The integer argument is the message
+	  index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-message-level</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-message-level</code> method returns the logger
+	  message level by index. The integer argument is the message
+	  index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-output-stream</name>
+	<retn>none</retn>
+	<args>OutputStream|String</args>
+	<p>
+	  The <code>set-output-stream</code> method set the logger output
+	  stream. The output stream can be either an output stream or an
+	  output file name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = counter object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Counter</name>
+
+    <p>
+      The Counter class is a mechanism designed to count integer both upward
+      or downward. The counter is initialized with a start and end value.
+      With a single value, the start value is set to 0 and the counter 
+      direction determined by the end value. The counter object is also
+      a literal object, meaning that it can be directly printed. The
+      object is also designed to be used directly in a loop.    
+    </p>
+
+    <!-- predicate -->
+    <pred>counter-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Literal</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Counter</name>
+	<args>none</args>
+	<p>
+	  The <code>Counter</code> constructor creates a default
+	  counter. Since, both start and end values are initialized to 0,
+	  this object will never count.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Counter</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Counter</code> constructor creates an upward
+	  counter. If the argument value, the initial counter value is the
+	  argument value and the counter will counter from the value to
+	  0. If the argument value is positive, the final counter value is
+	  the argument value and the counter will count from 0 to this value.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Counter</name>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>Counter</code> constructor creates a counter with an
+	  initial and final values. Depending on the initial and final
+	  value the counter might be an upward or a downward counter.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset the counter to its start value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>step-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>step-p</code> predicate checks if the counter can be moved
+	  by one position. If the test is successful, the counter is moved
+	  upward or downward. the method returns the result of the test.
+	</p>
+      </meth>
+
+      <meth>
+	<name>valid-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>valid-p</code> predicate returns true if the counter
+	  can be moved by one position.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = lexer object                                                    = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Lexer</name>
+
+    <p>
+      The <code>Lexer</code> class is the lexical analyzer for the writing
+      system. The lexical analyzer consumes characters from an input stream
+      and produces tokens. From a token, it is possible to derive an object
+      in the form of a constant object which can be evaluated to a literal
+      or to another object in the presence of a lexical or qualified object.
+      The lexical analyzer is integrated inside the form reader. As an object
+      it is possible to use it when it becomes necesary to parse strings.
+    </p>
+
+    <!-- predicate -->
+    <pred>lexer-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-token</name>
+	<retn>Token</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-token</code> method returns the next available token.
+	</p>
+      </meth>
+      <meth>
+	<name>get-object</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-object</code> method returns the next available object.
+	</p>
+      </meth>
+      <meth>
+	<name>get-line-number</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-line-number</code> method returns the token line
+	  number which is the current line number under processing.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = former object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Former</name>
+
+    <p>
+      The <code>Former</code> class is an abstract class used to derive
+      form reader. The class defines only a method <code>parse</code>
+      which returns a form. The method <code>getlnum</code> returns the
+      form line number.
+    </p>
+
+    <!-- predicate -->
+    <pred>former-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>parse</name>
+	<retn>Form</retn>
+	<args>none</args>
+	<p>
+	  The <code>parse</code> method returns the next available form.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-line-number</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-line-number</code> method returns the form line
+	  number which is the current line number under processing.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = reader object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Reader</name>
+
+    <p>
+      The <code>Reader</code> class is the general purpose form reader
+      which supports the writing system syntax. The reader is
+      primarily used to parse file or be run interactively. The reader
+      consumes tokens until a complete form can be built. The form does
+      not have any particular meaning and must be post processed by the
+      application.
+    </p>
+
+    <!-- predicate -->
+    <pred>reader-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Former</name>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Reader</name>
+	<args>none</args>
+	<p>
+	  The <code>Reader</code> constructor creates a default reader.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Reader</name>
+	<args>String|InputStream</args>
+	<p>
+	  The <code>Reader</code> constructor creates a reader by string
+	  or input stream. In the first form, a string is mapped into a
+	  string stream which is used by the reader to parse form. In the
+	  second form, an input stream is bound to the reader to parse forms.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = loader object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Loader</name>
+
+    <p>
+      The <code>Loader</code> class is a library loader. The loader keep
+      a list of loaded libraries. This class is bound to the interpreter
+      and cannot be constructed. Use the <code>interp:loader</code> to
+      access the interpreter loader. for safety reason, it is not
+      possible to add a libray to the loader. The interpreter
+      method <code>interp:library</code> is the prefered method to
+      access the loader.
+    </p>
+
+    <!-- predicate -->
+    <pred>loader-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the number of loaded libraries.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Library</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns a library object by index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>exists-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>exists-p</code> predicate returns true if a library is
+	  already loaded in the interpreter.
+	</p>
+      </meth>
+    </methods>
+  </object>
+</chapter>

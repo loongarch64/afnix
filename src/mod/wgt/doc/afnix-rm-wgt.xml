@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-rm-wgt.xml                                                   = -->
+<!-- = standard wgt services module - reference manual                    = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix module="wgt" number="i">
+  <title>Standard Widget Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = conditional object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:wgt">
+    <name>Conditional</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Conditional</code> class is a widget class which
+      represents a selectable condition. A condition is defined by a
+      string operator and one or two literal arguments. If the
+      condition is active, it can be valuated by an expressable interface.
+    </p>
+
+    <!-- predicate -->
+    <pred>conditional-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Nameable</name>
+      <name>Serial</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Conditional</name>
+	<args>none</args>
+	<p>
+	  The <code>Uri</code> constructor creates an empty uri object.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Conditional</name>
+	<args>String</args>
+	<p>
+	  The <code>Conditional</code> constructor creates a
+	  conditional object by name.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Conditional</name>
+	<args>String String</args>
+	<p>
+	  The <code>Conditional</code> constructor creates a
+	  conditional object by name and information.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the conditional name.
+	</p>
+      </meth>
+      <meth>
+	<name>set-info</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-info</code> method sets the conditional information.
+	</p>
+      </meth>
+      <meth>
+	<name>get-info</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-info</code> method gets the conditional information.
+	</p>
+      </meth>
+      <meth>
+	<name>set-active</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>set-active</code> method sets the conditional
+	  active flag.
+	</p>
+      </meth>
+      <meth>
+	<name>get-active</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-active</code> method gets the conditional
+	  active flag.
+	</p>
+      </meth>
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>String Literal | String Literal Literal</args>
+	<p>
+	  The <code>set</code> method  set the conditional
+	  expression. In the first form, the operator is set with a
+	  unique lhs. In the second form, the operator is set with a
+	  lhs and a rhs.
+	</p>
+      </meth>
+      <meth>
+	<name>get-operator</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-operator</code> method gets the conditional
+	  operator.
+	</p>
+      </meth>
+      <meth>
+	<name>get-lhs</name>
+	<retn>Literal</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-lhs</code> method gets the conditional lhs.
+	</p>
+      </meth>
+      <meth>
+	<name>get-rhs</name>
+	<retn>Literal</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-rhs</code> method gets the conditional rhs.
+	</p>
+      </meth>
+    </methods>
+  </object>
+</appendix>

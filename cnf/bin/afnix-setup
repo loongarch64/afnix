@@ -1,0 +1,433 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# - afnix-setup                                                              -
+# - afnix build tree configuration installer                                 -
+# ----------------------------------------------------------------------------
+# - This program is  free software;  you can  redistribute it and/or  modify -
+# - it provided that this copyright notice is kept intact.                   -
+# -                                                                          -
+# - This  program  is  distributed in the hope  that it  will be useful, but -
+# - without  any   warranty;  without  even   the   implied    warranty   of -
+# - merchantability  or fitness for a particular purpose. In not event shall -
+# - the copyright holder be  liable for  any direct, indirect, incidental or -
+# - special damages arising in any way out of the use of this software.      -
+# ----------------------------------------------------------------------------
+# - copyright (c) 1999-2021 amaury darsch                                    -
+# ----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+# - set default variables                                                    -
+# ----------------------------------------------------------------------------
+
+# the program name we are running
+prgnam="$0"
+# the platform source name
+pltnam="unknown"
+# the top directory of the distribution
+topdir=
+# the cnf directory
+cnfdir=
+# the build directory
+blddir=
+# the source directory
+srcdir=
+# the installation directory prefix
+prefix="/opt/afnix"
+# the shared directory
+shrdir="$prefix/share"
+# the alternate directory (for etc)
+altdir="$prefix"
+# the sdk name
+sdknam=
+# the sdk directory
+sdkdir=
+# whether or not we report the option
+shwopt="no"
+# the default compiler
+ccname=
+# the platform os version
+pltvrs=
+pltmaj="0"
+pltmin="0"
+# the processor name
+cpunam=
+# the processor bits
+cpubit=
+# the process native
+cpuntv=
+# the machine configuration
+mchcnf=
+# default compilation mode
+ccmode="debug"
+# linking type
+lktype=
+# linking mode
+lkmode=
+# the openmp mode
+openmp="no"
+# the distribution package
+pkgnam=
+# the optional package bin directory
+pkgbin=
+# the optional package lib directory
+pkglib=
+# the optional package project directory
+pkgprj=
+# the optional package header directory
+pkghdr=
+# the optional package etc directory
+pkgetc=
+# the optional package man directory
+pkgman=
+# the optional package doc directory
+pkgdoc=
+# the optional package www directory
+pkgwww=
+# the optional package srv directory
+pkgsrv=
+
+# ----------------------------------------------------------------------------
+# - local function always make life easier                                   -
+# ----------------------------------------------------------------------------
+
+# print a usage message
+usage () {
+    echo "usage: afnix-setup [options]"
+    echo "       -h           print this help message"
+    echo "       -v           be verbose"
+    echo "       -g           set debug mode"
+    echo "       -o           set optimized mode"
+    echo "       -p           set profiled mode (internal)"
+    echo
+    echo "       --prefix     set target directory to install"
+    echo "       --shrdir     set shared directory to install"
+    echo "       --altdir     set alternate directory to install"
+    echo "       --sdknam     set the target sdk by name"
+    echo "       --sdkdir     set the target sdk directory"
+    echo "       --ccname     set default compiler"
+    echo "       --shared     compile and link dynamically"
+    echo "       --static     compile and link statically"
+    echo "       --openmp     enable openmp compilation"
+    echo "       --pkgnam     set the distribution package"
+    echo "       --pkgbin     set the optional package bin directory"
+    echo "       --pkglib     set the optional package lib directory"
+    echo "       --pkgprj     set the optional package prj directory"
+    echo "       --pkghdr     set the optional package hdr directory"
+    echo "       --pkgetc     set the optional package etc directory"
+    echo "       --pkgman     set the optional package man directory"
+    echo "       --pkgdoc     set the optional package doc directory"
+    echo "       --pkgwww     set the optional package www directory"
+    echo "       --pkgsrv     set the optional package srv directory"
+    exit 0
+}
+
+# print an error message
+error () {
+    echo "afnix-setup: $1"
+    exit 1
+}
+
+# report options
+report () {
+    echo "top directory        = $topdir"
+    echo "config directory     = $cnfdir"
+    echo "source directory     = $srcdir"
+    echo "prefix               = $prefix"
+    echo "shared directory     = $shrdir"
+    echo "alternate directory  = $altdir"
+    echo "sdk name             = $sdknam"
+    echo "sdk directory        = $sdkdir"
+    echo "platform name        = $pltnam"
+    echo "platform version     = $pltvrs"
+    echo "processor name       = $cpunam"
+    echo "processor size       = $cpubit"
+    echo "processor native     = $cpuntv"
+    echo "compiler             = $ccname"
+    echo "compilation mode     = $ccmode"
+    echo "linking type         = $lktype"
+    echo "linking mode         = $lkmode"
+    echo "openmp  mode         = $openmp"
+    echo "package name         = $pkgnam"
+    echo "package binary       = $pkgbin"
+    echo "package library      = $pkglib"
+    echo "package project      = $pkgprj"
+    echo "package header       = $pkghdr"
+    echo "package etc          = $pkgetc"
+    echo "package manual       = $pkgman"
+    echo "package doc          = $pkgdoc"
+    echo "package www          = $pkgwww"
+    echo "package srv          = $pkgsrv"
+}
+
+# this function computes the various directories
+getdir () {
+    # compute top directory path
+    if test -z "$prgnam"; then
+	topdir="../.."
+    else
+	topdir=`dirname $prgnam`/../..
+    fi
+    # get the directory fixer
+    fixexe="$topdir/cnf/bin/afnix-fxdir"
+    # fix the top directory
+    topdir=`$fixexe $topdir`
+    # compute the cnf directory
+    cnfdir="$topdir/cnf"
+    if test ! -d "$cnfdir"; then
+	error "cannot find cnf directory" $cnfdir
+    fi
+    # compute the build directory
+    blddir="$topdir/bld"
+    # compute the source directory
+    srcdir="$topdir/src"
+    if test ! -d "$srcdir"; then
+	error "cannot find source directory $srcdir"
+    fi
+}
+
+# compute the compiler and linker
+getccl () {
+    # get the query script
+    qryexe="$topdir/cnf/bin/afnix-query --pltname=$pltnam"
+    if test -z "$ccname"; then
+	# get the compiler name
+	ccname=`$qryexe ccname`
+        if test "$?" != "0"; then
+	    error "cannot determine compiler name"
+	fi
+    fi
+    # get the linking type
+    if test -z "$lktype"; then
+	lktype=`$qryexe lktype`
+        if test "$?" != "0"; then
+	    error "cannot determine linking type"
+	fi
+    fi
+    # get the linking mode
+    lkmode=`$qryexe --default=generic lkmode`
+    if test "$?" != "0"; then
+	error "cannot determine linking mode"
+    fi
+    if test "$lktype" = "static"; then
+	lkmode=
+    fi
+}
+
+# fix the configuration 
+fixcnf () {
+    # get the compiler version script
+    vccexe="$topdir/cnf/bin/afnix-vcomp"
+    # update with the compiler version
+    ccname=`$vccexe --ccname=$ccname`
+    # force directory with darwin
+    if test "$pltnam" = "darwin"; then
+	pkgdir="$blddir/pkg"
+	prefix="$pkgdir/usr"
+	shrdir="$prefix/share"
+	altdir="$shrdir"
+	if test -z "$sdkdir"; then
+	    sdkdir="/Developer/SDKs/MacOSX10.5.sdk"
+	fi
+	if test ! -d "$sdkdir"; then
+	    error "cannot find sdk directory $sdkdir"
+	fi
+    fi
+}
+
+# this function creates the build configuration directory
+gendef () {
+    # precompute guess option
+    if test -n "$sdknam"; then
+	pltopt="--sdknam=$sdknam"
+	if test -z "$sdkdir"; then
+	    sdkdir=$AFNIX_SDK
+	fi
+	if test -n "$sdkdir"; then
+	    pltopt="$pltopt --sdkdir=$sdkdir"
+	fi
+    fi
+    # get the guess script
+    pltexe="$topdir/cnf/bin/afnix-guess $pltopt"
+    # create the target cnf directory
+    trgdir="$topdir/bld/cnf"
+    /bin/mkdir -p $trgdir
+    # compute platform information
+    pltnam=`$pltexe -n`
+    if test "$?" != "0"; then
+        error "cannot determine platform name"
+    fi
+    pltvrs=`$pltexe -v`
+    if test "$?" != "0"; then
+        error "cannot determine platform version"
+    fi
+    pltmaj=`$pltexe -M`
+    if test "$?" != "0"; then
+        error "cannot determine platform major number"
+    fi
+    pltmin=`$pltexe -m`
+    if test "$?" != "0"; then
+        error "cannot determine platform minor number"
+    fi
+    cpuntv=`$pltexe -p`
+    if test "$?" != "0"; then
+        error "cannot determine native processor"
+    fi
+    # cross compilation special cases
+    if test -z "$cpunam"; then
+	cpunam=`$pltexe -p`
+    fi
+    if test "$?" != "0"; then
+        error "cannot determine processor"
+    fi
+    cpubit=`$pltexe -s --cpunam=$cpunam`
+    # set the machine configuration
+    mchcnf=$pltnam-$cpunam
+}
+
+gencnf () {
+    # install afnix-plat.mak file
+    trgmak="$trgdir/afnix-plat.mak"
+    # make file generation
+    echo "# afnix-plat.mak"                > $trgmak
+    echo "# afnix makefile configuration" >> $trgmak
+    echo                                  >> $trgmak
+    echo "# platform configuration"       >> $trgmak
+    echo "PLATNAME         = $pltnam"     >> $trgmak
+    echo "PLATVERS         = $pltvrs"     >> $trgmak
+    echo "PLATVMAJ         = $pltmaj"     >> $trgmak
+    echo "PLATVMIN         = $pltmin"     >> $trgmak
+    echo "PROCNAME         = $cpunam"     >> $trgmak
+    echo "PROCNATV         = $cpuntv"     >> $trgmak
+    echo "PROCBITS         = $cpubit"     >> $trgmak
+    echo "MACHCONF         = $mchcnf"     >> $trgmak
+    echo                                  >> $trgmak
+    echo "# installation options"         >> $trgmak
+    echo "PREFIX           = $prefix"     >> $trgmak
+    echo "SHRDIR           = $shrdir"     >> $trgmak
+    echo "ALTDIR           = $altdir"     >> $trgmak
+    echo "SDKDIR           = $sdkdir"     >> $trgmak
+    echo "PKGNAM           = $pkgnam"     >> $trgmak
+    echo "PKGBIN           = $pkgbin"     >> $trgmak
+    echo "PKGLIB           = $pkglib"     >> $trgmak
+    echo "PKGPRJ           = $pkgprj"     >> $trgmak
+    echo "PKGHDR           = $pkghdr"     >> $trgmak
+    echo "PKGETC           = $pkgetc"     >> $trgmak
+    echo "PKGMAN           = $pkgman"     >> $trgmak
+    echo "PKGDOC           = $pkgdoc"     >> $trgmak
+    echo "PKGWWW           = $pkgwww"     >> $trgmak
+    echo "PKGSRV           = $pkgsrv"     >> $trgmak
+    echo                                  >> $trgmak
+    echo "# compilation mode"             >> $trgmak
+    echo "CCMODE           = $ccmode"     >> $trgmak
+    echo                                  >> $trgmak
+    echo "# linking options"              >> $trgmak
+    echo "LKTYPE           = $lktype"     >> $trgmak
+    echo "LKMODE           = $lkmode"     >> $trgmak
+    echo                                  >> $trgmak
+    echo "# openmp options"               >> $trgmak
+    echo "OPENMP           = $openmp"     >> $trgmak
+
+    # get the appropriate compiler config
+    ccmake="$cnfdir/mak/afnix-${ccname}.mak"
+    if test ! -f "$ccmake"; then
+	error "cannot find compiler definitions $ccname"
+    fi
+    ccfile="$trgdir/afnix-comp.mak"
+    if test ! -f "$ccfile"; then
+	ln -s $ccmake $ccfile
+    fi
+}
+
+# ----------------------------------------------------------------------------
+# - parse options - this is where we really start                            -
+# ----------------------------------------------------------------------------
+
+# compute various directories
+getdir
+
+# parse the options
+preopt=
+for nxtopt
+do
+    # assign the previous option argument
+    if test -n "$preopt"; then
+	eval "$preopt=\$nxtopt"
+	preopt=
+	continue
+    fi
+
+    # extract options
+    case "$nxtopt" in
+    -*=*) argopt=`echo "$nxtopt" | sed 's/[-_a-zA-Z0-9]*=//'`;;
+       *) argopt=;;
+    esac
+
+    # process options now
+    case "$nxtopt" in
+    -h)            usage;;
+    -v)            shwopt="yes";;
+    -g)            ccmode="debug";;
+    -o)            ccmode="optimized";;
+    -p)            ccmode="profiled";;
+
+    --prefix)      preopt=prefix ;;
+    --prefix=*)    oldfix="$prefix" ;
+                   prefix="$argopt" ;
+	           if test "$shrdir" = "$oldfix/share"; then
+                       shrdir="$prefix/share";
+                   fi;;
+    --static)      lktype="static";;
+    --shared)      lktype="dynamic";;
+    --openmp)      openmp="yes";;
+    --shrdir)      preopt=shrdir;;
+    --shrdir=*)    shrdir="$argopt";;
+    --altdir)      preopt=altdir;;
+    --altdir=*)    altdir="$argopt";;
+    --cpunam)      preopt=cpunam;;
+    --cpunam=*)    cpunam="$argopt";;
+    --sdknam)      preopt=sdknam;;
+    --sdknam=*)    sdknam="$argopt";;
+    --sdkdir)      preopt=sdkdir;;
+    --sdkdir=*)    sdkdir="$argopt";;
+    --pkgnam)      preopt=pkgnam;;
+    --pkgnam=*)    pkgnam="$argopt";;
+    --pkgbin)      preopt=pkgbin;;
+    --pkgbin=*)    pkgbin="$argopt";;
+    --pkglib)      preopt=pkglib;;
+    --pkglib=*)    pkglib="$argopt";;
+    --pkgprj)      preopt=pkgprj;;
+    --pkgprj=*)    pkgprj="$argopt";;
+    --pkghdr)      preopt=pkghdr;;
+    --pkghdr=*)    pkghdr="$argopt";;
+    --pkgetc)      preopt=pkgetc;;
+    --pkgetc=*)    pkgetc="$argopt";;
+    --pkgman)      preopt=pkgman;;
+    --pkgman=*)    pkgman="$argopt";;
+    --pkgdoc)      preopt=pkgdoc;;
+    --pkgdoc=*)    pkgdoc="$argopt";;
+    --pkgwww)      preopt=pkgwww;;
+    --pkgwww=*)    pkgwww="$argopt";;
+    --pkgsrv)      preopt=pkgsrv;;
+    --pkgsrv=*)    pkgsrv="$argopt";;
+    --ccname)      preopt=ccname;;
+    --ccname=*)    ccname="$argopt";;
+    *)             error "illegal option $nxtopt";;
+    esac
+done
+
+# create the definitions
+gendef
+# compute the compiler & linker
+getccl
+# fix the definitions
+fixcnf
+# create the configuration
+gencnf
+
+# check if we report the user option
+if test "$shwopt" = "yes"; then
+    report
+fi
+
+# success
+exit 0

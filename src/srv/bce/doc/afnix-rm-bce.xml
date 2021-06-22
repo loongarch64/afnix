@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-rm-bce.xml                                                   = -->
+<!-- = standard bce service - reference manual                            = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix service="bce" number="i">
+  <title>Standard Content Session Management Reference</title>
+
+  <!-- ==================================================================== -->
+  <!-- = part object                                                      = -->
+  <!-- ==================================================================== -->
+
+  <object nameset="afnix:bce">
+    <name>Part</name>
+
+    <p>
+      The <code>Part</code> class is a base class which constitues
+      the primary ingredient of the block chain bill of material.
+    </p>
+
+    <!-- predicate -->
+    <pred>part-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Serial</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the part name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-uuid</name>
+	<retn>Uuid</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-uuid</code> method returns the part uuid
+	</p>
+      </meth>
+    </methods>
+  </object>
+</appendix>

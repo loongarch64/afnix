@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-wm-wax.xml                                                   = -->
+<!-- = web application extension service - writer manual                  = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter service="wax" number="1">
+  <title>Web Application Extension Service</title>
+  
+  <p>
+    The <em>Web Application Extension</em> service is an original
+    implementation that provides the support for low level HTTP transaction
+    as well as high level XHTML page generation. The service combines 
+    various modules and provides access to the modern generation of
+    web contents.
+  </p>
+
+  <!-- page service objects -->
+  <section>
+    <title>Page service objects</title>
+
+    <p>
+      The <code>XhtmlRoot</code> class is the primary interface to
+      generate <em>xhtml page</em>. The class is derived from the
+      <code>XmlRoot</code> class and the <code>Mime</code>object. for
+      this reason, creating a xhtml page is equivalent to add xml nodes
+      to the page. The xhtml version is assumed to be <em>1.1</em>.
+    </p>
+
+    <!-- page creation -->
+    <subsect>
+      <title>Page creation</title>
+
+      <p>
+	The <code>XhtmlRoot</code> constructor takes a string argument
+	which is the title page. When the root page is created, a
+	<em>head</em> and <em>body</em> nodes are automatically
+	created. Once created, it is possible to retrieve the head and
+	body nodes from the root node. The head and body nodes are part
+	of the <em>html</em> node which is automatically instantiated as
+	a <code>XhtmlHtml</code> object. The html node can always be
+	retrieved from the root node with the <code>get-child</code>
+	xml method.
+      </p>
+
+      <example>
+	# create a new xhtml page
+	const page (afnix:wax:XhtmlRoot "AFNIX wax service")
+	# get the head node
+	const head (page:get-head)
+	# get the body node
+	const body (page:get-body)
+      </example>
+
+      <p>
+	The head and body nodes are part of the <em>html</em> node which
+	is automatically instantiated as a <code>XhtmlHtml</code>
+	object. The html node can always be retrieved from the root node
+	with the <code>get-child</code> xml method. The root methods
+	<code>get-head</code> and <code>get-body</code> are convenient
+	methods that ease the page design by eliminating the references
+	to the html node.
+      </p>
+
+      <example>
+	# create a new xhtml page
+	const page (afnix:wax:XhtmlRoot "AFNIX wax service")
+	# get the html node
+	const html (page:get-child "html")
+	# get the head node
+	const head (html:get-head)
+	# get the body node
+	const body (html:get-body)
+      </example>
+    </subsect>
+
+    <!-- page header -->
+    <subsect>
+      <title>Page header</title>
+      
+      <p>
+	The <code>XhtmlHead</code> class is the xml node that handles
+	the xhtml head. The object is automatically created when calling
+	the <code>XhtmlRoot</code> constructor. During the construction
+	process, the head is automatically set with a title. Once
+	created, the head can be filled with meta information and
+	styles. The <code>add-meta</code> method is designed to add meta
+	information, while the <code>add-style</code> add a link node
+	with a style reference to the head.
+      </p>
+
+      <example>
+	# add a meta tag
+	head:add-meta "copyright" "© 2000"
+	# add a style path
+	head:add-style "/style.css"
+      </example>
+
+      <p>
+	The <code>add-meta</code> method adds a <code>XhtmlMeta</code>
+	object which is a xml tag node. The first argument is the meta
+	descriptor while the second argument is the meta content. Note
+	that the <code>add-meta</code> method can be simulated by
+	calling the <code>XhtmlMeta</code> constructor and then adding
+	the node to the head node.
+      </p>
+
+      <example>
+	# create a meta node
+	const node (afnix:wax:XhtmlMeta "copyright" "© 2013")
+	# add the node to the head
+	head:add node
+      </example>
+
+      <p>
+	The <code>add-style</code> method adds a <code>XhtmlStyle</code>
+	object which is a xml tag node. The string argument is the url
+	style sheet path which gets automatically transformed to the
+	form <em>@import(url)</em>. Note that the <code>add-style</code>
+	method can be simulated by calling the <code>XhtmlStyle</code>
+	constructor and then adding the node to the head node.
+      </p>
+
+      <example>
+	# create a style node
+	const node (afnix:wax:XhtmlStyle "/style.css")
+	# add the node to the head
+	head:add node
+      </example>
+    </subsect>
+
+    <!-- page body -->
+    <subsect>
+      <title>Page body</title>
+      
+      <p>
+	The <code>XhtmlBody</code> class is the xml node that handles
+	the xhtml body. The object is automatically created when calling
+	the <code>XhtmlRoot</code> constructor. Once created, the body
+	node can be filled with any valid xhtml node. Since the node are
+	initially xml tag node, it is always possible to create a tag by
+	name and set the attributes and child nodes manually.
+      </p>
+
+      <example>
+	# create a new xhtml page
+	const page (afnix:wax:XhtmlRoot "AFNIX wax service")
+	# get the body node
+	const body (page:get-body)
+	# add a node
+	body:add-child node
+      </example>
+    </subsect>
+
+    <!-- page emission -->
+    <subsect>
+      <title>Page emission</title>
+      
+      <p>
+	Since the <code>XhtmlRoot</code> object is a xml root node, the
+	node can be used to write the complete hierarchy. The xml node
+	node provides the <code>write</code> method that write a xml
+	tree into a buffer of an output stream.
+      </p>
+
+      <example>
+	# create a new xhtml page
+	const page (afnix:wax:XhtmlRoot "AFNIX wax service")
+	# write to the output stream
+	page:write
+      </example>
+
+      <p>
+	Another mechanism for writing the page is to use the fact that
+	the <code>XhtmlRoot</code> class implements also the
+	<code>Mime</code> interface. With this in mind, the
+	<code>XhtmlRoot</code> can be used within the
+	<code>HttpReply</code>. This method is particularly useful when
+	writing automated page generation, such like CGI scripts.
+      </p>
+
+      <example>
+	# create a new xhtml page
+	const page (afnix:wax:XhtmlRoot "AFNIX wax service")
+	# create an http reply object
+	const reply (afnix:wax:HttpReply)
+	# write the page as a mime object
+	reply:add-buffer page
+	# write the result to the output
+	reply:write
+      </example>
+    </subsect>
+  </section>
+
+  <!-- page design objects -->
+  <section>
+    <title>Page design objects</title>
+
+    <p>
+      The <em>wax service module</em> is designed to provide several
+      object that ease the task of creating a xhtml page. Such objects
+      range from comment to table. Most of the time, the construction is
+      simple the resulting node only need to be added to the page
+      tree. When it comes to add text, the problem is becoming more
+      subtle and is discussed later in this section.
+    </p>
+
+    <!-- xhtml comment -->
+    <subsect>
+      <title>Comment node</title>
+      
+      <p>
+	Adding a comment is done with the <code>XmlComment</code> class
+	which take the comment string in the constructor. Once created,
+	the comment node can be added to the tree.
+      </p>
+
+      <example>
+	# add a comment to the body node
+	body:add-child (
+	  afnix:xml:XmlComment "this is a comment")
+      </example>
+    </subsect>
+
+    <!-- node style class -->
+    <subsect>
+      <title>Node style class</title>
+      
+      <p>
+	When the xhtml page is combined with the cascaded style sheet
+	(CSS), the xhtml node tag often uses a <em>class</em> name to
+	refer to a particular style. The <em>class style</em> is just a
+	node attribute which can be set with the
+	<code>add-attribute</code> method. However, most of the time,
+	the library provides object which have the style as the first
+	argument in the constructor. For example, the
+	<code>XhtmlDiv</code> constructor take 0 or one argument. With
+	one argument, the string argument is used as the style attribute.
+      </p>
+
+      <example>
+	# create a xhtml div with a class attribute
+	const div (afnix:wax:XhtmlDiv "nice")
+	# create a xhtml div  and set the class manually
+	const div (afnix:wax:XhtmlDiv)
+	div:set-attribute "class" "nice"
+      </example>
+    </subsect>
+
+    <!-- adding text paragraph -->
+    <subsect>
+      <title>Adding text paragraph</title>
+      
+      <p>
+	Adding text to a page is not a trivial task when it comes to deal
+	with text style. By default, a piece of text is stored in the
+	<code>XmlText</code> node. Using this node is easy. However, in
+	a programming context, its use can become heavy. For this reason,
+	all xml nodes provide the <code>parse</code> method which can be 
+	used to add a xml tree to the calling node. When it comes to add
+	text that includes rendering tag, this method is quite handy.
+      </p>
+
+      <example>
+	# add a text with some piece in italic
+	node:parse "this is a &lt;i&gt;simple&lt;/i&gt; method"
+      </example>
+
+      <p>
+	The <code>XhtmlPara</code> node is the preferred node for
+	adding text to a xhtml page. The node takes optionally the style
+	name in the constructor. A boolean flag can also be used to
+	create an empty paragraph node.
+      </p>
+
+      <example>
+	# create a paragraph node with a style
+	const p (afnix:wax:XhtmlPara "title")
+	# add some text
+	p:parse "the paragraph text"
+      </example>
+    </subsect>
+
+    <!-- adding reference -->
+    <subsect>
+      <title>Adding reference</title>
+      
+      <p>
+	Adding reference or hyperlink to a page is achieved with the
+	<code>XhtmlRef</code> class. Most of the time, the object is
+	built with a uri and a text. when the node has been created, the
+	node can be added to the page tree.
+      </p>
+
+      <example>
+	# create a hyperlink
+	const node (
+	  afnix:wax:XhtmlRef "http://www.afnix.org" "afnix")
+	# add the node in a paragraph
+	p:add-child node
+      </example>
+    </subsect>
+
+    <!-- formatting elements -->
+    <subsect>
+      <title>Formatting elements</title>
+      
+      <p>
+	The <code>XhtmlDiv</code> and <code>XhtmlHr</code> classes
+	are the basic formatting xhtml elements. The
+	<code>XhtmlDiv</code> is a grouping element and the
+	<code>XhtmlHr</code> is a simple horizontal ruler element. Both
+	classes take 0 or one argument which is the style name.
+      </p>
+
+      <example>
+	# create a div element
+	const div (afnix:wax:XhtmlDiv "menu")
+	# create a ruler element
+	const hr  (afnix:wax:XhtmlHr)
+      </example>
+    </subsect>
+  </section>
+
+  <!-- managing table -->
+  <section>
+    <title>Managing table</title>
+
+    <p>
+      The <em>wax service module</em> provides an extensive support of
+      he xhtml table element. There are basically two strategies for
+      creating a table. One is to use the html elements or the other is
+      to use a print table object and automatically feed the xhtml
+      table. The first method provides a better control while the second
+      one is easier to use.
+    </p>
+
+    <!-- xhtml table element -->
+    <subsect>
+      <title>The table element</title>
+
+      <p>
+	The <code>XhtmlTable</code> class is the class that manages
+	xhtml table. As usual, a default style name can be specified in
+	the constructor. Eventually, a default table row and table data
+	default style can also be specified. Such default value are used
+	when creating a new row with the <code>new-row</code> method.
+      </p>
+
+      <example>
+	# create an element with a default tr and th/td style
+	const tbl (afnix:wax:XhtmlTable "text" "text" "text")
+	# get a new row with a default style
+	const tr (tbl:new-row)
+      </example>
+
+      <p>
+	In the previous example, a table is created with a default style
+	for the table row. When a new row is created, the default style
+	is used for that row. If there is no default style, the row is
+	created without a style. Note that the <code>new-row</code>
+	method  takes also a style argument that overwrites the default
+	one.
+      </p>
+    </subsect>
+
+    <!-- building the table -->
+    <subsect>
+      <title>Building the table</title>
+
+      <p>
+	A table is built by adding row and data element into the
+	rows. A row is created with the <code>new-row</code> method or
+	the object can be constructed directly and added to the node
+	with the <code>add-child</code> method. The <code>XhtmlTr</code>
+	class is the table row class.
+      </p>
+
+      <example>
+	# get a new row with a default style
+	trans tr (tbl:new-row)
+	# create a row directly
+	trans tr (afnix:wax:XhtmlTr "text")
+      </example>
+
+      <p>
+	When a row has been created, the data can be added to the
+	row. Normally, the <code>new-data</code> method is used to
+	create a new table data element. If a default style is defined
+	in the table row, the table data element is built with that
+	style. The <code>new-head</code> method can also be used to
+	create table header element. Again, if a default table header
+	style exists in the table row, the element is built with that
+	style. The <code>XhtmlTd</code> class is the table data class
+	and the <code>XhtmlTh</code> class is the table header class.
+      </p>
+
+      <example>
+	# get a new data element
+	trans td (tr:new-data)
+	# create new head element
+	trans th (tr:new-head)
+      </example>
+
+      <p>
+	When the table data node has been created, the
+	<code>parse</code> method or the <code>add-child</code> method
+	can be called to add other nodes. another method for building
+	the table is to use the <code>add-table</code> method which uses
+	a print table object. In such case, the table rows and data
+	elements are automatically added in the table.
+      </p>
+    </subsect>
+
+    <!-- the table structure -->
+    <subsect>
+      <title>The table structure</title>
+
+      <p>
+	The table can be designed directly with table rows with table
+	headers and table data elements. Another method, which is more
+	structured is to use the table head, table body and table footer
+	elements. The <code>XhtmlThead</code> class is the table head
+	element class. The <code>XhtmlTbody</code> class is the table body
+	element class. The <code>XhtmlTfoot</code> class is the table footer
+	element class. These classes behaves exactly like the
+	<code>XhtmlTable</code> and are in fact all derived from the
+	<code>XhtmlTelem</code> class.
+      </p>
+
+      <example>
+	# create a xhtml table
+	const table (afnix:wax:XhtmlTable "text")
+	# create a table body
+	const tbody (
+	  afnix:wax:XhtmlTable "text" "text" "text")
+	# add a print tbl in the body
+	tbody:add-table ptbl
+	# add the body to the table
+	table:ad-child tbody
+      </example>
+
+      <p>
+	A table caption node can also be set with the
+	<code>set-caption</code> method. The method simply creates a
+	<code>XhtmlCaption</code> node and adds it to the table. The
+	caption text is part of the method call which is used by the
+	caption node constructor. It is also possible to create the
+	caption node by calling the <code>XhtmlCaption</code>
+	constructor and adding it to the table with he
+	<code>add-child</code> method.
+      </p>
+
+      <example>
+	# create a xhtml table
+	const table (afnix:wax:XhtmlTable "text")
+	# set a table caption
+	table:set-caption "the afnix table system"
+      </example>
+
+      <p>
+	The table structure can also be defined with the
+	<code>XhtmlCgr</code> class which corresponds to the xhtml column
+	group element. The column group element is designed to support
+	the <em>col</em> element that formats the table column.
+      </p>
+
+      <example>
+	# create a table
+	const table (afnix:wax:XhtmlTable "text")
+	# set the table with to 100%
+	table:add-attribute "width" "100%"
+	# create a column group
+	table:add-child (const xcgr (afnix:wax:XhtmlCgr))
+	# add a column with 30% width
+	cgr:add-child (afnix:wax:XhtmlCol "30%")
+	# add a column with 70% width
+	cgr:add-child (afnix:wax:XhtmlCol "70%")
+      </example>
+    </subsect>
+  </section>
+</chapter>

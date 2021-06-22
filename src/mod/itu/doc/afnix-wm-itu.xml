@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-wm-itu.xml                                                   = -->
+<!-- = standard itu module - writer manual                                = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter module="itu" number="1">
+  <title>Standard Telecom Module</title>
+  
+  <p>
+    The <em>Standard Telecom</em> module is an original implementation 
+    of various standards managed by the International Telecommunictaion Union
+    (ITU). At the heart of this module is the <em>Abstract Syntax
+    Notation</em> (ASN.1) which is widely used to model data records and
+    store certificates.
+  </p>
+  
+  <!-- asn -->
+  <section>
+    <title>Abstract syntax notation</title>
+    
+    <p>
+      The abstract syntax notation (ASN.1) is standardized by the ITU to
+      express a normal form of communication. The ASN.1 is in fact the
+      de-facto standard for representing X509 certificate and is the
+      only justification to provide the support for such complex
+      representation.
+    </p>
+
+    <subsect>
+      <title>Encoding rules</title>
+
+      <p>
+	This implementation supports all encoding forms as defined by
+	the ITU, namely the <em>Basic Encoding Rule</em> (BER), the
+	<em>Canonical Encoding Rule</em> (CER) and the
+	<em>Distinguished Encoding Rule</em> (DER). The DER form is by
+	far the most widely used.
+      </p>
+    </subsect>
+
+    <subsect>
+      <title>ASN objects</title>
+
+      <p>
+	All objects as defined by the ITU are supported in this
+	implementation, including the ability to create custom OID.
+      </p>
+
+      <table>
+	<title>ASN objects</title>
+	<tr><th>Object</th><th>Description</th></tr>
+	<tr>
+	  <td>AsnBoolean</td>
+	  <td>Boolean primitive</td>
+	</tr>	
+	<tr>
+	  <td>AsnInteger</td>
+	  <td>Integer primitive</td>
+	</tr>	
+	<tr>
+	  <td>AsnBits</td>
+	  <td>Bit string</td>
+	</tr>
+	<tr>
+	  <td>AsnOctets</td>
+	  <td>Octet string</td>
+	</tr>
+	<tr>
+	  <td>AsnBmp</td>
+	  <td>Bmp string</td>
+	</tr>
+	<tr>
+	  <td>AsnIas</td>
+	  <td>IA5 string</td>
+	</tr>
+	<tr>
+	  <td>AsnNums</td>
+	  <td>Numeric string</td>
+	</tr>
+	<tr>
+	  <td>AsnPrts</td>
+	  <td>Printable string</td>
+	</tr>
+	<tr>
+	  <td>AsnUtfs</td>
+	  <td>Unicode string</td>
+	</tr>
+	<tr>
+	  <td>AsnUnvs</td>
+	  <td>Universal string</td>
+	</tr>
+	<tr>
+	  <td>AsneNull</td>
+	  <td>Null primitive</td>
+	</tr>	
+	<tr>
+	  <td>AsneEoc</td>
+	  <td>End-of-Content primitive</td>
+	</tr>
+	<tr>
+	  <td>AsnGtm</td>
+	  <td>Generalized time primitive</td>
+	</tr>
+	<tr>
+	  <td>AsnUtc</td>
+	  <td>Utc time primitive</td>
+	</tr>
+	<tr>
+	  <td>AsnSequence</td>
+	  <td>Asn node Sequence</td>
+	</tr>
+	<tr>
+	  <td>AsnSet</td>
+	  <td>Asn node Set</td>
+	</tr>
+	<tr>
+	  <td>AsnOid</td>
+	  <td>Asn object identifier Set</td>
+	</tr>
+	<tr>
+	  <td>AsnRoid</td>
+	  <td>Asn object relative identifier Set</td>
+	</tr>
+      </table>
+    </subsect>
+
+    <subsect>
+      <title>Using ASN.1 objects</title>
+
+      <p>
+	Using ASN.1 object is particularly straightfoward. One can
+	directly creates a particular object by invoking the
+	appropriate constructor.
+      </p>
+
+      <example>
+	# create an asn boolean node
+	trans  abn  (afnix:itu:AsnBoolean true)
+	# check the node type
+	assert true (afnix:itu:asn-node-p abn)
+	assert true (afnix:itu:asn-boolean-p  abn)
+      </example>
+
+      <p>
+	Writing the object can be done into a buffer or an output
+	stream. Note that the default encoding is the DER encoding.
+      </p>
+
+      <example>
+	# write into a buffer
+	trans buf (Buffer)
+	abn:write buf
+	# check the buffer content
+	assert "0101FF" (buf:format)
+      </example>
+
+      <p>
+	Building an ASN.1 representation can be achieved by parsing a
+	buffer or an input stream. This is done by filling a buffer
+	and requesting a buffer node mapping.
+      </p>
+
+      <example>
+	# parse the buffer and check
+	const anb (afnix:itu:AsnBuffer buf)
+	# map the node to a boolean
+	trans abn (anb:node-map)
+	# check the node
+	assert true (afnix:itu:asn-node-p abn)
+	assert true (afnix:itu:asn-boolean-p  abn)
+      </example>
+
+      <p>
+	With more complex structure, it is likely that a sequence
+	object will be returned by the buffer node mapper. Once the
+	sequence object is created, each node can be accessed by index
+	like any other container.
+      </p>
+    </subsect>
+  </section>
+</chapter>

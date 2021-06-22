@@ -1,0 +1,1447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-rm-itu.xml                                                   = -->
+<!-- = standard itu module - reference manual                             = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix module="itu" number="i">
+  <title>Standard Telecom Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = asn node object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnNode</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnNode</code> class is the base class used to represent
+      the asn tree. The structure of the node is defined in ITU-T X.690
+      recommendation. This implementation supports 64 bits tag number
+      with natural machine length encoding. The Canonical Encoding Rule
+      (CER) and Distinguished Encoding Rule (DER) are defined by the
+      class. Since ASN.1 provides several encoding schemes, the class is
+      designed to be as generic as possible but does not provides the 
+      mechanism for changing from one representation to another although
+      it is perfectly valid to read a DER representation and write it in 
+      the CER form.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-node-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constants -->
+    <constants>
+      <const>
+        <name>BER</name>
+        <p>
+          The <code>BER</code> constant defines the <em>Basic Encoding
+	  Rule</em> node encoding.
+        </p>
+      </const>
+      <const>
+        <name>CER</name>
+        <p>
+          The <code>CER</code> constant defines the <em>Canonical Encoding
+	  Rule</em> node encoding.
+        </p>
+      </const>
+      <const>
+        <name>DER</name>
+        <p>
+          The <code>DER</code> constant defines the <em>Distinguished
+	  Encoding Rule</em> node encoding.
+        </p>
+      </const>
+      <const>
+        <name>UNIVERSAL</name>
+        <p>
+          The <code>UNIVERSAL</code> constant defines the node
+	  universal class.
+        </p>
+      </const>
+      <const>
+        <name>APPLICATION</name>
+        <p>
+          The <code>APPLICATION</code> constant defines the node
+	  application class.
+        </p>
+      </const>
+      <const>
+        <name>CONTEXT-SPECIFIC</name>
+        <p>
+          The <code>CONTEXT-SPECIFIC</code> constant defines the node
+	  context specific class.
+        </p>
+      </const>
+      <const>
+        <name>PRIVATE</name>
+        <p>
+          The <code>PRIVATE</code> constant defines the node
+	  private class.
+        </p>
+      </const>
+    </constants>
+    
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset a node to its default value.
+	</p>
+      </meth>
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the total node length
+	  in bytes.
+	</p>
+      </meth>
+      <meth>
+	<name>get-class</name>
+	<retn>UNIVERSAL|APPLICATION|CONTEXT-SPECIFIC|PRIVATE</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-class</code> method returns the node class.
+	</p>
+      </meth>
+      <meth>
+	<name>primitive-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>primitive-p</code> returns true if the node is a
+	  primitive.
+	</p>
+      </meth>
+      <meth>
+	<name>constructed-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>constructed-p</code> returns true if the node is a
+	  constructed node.
+	</p>
+      </meth>
+      <meth>
+	<name>get-tag-number</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-tag-number-p</code> returns node tag number.
+	</p>
+      </meth>
+      <meth>
+	<name>get-content-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-content-length-p</code> returns node content
+	  length.
+	</p>
+      </meth>
+      <meth>
+	<name>write</name>
+	<retn>none</retn>
+	<args>none|OutputStream|Buffer</args>
+	<p>
+	  The <code>write</code> method write the asn node contents as well as
+	  the child nodes to an output stream argument or a
+	  buffer. Without argument, the node is written to the
+	  interpreter output stream. With one argument, the node is
+	  written to the specified stream or buffer.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = asn octets object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnOctets</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnOctets</code> class is the asn object class that
+      encodes the octet string type. This type can be encoded either
+      as a primitive or as constructed at sender's option. In CER
+      form, the primitive form is used when the content length is less
+      than 1000 octets, and the constructed form is used
+      otherwise. The DER form will always use the primitive form.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-octets-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnOctets</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnOctets</code> constructor creates a default asn
+	  octets string node. 
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnOctets</name>
+	<args>String|Buffer</args>
+	<p>
+	  The <code>AsnOctets</code> constructor creates an asn
+	  octets string node by string of buffer object.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-buffer</name>
+	<retn>Buffer</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-buffer</code> method returns a
+	  <code>Buffer</code> object as an octet string representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = asn buffer object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnBuffer</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnBuffer</code> class is the asn object class that
+      provides a generic implementation of an asn structure. The class
+      acts as a simple encoder and decoder with special facilities to
+      retarget the buffer content.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-buffer-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnBuffer</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnBuffer</code> constructor creates a default asn
+	  buffer node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnBuffer</name>
+	<args>InputStream|Buffer|Bitset</args>
+	<p>
+	  The <code>AsnBuffer</code> constructor creates an asn buffer
+	  node from an input stream, a buffer or a bitset.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset the buffer.
+	</p>
+      </meth>
+      <meth>
+	<name>parse</name>
+	<retn>Boolean</retn>
+	<args>InputStream|Buffer|Bitset</args>
+	<p>
+	  The <code>parse</code> method parse a node represented by an
+	  input stream, a buffer or a bitset.
+	</p>
+      </meth>
+      <meth>
+	<name>node-map</name>
+	<retn>AsnNode</retn>
+	<args>none</args>
+	<p>
+	  The <code>node-map</code> method returns a node mapping of
+	  this buffer.
+	</p>
+      </meth>
+      <meth>
+	<name>get-content-buffer</name>
+	<retn>Buffer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-content-buffer</code> method returns the asn
+	  buffer content as a buffer object.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = asn null object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnNull</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnNull</code> class is the asn object class that
+      encodes the null primitive. This primitive has a unique
+      encoding. The length is always 0 and there is no content octet.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-null-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnNull</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnNull</code> constructor creates a default asn
+	  null node.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = asn eoc object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnEoc</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnEoc</code> class is the asn object class that
+      encodes the eoc or end-of-content primitive. This primitive is 
+      almost never used but its encoding is used with the indefinite
+      length encoding.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-eoc-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnEoc</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnEoc</code> constructor creates a default asn eoc node.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = asn boolean object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnBoolean</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnBoolean</code> class is the asn object class that
+      encodes the boolean primitive. This primitive has a unique
+      encoding with the CER or DER rule, but the BER rule can support
+      any byte value for the true value.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-boolean-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnBoolean</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnBoolean</code> constructor creates a default asn
+	  boolean node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnBoolean</name>
+	<args>Boolean</args>
+	<p>
+	  The <code>AsnBoolean</code> constructor creates an asn boolean
+	  node from a boolean object.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-boolean</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-boolean</code> method returns a
+	  <code>Boolean</code> object as the asn node representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = asn integer object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnInteger</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnInteger</code> class is the asn object class that
+      encodes the integer primitive. This primitive has a unique
+      encoding with the CER or DER rule. All encoding use a signed
+      2-complement form. 
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-integer-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnInteger</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnInteger</code> constructor creates a default asn
+	  integer node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnInteger</name>
+	<args>Integer|Relatif</args>
+	<p>
+	  The <code>AsnInteger</code> constructor creates an asn integer
+	  node from an integer or relatif object.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-relatif</name>
+	<retn>Relatif</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-relatif</code> method returns a
+	  <code>Relatif</code> object as the asn node representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = asn bits object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnBits</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnBits</code> class is the asn object class that
+      encodes the bit string type. This type can be encoded either as
+      a primitive or as constructed at sender's option. In CER form,
+      the primitive form is used when the content length is less than
+      1000 octets, and the constructed form is used otherwise. The DER
+      form will always use the primitive form.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-bits-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnBits</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnBits</code> constructor creates a default asn
+	  bits node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnBits</name>
+	<args>String|Bitset</args>
+	<p>
+	  The <code>AsnBits</code> constructor creates an asn bits
+	  node from a string or a bitset.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-bits</name>
+	<retn>Bitset</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-bits</code> method returns a
+	  <code>Bitset</code> object as a bit string representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = asn bmp object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnBmps</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnBmps</code> class is the asn object class that
+      encodes the asn bmp string primitive also known as the UCS-2
+      type string. This string is implemented, after conversion as an
+      octet string. Consequently the rules for encoding in CER and DER
+      modes are applied. 
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-bmps-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnOctets</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnBmps</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnBmps</code> constructor creates a default asn
+	  string (BMP) node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnBmps</name>
+	<args>String</args>
+	<p>
+	  The <code>AsnBmps</code> constructor creates an asn string
+	  (BMP) node from a string.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a
+	  <code>String</code> object as a node representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = asn ias object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnIas</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnIas</code> class is the asn object class that
+      encodes the IA5 string primitive. This string is implemented,
+      after conversion as an octet string. Consequently the rules for
+      encoding in CER and DER modes are applied.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-ias-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnOctets</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnIas</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnIas</code> constructor creates a default asn
+	  string (IA5) node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnIas</name>
+	<args>String</args>
+	<p>
+	  The <code>AsnIas</code> constructor creates an asn string (IA5)
+	  node from a string.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a
+	  <code>String</code> object as a node representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = asn nums object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnNums</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnNums</code> class is the asn object class that
+      encodes the asn numeric string primitive. This string is
+      implemented, after conversion as an octet string. Consequently
+      the rules for encoding in CER and DER modes are applied.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-nums-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnOctets</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnNums</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnNums</code> constructor creates a default asn
+	  string (NUMERIC) node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnNums</name>
+	<args>String</args>
+	<p>
+	  The <code>AsnNums</code> constructor creates an asn string
+	  (NUMERIC) node from a string.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a
+	  <code>String</code> object as a node representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = asn prts object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnPrts</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnPrts</code> class is the asn object class that
+      encodes the asn printable string primitive. This string is
+      implemented, after conversion as an octet string. Consequently
+      the rules for encoding in CER and DER modes are applied.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-prts-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnOctets</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnPrts</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnPrts</code> constructor creates a default asn
+	  string (PRINTABLE) node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnPrts</name>
+	<args>String</args>
+	<p>
+	  The <code>AsnPrts</code> constructor creates an asn string
+	  (PRINTABLE) node from a string.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a
+	  <code>String</code> object as a node representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = asn utfs object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnUtfs</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnUtfs</code> class is the asn object class that
+      encodes the asn utf string primitive. This string is implemented
+      as an octet string. Consequently the rules for encoding in CER
+      and DER modes are applied.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-utfs-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnOctets</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnUtfs</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnUtfs</code> constructor creates a default asn
+	  string (UNICODE) node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnUtfs</name>
+	<args>String</args>
+	<p>
+	  The <code>AsnUtfs</code> constructor creates an asn string
+	  (UNICODE) node from a string.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a
+	  <code>String</code> object as a node representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = asn unvs object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnUnvs</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnUnvs</code> class is the asn object class that
+      encodes the universal string primitive also known as the UCS-4
+      type string. This string is implemented, after conversion as an
+      octet string. Consequently the rules for encoding in CER and DER
+      modes are applied.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-unvs-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnOctets</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnUnvs</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnUnvs</code> constructor creates a default asn
+	  string (UNIVERSAL) node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnUnvs</name>
+	<args>String</args>
+	<p>
+	  The <code>AsnUnvs</code> constructor creates an asn string
+	  (UNIVERSAL) node from a string.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a
+	  <code>String</code> object as a node representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = asn gtm object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnGtm</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnGtm</code> class is the asn object class that
+      encodes the generalized time primitive. This primitive is
+      encoded from its equivalent string representation. Although,
+      the constructed mode is authorized, it does not make that much
+      sense to use it. 
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-gtm-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnGtm</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnGtm</code> constructor creates a default asn
+	  gtm node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnGtm</name>
+	<args>String</args>
+	<p>
+	  The <code>AsnGtm</code> constructor creates an asn gtm
+	  node from a string.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>utc-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>utc-p</code> predicate returns true if the time is
+	  expressed in UTC mode.
+	</p>
+      </meth>
+      <meth>
+	<name>to-time</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-time</code> method returns a time
+	  representation of this asn node.
+	</p>
+      </meth>
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a string
+	  representation of this asn node.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = asn utc object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnUtc</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnUtc</code> class is the asn object class that
+      encodes the utc time primitive. This primitive is encoding from
+      its equivalent string representation. Although, the constructed
+      mode is authorized, it does not make that much sense to use it.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-utc-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnUtc</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnUtc</code> constructor creates a default asn
+	  utc node.
+	</p>
+      </ctor>
+      <ctor>
+	<name>AsnUtc</name>
+	<args>String</args>
+	<p>
+	  The <code>AsnUtc</code> constructor creates an asn utc
+	  node from a string.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>utc-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>utc-p</code> predicate returns true if the time is
+	  expressed in UTC mode.
+	</p>
+      </meth>
+      <meth>
+	<name>to-time</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-time</code> method returns a time
+	  representation of this asn node.
+	</p>
+      </meth>
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a string
+	  representation of this asn node.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = asn sequence object                                             = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnSequence</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnSequence</code> class is the asn object class that
+      encodes the sequence constructed type. The order of elements is
+      preserved in the encoding of the sequence.
+
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-sequence-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnSequence</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnSequence</code> constructor creates an empty asn
+	  sequence node.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>node-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>node-length</code> method returns the number of
+	  nodes in the sequence.
+	</p>
+      </meth>
+      <meth>
+	<name>node-add</name>
+	<retn>none</retn>
+	<args>AsnNode</args>
+	<p>
+	  The <code>node-add</code> method adds a node to the sequence.
+	</p>
+      </meth>
+      <meth>
+	<name>node-get</name>
+	<retn>AsnNode</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>node-get</code> method returns an asn node by index.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = asn set object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnSet</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnSet</code> class is the asn object class that
+      encodes the set constructed type. The order of elements is not
+      important in a set.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-set-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnSet</name>
+	<args>none</args>
+	<p>
+	  The <code>AsnSet</code> constructor creates an empty asn
+	  set node.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>node-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>node-length</code> method returns the number of
+	  nodes in the set.
+	</p>
+      </meth>
+      <meth>
+	<name>node-add</name>
+	<retn>none</retn>
+	<args>AsnNode</args>
+	<p>
+	  The <code>node-add</code> method adds a node to the set.
+	</p>
+      </meth>
+      <meth>
+	<name>node-get</name>
+	<retn>AsnNode</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>node-get</code> method returns an asn node by index.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = oid object                                                      = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>Oid</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Oid</code> class is a base class that represents the
+      X500 object identifier which is used in the ASN.1 encoding and
+      in the X509 standard. An oid is simply represented by a vector
+      of subidentifiers. 
+    </p>
+
+    <!-- predicate -->
+    <pred>oid-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Oid</name>
+	<args>Integer|...</args>
+	<p>
+	  The <code>Oid</code> constructor creates an oid from a
+	  sequence of integers.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the oid object to its
+	  null empty state.
+	</p>
+      </meth>
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the oid.
+	</p>
+      </meth>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>Integer|...</args>
+	<p>
+	  The <code>add</code> method adds one or more sub-indentifiers
+	  to the oid.
+	</p>
+      </meth>
+      <meth>
+	<name>get</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns an oid sub-identifier by index.
+	</p>
+      </meth>
+      <meth>
+	<name>format</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>format</code> method returns a string
+	  representation of the oid.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = asn oid object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnOid</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnOid</code> class is the asn object class that
+      encodes the object identifier primitive. This primitive has a
+      unique encoding with the CER or DER rule. The oid is built as a
+      vector of subidentifiers (sid). Each sid is represented as an
+      octa (64 bits) value.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-oid-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnOid</name>
+	<args>Integer|...</args>
+	<p>
+	  The <code>AsnOid</code> constructor creates an asn oid from a
+	  sequence of sid.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>sid-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the oid.
+	</p>
+      </meth>
+      <meth>
+	<name>sid-add</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>sid-add</code> method adds a sid the oid object.
+	</p>
+      </meth>
+      <meth>
+	<name>sid-get</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>sid-get</code> method returns a sid by oid index.
+	</p>
+      </meth>
+      <meth>
+	<name>get-oid</name>
+	<retn>Oid</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-oid</code> method returns an oid object as the asn
+	  oid representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = asn roid object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:itu">
+    <name>AsnRoid</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>AsnRoid</code> class is the asn object class that
+      encodes the object relative identifier primitive. This primitive
+      has a unique encoding with the CER or DER rule. The oid is built
+      as a vector of subidentifiers (sid). Each sid is represented as
+      an octa (64 bits) value. The difference with the oid object is
+      to be found in the encoding of the first 2 sid.
+    </p>
+
+    <!-- predicate -->
+    <pred>asn-roid-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>AsnNode</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>AsnRoid</name>
+	<args>Integer|...</args>
+	<p>
+	  The <code>AsnRoid</code> constructor creates an asn roid from a
+	  sequence of sid.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>sid-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the oid.
+	</p>
+      </meth>
+      <meth>
+	<name>sid-add</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>sid-add</code> method adds a sid the oid object.
+	</p>
+      </meth>
+      <meth>
+	<name>sid-get</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>sid-get</code> method returns a sid by oid index.
+	</p>
+      </meth>
+      <meth>
+	<name>get-oid</name>
+	<retn>Oid</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-oid</code> method returns an oid object as the asn
+	  oid representation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = global functions                                                = -->
+  <!-- =================================================================== -->
+
+  <functions>
+    <func nameset="afnix:itu">
+      <name>asn-random-bits</name>
+      <retn>none</retn>
+      <args>Integer</args>
+      <p>
+        The <code>exit</code> function creates a random asn bit
+	string. The argument is the number of bits in the random string.
+      </p>
+    </func>
+    
+    <func nameset="afnix:itu">
+      <name>asn-random-octets</name>
+      <retn>none</retn>
+      <args>Integer</args>
+      <p>
+        The <code>exit</code> function creates a random asn octet
+	string. The integer argument is the number of octets in the string.
+      </p>
+    </func>
+  </functions>
+</appendix>

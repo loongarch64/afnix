@@ -1,0 +1,1292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = std-03-notes.xml                                                   = -->
+<!-- = afnix installation guide chapter 3                                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter id="std-03-notes">
+  <title>Release notes</title>
+
+  <p>
+    This chapter contains  the release notes for the different
+    releases. Release notes are given in descending order for a
+    particular version. The standard notation is
+    <em>major.minor.patch</em> which represents respectively, the
+    major, minor and patch number. A major version number changes
+    indicates a substantial change in the distribution, including new
+    tools, application interface and license. A minor version number
+    change indicates noticeable change, with or without new tools but
+    without application interface change nor license change. Finally,
+    a patch number change indicates a simple change to fix
+    problem. There is no additional features in a patch nor an
+    application interface change.
+  </p>
+
+  <!-- release 3.4.x -->
+  <section>
+    <title>Release 3.4</title>
+    
+    <!--release features -->
+    <list>
+      <item ref="Core engine: release 3.4.0">
+	This is a a minor release which integrates more support for
+	the tls service. Safe prime number generation has been
+	added. The assert special form has been enhanced to better
+	support real testing.
+      </item>
+      <item ref="Core modules: mth module">
+	Real vector, point and matrix of size 1,2,2 and 4 has been added.
+      </item>
+      <item ref="Core modules: sec module">
+	The gcm mode has been added. The elliptic curve objects and
+	its associated arithmetic has been integrated. Tests with the
+	standard curves have been incorporated.
+      </item>
+      <item ref="Core modules: sys module">
+	The date and time object have been enhanced to support
+	extended time with real precision below the second. A now
+	constant is also available for setting the current date and time.
+      </item>
+      <item ref="Core services: tls service">
+	The aes-gcm mode has been added as a cipher.
+      </item>
+      <item ref="Core services: phy service">
+	Direct access to physical constants has been added. The unit
+	string representation has been enhanced to support the scaling
+	factor.
+      </item>
+    </list>
+  </section>
+  
+  <!-- release 3.3.x -->
+  <section>
+    <title>Release 3.3</title>
+    
+    <!--release features -->
+    <list>
+      <item ref="Core engine: release 3.3.0">
+	This is a major release with a complete re-factoring of the
+	interpreter evaluation hierarchy. Internally, some objects are
+	being rewritten with a c++/17 semantic. Many objects have also
+	been optimized to support very long strings. The serialization
+	coding has also been revisited. A serious bug with negative
+	proleptic date has been fixed. Another bug with the object
+	iterator has also been fixed.
+      </item>
+      <item ref="Core engine: Unicode 13.0.0">
+	The Unicode standard, revision 13.0.0, has been incorporated
+	in the core engine.
+      </item>
+      <item ref="Core engine: asynchronous evaluation">
+	The special form <em>future</em> creates a special object called a
+	future which is used to evaluate an object asynchronously. The
+	evaluation starts with the help of the force special form. The
+	<em>sync</em> special form can be used to synchronize with the
+	future.
+      </item>
+      <item ref="Core modules: mth module">
+	The numeral block has been enhanced to support row/column
+	order and line/block padding and the interface has been
+	considerably enhanced.
+      </item>
+      <item ref="Core services: phy service">
+	The Unit object has been added to support the definition of
+	physical unit. The physic constants and the periodic table has
+	been re-factored.
+      </item>
+      <item ref="Core services: dip service">
+	The geo service has been removed and the image objects have
+	been moved to a new service called <em>dip</em>.
+      </item>
+    </list>
+  </section>
+  
+  <!-- release 3.2.x -->
+  <section>
+    <title>Release 3.2</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: release 3.2.0">
+	This is a minor release issued for synchronization with other
+	projects.
+      </item>
+      <item ref="Core engine: Numeral object">
+	The numeral object has been completely re-factored including
+	the api at the math module level.
+      </item>
+      <item ref=" Core modules: nwg module">
+	A generic json writer has been implemented and the
+	corresponding json mime object has been updated.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 3.1.x -->
+  <section>
+    <title>Release 3.1</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: release 3.1.0">
+	This is a major release which new standard objects as well
+	as the first distribution of the tls. Release 3.0 was an
+	internal release which is will not be publicly
+	distributed. The debian distribution has been fully
+	integrated and the build system revisited to account for new
+	platforms.
+      </item>
+      <item ref="Core engine: Unicode 12.1.0">
+	The Unicode revision 11.2.0 has been incorporated in the core
+	engine.
+      </item>
+      <item ref="Core engine: Task and structure">
+	The core engine has been enhanced to support the concept of
+	task. A Task is similar to a thread object, but can be used
+	directly at the api level. A new <code>Structure</code>
+	object has been added to support object aggregation.
+	engine.
+      </item>
+      <item ref=" Core modules: net module">
+	The buffer read and socket sapf (socket address protocol
+	family) have been fixed. The <code>Autocom</code> object has
+	bee added to support socket re-connection.
+      </item>
+      <item ref=" Core modules: nwg module">
+	The IPV6 address representation in uri has been fixed.  The
+	<code>Hyperlink</code> object has been added.
+      </item>
+      <item ref=" Core modules: geo module">
+	The <code>Netpbm</code> object has been fixed for
+	inconsistent block delete. The <code>Pixmap</code> stride
+	has been fixed.
+      </item>
+      <item ref=" Core modules: sec module">
+	The Sha-3 family of hashers has been added. The Kdf2
+	function has bee refactored to support the Pbkdf2
+	standard. Support for Galois field has been added. The
+	<code>Gcm</code> cipher has been added.
+      </item>
+      <item ref=" Core modules: sps module">
+	The csv split and validation process has been added. The
+	<code>Transit</code> has been revisited.
+      </item>
+      <item ref=" Core modules: mth module">
+	The integer vector object <code>Ivector</code> has been
+	added. The float vector <code>Fvector</code> has been
+	added. Random vector generation has been added.
+      </item>
+      <item ref=" Core modules: sys module">
+	System wait on kill has been added.
+      </item>
+      <item ref=" Core services: csm service">
+	The csm objects have been considerably re-factored. Notably
+	the <code>Part</code> and <code>Blob</code> objects.
+      </item>
+      <item ref=" Core projects: adp project">
+	The standard documentation processor has been enhanced with
+	more option for better distribution support.
+      </item>
+    </list>
+  </section>
+  
+  <!-- release 2.9.x -->
+  <section>
+    <title>Release 2.9</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: release 2.9.3">
+	Immediate release which fixes a potential deadlock in the
+	output stream object.
+      </item>
+      <item ref="Core engine: release 2.9.2">
+	Small revision release with small allocator fixes, doc improvements
+	and 32 bits inconsistencies removal. The support for 'clang'
+	compiler has been updated as well. A patch with support for
+	the RISCV processor has also been incorporated.
+      </item>
+      <item ref="Core engine: release 2.9.1">
+	Small revision release with minor improvements for IPV6
+	address support.
+      </item>
+      <item ref=" Core modules: nwg module">
+	The Uri object has been enhanced to support numerical ip
+	address notation with brackets.
+      </item>
+      <item ref=" Core modules: net module">
+	The Address object has been enhanced to support numerical ip
+	address detection.
+      </item>
+      <item ref="Core engine: Unicode 11.0.0">
+	The Unicode revision 11.0.0 has been incorporated in the core
+	engine.
+      </item>
+      <item ref="Core engine: serialization revisited">
+	The core engine serialization has been revisited to account
+	for a larger number of modules and services.
+      </item>
+      <item ref="Core engine: default hash revisited">
+	The core engine hash function is now based on the
+	Fowler-Noll-Vo algorithm.
+      </item>
+      <item ref="Core engine: logger object revisited">
+	The core engine logger object has been completely redesigned
+	with a simpler interface.
+      </item>
+      <item ref="Core modules: nwg module">
+	The base 64/32/16 codec have been added as a single object Basexx.
+      </item>
+      <item ref="Core modules: sec module">
+	The security module has been enhanced with a new signature
+	base class.	  
+      </item>
+      <item ref="Core modules: wgt module">
+	The widget module has been added to the core
+	distribution. At this time, the module contains expressable
+	and conditional objects.
+      </item>
+      <item ref="Core services: csm service">
+	The content session management service has been largely
+	refactored.
+      </item>
+      <item ref="Core services: geo service">
+	The geometry service has been enhanced to support image and
+	pixmap. A netpbm reader/writer has been added as well.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 2.8.x -->
+  <section>
+    <title>Release 2.8</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: release 2.8.3">
+	Release with GCC 8 support.
+      </item>
+      <item ref="Core engine: release 2.8.2">
+	Intermediate release with GCC 8 support.
+      </item>
+      <item ref="Core engine: release 2.8.1">
+	Incorporated patches for GCC 7.
+      </item>
+      <item ref="Core engine: Unicode 9.0.0">
+	The Unicode revision 9.0.0 has been incorporated in the core
+	engine.
+      </item>
+      <item ref="Core engine: Collectable objects">
+	The <code>Collectable</code> object is now being deployed
+	inside the engine. A colletable object provides a
+	<code>release</code> method which can be used to remove
+	links between object.	  
+      </item>
+      <item ref="Core engine: full dupleix stream">
+	A full dupleix object has been added as a generic object. A
+	full dupleix stream is provided for certain class of object
+	like the network socket. The default mode of operations
+	remains the half-dupleix stream since stream access are
+	protected by mutexes.
+      </item>
+      <item ref="Core modules: mth module">
+	The math module incorporates an infix notation parser
+	module. This is a preliminray work suppoosed to grow over
+	the next releases. The mean, covariance and univariate
+	regression has been added as objects.
+      </item>
+      <item ref="Core modules: sps module">
+	The bundle object literal index has been updated to follow
+	the bundle length.
+      </item>
+    </list>
+  </section>
+  
+  <!-- release 2.7.x -->
+  <section>
+    <title>Release 2.7</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: release 2.7.0">
+	Minor platform updates. This is an internal release in
+	preparation for the 2.8.0 release.
+      </item>
+      <item ref="Core modules: net module">
+	Revisit socket options and parameters
+      </item>
+      <item ref="Core services: csm service">
+	Minor fixes with the agent accessor.
+      </item>
+    </list>
+  </section>
+  
+  <!-- release 2.6.x -->
+  <section>
+    <title>Release 2.6</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: release 2.6.3">
+	Incorporated patches for GCC 6.
+      </item>
+      <item ref="Core engine: release 2.6.2">
+	Incorporated patches for Debian issued by maintainer.
+      </item>
+      <item ref="Core engine: release 2.6.1">
+	Fixed the FreBSD build.
+      </item>
+      <item ref="Core engine: release 2.6.0">
+	This is the relase 2.6.0. The code has been updated to
+	better support c++/11 for both gcc and clang.
+      </item>
+      <item ref="Core modules: xml module">
+	The processing of character entity reference has been
+	substantially changed to adhere fully with the xml
+	specification.
+      </item>
+      <item ref="Core modules: sps module">
+	The spreadsheet importer has been updated and a csv reader
+	has been added. The importation process has also been
+	revisited.
+      </item>
+      <item ref="Core modules: sec module">
+	The security module has been updated to support the
+	tls. This include moving to a 6 bits mersenne-twister and
+	adding a certificate block.	  
+      </item>
+      <item ref="Core modules: mth module">
+	The normal deviate has been added.
+      </item>
+      <item ref="Core services: geo service">
+	A new geometry service has been adedd to the
+	distribution. This provides support for modeling various
+	shapes and solids.
+      </item>
+      <item ref="Core services: cda service">
+	The streamable objects has been added to the crowd data
+	analytics service.
+      </item>
+    </list>
+  </section>
+  
+  <!-- release 2.5.x -->
+  <section>
+    <title>Release 2.5</title>
+
+    <!--release features -->
+    <list>	
+      <item ref="Core engine: release 2.5.2">
+	This is the relase 2.5.2. The release includes support for
+	the GCC 5 / CLANG 5 compilers suite. Thank's to Martin
+	Michlmayr for pointing this out.
+      </item>
+      <item ref="Core engine: release 2.5.1">
+	This is the relase 2.5.1. This is an emergency release that
+	fixes a bug in the uri percent encoding which can be
+	downloaded from here . It's amazing that it was not found
+	before. 
+      </item>
+      <item ref="Core engine: clang compiler with C++11 support">
+	The system infrastructure has been cleaned to support the clang
+	compiler. The code has also been cleaned to support the
+	C++11 standard which is now the compilation default.
+      </item>
+      <item ref="Core engine: standard library">
+	A <code>Style</code> object to support ina generic way the
+	formating operation for the literal objects. Consequently,
+	most of the literal objects have been cleaned and now
+	support a <code>format</code> method that operates with a
+	<code>Style</code> argument. The <code>PrintTable</code>
+	object has been enhanced to support column extension and
+	column style.
+      </item>
+      <item ref="Core modules: mth module">
+	The <code>ln</code> method is now the standard prefered name
+	for the natural logarithm. Several bugs have been fixed in
+	the real matrix implementation with respect to the openmp
+	implementation. A new solver based on the Modified
+	Gram-Schmidt algorithm. has been added. Note also that the
+	direct solver interface has been updated.
+      </item>
+      <item ref="Core modules: nwg module">
+	The <code>Uri</code> class has been enhanced to support
+	partial uri path extraction.
+      </item>
+      <item ref="Core modules: sps module">
+	The spreadsheet module has been considerably overhauled. A
+	new object <code>Lstack</code> has been added as a literal
+	stack which can be bound to the cell as a literal array.
+	The sheet formating has been also revisited to make profit
+	of the new <code>Style</code> object has well as the
+	printable transformation.
+      </item>
+      <item ref="Core modules: sys module">
+	The <code>Meter</code> object has been added as a mean to
+	help for the performance measurements.
+      </item>
+      <item ref="Core module: xml module">
+	The unicode conversion with reference has been updated to
+	adapt itself to the stream or buffer encoding during a write
+	process.
+      </item>
+      <item ref="Core services: phy service">
+	A preliminary set of nuclear physics constants have been added.
+      </item>
+      <item ref="Core services: csm service">
+	The <code>Workspace</code> object has been enhanced to
+	support output stream.	  
+      </item>
+      <item ref="Core services: web service">
+	A <code>JsonMime</code> object has been added. It is
+	designed to translate various object into a Javascript
+	object notation format. At this time, only the real data
+	samples <code>Rsamples</code> object is supported.
+      </item>
+    </list>
+  </section>
+  
+  <!-- release 2.4.x -->
+  <section>
+    <title>Release 2.4</title>
+
+    <!--release features -->
+    <list>	
+      <item ref="Core engine: unicode 6.3.0">
+	The Unicode 6.3.0 database is now supported in this release.
+      </item>
+      <item ref="Core engine: containers">
+	The standard object incorporates an alias table which
+	enables the mapping of property name in a plist. The
+	<code>Trie</code> object has been enhanced to support a 
+	reference index. The trie name mapping is now obtained with
+	the <code>to-names</code> method. 
+      </item>
+      <item ref="Core engine: parallel support">
+	This release incorporates an experimental support for
+	OpenMP. The OpenMP threads are compatible with the afnix
+	threads and support is initially available in the math
+	module. This option must be enabled explicitelly in the
+	build setup to be effective.
+      </item>
+      <item ref="Core engine: crowd service">
+	The session user registration id has been enhanced. The
+	concept of crowd service is available throuh the generic
+	<code>Xaas</code> object, and more specifically with the
+	<code>Saas</code> object. The <code>Workspace</code> object
+	has been enhanced with a public zone.
+      </item>
+      <item ref="Core modules: sio module">
+	The <code>Intercom</code> object has been enhanced to
+	support a buffered serialization which was somehow mandatory
+	when operating in udp mode.
+      </item>
+      <item ref="Core modules: net module">
+	Numerous deadlocks in the socket class have been fixed as
+	well as udp inconsistencies.
+      </item>
+      <item ref="Core modules: mth module">
+	The <code>Qmr</code> Krylov solver has been added as part as
+	the iterative solver family. The krylov convergence test has
+	also been improved. The <code>Qr</code> solver has been
+	added as part as the direct solver family. The sparse matrix
+	has been enhanced to support a generic iterator. The whole
+	solver architecture has been revisited and is now a class
+	based architecture with a type driven factory. Numerous bugs
+	have been fixed. Vector and matrix now support row
+	permutations.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 2.3.x -->
+  <section>
+    <title>Release 2.3</title>
+
+    <!--release features -->
+    <list>	
+      <item ref="Core engine: release 2.3.2">
+	This is the relase 2.3.2. The release fixes the real samples
+	array serialization.
+      </item>
+      <item ref="Core engine: release 2.3.1">
+	This is the release 2.3.1. Release 2.3.0 was an internal
+	work which has not been distributed.
+      </item>
+      <item ref="Core engine: interpreter line read">
+	The interpreter object can read a line or a passphrase from the
+	attached terminal.
+      </item>
+      <item ref="Core engine: interpreter daemon and librarian">
+	The interpreter can be put in daemon mode. This mean that a
+	new detached processed is spawned with the interpreter
+	attached to it. The librarian has been simplified and the 
+	loader integrated inside the interpreter.
+      </item>
+      <item ref="Core engine: input stream">
+	The input steam nom implements a stream consumption method
+	designed to accumulate a stream content into the stream buffer.
+	Subsequently, the buffer can be converted into a string. The
+	serialization of eos has been fixed.
+      </item>
+      <item ref="Core engine: string resolver">
+	The resolver has been enhanced to map a file into a string. This
+	methodology also applies to file present in a librarian.
+      </item>
+      <item ref="Core engine: property list">
+	The <code>Plist</code> object has been enhanced to better
+	support the merging operation.
+      </item>
+      <item ref="Core engine: unicode 6.2.0">
+	The Unicode 6.2.0 database is now supported in this release.
+      </item>
+      <item ref="Core modules: mth module">
+	The real matrix and vector implementation has been redesigned to
+	support a unique sparse representation. The serialization has also
+	been added to these objects.
+      </item>
+      <item ref="Core services: csm module">
+	The crowd object set has enhanced with an intercom crowd object
+	which simplify the transmission of registered crowd object. A cart
+	and a cart set object have been added as a mean to store crowd
+	object. The session object and sessions set objects have
+	been added. The session object has been enhanced to produce
+	the associated session cookie, with an augmented session
+	closing mechanism. 
+      </item>
+      <item ref="Core modules: nwg module">
+	The <code>UriPath</code> object has been added as a uri path
+	manipulator for http server.
+      </item>
+      <item ref="Core services: phy service">
+	The silicon energy gap has been fixed to the standard
+	value. The periodic table structure has been revisited.
+      </item>
+      <item ref="Core services: wax service">
+	The xhtml form elements have been added to the service. A
+	base element class has been also added to almost all
+	elements. The base class provides support for setting the common
+	element attributes.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 2.2.x -->
+  <section>
+    <title>Release 2.2</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: hurd platform">
+	The Hurd platform is now supported in this release. Thanks to
+	our contributor for delivering this new platform.
+      </item>
+      <item ref="Core engine: unicode 6.0.0">
+	The Unicode 6.0.0 database is now supported in this release.
+      </item>
+      <item ref="Core engine: object updates">
+	The lexical analyzer is now an object in its own. It can be used
+	to construct other object from a string description.
+      </item>
+      <item ref="Core modules: mth module">
+	An automatic linear system verification has been added to the
+	linear solver. Jacobi preconditionner have been added to the
+	Krylov solvers and Newton solvers have been improved.
+      </item>
+      <item ref="Core services: phy service">
+	The periodic table of the elements is under construction and should
+	be completed soon. The table will provides the information for each
+	elements, including name, symbol and other physical constants. The
+	suport for intrinsic carrier concentration is now available. This is
+	a cryptic feature for people working on semiconductors.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 2.1.x -->
+  <section>
+    <title>Release 2.1</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: superh processor">
+	The SuperH processor is now supported in this release. The SuperH 
+	is a 32 bits processor.
+      </item>
+      <item ref="Core engine: nan real number">
+	The implementation now supports the concepts of <em>Not a
+	Number</em> or NAN as a whole. A real object can set and
+	tested for NAN.
+      </item>
+      <item ref="Core engine: indirect librarian resolver">
+	The resolver has been enhanced to support indirect librarian
+	reference.
+      </item>
+      <item ref="Core modules: csm module">
+	The <em>personnal information management</em> module has been
+	renamed into the <em>crowd session management</em> or
+	<code>afnix-csm</code> module.
+      </item>
+      <item ref="Core modules: mth module">
+	The <em>math</em> module has been dramatically enhanced. The
+	<code>Rsamples</code> object has been added for storing data
+	samples. Function and polynomial objects have added to
+	support generic function computation. The non-linear Newton
+	system solver has been added as an object.
+      </item>
+      <item ref="Core services: svg service">
+	The <em>Scalable Vector Graphic</em> service has been
+	added. The service provides the support for the SVG 1.1
+	standard and allows the automatic generation of SVG
+	compliant code.
+      </item>
+      <item ref="Core services: phy service">
+	The <em>Physics</em> service has been added. The service
+	provides the support for standard physics operations. In
+	particular, the most common physical constants are defined
+	in this service.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 2.0.x -->
+  <section>
+    <title>Release 2.0</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: standard objects">
+	The <code>BlockBuffer</code> object has been added to the
+	standard object library. Furthermore, the <code>Buffer</code>
+	has been adapted to operate as a base class for the block
+	buffer and the <code>shl</code> method has been added to the
+	buffer object as a mean to shift the buffer. As consequence,
+	the default operating mode for a buffer is
+	the <code>BYTE</code> mode. When operating with strings,
+	the <code>UTF8</code> mode might be more suitable.
+	The <code>BitSet</code> object has been renamed 
+	to <code>Bitset</code> and the interface has been
+	cleaned. The <code>Vector</code> has been cleaned.
+	The <code>object-p</code> predicate has been
+	fixed.
+      </item>
+      <item ref="Core engine: thread engine">
+	The thread engine has been completly redesigned and
+	extensivelly tested on 32 and 64 bits platforms. It is no
+	longer a problem to operate with more than 32K threads
+	simultanesouly. Furthermore, the concept of thread pool has
+	been added to the engine. The <code>end-p</code> predicate has
+	been added to the thread object to indicate a succesful thread
+	completion.
+      </item>
+      <item ref="Core engine: form reader">
+	The <code>Reader</code> object has been added as a form
+	reader. The reader parses an input stream and produces a form
+	until the end-of-stream. The <code>Reader</code> provides the
+	support for string based execution.
+      </item>
+      <item ref="Core engine: default librarian module">
+	The <code>Librarian</code> object has been enhanced to support
+	the concept of default exeution module. When such module and
+	when the interpreter is requested to do so, the module is
+	automatically loaded during the execution.
+      </item>
+      <item ref="Core modules: nwg module">
+	The <code>HttpProto</code> default version has been move to
+	1.1 for both the request and response objects.
+      </item>
+      <item ref="Core modules: sio module">
+	The <code>InputMapped</code> class has been enhanced to provide
+	the facility for mapping buffer as well as acting as a null
+	character generator. The <code>OuputBuffer</code> object has
+	been added as a buffer output stream. With the addition of a
+	form reader, the interpreter communication
+	class <code>Intercom</code> has been added to the standard i/o
+	module.
+      </item>
+      <item ref="Core modules: xml module">
+	The <code>XneCond</code> object has been enhanced to support
+	various xml object. The <code>XmlPi</code> has been enhanced to
+	support attributes derivation from the string value.
+      </item>
+      <item ref="Core modules: itu module">
+	The <em>itu</em> module is a new module. It has been added with
+	a complete support for the ASN.1 standard. ASN.1 is essential for
+	the support of certificates.
+      </item>
+      <item ref="Core clients: axs client">
+	The <code>axs</code> client has been removed from the core
+	distribution. All of the client functionalities are now
+	available in the spreadsheet module.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 1.9.x -->
+  <section>
+    <title>Release 1.9</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: object unreference">
+	The long awaited <code>unref</code> reserved keyword has been
+	added as a mechanism to unreference a symbol.
+      </item>
+      <item ref="Core engine: object predicate">
+	The <code>object-p</code> predicate has been added as a
+	standard predicate. The predicate is the negation of
+	the <code>nil-p</code> standard predicate. The 
+	<code>method-p</code> predicate has also been added as a
+	standard predicate.
+      </item>
+      <item ref="Core engine: stop/resume parsing">
+	The file stream parsing has been enhanced with the help of the
+	<em>stop «</em> and <em>resume »</em> characters. When the
+	stop characters is found, all parsing operations are suspended
+	until a resume character is found.
+      </item>
+      <item ref="Core engine: extended exception attribute">
+	The <code>about</code> symbol has been added to the exception
+	object as extended exception reason. For a given reason, the
+	file name and line number is added to the exception reason.
+      </item>
+      <item ref="Core engine: string objects">
+	The <code>Strvec</code> string vector class has been added to
+	the core library. The class is similar to
+	the <code>Vector</code> class except that it operates with
+	strings and provides additional strings related methods.
+      </item>
+      <item ref="Core engine: counter object">
+	The <code>Counter</code> object has been added as a reserved object.
+	The counter is designed to be used directly in loop.
+      </item>
+      <item ref="Core engine: library cleaning">
+	The core library has been extensively cleaned in preparation
+	for the next major release. In particular, numerous memory
+	leaks have been removed and some classes derivations have been
+	fixed. A major bug in the closure argument counting has also been
+	discovered and fixed during this process.
+      </item>
+      <item ref="Core module: sio module">
+	The <code>Pathname</code> object has been enhanced to detect
+	the type of path associated with the object. Additionally, a
+	<code>normalize</code> method has been added.
+      </item>
+      <item ref="Core module: sio module">
+	The <code>FileInfo</code> object has been added to the
+	module. The class provides an immediate access to the principal
+	file parameters such like it size or its modification time.
+      </item>       
+      <item ref="Core module: sio module">
+	The <code>NamedFifo</code> object has been added to the
+	module. The class provides the support for a large string based
+	fifo with file saving capabilities.
+      </item>
+      <item ref="Core modules: nwg module">
+	Several predicates and functions related to media type
+	conversion have been added to the module. In particular, a
+	media type extension conversion has been implemented. The 
+	<code>HttpResponse</code> class has been enhanced with
+	several methods for status code checking.
+      </item>
+      <item ref="Core modules: sec module">
+	Support for the Digital Standard Algorithm, (aka DSA) as
+	specified by FIPS-PUB 186-3 has been added to the library. The
+	implementation incorporates several new objects to manipulate
+	signatures.
+      </item>
+      <item ref="Core modules: sec module">
+	The <code>RC2</code> block cipher algorithm has been added to
+	the module.
+      </item>
+      <item ref="Distribution: documentation">
+	The documentation distribution rules have been rewritten and
+	the "publish" rule has been added.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 1.8.x -->
+  <section>
+    <title>Release 1.8</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Build process: reset rule">
+	The <command>distclean</command> top level makefile rule has
+	been renamed as <command>reset</command>. 
+      </item>
+      <item ref="Core engine: stream object">
+	The stream engine has been cleaned with a new architecture. Two
+	new objects <code>InputStream</code> and <code>OutputStream</code>
+	acts as the foundation of this new design.
+      </item>
+      <item ref="Core modules: nwg module">
+	The <code>HttpProto</code>, <code>HttpRequest</code>
+	and <code>HttpResponse</code> objects have been completely
+	rewritten. In the new model, both objects can operate on the
+	server and client side. The <code>HttpReply</code> object has
+	been removed.
+      </item>
+      <item ref="Core modules: sec module">
+	The <code>Sha224</code> hash function has been added. This class
+	concludes the implementation of all SHA family hash functions.
+	The <code>Des</code> class that supports the DES stream cipher
+	has been added to the library.
+      </item>
+      <item ref="Core modules: xml module">
+	The <code>XmlRoot</code> class has been enhanced in order to
+	ease the declaration node existence verification as well as the
+	encoding mode extraction.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 1.7.x -->
+  <section>
+    <title>Release 1.7</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core clients: random engine seeding">
+	A new option controls the seeding of the random engine. By
+	default, in debug mode, the random engine is not seeded unless
+	requested by the user. In optimized mode, which is the normal
+	mode, the random engine is seeded at initialization.
+      </item>
+      <item ref="Core engine: base number object">
+	The long awaited base number object has been added. The
+	<code>Number</code> object serves the <code>Integer</code>,
+	<code>Real</code>, and <code>Relatif</code> objects. The base
+	number object is designed to ease the task of formatting
+	numbers.
+      </item>
+      <item ref="Core engine: relatif number enhancements">
+	The relatif number object has been enhanced to support extra methods
+	that are used for large number computation. This include the
+	power and gcd computation which are used by the cryptographic
+	engine. In addition, the base arithmetic relatif methods have
+	been optimized and certain corner bugs in the division fixed.
+      </item>
+      <item ref="Core engine: unicode database">
+	The core engine has been updated with the new Unicode 5.1.0
+	database.
+      </item>
+      <item ref="Core engine: serious bugs">
+	A serious bug in the form synchronize engine that would
+	cause an engine crash when a form is nil has been fixed.
+      </item>
+      <item ref="Core modules: sio module">
+	A new object called <code>Pathlist</code> has been added to
+	support the manipulation of path list. The object is designed
+	to ease the file name resolution in the presence of search
+	path. The module has also been extensively cleaned.
+      </item>
+      <item ref="Core modules: mth module">
+	A new module called <code>afnix-mth</code> has been added to the
+	standard distribution. The module is designed to integrate the
+	base mathematical functions and objects available in the
+	engine. With such introduction, the random number generation
+	has been moved into this module. Additionally, the functions needed
+	to generate prime numbers have been added to this module.
+      </item>
+      <item ref="Core modules: sec module">
+	A new module called <code>afnix-sec</code> has been added to the
+	standard distribution. The module is designed to integrate the
+	security functions and cryptographic objects.<br/>
+	<br/>
+	Two new hasher objects have been added to the security
+	module. The <code>Md2</code> object implements the MD2 message
+	digest algorithm as described in RFC 1319. The <code>Md4</code>
+	object implements the MD4 message digest algorithm as described
+	in RFC 1320. The standard key derivation functions KDF1 and KDF2
+	have been added to the security module. The asymmetric cipher
+	RSA has also been added to the security module and
+	the <code>Key</code> object has been updated to reflect this.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 1.6.x -->
+  <section>
+    <title>Release 1.6</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: object collection redesign">
+	The core engine has been seriously modified to accommodate for a
+	new object collection system (aka garbage collection). The new
+	system is more robust and provides new mechanism that will
+	permit to reclaim cyclic structure as well as destroying global
+	object on demand.
+      </item>
+      <item ref="Core engine: macos x support">
+	The core engine has been adapted to support the new MACOS X
+	Leopard operating system. 
+      </item>
+    </list>
+  </section>
+
+  <!-- release 1.5.x -->
+  <section>
+    <title>Release 1.5</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: unicode 5.0 support">
+	The core engine continues to be updated in order to better
+	support the Unicode 5.0 standard. With this release, the
+	string normalization scheme is now in place and used by default
+	internally. This implies among other things, a better support
+	for multiple diacritics as well as the beginning of the
+	standard collation algorithm.
+      </item>
+      <item ref="Core engine: log file support">
+	The <code>Logger</code> base class has been enhanced to support
+	the generation of a log file. An output stream can now be bound
+	to the object.
+      </item>
+      <item ref="Core engine: class defer support">
+	The concept of class <em>defer</em> object has been added to
+	the <code>Class</code> object. The <code>defer</code> mode is the
+	opposite of the <code>infer</code> mode and provides a
+	mechanism for base class creation.
+      </item>
+      <item ref="Core engine: print table header">
+	The <code>PrintTable</code> object has been enhanced to support
+	the concept of table header.
+      </item>
+      <item ref="Core engine: exception re-throwing">
+	The exception object <code>what</code> can be thrown with the
+	reserved keyword <code>throw</code>. This provides a mechanism
+	to re-throw an exception.
+      </item>
+      <item ref="Core engine: critical bug with return form">
+	A critical bug in the core engine affecting the behavior of the
+	<code>return</code> reserved keyword in a <code>try</code>
+	block has been fixed. A return form inside a try block was
+	incorrectly generating an exception which was subsequently
+	caught by the try block.
+      </item>
+      <item ref="Core modules: net module">
+	The base network module has been enhanced to better operate
+	with IPV6. In particular, when both IPV4 and IPV6 stacks are
+	present and a host name (typically localhost) have an address
+	entry, the socket constructor make sure it can build an
+	object. The IPV6 address display has been rewritten.
+      </item>
+      <item ref="Core modules: sio module">
+	A new object called <code>Pathname</code> has been added to
+	support the manipulation of system path. In addition, two new
+	functions <code>mkdir</code> and <code>mhdir</code> have been
+	also added to support the directory creation, both normally and
+	hierarchically.       
+      </item>
+      <item ref="Core modules: nwg module">
+	The <code>Uri</code> has been dramatically enhanced to conform
+	to the RFC 3986. In particular, the path representation for urn
+	is now working properly. The cookie object has been massaged to
+	support the cookie version 1, although it does not seem to be
+	supported (yet!) by the browsers.
+      </item>
+      <item ref="Core modules: xml module">
+	The xml module has been enhanced with a new parsing system
+	called the simple model. In the simple model, nodes are parsed
+	in a linear fashion. The node content is available in the form
+	of a string and its interpretation is at the user discretion.      
+      </item>
+      <item ref="Core service: wax service">
+	The <code>afnix-wam</code> service has been renamed as
+	<code>afnix-wax</code>. The service has also been updated with two
+	new objects, namely the <code>XmlMime</code> and
+	<code>XhtmlMime</code> which permits to build a mime
+	representation of an xml tree. Several xhtml objects have also
+	been added to complete the collection. This include the
+	<code>XhtmlScript</code> for example.
+      </item>
+      <item ref="Core service: xpe service">
+	The <code>afnix-xpe</code> service has been added as a new
+	service. The xml processing environment (xpe) provides a xml
+	processor that permits manipulate the whole xml tree with the
+	help of various xml processor features. In particular, the
+	service provides the support for the xml include extension.
+      </item>
+      <item ref="Core projects: apx project">
+	This release incorporates for the first time, the concept of
+	core project, which represents a librarian or an application.
+	The first project is the <em>AFNIX protocol extension or
+	apx</em> which is a message based protocol designed to
+	transport request/reply messages within a 
+	client/server environment. The message is built with the
+	xml library and the librarian provides the
+	encapsulation layer.
+      </item>
+      <item ref="Core projects: amd project">
+	The <em>AFNIX media dumper or amd</em> project is a
+	complete application designed to illustrate the design of an
+	application. The application permits to dump an uri content
+	into a file.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 1.4.x -->
+  <section>
+    <title>Release 1.4</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core engine: unicode 5.0 support">
+	The core engine has been substantially changed to support the new
+	Unicode 5.0 standard. As of now, the engine is in place
+	internally, but not fully activated. In particular, the string
+	normalization is implemented but not activated. The next release
+	should incorporate the full system with a change that should be
+	transparent to the user.
+      </item>
+      <item ref="Core language: instance inference">
+	An instance inference mechanism -- which is equivalent to the
+	concept of virtual constructor -- has been added to the core
+	engine. Such system permits to derive top instance from a base
+	instance construction. 
+      </item>
+      <item ref="Core language: print table object">
+	The <code>PrintTable</code> object has been enhanced with a
+	<code>dump</code> method similar to the <code>format</code> method.
+      </item>
+      <item ref="Core language: property list object">
+	The <code>Property</code> and the <code>Plist</code> objects have
+	been added to the standard library. a property is name/value
+	pair. The property list object is an iterable object that stores
+	property objects.
+      </item>
+      <item ref="Core modules: xml module">
+	A new module called <code>afnix-xml</code> has been added. The module
+	provides the foundation for a full xml 1.0/1.1 support. The
+	module also includes a parser that permits to build xml tree. A
+	xml tree writer is also part of the module functionality. A xml
+	processor is not yet available and is expected in the next release.
+      </item>
+      <item ref="Core modules: nwg module">
+	A new module called <code>afnix-nwg</code> has been added. The module
+	provides the support for the <em>network working group</em>
+	objects such like <code>Uri</code> object. The module also
+	provides the foundation for the mime support.
+      </item>
+      <item ref="Core modules: web module">
+	The <code>afnix-web</code> module has been removed and replaced
+	by the <code>afnix-wam</code> service.
+      </item>
+      <item ref="Core service: wam service">
+	The <code>afnix-wam</code> service has been added as the first
+	service into the core distribution. A service differs from a
+	module in the sense that it is a combination of different
+	modules. The <em>web application management</em> service depends
+	on the xml and nwg modules. The service provides all the
+	functionality to support a http session, including xhtml page
+	generation and cgi request reply.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 1.3.x -->
+  <section>
+    <title>Release 1.3</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core language: ISO-8859 transcoding support">
+	The core engine has been modified to integrate a character transcoder
+	that permits the support all <em>ISO-8859</em> codesets which are
+	mostly used for the encoding of european and arabic
+	characters. Depending on the locale settings, the transcoder 
+	automatically remaps the 8 bits characters into their respective
+	unicode character. All clients have been updated to detect
+	their associated locale and to set automatically the appropriate
+	transcoder. A new option <option>-e</option> has been added to
+	force a particular encoding.
+      </item>
+      <item ref="Core language: Logger base class">
+	A logging base class has been added. The logging facility provides
+	the interface to store messages by time and level. This class is
+	further extended in the modules.
+      </item>
+      <item ref="Core language: Heap class">
+	A heap class has been added. The heap can operate in ascending or
+	descending mode. This class can be used to support priority queue.
+      </item>
+      <item ref="Core language: Option class">
+	An option class has been added in order to ease the option
+	capture when designing an application. The class permits to define
+	the valid options and offer a powerful retrieval mechanism.
+      </item>
+      <item ref="Core language: Date class">
+	The <code>Time</code> class has been completely changed and a new
+	<code>Date</code> class has been added. The new mechanism
+	provides a better separation between the time and the date,
+	increase the date range and authorizes the support for multiple
+	calendar.
+      </item>
+      <item ref="Client: cross spreadsheet client">
+	The <code>axs</code> client has been modified to support the
+	<code>axs:insert-marker</code>, <code>axs:insert-header</code> and
+	<code>insert-footer</code> control commands.
+      </item>
+      <item ref="Core modules: speadsheet module">
+	The <code>Folio</code> and <code>Sheet</code> classes have been
+	substantially updated to support additional information. The
+	<code>Sheet</code> also supports the concept of markers that
+	marks the sheet columns by literals. The concept of column
+	tagging has been added with the associated search methods. All
+	classes also contain an information field. The importation
+	mechanism now supports a cons cell that defines both the cell
+	name and the cell value.
+      </item>
+      <item ref="Core modules: web module">
+	The <code>Table</code> class has been modified to support the
+	concept of table data header. The associated methods have been
+	added to the class and a new <code>HtmlTh</code> has been
+	added. The concept of tag propagation has also been added. If a
+	tag element already exists, this one is not added. This is
+	particularly true for the <tt>class</tt> tag that is now part of
+	the class constructor. The <code>HtmlPage</code> class has been
+	put in strict conformance with xhtml 1.1 and the
+	<code>XHtmlpage</code> class has been removed.
+      </item>
+      <item ref="Core modules: pim module">
+	A new module called the <code>afnix-pim</code> module has been
+	added to the base distribution. The <em>personal information
+	management or pim</em> module is designed to ease the management
+	of personal information and agenda.
+      </item>
+      <item ref="Core modules: gfx module">
+	A new module called the <code>afnix-gfx</code> module has been
+	added to the base distribution. The module contains the base class
+	that supports the graph data structure which was previously part
+	of the standard library.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 1.2.x -->
+  <section>
+    <title>Release 1.2</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core language: Unicode support">
+	The core engine has been substantially modified to integrate the 
+	support for Unicode characters. Depending on the system settings
+	the reader automatically adjust itself to operate in byte mode or
+	in UTF-8 mode. The <code>String</code> and <code>Character</code>
+	classes are now operating with a Unicode representation. The
+	design of an Unicode based engine also impacts several classes 
+	like the <code>Regex</code>, <code>Buffer</code> and stream
+	classes. A new class called <code>Byte</code> is also designed to
+	handle byte character. A new stream model with a base
+	<code>Stream</code> class has also been added. The full support
+	with Unicode character is not yet completed. In particular,
+	certain codesets are not supported at all. This is particularly
+	true with case-conversion functions.
+      </item>
+      <item ref="Core language: orphan instance and reparenting">
+	The object model now supports the creation of <em>orphan
+	instance</em> which is an instance without a class attached to
+	it. The instance can be later bound to a class and such class can
+	even be changed during the course of the program execution.
+      </item>
+      <item ref="Core modules: network module">
+	The <code>Address</code> class has been updated to reflect the
+	access to address aliases.
+      </item>
+      <item ref="Core modules: text processing module">
+	The <code>Literate</code> class has been updated to reflect the
+	support of Unicode characters. The class can operate both in byte
+	mode or in Unicode character mode.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 1.1.x -->
+  <section>
+    <title>Release 1.1</title>
+
+    <!--release features -->
+    <list>
+      <item ref="Core language: Large file support">
+	Support for the large file system has been added in the base
+	distribution. All input/output operations as long as they are
+	supported by the operating system are now done in 64 bits mode.
+      </item>
+      <item ref="Core libraries: Secure hash algorithm">
+	The cryptographic library incorporates the support for the SHA-1,
+	SHA-256, SHA-384 and SHA-512 hash algorithms.
+      </item>
+      <item ref="Core libraries: Standard symmetric cipher">
+	The cryptographic library incorporates the support for the
+	Advanced Encryption Standard (AES) as a symmetric cipher.
+      </item>
+      <item ref="Core libraries: ODC library renamed">
+	The ODC library has been renamed to SPS which stands for
+	spreadsheet library. This new name is considered more appropriate
+	for the function the library achieves.
+      </item>
+      <item ref="Core libraries: xhtml 1.1 support">
+	The XhtmlPara class is now configured to support XHTML 1.1 with
+	utf-8 encoding.
+      </item>
+      <item ref="Documentation: XML based documentation">
+	The documentation has been rewritten completely in XML. A
+	DTD as well as the necessary XSLT style sheets have also
+	been designed to produce a professional documentation which can
+	be used for printing or for online browsing.
+      </item>
+    </list>
+  </section>
+
+  <!-- release 1.0.x -->
+  <section>
+    <title>Release 1.0</title>
+
+    <p>
+      The 1.0 release is the initial release. This release
+      replaces the old <package>ALEPH programming language</package>
+      which has been discontinued.
+    </p>
+
+    <!-- release history -->
+    <list>
+      <item ref="04/19/2005: release 1.0.3">
+	This release incorporates the necessary files that support
+	<package>GCC 4</package>. It also provides some minor fixes that
+	were preventing the compilation on some 64 bits platforms.
+      </item>
+      <item ref="03/02/2005: release 1.0.2">
+	This release incorporates a minor fix that could cause the build
+	process to fail.
+      </item>
+      <item ref="02/16/2005: release 1.0.1">
+	This release incorporates a minor fix that could cause the build
+	process to fail.
+      </item>
+      <item ref="01/16/2005: release 1.0.0">
+	This is the primary release 1.0.0 which originated from the
+	<package>ALEPH programming language</package> and which has been
+	discontinued. A complete history of the language is provided in
+	the description page.
+      </item>
+    </list>
+  </section>
+</chapter>

@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-wm-sio.xml                                                   = -->
+<!-- = standard i/o module - writer manual                                = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter module="sio" number="1">
+  <title>Standard Input/Output Module</title>
+  
+  <p>
+    The <em>Standard Input/Output</em> module is an orginal implementation
+    that provides objects for i/o operations. Although input and output files
+    are the standard objects that one might expect, the module facilities
+    for directory access, path manipulation and i/o event management. At the
+    heart of this module is the concept of stream associated with the
+    transcoding object which enable the passage between one coding system
+    to another. It is also this module which provides the stream selector 
+    object.
+  </p>
+
+  <!-- input/output streams -->
+  <section>
+    <title>Input and output streams</title>
+
+    <p>
+      The <code>afnix-sio</code> module is based on facilities provided
+      by two base classes, namely, the <code>InputStream</code> stream and
+      the <code>OutputStream</code> stream. Both classes have associated
+      predicates with the name <code>input-stream-p</code> and
+      <code>output-stream-p</code>. The base class associated is the
+      <code>Stream</code> class those sole purpose is to define the
+      stream coding mode.
+    </p>
+
+    <!-- input stream -->
+    <subsect>
+      <title>Stream base class</title>
+
+      <p>
+	The <code>Stream</code> class is the base class for the
+	<code>InputStream</code> and <code>OutputStream</code> classes. The
+	<code>Stream</code> class is used to define the stream coding
+	mode that affects how characters are read or written. When a
+	stream operates in <em>byte mode</em>, each character is assumed
+	to be encoded in one byte. In that case, the input stream methods
+	<code>read</code> and <code>getu</code> are equivalent and no
+	transformation is performed when writing characters. This
+	behavior is the default stream behavior. For certain stream,
+	like terminal, this behavior is changed depending on the current
+	localization settings. For instance, if the current locale is
+	operating with an <em>UTF-8</em> codeset, the <code>Terminal</code>
+	stream coding mode is automatically adjusted to reflect this
+	situation. Since the <em>US-ASCII</em> codeset is predominant
+	and the default steam coding mode is the byte mode, there should
+	be no conflict during the read and write operations.
+      </p>
+    </subsect>
+
+    <!-- stream coding mode -->
+    <subsect>
+      <title>Stream transcoding</title>
+      
+      <p>
+	The <code>Stream</code> class provides the support for the
+	transcoding of different codesets. All <em>ISO-8859</em>
+	codesets are supported. Since the engine operates
+	internally with Unicode characters, the transcoding operation
+	takes care of changing a character in one particular codeset into
+	its equivalent Unicode representation. This operation is done
+	for an input stream that operates in byte mode. For an output
+	stream, the opposite operation is done. An internal Unicode
+	characters representation is therefore mapped into a particular
+	codeset. Note that only the codeset characters can be mapped.
+      </p>
+
+      <table>
+	<title>Supported stream codesets</title>
+	<tr><th>Codeset</th><th>Description</th></tr>
+	<tr><td>DEFAULT</td><td>Default codeset, i.e US-ASCII</td></tr>
+	<tr><td>ISO-01</td> <td>ISO-8859-1 codeset</td></tr>
+	<tr><td>ISO-02</td> <td>ISO-8859-2 codeset</td></tr>
+	<tr><td>ISO-03</td> <td>ISO-8859-3 codeset</td></tr>
+	<tr><td>ISO-04</td> <td>ISO-8859-4 codeset</td></tr>
+	<tr><td>ISO-05</td> <td>ISO-8859-5 codeset</td></tr>
+	<tr><td>ISO-06</td> <td>ISO-8859-6 codeset</td></tr>
+	<tr><td>ISO-07</td> <td>ISO-8859-7 codeset</td></tr>
+	<tr><td>ISO-08</td> <td>ISO-8859-8 codeset</td></tr>
+	<tr><td>ISO-09</td> <td>ISO-8859-9 codeset</td></tr>
+	<tr><td>ISO-10</td> <td>ISO-8859-10 codeset</td></tr>
+	<tr><td>ISO-11</td> <td>ISO-8859-11 codeset</td></tr>
+	<tr><td>ISO-13</td> <td>ISO-8859-13 codeset</td></tr>
+	<tr><td>ISO-14</td> <td>ISO-8859-14 codeset</td></tr>
+	<tr><td>ISO-15</td> <td>ISO-8859-15 codeset</td></tr>
+	<tr><td>ISO-16</td> <td>ISO-8859-16 codeset</td></tr>
+	<tr><td>UTF-08</td> <td>Unicode UTF-8 codeset</td></tr>
+      </table>
+    </subsect>
+
+    <p>
+      The <code>set-encoding-mode</code> can be used to set the stream
+      encoding codeset. The method operates either by enumeration or
+      string. The <code>get-encoding-mode</code> returns the stream
+      encoding mode. There are some time good reasons to force a stream
+      encoding mode. For example, a file encoded in UTF-8 that is read
+      will require this call since the default stream mode is to work
+      in byte mode. It should be noted that there is a difference
+      between the enumeration and the string encoding mode. The
+      enumeration mode defines whether the stream operates in byte or
+      UTF-8 mode. When the stream operates in byte mode, it is also
+      necessary to define the transcoding mode with
+      the <code>set-transcoding-mode</code> method. For simplicity, the
+      string version of the <code>set-encoding-mode</code> takes care of
+      setting both the stream mode and the transcoding mode. It is also
+      worth to note that internally, the <code>Stream</code> class is
+      derived from the <code>Transcoder</code> class.
+    </p>
+
+    <!-- input stream -->
+    <subsect>
+      <title>Input stream </title>
+
+      <p>
+	The <code>InputStream</code> base class has several method for reading
+	and testing for byte availability. Moreover, the class
+	provides a push-back buffer. Reading bytes is in the form of
+	three methods. The <code>read</code> method without argument
+	returns the next available byte or the <tt>end-of-stream</tt>
+	<code>eos</code>. With an integer argument, the <code>read</code>
+	method returns a <code>Buffer</code> with at most the number of
+	requested bytes. The <code>readln</code> method returns the
+	next available line. When it is necessary to read characters
+	instead of bytes, the <code>getu</code> is more appropriate
+	since it returns an Unicode character.
+      </p>
+    </subsect>
+
+    <!-- output stream -->
+    <subsect>
+      <title>Output stream</title>
+
+      <p>
+	The <code>OutputStream</code> base class provides the base methods to
+	write to an output stream. The <code>write</code> method takes
+	literal objects which are automatically converted to string
+	representation and then written to the output stream. Note that
+	for the case of a <code>Buffer</code> object, it is the buffer
+	itself that take a stream argument and not the opposite.
+      </p>
+    </subsect>
+
+    <!-- valid-p predicate -->
+    <subsect>
+      <title>The valid-p predicate</title>
+
+      <p>
+	The input stream provides a general mechanism to test and read
+	for bytes. The base method is the <code>valid-p</code>
+	predicate that returns <code>true</code> if a byte can be
+	read from the stream. It is important to understand its behavior
+	which depends on the stream type.
+
+	Without argument, the <code>valid-p</code> predicate checks for
+	an available byte from the input stream. This predicate
+	will block if no byte is available. On the other end, for a
+	bounded stream like an input file, the method will not block at
+	the end of file. With one integer argument, the
+	<code>valid-p</code> predicate will timeout after the specified
+	time specified in milliseconds. This second behavior is
+	particularly useful with unbound stream like socket stream.
+      </p>
+    </subsect>
+
+    <!-- eos-p predicate -->
+    <subsect>
+      <title>The eos-p predicate</title>
+
+      <p>
+	The <code>eos-p</code> predicate does not take argument. The
+	predicate behaves like <code>not (valid-p 0)</code>. However,
+	there are more subtle behaviors. For an input file, the
+	predicate will return <code>true</code> if and only if a
+	byte cannot be read. If a byte has been pushed-back
+	and the <tt>end-of-stream</tt> marker is reached, the method will 
+	return false. For an input terminal, the method returns
+	true if the user and entered the <tt>end-of-stream</tt> byte.
+	Once again, the method reacts to the contents of the push-back
+	buffer. For certain input stream, like a tcp socket, the method
+	will return true when no byte can be read, that is here,
+	the connection has been closed. For an udp socket, the method
+	will return <code>true</code> when all datagram bytes have
+	be read.
+      </p>
+    </subsect>
+
+    <!-- read method -->
+    <subsect>
+      <title>The read method</title>
+
+      <p>
+	The <code>read</code> method is sometimes disturbing. Nevertheless, 
+	the method is a blocking one and will return a byte when
+	completed. The noticeable exception is the returned byte
+	when an <tt>end-of-stream</tt> marker has been reached. The method
+	returns the <tt>ctrl-d</tt> byte. Since a binary file might
+	contains valid byte like <tt>ctrl-d</tt> it is necessary to
+	use the <code>valid-p</code> or <code>eos-p</code> predicate to
+	check for a file reading completion. This remark apply also to
+	bounded streams like a tcp socket. For some type of streams like
+	a udp socket, the method will block when all datagram bytes
+	have been consumed and no more datagram has arrived. With this
+	kind of stream, there is no <tt>end-of-stream</tt> condition and
+	therefore care should be taken to properly assert the stream
+	content. This last remark is especially true for the
+	<code>readln</code> method. The method will return when the
+	<tt>end-of-stream</tt> marker is reached, even if a newline
+	byte has not been read. With an udp socket, such behavior
+	will not happen.
+      </p>
+    </subsect>
+
+    <!-- buffer read mode -->
+    <subsect>
+      <title>Buffer read mode</title>
+
+      <p>
+	The <code>read</code> method with an integer argument, returns a
+	buffer with at least the number of bytes specified as an
+	argument. This method is particularly useful when the contents
+	has a precise size. The method returns a <code>Buffer</code>
+	object which can later be used to read, or transform
+	bytes. Multi-byte conversion to number should use such
+	approach. The <code>read</code> method does not necessarily
+	returns the number of requested bytes. Once the buffer is
+	returned, the <code>length</code> method can be used to check
+	the buffer size. Note also the existence of the
+	<code>to-string</code> method which returns a string
+	representation of the buffer.
+      </p>
+
+      <example>
+	# try to read 256 bytes
+	const buf (is:read 256)
+	# get the buffer size
+	println (buf:length)
+	# get a string representation
+	println (buf:to-string)
+      </example>
+    </subsect>
+  </section>
+
+  <!-- file stream -->
+  <section>
+    <title>File stream</title>
+
+    <p>
+      The <code>afnix-sio</code> module provides two classes for file
+      access. The <code>InputFile</code> class open a file for input. The 
+      <code>OutputFile</code> class opens a file for output. The
+      <code>InputFile</code> class is derived from the
+      <code>InputStream</code> base class. The <code>OutputFile</code> class
+      is derived from the <code>OutputStream</code> class. By default an
+      output file is created if it does not exist. If the file already
+      exist, the file is truncated to 0. Another constructor for the
+      output file gives more control about this behavior. It takes two
+      boolean flags that defines the truncate and append mode.
+    </p>
+
+    <example>
+      # load the module
+      interp:library "afnix-sio"
+      # create an input file by name
+      const if (afnix:sio:InputFile "orig.txt")
+      # create an output file by name
+      const of (afnix:sio:OutputFile "copy.txt")
+    </example>
+
+    <!-- stream information -->
+    <subsect>
+      <title>Stream information</title>
+      
+      <p>
+	Both <code>InputFile</code> and <code>OutputFile</code> supports
+	the <code>get-name</code> method which returns the file name.
+      </p>
+
+      <example>
+	println (if:get-name)
+	println (of:get-name)
+      </example>
+
+      <p>
+	Predicates are also available for these classes. The
+	<code>input-file-p</code> returns true for an input file
+	object.The <code>output-file-p</code> returns true for an output
+	file object. 
+      </p>
+
+      <example>
+	afnix:sio:input-stream-p  if
+	afnix:sio:output-stream-p of
+	afnix:sio:input-file-p    if
+	afnix:sio:output-file-p   of
+      </example>
+    </subsect>
+
+    <!-- reading and writing -->
+    <subsect>
+      <title>Reading and writing</title>
+
+      <p>
+	The <code>read</code> method reads a byte on an input
+	stream. The <code>write</code> method writes one or more literal
+	arguments on the output stream. The <code>writeln</code> method
+	writes one or more literal arguments followed by a newline
+	byte on the output stream. The <code>newline</code> method
+	write a newline byte on the output stream. The
+	<code>eos-p</code> predicate returns true for an input stream,
+	if the stream is at the end. The <code>valid-p</code> predicate
+	returns true if an input stream is in a valid state. With these
+	methods, copying a file is a simple operation.
+      </p>
+
+      <example>
+	# load the module and open the files
+	interp:library "afnix-sio"
+	const if (afnix:sio:InputFile "orig.txt")
+	const of (afnix:sio:OutputFile "copy.txt")
+
+	# loop in the input file and write
+	while (if:valid-p) (of:write (if:read))
+      </example>
+
+      <p>
+	The use of the <code>readln</code> method can be more
+	effective. The example below is a simple cat program which take
+	the file name an argument.
+      </p>
+
+      <example>
+	# cat a file on the output terminal
+	# usage: axi 0601.als file
+	
+	# get the io module
+	interp:library "afnix-sio"
+	
+	# cat a file
+	const cat (name) {
+        const f (afnix:sio:InputFile name)
+	while (f:valid-p) (println (f:readln))
+	f:close
+	}
+	
+	# get the file
+	if (== 0 (interp:argv:length)) {
+        errorln "usage: axi 0601.als file"
+	} {
+        cat (interp:argv:get 0)
+	}
+      </example>
+    </subsect>
+  </section>
+
+  <!-- multiplexing -->
+  <section>
+    <title>Multiplexing</title>
+
+    <p>
+      I/O multiplexing is the ability to manipulate several streams at
+      the same time and process one at a time. Although the use of
+      threads reduce the needs for i/o multiplexing, there is still
+      situations where they are needed. In other words, I/O multiplexing
+      is identical to the <code>valid-p</code> predicate, except that it
+      works with several stream objects.
+    </p>
+
+    <!-- selector object -->
+    <subsect>
+      <title>Selector object</title>
+
+      <p>
+	I/O multiplexing is accomplished with the <code>Selector</code>
+	class. The constructor takes 0 or several stream arguments. The
+	class manages automatically to differentiate between
+	<code>InputStream</code> stream and <code>OutputStream</code>
+	streams. Once the class is constructed, it is possible to get
+	the first stream ready for reading or writing or all of them. We
+	assume in the following example that <code>is</code>
+	and <code>os</code> are respectively an input and an output stream.
+      </p>
+
+      <example>
+	# create a selector
+	const slt (afnix:sio:Selector is)
+
+	# at this stage the selector has one stream
+	# the add method can add more streams
+	slt:add os
+      </example>
+
+      <p>
+	The <code>add</code> method adds a new stream to the
+	selector. The stream must be either an <code>InputStream</code> and
+	<code>OutputStream</code> stream or an exception is raised. If
+	the stream is both an input and an output stream, the preference
+	is given to the input stream. If this preference is not
+	acceptable, the <code>input-add</code> or
+	the <code>output-add</code> methods might be preferable. The 
+	<code>input-length</code> method returns the number of input
+	streams in this selector. The <code>output-length</code> method
+	returns the number of output streams in this selector. The
+	<code>input-get</code> method returns the selector input stream
+	by index. The <code>output-get</code> method returns the
+	selector output stream by index.
+      </p>
+    </subsect>
+
+    <!-- waiting for i/o event -->
+    <subsect>
+      <title>Waiting for i/o event</title>
+
+      <p>
+	The <code>wait</code> and <code>wait-all</code> methods can be
+	used to detect a status change in the selector. Without argument
+	both methods will block indefinitely until one stream
+	change. With one integer argument, both method blocks until one
+	stream change or the integer argument timeout expires. The
+	timeout is expressed in milliseconds. Note that 0 indicates an
+	immediate return. The <code>wait</code> method returns the first
+	stream which is ready either for reading or writing depending
+	whether it is an input or output stream. The
+	<code>wait-all</code> method returns a vector with all streams
+	that have changed their status. The <code>wait</code> method
+	returns <code>nil</code> if the no stream have changed. 
+	Similarly, the <code>wait-all</code> method returns an empty
+	vector.
+      </p>
+
+      <example>
+	# wait for a status change
+	const is (slt:wait)
+	# is is ready for reading - make sure it is an input one
+	if (afnix:sio:input-stream-p is) (is:read)
+      </example>
+      
+      <p>
+	A call to the <code>wait</code> method will always returns the
+	first input stream.
+      </p>
+    </subsect>
+
+    <!-- marking mode -->
+    <subsect>
+      <title>Marking mode</title>
+
+      <p>
+	When used with several input streams in a multi-threaded
+	context, the selector behavior can becomes quite
+	complicated. For this reason, the selector can be
+	configured to operate in marking mode. In such mode, the
+	selector can be marked as ready by a thread independently of the
+	bounded streams. This is a useful mechanism which can be used
+	to cancel a select loop. The <code>mark</code> method is
+	designed to mark the selector while the <code>marked-p</code>
+	predicate returns true if the stream has been marked.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- terminal streams -->
+  <section>
+    <title>Terminal streams</title>
+
+    <p>
+      Terminal streams are another kind of streams available in the
+      standard i/o module. The <code>InputTerm</code>,
+      <code>OutputTerm</code> and  <code>ErrorTerm</code> classes are
+      low level classes used to read or write from or to the standard
+      streams. The basic methods to read or write are the same as the
+      file streams. Reading from the input terminal is not a good idea,
+      since the class does not provide any formatting capability. One may
+      prefer to use the <code>Terminal</code> class. The use of the
+      output terminal or error terminal streams is convenient when the
+      interpreter standard streams have been changed but one still need
+      to print to the terminal. 
+    </p>
+
+    <!-- terminal class -->
+    <subsect>
+      <title>Terminal class</title>
+      
+      <p>
+	The <code>Terminal</code> class combines an input stream and an
+	output stream with some line editing capabilities. When the
+	class is created, the constructed attempts to detect if the
+	input and output streams are bounded to a terminal (i.e tty). If
+	the line editing capabilities can be loaded (i.e non canonical
+	mode), the terminal is initialized for line editing. Arrows,
+	backspace, delete and other control sequences are available when
+	using the <code>read-line</code> method. The standard methods
+	like <code>read</code> or <code>readln</code> do not use the
+	line editing features. When using a terminal, the prompt can be
+	set to whatever the user wishes with the methods
+	<code>set-primary-prompt</code> or
+	<code>set-secondary-prompt</code>. A secondary prompt is
+	displayed when the <code>read-line</code> method is called with
+	the boolean argument false.
+      </p>
+
+      <example>
+	const term (Terminal)
+	term:set-primary-prompt "demo:"
+	const line (term:read-line)
+	errorln line
+      </example>
+    </subsect>
+
+    <!-- error terminal -->
+    <subsect>
+      <title>Using the error terminal</title>
+
+      <p>
+	The <code>ErrorTerm</code> class is the most frequently used
+	class for printing data on the standard error stream. The
+	reserved keywords <code>error</code> or <code>errorln</code>
+	are available to write on the interpreter error stream. If the
+	interpreter error stream has been changed, the use of the
+	<code>ErrorTerm</code> will provide the facility required to
+	print directly on the terminal. The <code>cat</code> program
+	can be rewritten to do exactly this.
+      </p>
+
+      <example>
+	# cat a file on the error terminal
+	
+	# get the io module
+	interp:library "afnix-sio"
+	
+	# cat a file
+	const cat (name es) {
+        const f (afnix:sio:InputFile name)
+	while (f:valid-p) (es:writeln (f:readln))
+	f:close
+	}
+      </example>
+    </subsect>
+  </section>
+
+  <!-- directory -->
+  <section>
+    <title>Directory</title>
+
+    <p>
+      The <code>Directory</code> class provides a facility to manipulate
+      directories. A directory  object is created either by name or
+      without argument by considering the current working
+      directory. Once the directory object is created, it is possible to
+      retrieve its contents, create new directory or remove empty one. 
+    </p>
+
+    <!-- reading a directory -->
+    <subsect>
+      <title>Reading a directory</title>
+
+      <p>
+	A <code>Directory</code> object is created either by name or
+	without argument. With no argument, the current directory is
+	opened. When the current directory is opened, its full name is
+	computed internally and can be retrieved with the
+	<code>get-name</code> method. 
+      </p>
+
+      <example>
+	# print the current directory
+	const pwd (afnix:sio:Directory)
+	println   (pwd:get-name)
+      </example>
+
+      <p>
+	Once the directory object is opened, it is possible to list its
+	contents. The <code>get-list</code> method returns the full
+	contents of the directory object. The <code>get-files</code>
+	method returns a list of files in this directory. The
+	<code>get-subdirs</code> method returns a list of sub
+	directories in this directory.
+      </p>
+
+      <example>
+	# print a list of files
+	const pwd (afnix:sio:Directory)
+	const lsf (d:get-files)
+	for (name) (lsf) (println name)
+      </example>
+    </subsect>
+
+    <!-- creating and removing directories -->
+    <subsect>
+      <title>Creating and removing directories</title>
+
+      <p>
+	The <code>mkdir</code> and <code>rmdir</code> methods can be
+	used to create or remove a directory. Both methods take a string
+	argument and construct a full path name from the directory name
+	and the argument. This approach has the advantage of being file
+	system independent. If the directory already exists, the
+	<code>mkdir</code> methods succeeds. The <code>rmdir</code>
+	method requires the directory to be empty.
+      </p>
+
+      <example>
+	const tmp (afnix:sio:Directory (
+	  afnix:sio:absolute-path "tmp"))
+	const exp (tmp:mkdir "examples")
+	const lsf (exp:get-files)
+	println   (lsf:length)
+	tmp:rmdir "examples"
+      </example>
+
+      <p>
+	The function <code>absolute-path</code> constructs an absolute
+	path name from the argument list. If relative path needs to be
+	constructed, the function <code>relative-path</code> might be
+	used instead.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- logtee -->
+  <section>
+    <title>Logtee</title>
+
+    <p>
+      The <code>Logtee</code> class is a message logger facility
+      associated with an output stream. When a message is added to the
+      logger object, the message is also sent to the output stream,
+      depending on the controlling flags. The name "logtee" comes from
+      the contraction of "logger" and "tee". One particularity of the
+      class is that without a stream, the class behaves like a regular
+      logger.
+    </p>
+
+    <!-- creating a logger -->
+    <subsect>
+      <title>Creating a logger</title>
+
+      <p>
+	The <code>Logtee</code> default constructor creates a standard
+	logger object without an output stream. The instance can also be
+	created by size or with an output stream or both. A third method
+	can also attach an information string.
+      </p>
+
+      <example>
+	# create a logger with the interpreter stream
+	const log (Logtee (interp:get-output-stream))
+	assert true (logger-p log)
+      </example>
+    </subsect>
+
+    <!-- adding messages -->
+    <subsect>
+      <title>Adding messages</title>
+
+      <p>
+	The process of adding messages is similar to the regular
+	logger. The only difference is that the message is placed on the
+	output stream if a control flag is set and the message level is
+	less or equal the report level. In the other word, the control
+	flag controls the message display -- the tee operation -- while
+	the report level filters some of the messages.
+      </p>
+
+      <example>
+	log:add 2 "a level 2 message"
+      </example>
+
+      <p>
+	The <code>set-tee</code> method sets the control
+	flag. The <code>set-report-level</code> method sets the report
+	level. Note that the <code>set-report-level</code> and its
+	associated <code>get-report-level</code> method is part of the
+	base <code>Logger</code> class.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- path name -->
+  <section>
+    <title>Path name</title>
+
+    <p>
+      The <code>Pathname</code> class is a base class designed to ease
+      the manipulation of system path. It is particularly useful when it
+      come to manipulate directory component.
+    </p>
+
+    <!-- creating a path name -->
+    <subsect>
+      <title>Creating a path name</title>
+      
+      <p>
+	A path name is created either by file name or by file and
+	directory name. In the first case, only the file name is
+	used. In the second case, the full path name is characterized.
+      </p>
+
+      <example>
+	# create a new path name
+	const path (afnix:sio:Pathname "axi")
+      </example>
+    </subsect>
+
+    <!-- adding a directory path -->
+    <subsect>
+      <title>Adding a directory path</title>
+      
+      <p>
+	The best way to add a directory path is to use the
+	<code>absolute-path</code> or the <code>relative-path</code>
+	functions.
+      </p>
+
+      <example>
+	# adding a directory path
+	const name (afnix:sio:absolute-path "usr" "bin")
+	path:set-directory-name name
+      </example>
+    </subsect>
+
+    <!-- get the path information -->
+    <subsect>
+      <title>Getting the path information</title>
+      
+      <p>
+	The path information can be obtained individually or
+	globally. The <code>get-file-name</code> and
+	<code>get-directory-name</code> methods return respectively  the
+	file and directory name. The <code>get-root</code> method
+	returns the root component of the directory name. The
+	<code>get-full</code> method returns the full path name.
+      </p>
+    </subsect>
+  </section>
+</chapter>

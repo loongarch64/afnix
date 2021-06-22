@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = XTS0006.xml                                                        = -->
+<!-- = afnix xml test suite reference                                     = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+                      "http://wam.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+  <!-- afnix wam application management (wam) module-->
+  <html xmlns="http://wam.w3.org/1999/xhtml" xml:lang="en">
+  <!-- page head -->
+  <head>
+   <title>
+   AFNIX test suite</title>
+   <meta name="author" content="Amaury Darsch"/>
+  </head>
+  <!-- page body -->
+  <body>
+  </body>
+</html>

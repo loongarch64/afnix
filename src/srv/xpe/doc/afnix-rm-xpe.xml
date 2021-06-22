@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-rm-xpe.xml                                                   = -->
+<!-- = xml processing environment service - reference manual              = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix service="xpe" number="i">
+  <title>XML Processing Environment Service Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = xml content object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xpe">
+    <name>XmlContent</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlContent</code> class is an extension of the xml
+      document class that operates at the uri level. If the uri is a
+      local file the xml document is created from an input file
+      stream. If the uri is an url, the content is fetched
+      automatically. The class constructors permit to separate the
+      content name from the document name and also to specify the
+      content encoding.
+    </p>
+
+    <!-- predicate -->
+    <pred>xml-content-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlDocument</name>
+      <name>Mime</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlContent</name>
+	<args>String</args>
+	<p>
+	  The <code>XmlContent</code> constructor creates a xml document
+	  by name. The document name is the normalized uri name that
+	  always favor a file scheme in the absence of it.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlContent</name>
+	<args>String String</args>
+	<p>
+	  The <code>XmlContent</code> constructor creates a xml document
+	  by name. The first argument is the content name. The second
+	  argument is the document name which is normalized to form the
+	  uri name used to load the document.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlContent</name>
+	<args>String String String</args>
+	<p>
+	  The <code>XmlContent</code> constructor creates a xml document
+	  by name and encoding mode. The first argument is the content
+	  name. The second argument is the document name which is
+	  normalized to form the uri name used to load the document. The
+	  third argument is the content character encoding.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-document-uri</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-document-uri</code> method returns the document
+	  normalized uri.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-document-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-document-name</code> method returns the object
+	  document name. This method complements the <code>get-name</code>
+	  method which returns the object name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml feature object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xpe">
+    <name>XmlFeature</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlFeature</code> class is a xml processor base class
+      that defines a processing feature. A processing feature is defined
+      by name and information with a processing level. The default
+      processing level is null. When the processor is called, it calls
+      sequentially and in ascending order all features.     
+    </p>
+
+    <!-- predicate -->
+    <pred>xhtml-feature-p</pred> 
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-info</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-info</code> method returns the xml feature
+	  information string. The feature name is available from the
+	  <code>get-name</code> provided by the <code>Nameable</code> base
+	  class.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-processing-level</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-processing-level</code> method sets the feature
+	  processing level. The integer argument is the level to set.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-processing-level</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-processing-level</code> method returns the feature
+	  processing level.
+	</p>
+      </meth>
+
+      <meth>
+	<name>processing-level-p</name>
+	<retn>Boolean</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>processing-level-p</code> predicate returns true if
+	  the integer argument equal the feature processing level.
+	</p>
+      </meth>
+
+      <meth>
+	<name>process</name>
+	<retn>XmlContent</retn>
+	<args>XmlContent</args>
+	<p>
+	  The <code>process</code> method process the input xml content
+	  and returns a new xml content. The method is automatically
+	  called by the xml processor.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml processor object                                            = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xpe">
+    <name>XmlProcessor</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlProcessor</code> class is a global class designed to
+      operate on a xml content. The xml processor provides several
+      features that can be enabled prior the document processor. Once
+      the features are defined, the 'process' method can be called and a
+      new xml content can be produced.
+    </p>
+
+    <!-- predicate -->
+    <pred>xml-processor-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlProcessor</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlProcessor</code> constructor creates a default xml
+	  processor without any feature.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>feature-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>feature-length</code> method returns the number of
+	  features defined in the xml processor.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-feature</name>
+	<retn>none</retn>
+	<args>XmlFeature</args>
+	<p>
+	  The <code>add-feature</code> method adds a feature object to the
+	  processor. The feature processing level does not have to be
+	  sorted prior the insertion. Adding multiple feature creates a
+	  processor chain.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-feature</name>
+	<retn>XmlFeature</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-feature</code> method return a processor feature
+	  by index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>process</name>
+	<retn>XmlFeature</retn>
+	<args>XmlFeature</args>
+	<p>
+	  The <code>process</code> method create a new xml content by
+	  calling processing feature chain. The feature chain consists of
+	  feature object sorted in ascending order. If the processor
+	  contains only one feature, calling the <code>process</code>
+	  method is equivalent to call the <code>XmlFeature</code> same
+	  method.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = xml include object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:xpe">
+    <name>XmlInclude</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>XmlInclude</code> class is a xml processor feature class
+      designed to handle the "XInclude" schema that permits to include
+      xml document. The feature operates recursively by scanning the
+      document for a "xi:include" tag and replacing the content by the
+      appropriate tree. The feature operates recursively unless
+      specified otherwise.
+    </p>
+
+    <!-- predicate -->
+    <pred>xml-include-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>XmlFeature</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>XmlInclude</name>
+	<args>none</args>
+	<p>
+	  The <code>XmlInclude</code> constructor creates a default xml
+	  include feature. The default feature processing level is 10.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>XmlInclude</name>
+	<args>Integer</args>
+	<p>
+	  The <code>XmlInclude</code> constructor creates a xml
+	  include feature with a processing level. The integer argument is
+	  the feature processing level to set.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+</appendix>

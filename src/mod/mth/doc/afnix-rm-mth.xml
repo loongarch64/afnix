@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-rm-mth.xml                                                   = -->
+<!-- = standard math module - reference manual                            = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix module="mth" number="i">
+  <title>Standard Math Reference</title>
+  
+  <!-- =================================================================== -->
+  <!-- = rvi object                                                      = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:net">
+    <name>Rvi</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Rvi</code> class an abstract class that models the behavior of a
+      real based vector. The class defines the vector length as well
+      as the accessor and mutator methods.
+    </p>
+    
+    <!-- predicate -->
+    <pred>rvi-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Serial</name>
+    </inherit>
+
+    <!-- operators -->
+    <otors>
+      <oper>
+        <name>==</name>
+        <retn>Boolean</retn>
+        <args>Vector</args>
+        <p>
+          The <code>==</code> operator returns true if the calling object
+          is equal to the vector argument.
+        </p>
+      </oper>
+
+      <oper>
+        <name>!=</name>
+        <retn>Boolean</retn>
+        <args>Vector</args>
+        <p>
+          The <code>==</code> operator returns true if the calling object
+          is not equal to the vector argument.
+        </p>
+      </oper>
+
+      <oper>
+        <name>?=</name>
+        <retn>Boolean</retn>
+        <args>Vector</args>
+        <p>
+          The <code>?=</code> operator returns true if the calling object
+          is equal to the vector argument upto a certain precision.
+        </p>
+      </oper>
+
+      <oper>
+        <name>+=</name>
+        <retn>Vector</retn>
+        <args>Real|Vector</args>
+        <p>
+          The <code>+=</code> operator returns the calling vector by
+	  adding the argument object. In the first form, the real
+	  argument is added to all vector components. In the second
+	  form, the vector components are added one by one.
+        </p>
+      </oper>
+
+      <oper>
+        <name>-=</name>
+        <retn>Vector</retn>
+        <args>Real|Vector</args>
+        <p>
+          The <code>-=</code> operator returns the calling vector by
+	  substracting the argument object. In the first form, the real
+	  argument is substracted to all vector components. In the second
+	  form, the vector components are substracted one by one.
+        </p>
+      </oper>
+      
+      <oper>
+        <name>*=</name>
+        <retn>Vector</retn>
+        <args>Real|Vector</args>
+        <p>
+          The <code>*=</code> operator returns the calling vector by
+	  multiplying the argument object. In the first form, the real
+	  argument is multiplied to all vector components. In the second
+	  form, the vector components are multiplied one by one.
+        </p>
+      </oper>
+
+      <oper>
+        <name>/=</name>
+        <retn>Vector</retn>
+        <args>Real</args>
+        <p>
+          The <code>/=</code> operator returns the calling vector by
+	  dividing the argument object. The vector components are
+	  divided by the real argument.
+        </p>
+      </oper>
+    </otors>
+    
+    <!-- methods -->
+    <methods>
+      <meth>
+        <name>set</name>
+        <retn>None</retn>
+        <args>Integer Real</args>
+        <p>
+          The <code>set</code> method sets a vector component by index.
+        </p>
+      </meth>
+
+      <meth>
+        <name>get</name>
+        <retn>Real</retn>
+        <args>Integer</args>
+        <p>
+          The <code>get</code> method gets a vector component by index.
+        </p>
+      </meth>
+
+      <meth>
+        <name>clear</name>
+        <retn>None</retn>
+        <args>None</args>
+        <p>
+          The <code>clear</code> method clears a vector. The dimension is
+	  not changed.
+        </p>
+      </meth>
+
+      <meth>
+        <name>reset</name>
+        <retn>None</retn>
+        <args>None</args>
+        <p>
+          The <code>reset</code> method resets a vector. The size is
+	  set to 0.
+        </p>
+      </meth>
+
+      <meth>
+        <name>get-size</name>
+        <retn>Real</retn>
+        <args> None</args>
+        <p>
+          The <code>get-size</code> method returns the vector dimension.
+        </p>
+      </meth>
+
+      <meth>
+        <name>dot</name>
+        <retn>Real</retn>
+        <args>Vector</args>
+        <p>
+          The <code>dot</code> method computes the dot product with
+	  the vector argument.
+        </p>
+      </meth>
+      
+      <meth>
+        <name>norm</name>
+        <retn>Real</retn>
+        <args>None</args>
+        <p>
+          The <code>norm</code> method computes the vector norm.
+        </p>
+      </meth>
+
+      <meth>
+        <name>permutate</name>
+        <retn>Vector</retn>
+        <args>Cpi</args>
+        <p>
+          The <code>permutate</code> method permutates the vector
+	  components with the help of a combinatoric permutation object.
+        </p>
+      </meth>
+
+      <meth>
+        <name>reverse</name>
+        <retn>Vector</retn>
+        <args>Cpi</args>
+        <p>
+          The <code>reverse</code> method reverse (permutate) the vector
+	  components with the help of a combinatoric permutation object.
+        </p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = rvector object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:net">
+    <name>Rvector</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Rvector</code> class is the default implementation of
+      the real vector interface.
+    </p>
+    
+    <!-- predicate -->
+    <pred>r-vector-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Rvi</name>
+    </inherit>
+
+    <ctors>
+      <ctor>
+        <name>Rvector</name>
+        <args>None</args>
+        <p>
+          The <code>Rvector</code> constructor creates a default null
+	  real vector.
+        </p>
+      </ctor>
+
+      <ctor>
+        <name>Rvector</name>
+        <args>Integer</args>
+        <p>
+          The <code>Rvector</code> constructor creates a real vector
+	  those dimension is given as the calling argument.
+        </p>
+      </ctor>
+    </ctors>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = global functions                                                = -->
+  <!-- =================================================================== -->
+
+  <functions>
+    <func nameset="afnix:mth">
+      <name>get-random-integer</name>
+      <retn>Integer</retn>
+      <args>none|Integer</args>
+      <p>
+	The <code>get-random-integer</code> function returns a random integer
+	number. Without argument, the integer range is machine
+	dependent. With one integer argument, the resulting integer number
+	is less than the specified maximum bound.
+      </p>
+    </func>
+    
+    <func nameset="afnix:mth">
+      <name>get-random-real</name>
+      <retn>Real</retn>
+      <args>none|Boolean</args>
+      <p>
+	The <code>get-random-real</code> function returns a random real
+	number between 0.0 and 1.0. In the first form, without argument,
+	the random number is between 0.0 and 1.0 with 1.0 included. In the
+	second form, the boolean flag controls whether or not the 1.0 is
+	included in the result. If the argument is false, the 1.0 value is
+	guaranted to be excluded from the result. If the argument is true,
+	the 1.0 is a possible random real value. Calling this function
+	with the argument set to true is equivalent to the first form
+	without argument.
+      </p>
+    </func>
+
+    <func nameset="afnix:mth">
+      <name>get-random-relatif</name>
+      <retn>Relatif</retn>
+      <args>Integer|Integer Boolean</args>
+      <p>
+	The <code>get-random-relatif</code> function returns a n bits random
+	positive relatif number. In the first form, the argument is the
+	number of bits. In the second form, the first argument is the
+	number of bits and the second argument, when true produce an odd
+	number, or an even number when false.
+      </p>
+    </func>
+
+    <func nameset="afnix:mth">
+      <name>get-random-prime</name>
+      <retn>Relatif</retn>
+      <args>Integer</args>
+      <p>
+	The <code>get-random-prime</code> function returns a n bits random
+	positive relatif probable prime number. The argument is the number
+	of bits. The prime number is generated by using the Miller-Rabin
+	primality test. As such, the returned number is declared probable
+	prime. The more bits needed, the longer it takes to generate such
+	number.
+      </p>
+    </func>
+
+    <func nameset="afnix:mth">
+      <name>get-random-bitset</name>
+      <retn>Bitset</retn>
+      <args>Integer</args>
+      <p>
+	The <code>get-random-bitset</code> function returns a n bits random
+	bitset. The argument is the number of bits.
+      </p>
+    </func>
+
+    <func nameset="afnix:mth">
+      <name>fermat-p</name>
+      <retn>Boolean</retn>
+      <args>Integer|Relatif Integer|Relatif</args>
+      <p>
+	The <code>fermat-p</code> predicate returns true if the little
+	fermat theorem is validated. The first argument is the base number
+	and the second argument is the prime number to validate.
+      </p>
+    </func>
+
+    <func nameset="afnix:mth">
+      <name>miller-rabin-p</name>
+      <retn>Boolean</retn>
+      <args>Integer|Relatif Integer|Relatif</args>
+      <p>
+	The <code>miller-rabin-p</code> predicate returns true if the
+	Miller-Rabin test is validated. The first argument is the base
+	number and the second argument is the prime number to validate.
+      </p>
+    </func>
+
+    <func nameset="afnix:mth">
+      <name>prime-probable-p</name>
+      <retn>Boolean</retn>
+      <args>Integer|Relatif [Integer]</args>
+      <p>
+	The <code>prime-probable-p</code> predicate returns true if
+	the argument is a probable prime. In the first form, only an
+	integer or relatif number is required. In the second form, the
+	number of iterations is specified as the second argument. By
+	default, the number of iterations is specified to 56.
+      </p>
+    </func>
+  </functions>
+</appendix>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-rm-axd.xml                                                   = -->
+<!-- = afnix cross debugger manual                                        = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<client>
+  <!-- client name -->
+  <name>axd</name>
+  <!-- synopsis -->
+  <synopsis>axd [options] file</synopsis>
+  <!-- options -->
+  <options>
+    <optn>
+      <name>h</name>
+      <p>
+	prints the help message
+      </p>
+    </optn>
+
+    <optn>
+      <name>v</name>
+      <p>
+	prints the program version
+      </p>
+    </optn>
+
+    <optn>
+      <name>i</name>
+      <args>path</args>
+      <p>
+	add a directory path to the resolver
+      </p>
+    </optn>
+
+    <optn>
+      <name>e</name>
+      <args>mode</args>
+      <p>
+	force the encoding mode
+      </p>
+    </optn>
+
+    <optn>
+      <name>f</name>
+      <args>runini</args>
+      <p>
+	run initial file
+      </p>
+    </optn>
+
+    <optn>
+      <name>f</name>
+      <args>emacs</args>
+      <p>
+	enable emacs mode
+      </p>
+    </optn>
+
+    <optn>
+      <name>f</name>
+      <args>assert</args>
+      <p>
+	enable assertion checking
+      </p>
+    </optn>
+
+    <optn>
+      <name>f</name>
+      <args>noseed</args>
+      <p>
+	do not seed the random engine
+      </p>
+    </optn>
+
+    <optn>
+      <name>f</name>
+      <args>seed</args>
+      <p>
+	seed the random engine
+      </p>
+    </optn>
+  </options>
+
+  <!-- description -->
+  <remark>
+    <title>Description</title>
+    
+    <p>
+      <product>axd</product> invokes the <afnix/> cross debugger. The
+      <product>axd</product> client permits to debug an <afnix/> program
+      by inserting breakpoint at strategic positions in the source
+      code. During a debugging session, when a breakpoint is reached,
+      the program is suspended and the debugger prompt is shown. Since
+      the debugger is based on the <afnix/> interpreter, the full power of
+      the <afnix/> interpreter is available at the debugger prompt.
+    </p>
+  </remark>
+
+  <!-- version -->
+  <remark>
+    <title>Version</title>
+    
+    <p>
+      The current version is the <major/>.<minor/>.<patch/> release.
+    </p>
+  </remark>
+
+  <!-- see also -->
+  <remark>
+    <title>See also</title>
+    
+    <p>
+      <link url="afnix-us-axc.xht">axc</link>,
+      <link url="afnix-us-axi.xht">axd</link>,
+      <link url="afnix-us-axl.xht">axl</link>,
+    </p>
+  </remark>
+
+  <!-- notes -->
+  <remark>
+    <title>Notes</title>
+
+    <p>
+      <afnix/> comes with an extensive documentation. The documentation
+      is available <link url="http://www.afnix.org">online</link>
+      or in the <path>doc</path> directory in
+      the form of formatted xhtml documents.
+    </p>
+  </remark>
+
+  <!-- author -->
+  <remark>
+    <title>Author</title>
+    
+    <p>
+      <product>axd</product> has been written by
+      <mail address="amaury@afnix.org">Amaury Darsch</mail>.
+    </p>
+  </remark>
+</client>

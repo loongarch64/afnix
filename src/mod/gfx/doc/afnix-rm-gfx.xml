@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-rm-gfx.xml                                                   = -->
+<!-- = standard graph module - reference manual                           = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix module="gfx" number="i">
+  <title>Standard Graph Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = edge object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:gfx">
+    <name>Edge</name>
+
+    <p>
+      The <code>Edge</code> class is a class used for a graph
+      construction in association with the <code>Vertex</code> class. 
+      An edge is used to connect vertices. Normally, an edge connects
+      two vertices. The number of vertices attached to an edge is
+      called the cardinality of that edge. A client object can also be
+      attached to the class.
+    </p>
+
+    <!-- predicate -->
+    <pred>edge-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Edge</name>
+	<args>none</args>
+	<p>
+	  The <code>Edge</code> constructor create an empty edge.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Edge</name>
+	<args>Object</args>
+	<p>
+	  The <code>Edge</code> constructor create an edge with a client object.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset all vertices attached to the edge.
+	</p>
+      </meth>
+
+      <meth>
+	<name>cardinality</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>cardinality</code> method returns the cardinality of the
+	  edge. The cardinality of an edge is the number of attached vertices.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>Vertex</retn>
+	<args>Vertex</args>
+	<p>
+	  The <code>add</code> method attach a vertex to this edge.
+	  The method return the argument vertex.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Vertex</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns the attached vertex by
+	  index. If the index is out-of range, and exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-client</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-client</code> method returns the edge client
+	  object. If the client object is not set, nil is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-client</name>
+	<retn>Object</retn>
+	<args>Object</args>
+	<p>
+	  The <code>set-client</code> method sets the edge client object. The
+	  object is returned by this method.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = vertex object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:gfx">
+    <name>Vertex</name>
+
+    <p>
+      The <code>Vertex</code> class is a class used for a graph
+      construction in association with the <code>Edge</code> class. 
+      An vertex is an edge node. The number of edges referenced by a
+      vertex is called the degree of that vertex. A client object can
+      also be attached to the object.
+    </p>
+
+    <!-- predicate -->
+    <pred>vertex-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Vertex</name>
+	<args>none</args>
+	<p>
+	  The <code>Vertex</code> constructor create an empty vertex.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Vertex</name>
+	<args>Object</args>
+	<p>
+	  The <code>Vertex</code> constructor create a vertex with a client object.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset all edges attached to the vertex.
+	</p>
+      </meth>
+
+      <meth>
+	<name>degree</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>degree</code> method returns the degree of the
+	  vertex. The degree of a vertex is the number of referenced edges.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>Edge</retn>
+	<args>Edge</args>
+	<p>
+	  The <code>add</code> method references an edge with this vertex.
+	  The method return the argument edge.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Edge</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns the referenced edge by
+	  index. If the index is out-of range, and exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-client</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-client</code> method returns the vertex client
+	  object. If the client object is not set, nil is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-client</name>
+	<retn>Object</retn>
+	<args>Object</args>
+	<p>
+	  The <code>set-client</code> method sets the vertex client object. The
+	  object is returned by this method.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = graph object                                                    = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnxi:gfx">
+    <name>Graph</name>
+
+    <p>
+      The <code>Graph</code> object is a general graph class that
+      manages a set of edges and vertices. The graph operates by adding
+      edges and vertices to it. The graph object also accepts a client
+      object in a way similar to the <code>Edge</code> and
+      <code>Vertex</code> classes
+    </p>
+
+    <!-- predicate -->
+    <pred>graph-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Graph</name>
+	<args>none</args>
+	<p>
+	  The <code>Graph</code> constructor create an empty graph.
+	</p>
+      </ctor>
+      
+      <ctor>
+	<name>Graph</name>
+	<args>Object</args>
+	<p>
+	  The <code>Graph</code> constructor create a graph with a client
+	  object.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset the graph
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset-edges</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset-edges</code> method reset all edges attached to
+	  the graph. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset-vertices</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset-vertices</code> method reset all vertices attached to
+	  the graph. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>Object</retn>
+	<args>Vertex|Edge</args>
+	<p>
+	  The <code>add</code> method adds a vertex or an edge to the
+	  graph. When adding an edge, the methods check that the source and
+	  target vertices are also part of the graph.
+	</p>
+      </meth>
+
+      <meth>
+	<name>exists</name>
+	<retn>Boolean</retn>
+	<args>Vertex|Edge</args>
+	<p>
+	  The <code>exists</code> method returns true if the vertex or edge
+	  argument exists in the graph.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-edge</name>
+	<retn>Edge</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-edge</code> method returns an edge by index. If the
+	  index is out-of-range, an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-vertex</name>
+	<retn>Vertex</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-vertex</code> method returns a vertex by index. If the
+	  index is out-of-range, an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>number-of-vertices</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>number-of-vertices</code> methods returns the number
+	  of vertices in the graph.
+	</p>
+      </meth>
+
+      <meth>
+	<name>number-of-edges</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>number-of-edges</code> methods returns the number of
+	  edges in the graph.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-client</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-client</code> method returns the graph client
+	  object. If the client object is not set, nil is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-client</name>
+	<retn>Object</retn>
+	<args>Object</args>
+	<p>
+	  The <code>set-client</code> method sets the graph client
+	  object. The object is returned by this method.
+	</p>
+      </meth>
+    </methods>
+  </object>
+</appendix>

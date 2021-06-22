@@ -1,0 +1,2836 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-rm-sio.xml                                                   = -->
+<!-- = standard i/o module - reference manual                             = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix module="sio" number="i">
+  <title>Standard Input/Output Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = transcoder object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>Transcoder</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Transcoder</code> class is a codeset transcoder
+      class. The class is responsible to map a byte character in a given
+      codeset into its associated Unicode character. It should be
+      noted that not all characters can be transcoded.
+    </p>
+
+    <!-- predicate -->
+    <pred>transcoder-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constants -->
+    <constants>
+      <const>
+	<name>DEFAULT</name>
+	<p>
+	  The <code>DEFAULT</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode. In default mode, each character is not
+	  transcoded. This mode is the identity mode.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-01</name>
+	<p>
+	  The <code>I8859-01</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-6 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-02</name>
+	<p>
+	  The <code>I8859-02</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-2 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-03</name>
+	<p>
+	  The <code>I8859-03</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-3 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-04</name>
+	<p>
+	  The <code>I8859-04</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-4 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-05</name>
+	<p>
+	  The <code>I8859-05</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-5 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-06</name>
+	<p>
+	  The <code>I8859-06</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-6 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-07</name>
+	<p>
+	  The <code>I8859-07</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-7 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-08</name>
+	<p>
+	  The <code>I8859-08</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-8 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-09</name>
+	<p>
+	  The <code>I8859-09</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-9 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-10</name>
+	<p>
+	  The <code>I8859-10</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-10 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-11</name>
+	<p>
+	  The <code>I8859-11</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-11 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-13</name>
+	<p>
+	  The <code>I8859-13</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-13 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-14</name>
+	<p>
+	  The <code>I8859-14</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-14 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-15</name>
+	<p>
+	  The <code>I8859-15</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-15 codeset.
+	</p>
+      </const>
+
+      <const>
+	<name>I8859-16</name>
+	<p>
+	  The <code>I8859-16</code> constant is used by the
+	  <code>set-transcoding-mode</code> method to specify the class
+	  transcoding mode that corresponds to the ISO-8859-16 codeset.
+	</p>
+      </const>
+    </constants>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Transcoder</name>
+	<args>none</args>
+	<p>
+	  The <code>Transcoder</code> constructor creates a default transcoder
+	  that operates in default mode by using the identity function.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Transcoder</name>
+	<args>constant</args>
+	<p>
+	  The <code>Transcoder</code> constructor creates a transcoder
+	  with the argument mode.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-transcoding-mode</name>
+	<retn>none</retn>
+	<args>constant</args>
+	<p>
+	  The <code>set-transcoding-mode</code> method sets the class
+	  transcoding mode.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-transcoding-mode</name>
+	<retn>constant</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-transcoding-mode</code> method returns the class
+	  transcoding mode. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>valid-p</name>
+	<retn>Byte|Character</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>valid-p</code> predicate returns true if character can
+	  be transcoded. If the argument is a byte, the method returns
+	  true if the byte can be transcoded to a character. If the
+	  argument is a character, the method returns true if the
+	  character can be transcoded to a byte.
+	</p>
+      </meth>
+
+      <meth>
+	<name>encode</name>
+	<retn>Byte</retn>
+	<args>Character</args>
+	<p>
+	  The <code>encode</code> method encodes a byte into a character.
+	  If the character cannot be encoded, an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>decode</name>
+	<retn>Character</retn>
+	<args>Byte</args>
+	<p>
+	  The <code>decode</code> method decodes a character into a byte.
+	  If the character cannot be decoded, an exception is raised.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = stream object                                                    = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>Stream</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Stream</code> class is a base class for the
+      standard streams. The class is automatically constructed by a
+      derived class and provides the common methods for all streams.
+    </p>
+
+    <!-- predicate -->
+    <pred>stream-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Transcoder</name>
+    </inherit>
+
+    <!-- constants -->
+    <constants>
+      <const>
+	<name>BYTE</name>
+	<p>
+	  The <code>BYTE</code> constant is used by the
+	  <code>set-coding-mode</code> method to specify the stream coding mode.
+	  In byte mode, each character is assumed to be coded with one
+	  byte. This value affects the <code>getu</code> and
+	  <code>write</code> methods
+	</p>
+      </const>
+
+      <const>
+	<name>UTF-8</name>
+	<p>
+	  The <code>UTF-8</code> constant is used by the
+	  <code>set-coding-mode</code> method to specify the stream coding mode.
+	  In UTF-8 mode, each character is assumed to be coded in the
+	  UTF-8 representation. This value affects the <code>getu</code> and
+	  <code>write</code> methods
+	</p>
+      </const>
+    </constants>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-encoding-mode</name>
+	<retn>none</retn>
+	<args>constant|String</args>
+	<p>
+	  The <code>set-encoding-mode</code> method sets the stream coding mode
+	  that affects how characters are read or written. In the
+	  enumeration form, the method only sets the stream coding mode
+	  which is either byte or UTF-8 mode. In the string mode, the
+	  method sets the stream encoding mode and the transcoding mode.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-encoding-mode</name>
+	<retn>constant</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-coding-mode</code> method returns the stream coding mode
+	  which affects how characters are read or written.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = input stream object                                             = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>InputStream</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>InputStream</code> class is a base class for the 
+      standard i/o module. The class is automatically constructed by a
+      derived class and provides the common methods for all input
+      streams. The input stream is associated with a timeout value which
+      is used for read operation. By default, timeout is infinite,
+      meaning that any read without data will be a blocking one.
+    </p>
+
+    <!-- predicate -->
+    <pred>input-stream-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Stream</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>flush</name>
+	<retn>none|Character</retn>
+	<args>none</args>
+	<p>
+	  The <code>flush</code> method the input stream buffer. In the
+	  first form, without argument, the input stream buffer is
+	  entirely flushed. In the second form, the input stream buffer is
+	  flushed until the character argument is found.
+	</p>
+      </meth>
+      <meth>
+	<name>get-timeout</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-timeout</code> method returns the input stream
+	  timeout. A negative value is a blocking timeout.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-timeout</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-timeout</code> method sets the input stream
+	  timeout. A negative value is a blocking timeout. Changing the
+	  stream timeout does not cancel any pending read operation.
+	</p>
+      </meth>
+
+      <meth>
+	<name>read</name>
+	<retn>Byte</retn>
+	<args>none</args>
+	<p>
+	  The <code>read</code> method returns the next byte available
+	  from the input stream. If the stream has been closed or
+	  consumed, the <tt>end-of-stream</tt> byte is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>read</name>
+	<retn>Buffer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>read</code> method returns a buffer object with at
+	  most the number of bytes specified as an argument. The
+	  buffer <code>length</code> method should be used to check how
+	  many bytes have been placed in the buffer.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>readln</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>readln</code> method returns the next line available
+	  from the input stream. If the stream has been closed or
+	  consumed, the <tt>end-of-stream</tt> character is returned.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>getu</name>
+	<retn>Character</retn>
+	<args>none</args>
+	<p>
+	  The <code>getu</code> method returns the next available Unicode
+	  character from the input stream. If the stream has been closed or
+	  consumed, the <tt>end-of-stream</tt> character is
+	  returned. During the read process, if the character decoding
+	  operation fails, an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>valid-p</name>
+	<retn>Boolean</retn>
+	<args>none|Integer</args>
+	<p>
+	  The <code>valid-p</code> method returns true if the input stream
+	  is in a valid state. By valid state, we mean that the input
+	  stream can return a byte with a call to the read
+	  method. With one argument, the method timeout after the
+	  specified time in milliseconds. If the timeout is null, the
+	  method returns immediately. With -1, the method blocks
+	  indefinitely if no byte is available.
+	</p>
+      </meth>
+
+      <meth>
+	<name>eos-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>eos-p</code> predicate returns true if the input stream
+	  has been closed or all bytes consumed.
+	</p>
+      </meth>
+
+      <meth>
+	<name>pushback</name>
+	<retn>Integer</retn>
+	<args>Byte|Character|String</args>
+	<p>
+	  The <code>pushback</code> method push-back a byte, an Unicode
+	  character or a string in the input stream. Subsequent calls to
+	  read will return the last pushed bytes. Pushing a string is
+	  equivalent to push each encoded bytes of the string. The method
+	  returns the number of bytes pushed back.
+	</p>
+      </meth>
+
+      <meth>
+	<name>consume</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>consume</code> method consumes an input stream and places
+	  the read characters into the stream buffer. The method returns the
+	  number of consumed characters. This method is generally used in 
+	  conjonction with the <code>to-string</code> method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-buffer-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-buffer-length</code> method returns the length of
+	  the push-back buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a string representation
+	  of the input stream buffer.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = input file object                                               = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>InputFile</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>InputFile</code> class provide the facility for an input
+      file stream. An input file instance is created with a file
+      name. If the file does not exist or cannot be opened, an exception
+      is raised. The <code>InputFile</code> class is derived from the
+      <code>InputStream</code> class. 
+    </p>
+
+    <!-- predicate -->
+    <pred>input-file-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>InputStream</name>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>InputFile</name>
+	<args>String</args>
+	<p>
+	  The <code>InputFile</code> constructor create an input file by
+	  name. If the file cannot be created, an exception is raised. The
+	  first argument is the file name to open.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>InputFile</name>
+	<args>String String</args>
+	<p>
+	  The <code>InputFile</code> constructor create an input file by
+	  name and encoding mode. If the file cannot be created, an
+	  exception is raised. The first argument is the file name to
+	  open.The second argument is the encoding mode to use.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>close</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>close</code> method close the input file and returns
+	  true on success, false otherwise. In case of success, multiple
+	  calls return true. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>lseek</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>lseek</code> set the input file position to the
+	  integer argument. Note that the push-back buffer is reset after
+	  this call.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the input
+	  file. The length is expressed in bytes.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-modification-time</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-modification-time</code> method returns the
+	  modification time of the file. The returned argument is
+	  suitable for the <code>Time</code> and <code>Date</code>
+	  system classes.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = input mapped object                                             = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>InputMapped</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>InputMapped</code> class is an input stream class that
+      provides the facility for reading a mapped input stream. The input
+      stream is mapped at construction given a file name, a size and a
+      file offset. An anonymous mapped input stream can also be designed
+      with a buffer object. Finally, without any information an always
+      valid null input stream is constructed.
+    </p>
+
+    <!-- predicate -->
+    <pred>input-mapped-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>InputStream</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>InputMapped</name>
+	<args>none</args>
+	<p>
+	  The <code>InputMapped</code> constructor create a null input stream.
+	  This stream acts as a null character generator.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>InputMapped</name>
+	<args>String|Buffer</args>
+	<p>
+	  The <code>InputMapped</code> constructor create a mapped input
+	  stream by name or buffer. In the first form, a string is used as
+	  file name to be mapped an input stream. In the second form, a
+	  buffer is mapped as an input stream.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>InputMapped</name>
+	<args>String Integer Integer</args>
+	<p>
+	  The <code>InputMapped</code> constructor create a mapped input
+	  stream by name, size and offset. The string argument is the file
+	  name to map. The second argument is the desired mapped size. 
+	  The third argument is the offset inside the file before mapping it.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>lseek</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>lseek</code> set the input mapped file position to the
+	  integer argument. Note that the push-back buffer is reset after
+	  this call.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the input
+	  mapped file. The length is expressed in bytes.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = input string object                                             = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>InputString</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>InputString</code> class provide the facility for an
+      input string stream. The class is initialized or set with a string
+      and then behaves like a stream. This class is very useful to
+      handle generic stream method without knowing what kind of stream
+      is behind it.
+    </p>
+
+    <!-- predicate -->
+    <pred>input-string-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>InputStream</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>InputString</name>
+	<args>none</args>
+	<p>
+	  The <code>InputString</code> constructor creates an empty input
+	  string.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>InputString</name>
+	<args>String</args>
+	<p>
+	  The <code>InputString</code> constructor creates an input string by
+	  value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get</name>
+	<retn>Byte</retn>
+	<args>none</args>
+	<p>
+	  The <code>get</code> method returns the next available byte
+	  from the input stream but do not remove it.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set</code> method sets the input string by first
+	  resetting the push-back buffer and then initializing the input
+	  string with the argument value.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = input terminal object                                           = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>InputTerm</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>InputTerm</code> class provide the facility for an input
+      terminal stream. The input terminal reads byte from the
+      standard input stream. No line editing facility is provided with
+      this class This is a low level class, and normally, the
+      <code>Terminal</code> class should be used instead.
+    </p>
+
+    <!-- predicate -->
+    <pred>input-term-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>InputStream</name>
+      <name>OutputStream</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>InputTerm</name>
+	<args>none</args>
+	<p>
+	  The <code>InputTerm</code> constructor creates a default input
+	  terminal.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods-->
+    <methods>
+      <meth>
+	<name>set-ignore-eos</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>set-ignore-eos</code> method set the input terminal
+	  <tt>end-of-stream</tt> ignore flag. When the flag is on, any character
+	  that match a <tt>ctrl-d</tt> is changed to the end-of-stream mapped
+	  character returned by a read. This method is useful to
+	  prevent a reader to exit when the <tt>ctrl-d</tt> byte is
+	  generated. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-mapped-eos</name>
+	<retn>none</retn>
+	<args>Byte</args>
+	<p>
+	  The <code>set-mapped-eos</code> method set the input terminal
+	  <tt>end-of-stream</tt> mapped character. By default the character is
+	  set to <tt>end-of-line</tt>. This method should be
+	  used in conjunction with the <code>set-ignore-eos</code> method.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = output object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>OutputStream</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>OutputStream</code> class is a base class for the
+      standard i/o module. The class is automatically constructed by a
+      derived class and provide the common methods for all output
+      streams.
+    </p>
+
+    <!-- predicate -->
+    <pred>output-stream-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Stream</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>write</name>
+	<retn>Integer</retn>
+	<args>Literal+</args>
+	<p>
+	  The <code>write</code> method write one or more literal
+	  arguments on the output stream. This method returns the number
+	  of characters written.
+	</p>
+      </meth>
+
+      <meth>
+	<name>writeln</name>
+	<retn>none</retn>
+	<args>Literal+</args>
+	<p>
+	  The <code>writeln</code> method write one or more literal
+	  argument to the output stream and finish with a newline. This
+	  method return nil.
+	</p>
+      </meth>
+
+      <meth>
+	<name>errorln</name>
+	<retn>none</retn>
+	<args>Literal+</args>
+	<p>
+	  The <code>errorln</code> method write one or more literal
+	  argument to the associated output error stream and finish with a
+	  newline. Most of the time, the output stream and error stream
+	  are the same except for an output terminal.
+	</p>
+      </meth>
+
+      <meth>
+	<name>newline</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>newline</code> method writes a new line byte to
+	  the output stream. The method returns nil.
+	</p>
+      </meth>
+
+      <meth>
+	<name>write-soh</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>write-soh</code> method writes
+	  a <tt>start-of-heading</tt> character to the output stream.
+	</p>
+      </meth>
+
+      <meth>
+	<name>write-stx</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>write-stx</code> method writes
+	  a <tt>start-of-transmission</tt> character to the output stream.
+	</p>
+      </meth>
+
+      <meth>
+	<name>write-etx</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>write-etx</code> method writes an <tt>end-of-transmission</tt>
+	  character to the output stream.
+	</p>
+      </meth>
+
+      <meth>
+	<name>write-eos</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>write-eos</code> method writes an <tt>end-of-stream</tt>
+	  character to the output stream.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = output file object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>OutputFile</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>OutputFile</code> class provide the facility for an
+      output file stream. An output file instance is created with a file
+      name. If the file does not exist, it is created. If the file
+      cannot be created, an exception is raised. Once the file is
+      created, it is possible to write literals. The class is derived
+      from the <code>OutputStream</code> class. By default an output file is
+      created if it does not exist. If the file already exist, the file
+      is truncated to 0. Another constructor for the output file gives
+      more control about this behavior. It takes two boolean flags that
+      defines the truncate and append mode. The <tt>t-flag</tt> is
+      the truncate flag. The <tt>a-flag</tt> is the append flag.
+    </p>
+
+    <!-- predicate -->
+    <pred>output-file-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>OutputStream</name>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>OutputFile</name>
+	<args>String</args>
+	<p>
+	  The <code>OutputFile</code> constructor create an output file by
+	  name. If the file cannot be created, an exception is raised. The
+	  first argument is the file name to create.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>OutputFile</name>
+	<args>String String</args>
+	<p>
+	  The <code>OutputFile</code> constructor create an output file by
+	  name and encoding mode. If the file cannot be created, an
+	  exception is raised. The first argument is the file name to
+	  create. The second argument is the encoding mode to use.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>OutputFile</name>
+	<args>String Boolean Boolean</args>
+	<p>
+	  The <code>OutputFile</code> constructor create an output file by
+	  name. If the file cannot be created, an exception is raised. The
+	  first argument is the file name to create. The second argument
+	  is the truncate flag. If the file already exists and the
+	  truncate flag is set, the file is truncated to 0. The third
+	  argument is the append mode. If set to true, the file is open in
+	  append mode.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>close</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>close</code> method closes the output file and returns
+	  true on success, false otherwise. In case of success, multiple
+	  calls returns true. 
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = output string object                                            = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>OutputString</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>OutputString</code> class provide the facility for an
+      output string stream. The class is initially empty and acts as a
+      buffer which accumulate the write method bytes. The
+      <code>to-string</code> method can be used to retrieve the buffer
+      content.
+    </p>
+
+    <!-- predicate -->
+    <pred>output-string-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>OutputStream</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>OutputString</name>
+	<args>none</args>
+	<p>
+	  The <code>OutputString</code> constructor creates a default output
+	  string.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>OutputString</name>
+	<args>String</args>
+	<p>
+	  The <code>OutputString</code> constructor creates an output string by
+	  value. The output string stream is initialized with the string
+	  value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>flush</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>flush</code> method flushes the output stream by resetting
+	  the stream buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the output
+	  string buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a string representation
+	  of the output string buffer.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = output buffer object                                            = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>OutputBuffer</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>OutputBuffer</code> class provide the facility for an
+      output byte stream. The class is initially empty and acts as a
+      buffer which accumulate the write method bytes. The
+      <code>to-string</code> method can be used to retrieve the buffer
+      content as a string. The <code>format</code> method can be used to
+      retrieve the buffer content as an octet string.
+      content.
+    </p>
+
+    <!-- predicate -->
+    <pred>output-buffer-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>OutputStream</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>OutputBuffer</name>
+	<args>none</args>
+	<p>
+	  The <code>OutputBuffer</code> constructor creates a default output
+	  buffer.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>OutputBuffer</name>
+	<args>String</args>
+	<p>
+	  The <code>OutputBuffer</code> constructor creates an output buffer by
+	  value. The output buffer stream is initialized with the string
+	  value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>flush</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>flush</code> method flushes the output stream by resetting
+	  the stream buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the output
+	  buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a string representation
+	  of the output buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>format</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>format</code> method returns an octet string representation
+	  of the output buffer.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = output terminal object                                          = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>OutputTerm</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>OutputTerm</code> class provide the facility for an
+      output terminal. The output terminal is defined as the standard
+      output stream. If the standard error stream needs to be used, the
+      <code>ErrorTerm</code> class is more appropriate.
+    </p>
+
+    <!-- predicate -->
+    <pred>output-term-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>OutputStream</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>OutputTerm</name>
+	<args>none</args>
+	<p>
+	  The <code>OutputTerm</code> constructor creates a default output
+	  terminal
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>ErrorTerm</name>
+	<args>none</args>
+	<p>
+	  The <code>ErrorTerm</code> constructor creates a default error
+	  terminal
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = terminal object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>Terminal</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Terminal</code> class provides the facility for an
+      i/o terminal with line editing capability. The class combines 
+      the <code>InputTerm</code> and <code>OutputTerm</code> methods.
+    </p>
+
+    <!-- predicate -->
+    <pred>terminal-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>InputTerm</name>
+      <name>OutputTerm</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Terminal</name>
+	<args>none</args>
+	<p>
+	  The <code>Terminal</code> constructor creates a default terminal
+	  which combines an input and output terminal with line editing
+	  capabilities.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-primary-prompt</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-primary-prompt</code> method sets the terminal primary
+	  prompt which is used when the <code>read-line</code> method is 
+	  called. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-secondary-prompt</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-secondary-prompt</code> method sets the terminal
+	  secondary prompt which is used when the <code>read-line</code>
+	  method is called.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-primary-prompt</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-primary-prompt</code> method returns the terminal primary
+	  prompt.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-secondary</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-secondary-prompt</code> method returns the terminal
+	  secondary prompt.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = intercom object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>Intercom</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Intercom</code> class is the interpreter communication
+      class. The class operates with two streams. One output stream is
+      used to send serialized data while the input stream is used to
+      deserialize data. The <code>send</code> method can be used to send
+      the data, while the <code>recv</code> can be used to receive them.
+    </p>
+
+    <!-- predicate -->
+    <pred>intercom-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Intercom</name>
+	<args>none</args>
+	<p>
+	  The <code>Intercom</code> constructor creates a default interpreter
+	  communication object. There is no stream attached to it.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Intercom</name>
+	<args>InputStream|OutputStream</args>
+	<p>
+	  The <code>Intercom</code> constructor creates an  interpreter
+	  communication object with an input or an output stream. In the
+	  first form, the input stream object is used by
+	  the <code>recv</code> method to read data object. In the second
+	  form, the output stream object is used by the <code>send</code>
+	  method to send data object.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Intercom</name>
+	<args>InputStream OutputStream</args>
+	<p>
+	  The <code>Intercom</code> constructor creates an interpreter
+	  communication object with an input and an output stream.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>send</name>
+	<retn>none</retn>
+	<args>Object</args>
+	<p>
+	  The <code>send</code> method serialize the object argument with
+	  the help of the output stream bound to the interpreter
+	  communication object. If there is no output stream, nothing is sent.
+	</p>
+      </meth>
+
+      <meth>
+	<name>recv</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>recv</code> method deserialize an object with the help
+	  of the input stream bound to the interpreter communication
+	  object. If there is no output stream, <code>nil</code> is returned. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>request</name>
+	<retn>Object</retn>
+	<args>Object</args>
+	<p>
+	  The <code>request</code> method perform an atomic send receive 
+	  operation.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-input-stream</name>
+	<retn>none</retn>
+	<args>InputStream</args>
+	<p>
+	  The <code>set-input-stream</code> method binds an input stream
+	  to the interpreter communication object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-input-stream</name>
+	<retn>InputStream</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-input-stream</code> method returns the input
+	  stream bound to the interpreter communication object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-output-stream</name>
+	<retn>none</retn>
+	<args>OutputStream</args>
+	<p>
+	  The <code>set-output-stream</code> method binds an output stream
+	  to the interpreter communication object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-output-stream</name>
+	<retn>OutputStream</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-output-stream</code> method returns the output
+	  stream bound to the interpreter communication object.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = input/output object                                             = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>InputOutput</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>InputOutput</code> class implements an input-output
+      stream with a buffer which holds character during the processing
+      of transit between the output stream to the input stream. The
+      theory of operation goes as follow. The internal buffer is filled
+      with characters with the help of the output stream. The characters
+      are consumed from the buffer with the help of the input stream
+      (read method). If the buffer becomes empty the <code>eos-p</code>
+      predicate returns true, the <code>valid-p</code> predicate false
+      and the <code>read</code> method will return the <code>eos</code> 
+      character. The InputOutput buffer can also be initialized with a
+      buffer. This provides a nice mechanism to use a buffer like an
+      input stream. The i/o operations implemented by this class are
+      non-blocking. As a consequence, it is not possible to suspend a
+      thread with this class and have it awaken when some characters are
+      available in the input stream. 
+    </p>
+
+    <!-- predicate -->
+    <pred>input-output-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>InputStream</name>
+      <name>OutputStream</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>InputOutput</name>
+	<args>none</args>
+	<p>
+	  The <code>InputOutput</code> constructor creates a default
+	  input/output stream.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>InputOutput</name>
+	<args>String</args>
+	<p>
+	  The <code>InputOutput</code> constructor creates an input/output
+	  stream initialized with the string argument. The string argument
+	  is used to fill the string buffer.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get</name>
+	<retn>Byte</retn>
+	<args>none</args>
+	<p>
+	  The <code>get</code> method returns the next available byte
+	  from the input stream but do not remove it.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set</code> method sets the input string by first
+	  resetting the push-back buffer and then initializing the input
+	  string with the argument value.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = selector object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>Selector</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Selector</code> class provides some facilities to
+      perform i/o multiplexing. The constructor takes 0 or several
+      stream arguments.The class manages automatically the differentiation
+      between the <code>InputStream</code> and the <code>OutputStream</code>
+      objects. Once the class is constructed, it is possible to get the
+      first stream ready for reading or writing or all of them. It is
+      also possible to add more steams after construction with
+      the <code>add</code> method. When a call to the <code>wait</code>
+      method succeeds, the method returns the first available stream. If
+      the <code>waitall</code> method is called, the method returns a  
+      vector with  all ready steams. The selector can be configured to
+      operate in marking mode. In such mode, the selector can be marked as 
+      ready by a thread independently of the bounded streams. This is a
+      useful mechanism which can be used to cancel a select
+      loop. The <code>mark</code> method is designed to mark the
+      selector while the <code>marked-p</code> predicate returns true if
+      the stream has been marked.
+    </p>
+
+    <!-- predicate -->
+    <pred>selector</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Selector</name>
+	<args>none</args>
+	<p>
+	  The <code>Selector</code> constructor creates a default stream
+	  selector.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Selector</name>
+	<args>[Boolean] [InputStream|OutputStream]*</args>
+	<p>
+	  The <code>Selector</code> constructor creates a stream selector
+	  with 0 or more stream arguments. If the first argument is a
+	  boolean, the selector is constructed marked mode.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>InputStream|OutputStream</args>
+	<p>
+	  The <code>add</code> method adds an input or output stream to
+	  the selector. If the stream is both an input and an output
+	  stream, the preference is given to the input stream. If this 
+	  preference is not acceptable, the <code>input-add</code> or
+	  the <code>output-add</code> methods might be preferable.
+	</p>
+      </meth>
+
+      <meth>
+	<name>input-add</name>
+	<retn>none</retn>
+	<args>InputStream</args>
+	<p>
+	  The <code>input-add</code> method adds an input stream to
+	  the selector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>output-add</name>
+	<retn>none</retn>
+	<args>OutputStream</args>
+	<p>
+	  The <code>output-add</code> method adds an output stream to
+	  the selector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>wait</name>
+	<retn>Stream</retn>
+	<args>none|Integer</args>
+	<p>
+	  The <code>wait</code> method waits for a status change in the
+	  selector and returns the first stream that has change
+	  status. With one argument, the selector time-out after the
+	  specified time in milliseconds. Note that at the time of the
+	  return, several streams may have changed status.
+	</p>
+      </meth>
+
+      <meth>
+	<name>wait-all</name>
+	<retn>Vector</retn>
+	<args>none|Integer</args>
+	<p>
+	  The <code>wait</code> method waits for a status change in the
+	  selector and returns all streams that has change status in a
+	  vector object. With one argument, the selector time-out after
+	  the specified time in milliseconds. If the selector has
+	  timed-out, the vector is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>input-get</name>
+	<retn>InputStream</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>input-get</code> method returns the input streams in
+	  the selector by index. If the index is out of bound, an
+	  exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>output-get</name>
+	<retn>OutputStream</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>output-get</code> method returns the output streams in
+	  the selector by index. If the index is out of bound, an
+	  exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>input-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>input-length</code> method returns the number of input
+	  streams in the selector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>output-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>output-length</code> method returns the number of
+	  output streams in the selector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>mark</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>mark</code> method marks a selector object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>marked-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>marked-p</code> predicate returns true if the selector
+	  has been marked.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = logtee object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>Logtee</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Logtee</code> class provides the facility of a logger
+      object associated with an output stream. When a message is added,
+      the message is written to the output stream depending on an
+      internal flag. By default the tee mode is false and can be
+      activated with the <code>set-tee</code> method.
+    </p>
+
+    <!-- predicate -->
+    <pred>logtee-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Logger</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Logtee</name>
+	<args>none</args>
+	<p>
+	  The <code>Logtee</code> constructor creates a default logger
+	  without an output stream.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Logtee</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Logtee</code> constructor creates a logger with a
+	  specific size without an output stream.
+	  terminal
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Logtee</name>
+	<args>OutputStream</args>
+	<p>
+	  The <code>Logtee</code> constructor creates a logger with an
+	  output stream. The object is initialized to operate in write
+	  mode.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Logtee</name>
+	<args>Integer OutputStream</args>
+	<p>
+	  The <code>Logtee</code> constructor creates a logger with a
+	  specific size with an output stream. The first argument is the
+	  logger size. The second argument is the output stream.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Logtee</name>
+	<args>Integer String OutputStream</args>
+	<p>
+	  The <code>Logtee</code> constructor creates a logger with a
+	  specific size, an information string and an output stream. The
+	  first argument is the logger size. The second argument is
+	  information string. The third argument is the output stream.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-tee-stream</name>
+	<retn>none</retn>
+	<args>OutputStream</args>
+	<p>
+	  The <code>set-tee-stream</code> method sets the tee output
+	  stream. This stream is different from the logger output stream
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-tee-stream</name>
+	<retn>OutputStream</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-tee-stream</code> method returns the object
+	  output stream.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-tee</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>set-tee</code> method sets the object tee flag. When
+	  the flag is true, the logger writes the added message on the
+	  output stream.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-tee</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-tee</code> method returns the object tee flag. When
+	  the flag is true, the logger writes the added message on the
+	  output stream.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = pathname object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>Pathname</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Pathname</code> class is a base class designed to
+      manipulate system i/o paths. The class operates with a directory
+      name and a file name. Both names are kept separated to ease the
+      path manipulation. The path components can be extracted
+      individually. However, it shall be noted that the first
+      component has a special treatment to process the root directory
+      name.
+    </p>
+
+    <!-- predicate -->
+    <pred>pathname-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Pathname</name>
+	<args>none</args>
+	<p>
+	  The <code>Pathname</code> constructor creates a default path
+	  name without file and directory names.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Pathname</name>
+	<args>String</args>
+	<p>
+	  The <code>Pathname</code> constructor creates a path name with
+	  a file name. The first string argument is the file name.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Pathname</name>
+	<args>String String</args>
+	<p>
+	  The <code>Pathname</code> constructor creates a pathname with a
+	  file and directory name. The first string argument is the file
+	  name. The second string argument is the directory name.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset the path name by removing all
+	  path and file information.
+	</p>
+      </meth>
+
+      <meth>
+	<name>dir-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>dir-p</code> predicate returns true if the path is a
+	  directory.
+	</p>
+      </meth>
+
+      <meth>
+	<name>file-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>file-p</code> predicate returns true if the path is a
+	  file.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-file-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-file-name</code> method set the path name file
+	  name. The string argument is the file name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-file-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-file-name</code> method returns the path name file name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-directory-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>add-directory-name</code> method add the directory name
+	  to the directory path component. The string argument is the
+	  directory name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-directory-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-directory-name</code> method set the directory name file
+	  name. The string argument is the directory name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-directory-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-directory-name</code> method returns the path name
+	  directory name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the number of directory
+	  path elements.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-path</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-path</code> method returns a directory path
+	  element by index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-root</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-root</code> method returns the root component of a
+	  directory name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-full</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-full</code> method returns the full path name by
+	  combining the directory name with the file name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-path</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>add-path</code> method add a new path component by
+	  name. The path is separated into individual component and added
+	  to the directory path unless it is a root path. If the file name
+	  is set, the file name is added as a directory component. If the
+	  path is a root path, a new path name is rebuilt. This last case
+	  is equivalent to a call to <code>set-file-name</code>.
+	</p>
+      </meth>
+
+      <meth>
+	<name>normalize</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>normalize</code> method rebuild the path name by
+	  determining the full path nature if possible. In case of
+	  success, the path structure reflects the actual path type.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = pathlist object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>Pathlist</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Pathlist</code> class is a base class designed to ease
+      the manipulation of a file search path. The class acts like a list
+      of search paths and various facilities are provided to find a
+      valid path for a given name. The path list can be manipulated like
+      any other list.
+    </p>
+
+    <!-- predicate -->
+    <pred>pathlist-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Pathlist</name>
+	<args>none</args>
+	<p>
+	  The <code>Pathlist</code> constructor creates a default path list.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Pathlist</name>
+	<args>Boolean|String</args>
+	<p>
+	  The <code>Pathlist</code> constructor creates a path list with a
+	  local search flag or with an initial path component. In the
+	  first form, a boolean argument controls the local search
+	  flag. In the second for, a string argument is used as the
+	  initial path component.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the path list by clearing
+	  the local search flag and removing all path components.
+	</p>
+      </meth>
+
+      <meth>
+	<name>local-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>local-p</code> predicate returns true if the local
+	  search flag is set.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-local-search</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>set-local-search</code> method sets the local search flag.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the number of directory
+	  path elements.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-path</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-path</code> method returns a directory path
+	  element by index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-path</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>add-path</code> method add a new path component by name.
+	  The string argument is the name to add.
+	</p>
+      </meth>
+
+      <meth>
+	<name>file-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>file-p</code> predicate returns true if the file name
+	  argument can be resolved. If the local search flag is set, the
+	  local directory is check first.
+	</p>
+      </meth>
+
+      <meth>
+	<name>resolve</name>
+	<retn>String</retn>
+	<args>String</args>
+	<p>
+	  The <code>resolve</code> method returns a string representation
+	  of the resolved file path. If the local search flag is set and
+	  the file name is found locally, the initial name argument is
+	  returned.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = global functions                                                = -->
+  <!-- =================================================================== -->
+  
+  <functions>
+    <func nameset="afnix:sio">
+      <name>dir-p</name>
+      <retn>Boolean</retn>
+      <args>String</args>
+      <p>
+	The <code>dir-p</code> function returns true if the argument name
+	is a directory name, false otherwise.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>file-p</name>
+      <retn>Boolean</retn>
+      <args>String</args>
+      <p>
+	The <code>file-p</code> function returns true if the argument name
+	is a regular file name, false otherwise.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>tmp-name</name>
+      <retn>String</retn>
+      <args>String?</args>
+      <p>
+	The <code>tmp-name</code> function returns a name suitable for the use
+	as a temporary file name. Without argument, a default prefix is
+	used to build the name. An optional string prefix can control the
+	original name.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>tmp-path</name>
+      <retn>String</retn>
+      <args>String?</args>
+      <p>
+	The <code>tmp-path</code> function returns a path suitable for the use
+	as a temporary file name. Without argument, a default prefix is
+	used to build the path. An optional string prefix can control the
+	original name.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>absolute-path</name>
+      <retn>String</retn>
+      <args>String+</args>
+      <p>
+	The <code>absolute-path</code> function returns an absolute path
+	name from an argument list. Without argument, the command returns
+	the root directory name. With one or several argument, the
+	absolute path is computed from the root directory.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>relative-path</name>
+      <retn>String</retn>
+      <args>String+</args>
+      <p>
+	The <code>relative-path</code> function returns a relative path
+	name from an argument list. With one argument, the function
+	returns it. With two or more arguments, the relative path is
+	computed by joining each argument with the previous one.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>rmfile</name>
+      <retn>none</retn>
+      <args>String+</args>
+      <p>
+	The <code>rmfile</code> function removes one or several files
+	specified as the arguments. If one file fails to be removed, an
+	exception is raised.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>mkdir</name>
+      <retn>none</retn>
+      <args>String+</args>
+      <p>
+	The <code>mkdir</code> function creates one or several directories
+	specified as the arguments. If one directory fails to be created,
+	an exception is raised.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>mhdir</name>
+      <retn>none</retn>
+      <args>String+</args>
+      <p>
+	The <code>mhdir</code> function creates hierarchically one or
+	several directories specified as the arguments. If one directory
+	fails to be created, an exception is raised.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>rmdir</name>
+      <retn>none</retn>
+      <args>String+</args>
+      <p>
+	The <code>rmdir</code> function removes one or several directories
+	specified as the arguments. If one directory fails to be removed,
+	an exception is raised.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>get-base-name</name>
+      <retn>String</retn>
+      <args>String</args>
+      <p>
+	The <code>get-base-name</code> function returns the base name from
+	a path. The base name can be either a file name or a directory
+	name. By definition, a path is made of a base path and a base name.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>get-base-path</name>
+      <retn>String</retn>
+      <args>String</args>
+      <p>
+	The <code>get-base-path</code> function returns the base path from
+	a path. The base path is a directory name. By definition, a path
+	is made of a base path and a base name.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>get-extension</name>
+      <retn>String</retn>
+      <args>String</args>
+      <p>
+	The <code>get-extension</code> function returns the extension from
+	a path.
+      </p>
+    </func>
+
+    <func nameset="afnix:sio">
+      <name>remove-extension</name>
+      <retn>String</retn>
+      <args>String</args>
+      <p>
+	The <code>remove-extension</code> function returns the extension from
+	a path. In order to get a base file name from a path, the
+	<code>get-base-name</code> function must be called first.
+      </p>
+    </func>
+  </functions>
+
+  <!-- =================================================================== -->
+  <!-- = directory object                                                = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>Directory</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Directory</code> class provides some facilities to
+      access a directory. By default, a directory object is constructed
+      to represent the current  directory. With one argument, the object
+      is constructed from the directory name. Once the object is
+      constructed, it is possible to retrieve its content.
+    </p>
+    
+    <!-- predicate -->
+    <pred>directory-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Directory</name>
+	<args>none</args>
+	<p>
+	  The <code>Directory</code> constructor creates a directory object
+	  those location is the current directory. If the directory cannot
+	  be opened, an exception is raised.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Directory</name>
+	<args>String</args>
+	<p>
+	  The <code>Directory</code> constructor create a directory object
+	  by name. If the directory cannot be opened, an exception is
+	  raised. The first argument is the directory name to open.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>mkdir</name>
+	<retn>Directory</retn>
+	<args>String</args>
+	<p>
+	  The <code>mkdir</code> method creates a new directory in the
+	  current one. The full path is constructed by taking the
+	  directory name and adding the argument. Once the directory is
+	  created, the method returns a directory object of the newly
+	  constructed directory. An exception is thrown if the directory
+	  cannot be created.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>rmdir</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>rmdir</code> method removes an empty directory. The
+	  full path is constructed by taking the directory name and adding
+	  the argument. An exception is thrown if the directory cannot be
+	  removed.
+	</p>
+      </meth>
+
+      <meth>
+	<name>rmfile</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>rmfile</code> method removes a file in the current
+	  directory. The full path is constructed by taking the directory
+	  name and adding the argument. An exception is thrown if the file
+	  cannot be removed.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the directory name. If
+	  the default directory was created, the method returns the full
+	  directory path.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-list</name>
+	<retn>List</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-list</code> method returns the directory
+	  contents. The method returns a list of strings. The list
+	  contains all valid names at the time of the call, including the
+	  current directory and the parent directory.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-files</name>
+	<retn>List</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-files</code> method returns the directory
+	  contents. The method returns a list of strings of files. The
+	  list contains all valid names at the time of the call.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-subdirs</name>
+	<retn>List</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-subdirs</code> method returns the sub
+	  directories. The method returns a list of strings of
+	  sub-directories. The list contains all valid names at the time of
+	  the call, including the current directory and the parent directory.
+	</p>
+      </meth>
+
+      <meth>
+	<name>next-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>next-name</code> method returns the next available
+	  name from the directory stream. This method is useful when
+	  operating with a large number of elements.
+	</p>
+      </meth>
+
+      <meth>
+	<name>next-path</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>next-path</code> method returns the next available
+	  path name from the directory stream. This method is useful when
+	  operating with a large number of elements.
+	</p>
+      </meth>
+
+      <meth>
+	<name>next-file-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>next-file-name</code> method returns the next available
+	  file name from the directory stream. This method is useful when
+	  operating with a large number of elements.
+	</p>
+      </meth>
+
+      <meth>
+	<name>next-file-path</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>next-file-path</code> method returns the next available
+	  file path name from the directory stream. This method is useful when
+	  operating with a large number of elements.
+	</p>
+      </meth>
+
+      <meth>
+	<name>next-dir-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>next-dir-name</code> method returns the next available
+	  directory name from the directory stream. This method is useful when
+	  operating with a large number of elements.
+	</p>
+      </meth>
+
+      <meth>
+	<name>next-dir-path</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>next-dir-path</code> method returns the next available
+	  directory path name from the directory stream. This method is useful when
+	  operating with a large number of elements.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = logtee object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>Logtee</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Logtee</code> class is a message logger facility
+      associated with an output stream. When a message is added to the
+      logger object, the message is also sent to the output stream,
+      depending on the controlling flags. The name "logtee" comes from
+      the contraction of "logger" and "tee". One particularity of the
+      class is that without a stream, the class behaves like a regular
+      logger.
+    </p>
+    
+    <!-- predicate -->
+    <pred>logtee-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Logger</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Logtee</name>
+	<args>none</args>
+	<p>
+	  The <code>Logtee</code> constructor creates a default logger
+	  without an output stream
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Logtee</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Logtee</code> constructor creates a logger object with
+	  a specific size without an output stream.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Logtee</name>
+	<args>Output</args>
+	<p>
+	  The <code>Logtee</code> constructor creates a logger object with
+	  an output stream.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Logtee</name>
+	<args>Integer Output</args>
+	<p>
+	  The <code>Logtee</code> constructor creates a logger object with
+	  a specific size and an output stream. The first argument is the
+	  logger window size. The second argument is the output stream.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Logtee</name>
+	<args>Integer String Output</args>
+	<p>
+	  The <code>Logtee</code> constructor creates a logger object with
+	  a specific size, an information string and an output stream. The
+	  first argument is the logger window size. The second argument is
+	  the logger information string. The third argument is the output
+	  stream.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-output-stream</name>
+	<retn>none</retn>
+	<args>Output</args>
+	<p>
+	  The <code>set-output-stream</code> method attaches the output
+	  stream to the logtee object.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>get-output-stream</name>
+	<retn>Output</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-output-stream</code> method returns the logtee
+	  output stream.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-tee</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>set-tee</code> method sets the logtee control
+	  flag. The control flag controls the message display to the
+	  output stream.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-tee</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-tee</code> method returns the logtee output stream.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = named fifo object                                              = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>NamedFifo</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>NameFifo</code> class is a string vector designed to
+      operate as a stream fifo object. The class provides the facility
+      to read or write the fifo content from a stream. The stream can be
+      created by name for writing, in which case the named fifo operates
+      as a backup object.
+    </p>
+    
+    <!-- predicate -->
+    <pred>named-fifo-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Strvec</name>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>NamedFifo</name>
+	<args>none</args>
+	<p>
+	  The <code>NamedFifo</code> constructor creates a default named
+	  fifo without a backing name. In this case the fifo cannot be
+	  read or written by stream.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>NamedFifo</name>
+	<args>String</args>
+	<p>
+	  The <code>NamedFifo</code> constructor creates a named fifo by
+	  name. The name is used as a file name for reading or writing the
+	  fifo.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>NamedFifo</name>
+	<args>String Boolean</args>
+	<p>
+	  The <code>NamedFifo</code> constructor creates a named fifo by
+	  name. The name is used as a file name for reading or writing the
+	  fifo.If the boolean argument is true, the fifo is read.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>read</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>read</code> method reads the fifo file name and fill
+	  the fifo.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>write</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>write</code> method writes the fifo contents to the
+	  fifo file name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the fifo file name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = file info object                                                = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sio">
+    <name>FileInfo</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>FileInfo</code> is a file information class that holds
+      the primary information related to a file, such like its size or
+      its modification time. The file information is set at construction
+      but can be updated with the help of the <code>update</code> method.
+    </p>
+    
+    <!-- predicate -->
+    <pred>file-info-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name></name>
+	<args>String</args>
+	<p>
+	  The <code>FileInfo</code> constructor creates a file information
+	  by name. The string argument is the file name to query.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the file size information.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>get-modification-time</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-modification-time</code> method returns the file
+	  modification time. The time can be used as an argument to
+	  the <code>Time</code> or <code>Date</code> object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>update</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>update</code> method the file information data.
+	</p>
+      </meth>
+    </methods>
+  </object>
+</appendix>

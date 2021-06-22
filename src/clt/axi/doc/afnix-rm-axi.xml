@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-rm-axi.xml                                                   = -->
+<!-- = afnix cross interpreter manual                                     = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<client>
+  <!-- client name -->
+  <name>axi</name>
+  <!-- synopsis -->
+  <synopsis>axi [options] file [arguments]</synopsis>
+  <!-- options -->
+  <options>
+    <optn>
+      <name>h</name>
+      <p>
+	prints the help message
+      </p>
+    </optn>
+
+    <optn>
+      <name>v</name>
+      <p>
+	prints the program version
+      </p>
+    </optn>
+
+    <optn>
+      <name>m</name>
+      <p>
+	enable the start module
+      </p>
+    </optn>
+
+    <optn>
+      <name>i</name>
+      <args>path|librarian</args>
+      <p>
+	add a directory or librarian to the resolver path
+      </p>
+    </optn>
+
+    <optn>
+      <name>e</name>
+      <args>mode</args>
+      <p>
+	force the encoding mode
+      </p>
+    </optn>
+
+    <optn>
+      <name>f</name>
+      <args>assert</args>
+      <p>
+	enable assertion checking
+      </p>
+    </optn>
+
+    <optn>
+      <name>f</name>
+      <args>nopath</args>
+      <p>
+	do not set initial path
+      </p>
+    </optn>
+
+    <optn>
+      <name>f</name>
+      <args>noseed</args>
+      <p>
+	do not seed the random engine
+      </p>
+    </optn>
+
+    <optn>
+      <name>f</name>
+      <args>seed</args>
+      <p>
+	seed the random engine
+      </p>
+    </optn>
+  </options>
+
+  <!-- description -->
+  <remark>
+    <title>Description</title>
+    
+    <p>
+      <product>axi</product> invokes the interpreter command line
+      interpreter. Without arguments, the interpreter is invoked
+      interactively. With one or several arguments, the first argument
+      is taken as the file to execute. The rest of the command line is
+      the arguments for the file being executed. With the help of the
+      file resolver, a file does not have to have the <extn>.als</extn>
+      or <extn>.axc</extn> extensions. When using a librarian, an
+      initial module can be automatically loaded with the help of
+      the <option>m</option> option. A double system separator can be used to
+      separate the interpreter options with the program
+      options. Normally, the encoding mode is automatically detected
+      from the running session or from the system environment. However,
+      the <option>e</option> option might be used to overwrite the default
+      settings, especially when an file is based on one of the ISO-8859
+      character set.
+    </p>
+  </remark>
+
+  <!-- version -->
+  <remark>
+    <title>Version</title>
+    
+    <p>
+      The current version is the <major/>.<minor/>.<patch/> release.
+    </p>
+  </remark>
+
+  <!-- see also -->
+  <remark>
+    <title>See also</title>
+
+    <p>
+      <link url="afnix-us-axc.xht">axc</link>,
+      <link url="afnix-us-axd.xht">axd</link>,
+      <link url="afnix-us-axl.xht">axl</link>,
+    </p>
+  </remark>
+
+  <!-- notes -->
+  <remark>
+    <title>Notes</title>
+
+    <p>
+      The distribution comes with an extensive documentation. The
+      documentation is available <link
+      url="http://www.afnix.org">online</link> or in the
+      <path>doc</path> directory in the form of formatted xhtml 
+      documents or manual pages. 
+    </p>
+  </remark>
+
+  <!-- author -->
+  <remark>
+    <title>Author</title>
+    
+    <p>
+      The writing system has been conceived and implemented by
+      <mail address="amaury@afnix.org">Amaury Darsch</mail>.
+    </p>
+  </remark>
+
+  <!-- history -->
+  <remark>
+    <title>History</title>
+    
+    <p>
+      The writing system was originally called the
+      <em>Aleph programming language</em> which has been discontinued on
+      January 2005 when the 1.0.0 version was released. More information
+      is available in the manual collection.
+    </p>
+  </remark> 
+</client>

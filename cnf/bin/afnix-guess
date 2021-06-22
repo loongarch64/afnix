@@ -1,0 +1,308 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# - afnix-guess                                                              -
+# - afnix platform guess program                                             -
+# ----------------------------------------------------------------------------
+# - This program is  free software;  you can  redistribute it and/or  modify -
+# - it provided that this copyright notice is kept intact.                   -
+# -                                                                          -
+# - This  program  is  distributed in the hope  that it  will be useful, but -
+# - without  any   warranty;  without  even   the   implied    warranty   of -
+# - merchantability  or fitness for a particular purpose. In not event shall -
+# - the copyright holder be  liable for  any direct, indirect, incidental or -
+# - special damages arising in any way out of the use of this software.      -
+# ----------------------------------------------------------------------------
+# - author (c) 1999-2021 amaury   darsch                                     -
+# - author (c) 2010-2013 nobuhiro iwamatsu                  superh processor -
+# - author (c) 2011-2013 pino     toscano                      hurd platform -
+# ----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+# - set default variables                                                    -
+# ----------------------------------------------------------------------------
+
+# the sdk name
+sdknam=
+# the sdk directory
+sdkdir=
+# the operating system name
+pltnam="unknown"
+# the operating system version
+pltvrs="unknown"
+pltmaj="0"
+pltmin="0"
+# the processor name
+cpunam=
+# the processor size
+cpubit=
+# show the platform name only
+shwplt="no"
+# print the platform version only
+shwvrs="no"
+# print the platform major number only
+shwmaj="no"
+# print the platform minor number only
+shwmin="no"
+# print the processor name only
+shwcpu="no"
+# print the processor type only
+shwtyp="no"
+# print the processor size only
+shwbit="no"
+
+# ----------------------------------------------------------------------------
+# - local function always make life easier                                   -
+# ----------------------------------------------------------------------------
+
+# print a usage message
+usage () {
+    echo "usage: afnix-guess [options]"
+    echo "       -h           print this help message"
+    echo "       -n           print the platform name"
+    echo "       -v           print the platform version"
+    echo "       -M           print the platform major number"
+    echo "       -m           print the platform minor number"
+    echo "       -p           print the processor name"
+    echo
+    echo "       --sdknam     set the target sdk by name"
+    echo "       --sdkdir     set the target sdk directory"
+    exit 0
+}
+
+# print an error message
+error () {
+    echo "error: $1"
+    exit 1
+}
+
+# get the sdk environment
+get_sdknam ()
+{
+    if test -n "$sdknam"; then
+	# check for valid sdk
+	if test -z "$sdkdir"; then
+	    sdkdir=$AFNIX_SDK
+	fi
+	if test -z "$sdkdir"; then
+	    echo "error: cannot find sdk directory"
+	    exit 1
+	fi
+	if test ! -d "$sdkdir"; then
+	    echo "error: cannot find sdk directory"
+	    exit 1
+	fi	    
+	# check for android
+	if test "$sdknam" = "android"; then
+	   declare -A plst
+	   while IFS='=' read -r k v; do
+	       # remove space in key
+	       k=$(echo $k | tr -d '[:space:]')
+	       # remove leading space in value
+	       v=$(echo $v | sed -e 's/^[[:space:]]*//')
+	       # remove trailing space in value
+	       v=$(echo $v | sed -e 's/^[[:space:]]*$//')
+	       plst["$k"]="$v"
+	   done < $sdkdir/source.properties
+	   pltnam="android"
+	   version=${plst[Pkg.Revision]}
+	fi
+    fi	
+}
+
+# get the platform name
+get_pltnam ()
+{
+    if test "$pltnam" = "unknown"; then
+	name=`uname -s`
+	case $name in
+	    Linux)        pltnam=linux;;
+	    SunOS)        pltnam=solaris;;
+	    FreeBSD)      pltnam=freebsd;;
+	    Darwin)       pltnam=darwin;;
+	    GNU/kFreeBSD) pltnam=gnukbsd;;
+	    GNU)          pltnam=gnu;;
+	esac
+    fi
+}
+
+# get the platform version
+get_pltvrs ()
+{
+    # get the version if any
+    if test -z "$version"; then
+	version=`uname -r | sed 's/\./ /g'`
+    else
+	version=$(echo "$version" | sed -e 's/\./ /g')
+    fi
+    # compute major, minor and patch number
+    plmajor=`echo $version | awk '{print $1}'`
+    plminor=`echo $version | awk '{print $2}'`
+    plpatch=`echo $version | awk '{print $3}'`
+
+    # extract platform normalized version
+    pltmaj=$(($plmajor+0))
+    pltmin=$(($plminor+0))
+    pltvrs=${pltmaj}.${pltmin}
+}
+
+# get the cpu name
+get_cpunam ()
+{
+    if test -z "$cpunam"; then
+	name=`uname -m`
+	case $name in
+	    i386)      cpunam=ia32;;
+	    i486)      cpunam=ia32;;
+	    i586)      cpunam=ia32;;
+	    i686*)     cpunam=ia32;;
+	    alpha)     cpunam=alpha;;
+	    sun4*)     cpunam=sparc;;
+	    sparc*)    cpunam=sparc;;
+	    arm*)      cpunam=arm;;
+	    aarch64*)  cpunam=aarch64;;
+	    ppc)       cpunam=ppc;;
+	    ppc64le)   cpunam=ppc64el;;
+	    m68k)      cpunam=m68k;;
+	    mips)      cpunam=mips;;
+	    mipsel)    cpunam=mipsel;;
+	    mips64)    cpunam=mips64;;
+	    mips64el)  cpunam=mips64el;;
+	    parisc*)   cpunam=pa64;;
+	    ia64)      cpunam=ia64;;
+	    s390)      cpunam=s390;;
+	    s390x)     cpunam=s390x;;
+	    x86_64)    cpunam=x64;;
+	    amd64)     cpunam=x64;;
+	    Power*)    cpunam=ppc;;
+	    sh*)       cpunam=sh;;
+	    riscv32)   cpunam=riscv32;;
+	    riscv64)   cpunam=riscv64;;
+	esac
+    fi
+}
+
+# get the machine size
+get_cpubit ()
+{
+    case $cpunam in
+    ia32)     cpubit=32;;
+    i386)     cpubit=32;;
+    i486)     cpubit=32;;
+    i586)     cpubit=32;;
+    i686*)    cpubit=32;;
+    alpha)    cpubit=64;;
+    sun4*)    cpubit=32;;
+    sparc*)   cpubit=64;;
+    arm*)     cpubit=32;;
+    aarch64*) cpubit=64;;
+    ppc)      cpubit=32;;
+    ppc64*)   cpubit=64;;
+    m68k)     cpubit=32;;
+    mips)     cpubit=32;;
+    mipsel)   cpubit=32;;    
+    mips64*)  cpubit=64;;    
+    parisc*)  cpubit=64;;
+    ia64)     cpubit=64;;
+    s390)     cpubit=32;;
+    s390x)    cpubit=64;;
+    x64)      cpubit=64;;
+    x86_64)   cpubit=64;;
+    amd64)    cpubit=64;;
+    Power*)   cpubit=32;;
+    sh*)      cpubit=32;;
+    riscv32)  cpubit=32;;
+    riscv64)  cpubit=64;;
+    esac
+}
+
+# ----------------------------------------------------------------------------
+# - parse options - this is where we really start                            -
+# ----------------------------------------------------------------------------
+
+preopt=
+for nxtopt
+do
+    # assign the previous option argument
+    if test -n "$preopt"; then
+	eval "$preopt=\$nxtopt"
+	preopt=
+	continue
+    fi
+
+    # extract options
+    case "$nxtopt" in
+    -*=*) argopt=`echo "$nxtopt" | sed 's/[-_a-zA-Z0-9]*=//'`;;
+       *) argopt=;;
+    esac
+
+    # process options now
+    case "$nxtopt" in
+    -h | --help)    usage;;
+    -n | --pltnam)  shwplt="yes";;
+    -v | --pltvrs)  shwvrs="yes";;
+    -M | --pltmaj)  shwmaj="yes";;
+    -m | --pltmin)  shwmin="yes";;
+    -p | --shcnam)  shwcpu="yes";;
+    -s | --shbits)  shwbit="yes";;
+    --sdknam)       preopt=sdknam;;
+    --sdknam=*)     sdknam="$argopt";;
+    --sdkdir)       preopt=sdkdir;;
+    --sdkdir=*)     sdkdir="$argopt";;
+    --cpunam)       preopt=cpunam;;
+    --cpunam=*)     cpunam="$argopt";;
+    *)              error "afnix-guess: illegal option $nxtopt";;
+    esac
+done
+
+# get system info
+get_sdknam
+get_pltnam
+get_pltvrs
+get_cpunam
+
+# build result variable
+if test "$pltnam" = "unknown"; then
+    echo "afnix-guess: cannot determine the platform name"
+    exit 1
+fi
+
+if test "$pltvrs" = "unknown"; then
+    echo "afnix-guess: cannot determine the platform version"
+    exit 1
+fi
+
+if test "$cpunam" = "unknown"; then
+    echo "afnix-guess: cannot determine the processor name"
+    exit 1
+fi
+
+# print selectively
+if test "$shwplt" = "yes"; then
+echo ${pltnam}
+exit 0
+fi
+if test "$shwvrs" = "yes"; then
+echo ${pltvrs}
+exit 0
+fi
+if test "$shwmaj" = "yes"; then
+echo ${pltmaj}
+exit 0
+fi
+if test "$shwmin" = "yes"; then
+echo ${pltmin}
+exit 0
+fi
+if test "$shwcpu" = "yes"; then
+echo ${cpunam}
+exit 0
+fi
+if test "$shwbit" = "yes"; then
+get_cpubit
+echo ${cpubit}
+exit 0
+fi
+
+# print the result
+echo ${pltnam}-${pltvrs}-${cpunam}
+exit 0

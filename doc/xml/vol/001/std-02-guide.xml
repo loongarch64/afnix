@@ -1,0 +1,1247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = std-02-guide.xml                                                   = -->
+<!-- = afnix programmer's guide chapter 2                                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter volume="1" number="2">
+  <title>Literals</title>
+
+  <p>
+    This chapters covers in detail the literals objects used to manipulate
+    numbers and strings. First the integer, relatif and real numbers are
+    described. There is a broad range of methods for these three objects that
+    support numerical computation. As a second step, string and
+    character objects are described. Many examples show the various
+    operations which can be used as automatic conversion between 
+    one type and another. Finally, the boolean object is described. 
+    These objects belongs to the class of <em>literal objects</em>, 
+    which are objects that have a string representation. A special
+    literal object known as <em>regular expression</em> or
+    <em>regex</em> is also described at the end of this chapter.
+    <ie>Literal</ie>
+  </p>
+  
+  <!-- integer number -->
+  <section>
+    <title>Integer number</title>
+    
+    <p>
+      The fundamental number representation is the <code>Integer</code>. 
+      The integer is a 64 bits signed 2's complement number. Even when running
+      with a 32 bits machine, the 64 bits representation is used. If a larger
+      representation is needed, the <code>Relatif</code> object might be more
+      appropriate. The <code>Integer</code> object is a literal object
+      that belongs to the number class.
+      <ie>Integer</ie><ie>Number</ie>
+    </p>
+    
+    <!-- integer format -->
+    <subsect>
+      <title>Integer format</title>
+      
+      <p>
+	The default literal format for an integer is the decimal
+	notation. The minus sign (without blank) indicates a negative
+	number. Hexadecimal and binary notations can also be used with
+	prefix <code>0x</code> and <code>0b</code>. The underscore
+	character can be used to make the notation more readable.
+      </p>
+      
+      <example>
+	const a  123
+	trans b -255
+	const h  0xff
+	const b  0b1111_1111
+      </example>
+      
+      <p>
+	Integer number are constructed from the literal notation or by
+	using an explicit integer instance. The <code>Integer</code>
+	class offers standard constructors. The default constructor
+	creates an integer object and initialize it to 0. The other
+	constructors take either an integer, a real number, a character
+	or a string.<ie>Integer format</ie>
+      </p>
+
+      <example>
+	const a (Integer)
+	const b (Integer 2000)
+	const c (Integer "23")
+      </example>
+
+      <p>
+	When the hexadecimal or binary notation is used, care should be
+	taken to avoid a negative integer. For example,
+	<code>0x_8000_0000_0000_0000</code> is the smallest negative 
+	number. This number exhibits also the strange property to be
+	equal to its negation since with 2's complement, there is no
+	positive representation.
+      </p>
+    </subsect>
+
+    <!-- integer arithmetic -->
+    <subsect>
+      <title>Integer arithmetic</title>
+      
+      <p>
+	Standard arithmetic operators are available as built-in
+	operators. The usual addition <code>+</code>, multiplication
+	<code>*</code> and division <code>/</code> operate with two
+	arguments. The subtraction <code>-</code> operates with one or
+	two arguments.<ie>+</ie><ie>-</ie><ie>*</ie><ie>/</ie>
+	<ie>Integer arithmetic</ie>
+      </p>
+      
+      <example>
+	+ 3 4
+	- 3 4
+	- 3
+	* 3 4
+	/ 4 2
+      </example>
+
+      <p>
+	As a built-in object, the <code>Integer</code> object offers
+	various methods for built-in arithmetic which directly operates
+	on the object. The following example illustrates these methods.
+      </p>
+      
+      <example>
+	trans i 0
+	i:++
+	i:--
+	i:+ 4
+	i:= 4
+	i:- 1
+	i:* 2
+	i:/ 2
+	i:+= 1
+	i:-= 1
+	i:*= 2
+	i:/= 2
+      </example>
+      
+      <p>
+	As a side effect, these methods allows a const symbol to be
+	modified. Since the methods operates on an object, they do not
+	modify the state of the symbol. Such methods are called
+	<em>mutable methods</em>. 
+      </p>
+      
+      <example>
+	const i 0
+	i:= 1
+      </example>
+    </subsect>
+
+    <!-- integer comparision -->
+    <subsect>
+      <title>Integer comparison</title>
+
+      <p>
+	The comparison operators works the same. The only difference is
+	that they always return a <code>Boolean</code> result. The
+	comparison operators are namely equal <code>==</code>, not equal
+	<code>!=</code>, less than <code>&lt;</code>, less equal
+	<code>&lt;=</code>, greater <code>&gt;</code> and greater
+	equal <code>&gt;=</code>. These operators take two arguments.
+      </p>
+
+      <example>
+	== 0 1
+	!= 0 1
+      </example>
+
+      <p>
+	Like the arithmetic methods, the comparison operators are
+	supported as object methods. These methods return a
+	<code>Boolean</code> object.
+      </p>
+
+      <example>
+	i:=  1
+	i:== 1
+	i:!= 0
+      </example>
+    </subsect>
+
+    <!-- integer calculus -->
+    <subsect>
+      <title>Integer calculus</title>
+      
+      <p>
+	Armed with all these functions, it is possible to develop a
+	battery of functions operating with numbers. As another example,
+	we revisit the Fibonacci sequence as demonstrated in the
+	introduction chapter. Such example was terribly slow, because of
+	the double recursion. Another method suggested by Springer and
+	Friedman uses two functions to perform the same job.
+	<ie>Fibonacci</ie><ie>Integer calculus</ie>
+      </p>
+
+      <example>
+	const fib-it (gamma (n acc1 acc2) (
+          if (== n 1) acc2 (fib-it (- n 1) acc2 (+ acc1 acc2))))
+	
+	const fiboi (gamma (n) (
+          if (== n 0) 0 (fib-it n 0 1)))
+      </example>
+
+      <p>
+	This later example is by far much faster, since it uses only one
+	recursion. Although, it is no the fastest way to write it, it is
+	still an elegant way to write complex functions.
+      </p>
+    </subsect>
+
+    <!-- other integer methods -->
+    <subsect>
+      <title>Other Integer methods</title>
+      
+      <p>
+	The <code>Integer</code> class offers other convenient
+	methods. The <code>odd-p</code> and <code>even-p</code> are
+	predicates. The <code>mod</code> take one argument and returns
+	the modulo between the calling integer and the argument.
+	The <code>abs</code> methods returns the absolute value of the
+	calling integer.
+	<ie>odd-p</ie><ie>even-p</ie><ie>abs</ie>
+      </p>
+      
+      <example>
+	i:even-p
+	i:odd-p
+	i:mod 2
+	i:= -1
+	i:abs
+	i:to-string
+      </example>
+      
+      <p>
+	The <code>Integer</code> object is a <em>literal object</em>
+	and a <em>number object</em>. As a literal object, the
+	<code>to-string</code> and <code>to-literal</code> methods are
+	provided to obtain a string representation for the integer
+	object. Although the <code>to-string</code> method returns a
+	string representation of the calling integer, the
+	<code>to-literal</code> method returns a parsable
+	string. Strictly speaking for an integer, there is no
+	difference between a string representation and a literal
+	representation. However, this is not true for other objects.
+	<ie>Literal</ie><ie>Number</ie>
+	<ie>to-string</ie><ie>to-literal</ie>
+      </p>
+
+      <example>
+	(axi) const i 0x123
+	(axi) println (i:to-string)
+	291
+	(axi) println (i:to-literal)
+	291
+      </example>
+
+      <p>
+	As a number object, the integer number can also be represented
+	in hexadecimal format. The <code>to-hexa</code> and
+	<code>to-hexa-strign</code> methods are designed to obtained
+	such representation. In the first form, the
+	<code>to-hexa</code> method return a literal hexadecimal
+	string representation with the appropriate prefix while the
+	second one does not.
+	<ie>to-hexa</ie><ie>to-hexa-string</ie>
+      </p>
+
+      <example>
+	(axi) const i 0x123
+	(axi) println (i:to-hexa)
+	0x123
+	(axi) println (i:to-hexa-string)
+	123
+      </example>
+    </subsect>
+  </section>
+
+  <!-- relatif number -->
+  <section>
+    <title>Relatif number</title>
+
+    <p>
+      A <em>relatif</em> or big number is an integer with infinite
+      precision. The <code>Relatif</code> class is similar to the
+      <code>Integer</code> class except that it works with infinitely
+      long number. The relatif notation uses a <code>r</code> or
+      <code>R</code> suffix to express a relatif number versus an
+      integer one. The <code>Relatif</code> object is a literal object
+      that belongs to the number class. The predicate associated with
+      the <code>Relatif</code> object is <code>relatif-p</code>.
+      <ie>Relatif</ie><ie>relatif-p</ie>
+    </p>
+
+    <example>
+      const a  123R
+      trans b -255R
+      const c  0xffR
+      const d  0b1111_1111R
+      const e (Relatif)
+      const f (Relatif 2000)
+      const g (Relatif "23")
+    </example>
+
+    <!-- relatif operations -->
+    <subsect>
+      <title>Relatif operations</title>
+
+      <p>
+	Most of the <code>Integer</code> class operations are supported
+	by the <code>Relatif</code> object. The only difference is that
+	there is no limitation on the number size. This naturally comes
+	with a computational price. An amazing example is to compute the
+	biggest know prime Mersenne number. The world record exponent is
+	6972593. The number is therefore:
+      </p>
+
+      <example>
+	const i 1R
+	const m (- (i:shl 6972593) 1)
+      </example>
+
+      <p>
+	This number has 2098960 digits. You can use the
+	<code>println</code> method if you wish, but you have been
+	warned... 
+      </p>
+    </subsect>
+  </section>
+
+  <!-- real numbers -->
+  <section>
+    <title>Real number</title>
+
+    <p>
+      The <code>real</code> class implements the representation for
+      floating point number. The internal representation is machine
+      dependent, and generally follows the double representation with 64
+      bits as specified by the IEEE 754-1985 standard for binary
+      floating point arithmetic. All integer operations are supported
+      for real numbers. The <code>Real</code> object is a literal object that
+      belongs to the number class.<ie>Real</ie>
+      <ie>Number</ie>
+    </p>
+    
+    <!-- real format -->
+    <subsect>
+      <title>Real format</title>
+      
+      <p>
+	The parser supports two types of literal representation
+	for real number. The first representation is the <em>dotted
+	decimal</em> notation. The second notation is the <em>scientific
+	notation</em>.
+      </p>
+
+      <example>
+	const a  123.0 # a positive real
+	const b -255.5 # a negative real
+	const c  2.0e3 # year 2000.0
+      </example>
+
+      <p>
+	Real number are constructed from the literal notation or by
+	using an explicit real instance. The <code>Real</code> class
+	offers standard constructors. The default constructor creates a
+	real number object and initialize it to 0.0. The other
+	constructors takes either an integer, a real number, a character
+	or a string.
+      </p>
+    </subsect>
+
+    <!-- real arithmetic -->
+    <subsect>
+      <title>Real arithmetic</title>
+
+      <p>
+	The real arithmetic is similar to the integer one. When an
+	integer is added to a real number, that number is automatically
+	converted to a real. Ultimately, a pure integer operation
+	might generate a real result.
+      </p>
+
+      <example>
+	+ 1999.0 1   # 2000.0  
+	+ 1999.0 1.0 # 2000.0
+	- 2000.0 1   # 1999.0  
+	- 2000.0 1.0 # 1999.0
+	* 1000 2.0   # 2000.0  
+	* 1000.0 2.0 # 2000.0
+	/ 2000.0 2   # 1000.0  
+	/ 2000.0 2.0 # 1000.0
+      </example>
+
+      <p>
+	Like the <code>Integer</code> object, the <code>Real</code>
+	object has arithmetic built-in methods.
+      </p>
+
+      <example>
+	trans  r 0.0 # 0.0  
+	r:++       # 1.0 
+	r:--       # 0.0  
+	r:+ 4.0    # 4.0  
+	r:= 4.0    # 4.0  
+	r:- 1.0    # 3.0  
+	r:* 2.0    # 8.0  
+	r:/ 2.0    # 2.0  
+	r:+= 1.0   # 5.0  
+	r:-= 1.0   # 4.0  
+	r:*= 2.0   # 8.0  
+	r:/= 2.0   # 4.0
+      </example>
+    </subsect>
+
+    <!-- real comparison -->
+    <subsect>
+      <title>Real comparison</title>
+
+      <p>
+	The comparison operators works as the integer one. As for the
+	other operators, an implicit conversion between an integer to a
+	real is done automatically.
+      </p>
+
+      <example>
+	== 2000 2000   # true
+	!= 2000 1999   # true
+      </example>
+
+      <p>
+	Comparison methods are also available for the <code>Real</code>
+	object. These methods take either an integer or a real as
+	argument.
+      </p>
+
+      <example>
+	r:=  1.0 # 1.0
+	r:== 1.0 # true  
+	r:!= 0.0 # true
+      </example>
+    </subsect>
+
+    <!-- a complex example -->
+    <subsect>
+      <title>A complex example</title>
+
+      <p>
+	One of the most interesting point with functional programming
+	language is the ability to create complex function. For
+	example let's assume we wish to compute the value
+	at a point <code>x</code> of the <em>Legendre polynomial of order
+	n</em>. One of the solution is to encode the function given its
+	order. Another solution is to compute the function and then
+	compute the value.<ie>Legendre polynomial</ie>
+      </p>
+      
+      <example>
+	# legendre polynomial order 0 and 1
+	const lp-0 (gamma (x) 1)
+	const lp-1 (gamma (x) x)
+	
+	# legendre polynomial of order n
+	const lp-n (gamma (n) (
+          if (&gt; n 1) {
+            const lp-n-1 (lp-n (- n 1))
+            const lp-n-2 (lp-n (- n 2))
+	    gamma (x) (n lp-n-1 lp-n-2) 
+              (/ (- (* (* (- (* 2 n) 1) x) 
+                (lp-n-1 x))
+                (* (- n 1) (lp-n-2 x))) n)
+          } (if (== n 1) lp-1 lp-0)
+        ))
+
+	# generate order 2 polynomial
+	const lp-2 (lp-n 2)
+	
+	# print lp-2 (2)
+	println "lp2 (2) = " (lp-2 2)
+      </example>
+      
+      <p>
+	Note that the computation can be done either with integer or
+	real numbers. With integers, you might get some strange results
+	anyway, but it will work.  Note also how the closed variable
+	mechanism is used. The recursion capture  each level of the
+	polynomial until it is constructed. Note also that we have here a
+	double recursion.
+      </p>
+    </subsect>
+
+    <!-- other real methods -->
+    <subsect>
+      <title>Other real methods</title>
+
+      <p>
+	The real numbers are delivered with a battery of functions. These
+	include the trigonometric functions, the logarithm and couple
+	others. Hyperbolic functions like <code>sinh</code>,
+	<code>cosh</code>, <code>tanh</code>, <code>asinh</code>,
+	<code>acosh</code> and <code>atanh</code> are also
+	supported. The square root <code>sqrt</code> method return the
+	square root of the calling real. The <code>floor</code> and
+	<code>ceiling</code> returns respectively the floor and the
+	ceiling of the calling real.<ie>Real functions</ie>
+	<ie>floor</ie><ie>ceiling</ie><ie>abs</ie><ie>log</ie><ie>exp</ie>
+	<ie>sin</ie><ie>cos</ie><ie>tan</ie><ie>asin</ie>
+      </p>
+
+      <example>
+	const r0 0.0       # 0.0
+	const r1 1.0       # 1.0
+	const r2 2.0       # 2.0
+	const rn -2.0      # -2.0
+	const rq (r2:sqrt) # 1.414213
+	const pi 3.1415926 # 3.141592
+
+	rq:floor           # 1.0
+	rq:ceiling         # 2.0
+	rn:abs             # 2.0
+	r1:log             # 0.0
+	r0:exp             # 1.0
+	r0:sin             # 0.0
+	r0:cos             # 1.0
+	r0:tan             # 0.0
+	r0:asin            # 0.0
+	pi:floor           # 3.0
+	pi:ceiling         # 4.0
+      </example>
+    </subsect>
+
+    <!-- accuracy and formatting -->
+    <subsect>
+      <title>Accuracy and formatting</title>
+
+      <p>
+	Real numbers are not necessarily accurate, nor precise. The
+	accuracy and precision are highly dependent on the hardware as
+	well as the nature of the operation being performed. In any
+	case, never assume that a real value is an exact one. Most of
+	the time, a real comparison will fail, even if the numbers are
+	very close together. When comparing real numbers, it is
+	preferable to use the <code>?=</code> operator. Such operator
+	result is bounded by the internal precision representation and
+	will generally return the desired value. The real precision is
+	an interpreter value which is set with the
+	<code>set-absolute-precision</code> method while the 
+	<code>get-absolute-precision</code> returns the interpreter
+	precision. There is also a <code>set-relative-precision</code> and 
+	<code>get-relative-precision</code> methods used for the definition of
+	relative precision. By default, the absolute precision is set to 
+	0.00001 and the relative precision is set to 1.0E-8.
+	<ie>Accuracy</ie><ie>set-absolute-precision</ie>
+	<ie>set-relative-precision</ie>
+      </p>
+      
+      <example>
+	interp:set-absolute-precision 0.0001
+	const r 2.0
+	const s (r:sqrt) # 1.4142135
+	(s:?= 1.4142)    # true
+      </example>
+      
+      <p>
+	Real number formatting is another story. The <code>format</code>
+	method takes a <em>precision argument</em> which indicates
+	the number of digits to print for the decimal part. Note that
+	the format command might round the result as indicated in the
+	example below.<ie>format</ie>
+      </p>
+      
+      <example>
+	const pi 3.1415926535
+	pi:format 3  # 3.142
+      </example>
+
+      <p>
+	If additional formatting is needed, the <code>String</code>
+	<code>fill-left</code> and <code>fill-right</code> methods can
+	be used.<ie>fill-left</ie>
+      </p>
+
+      <example>
+	const pi  3.1415926535        # 3.1415926535
+	const val (pi:format 4)       # 3.1416
+	println (val:fill-left '0' 9) # 0003.1416
+      </example>
+    </subsect>
+
+    <!-- number object -->
+    <subsect>
+      <title>Number object</title>
+      
+      <p>
+	The <code>Integer</code>, <code>Relatif</code> and
+	<code>Real</code> objects are all derived from the
+	<code>Number</code> object which is a <code>Literal</code>
+	object. As such, the predicate <code>number-p</code> is the
+	right mechanism to test an object for a number. The class also
+	provides the basic mechanism to format the number as a
+	string. For integer and relatif, the hexadecimal representation
+	can be obtained by the <code>to-hexa</code> and
+	<code>to-hexa-string</code> methods. For integer and real
+	numbers, the <code>format</code> method adjusts the final
+	representation with the precision argument as indicated
+	before. It is worth to note that a formatted integer gets
+	automatically converted into a real representation.
+	<ie>Number</ie>
+      </p>
+    </subsect>
+
+  </section>
+
+  <!-- character -->
+  <section>
+    <title>Character</title>
+
+    <p>
+      The <code>Character</code> object is another built-in object. A
+      character is internally represented by a quad by using a 31 bit
+      representation as specified by the Unicode standard and ISO 10646.
+      <ie>Character</ie>
+    </p>
+
+    <!-- character format -->
+    <subsect> 
+      <title>Character format</title>
+
+      <p>
+	The standard quote notation is used to represent a character. In
+	that respect, there is hare a substantial difference with other
+	functional language where the quote protect a form.
+      </p>
+
+      <example>
+	const LA01 'a' # the character a
+	const ND10 '0' # the digit 0
+      </example>
+
+      <p>
+	All characters from the <em>Unicode codeset</em> are
+	supported by the <afnix/> engine. The characters are constructed
+	from the literal notation or by using an explicit character
+	instance. The <code>Character</code> class offers standard
+	constructors. The default constructor creates a null
+	character. The other constructors take either an integer, a
+	character or a string. The string can be either a single quoted
+	character or the literal notation based on the <code>U+</code>
+	notation in hexadecimal. For example, <code>U+40</code> is the
+	<em>@</em> character while <code>U+3A3</code> is the sigma
+	capital letter <em>&#x3A3;</em>.
+      </p>
+
+      <example>
+	const nilc (Character)        # null character
+	const a    (Character 'a')    # a
+	const 0    (Character 48)     # 0
+	const mul  (Character "*")    # *
+	const div  (Character "U+40") # @
+      </example>
+    </subsect>
+
+    <!-- character arithmetic -->
+    <subsect>
+      <title>Character arithmetic</title>
+
+      <p>
+	A character is like an integer, except that it operates in the
+	range 0 to 0x7FFFFFFF. The character arithmetic is simpler
+	compared to the integer one and no overflow or underflow
+	checking is done. Note that the arithmetic operations take an
+	integer as an argument.
+      </p>
+
+      <example>
+	+ 'a' 1 # 'b' 
+	- '9' 1 # '8'
+      </example>
+
+      <p>
+	Several <code>Character</code> object methods are also provided
+	for arithmetic operations in a way similar to the
+	<code>Integer</code> class.
+      </p>
+
+      <example>
+	trans  c 'a' # 'a'
+	c:++         # 'b'
+	trans  c '9' # '9'  
+	c:--         # '8'
+	c:+ 1        # '9'
+	c:- 9        # '0'
+      </example>
+    </subsect>
+
+    <!-- character comparison -->
+    <subsect>
+      <title>Character comparison</title>
+
+      <p>
+	Comparison operators are also working with the
+	<code>Character</code> object. The standard operators are namely
+	equal <code>==</code>, not equal <code>!=</code>, less than
+	<code>&lt;</code>, less equal <code>&lt;=</code>, greater
+	<code>&gt;</code> and greater equal
+	<code>&gt;=</code>. These operators take two arguments.
+      </p>
+
+      <example>
+	== 'a' 'b' # false  
+	!= '0' '1' # true
+      </example>
+    </subsect>
+
+    <!-- other character method -->
+    <subsect>
+      <title>Other character methods</title>
+
+      <p>
+	The <code>Character</code> object comes with additional 
+	methods. These are mostly conversion methods and predicates. The
+	<code>to-string</code> method returns a string representation of
+	the calling character. The <code>to-integer</code> method returns
+	an integer representation the calling character. The predicates
+	are <code>alpha-p</code>, <code>digit-p</code>,
+	<code>blank-p</code>, <code>eol-p</code>, <code>eos-p</code> and
+	<code>nil-p</code>.
+	<ie>alpha-p</ie><ie>digit-p</ie><ie>blank-p</ie><ie>eol-p</ie>
+	<ie>eos-p</ie><ie>nil-p</ie>
+      </p>
+
+      <example>
+	const LA01 'a'  # 'a'
+	const ND10 '0'  # '0'
+	LA01:to-string  # "a"
+	LA01:to-integer # 97
+	LA01:alpha-p    # true
+	ND10:digit-p    # true
+      </example>
+    </subsect>
+  </section>
+
+  <!-- string object -->
+  <section>
+    <title>String</title>
+
+    <p>
+      The <code>String</code> object is one of the most important
+      built-in object in the <afnix/> engine. Internally, a string is a
+      vector of <em>Unicode characters</em>. Because a string operates
+      with Unicode characters, care should be taken when using
+      composing characters.
+      <ie>String</ie>
+    </p>
+
+    <!-- string format -->
+    <subsect>
+      <title>String format</title>
+
+      <p>
+	The standard double quote notation is used to represent
+	literally a string. Standard escape sequences are also accepted
+	to construct a string.
+      </p>
+      
+      <example>
+	const hello "hello"
+      </example>
+
+      <p>
+	Any literal object can be used to construct a string. This means
+	that integer, real, boolean or character objects are all valid
+	to construct strings. The  default constructor creates a null
+	string. The string constructor can also takes a string.
+      </p>
+
+      <example>
+	const nils (String)      # ""
+	const one  (String 1)    # "1"
+	const a    (String 'a')  # "a"
+	const b    (String true) # "true"
+      </example>
+    </subsect>
+
+    <!-- string operation -->
+    <subsect>
+      <title>String operations</title>
+
+      <p>
+	The <code>String</code> object provides numerous methods and
+	operators. The most common ones are illustrated in the example
+	below. The <code>length</code> methods returns the total number
+	of characters in the string object. It is worth to note that
+	this number is not necessarily the number of printed characters
+	since some characters might be <em>combining characters</em>
+	used, for example, as diacritics. The 
+	<code>non-combining-length</code> method might
+	be more adapted to get the number of printable characters.
+	<ie>length</ie><ie>Combining character</ie>
+      </p>
+
+      <example>
+	const h "hello"
+	h:length       # 5
+	h:get 0        # 'h'
+	h:== "world"   # false
+	h:!= "world"   # true
+	h:+= " world"  # "hello world"
+      </example>
+
+      <p>
+	The <code>sub-left</code> and <code>sub-right</code> methods
+	return a sub-string, given the position index. For
+	<code>sub-left</code>, the index is the terminating index, while 
+	<code>sub-right</code> is the starting index, counting from 0.
+	<ie>sub-left</ie><ie>sub-right</ie>
+      </p>
+     
+      <example>
+	# example of sub-left method
+	const msg "hello world"
+	msg:sub-left  5 # "hello"
+	msg:sub-right 6 # "world"
+      </example>
+
+      <p>
+	The <code>strip</code>, <code>strip-left</code> and
+	<code>strip-right</code> are methods used to strip blanks and
+	tabs. The <code>strip</code> method combines both
+	<code>strip-left</code> and <code>strip-right</code>.
+	<ie>strip</ie><ie>strip-left</ie><ie>strip-right</ie>
+      </p>
+ 
+      <example>	
+	# example of strip method
+	const str " hello world "
+	println (str:strip) # "hello world"
+      </example>
+
+      <p>
+	The <code>split</code> method returns a vector of strings by
+	splitting the string according to a break sequence. By default,
+	the break sequence is the blank, tab and newline characters. The
+	break sequence can be one or more characters passed as one
+	single argument to the method.
+	<ie>split</ie>
+      </p>
+
+      <example>	
+	# example of split method
+	const str "hello:world"
+	const vec (str:split ":" # "hello" "world")
+	println (vec:length) # 2
+      </example>
+
+      <p>
+	The <code>fill-left</code> and <code>fill-right</code> methods
+	can be used to fill a string with a character up to a certain
+	length. If the string is longer than the length, nothing
+	happens.
+	<ie>fill-left</ie><ie>fill-right</ie>
+      </p>
+
+      <example>	
+	# example of fill-left method
+	const pi  3.1415926535  # 3.1415926535
+	const val (pi:format 4) # 3.1416
+	val:fill-left '0' 9     # 0003.1416
+      </example>
+    </subsect>
+
+   <!-- conversion methods -->
+    <subsect>
+      <title>Conversion methods</title>
+
+      <p>
+	The case conversion methods are the standard
+	<code>to-upper</code> and <code>to-lower</code> methods. The
+	method operates with the internal Unicode database. As a
+	result, the conversion might change the string length. Other
+	conversion methods related to the Unicode representation are
+	also available. These are rather technical, but can be used to
+	put the string in a normal form which might be suitable for
+	comparison. Such conversion always uses the Unicode database
+	normal form representation.
+	<ie>to-upper</ie><ie>to-lower</ie>
+      </p>
+
+      <example>	
+	# example of case conversion
+	const str "hello world"
+	println (str:to-upper) # HELLO WORLD
+      </example>
+    </subsect>
+
+    <!-- string hash value -->
+    <subsect>
+      <title>String hash value</title>
+
+      <p>
+	The <code>hashid</code> method is a method that computes
+	the hash value of a string. The value depends on the target
+	machine and will change between a 32 bits and a 64 bits
+	machine. Example <em>example 0203.als</em> illustrates the
+	computation of a hash value for our favorite test string.
+	<ie>Hash code (String)</ie>
+      </p>
+
+      <example>
+	# test our favorite string
+	const hello "hello world"
+	hello:hashid # 1054055120
+      </example>
+
+      <p>
+	The algorithm used by the engine is shown as an
+	example below. As a side note, it is recommended to print the
+	shift amount in the program. One may notice, that the value
+	remains bounded by 24. Since we are <em>xoring</em> the final
+	value, it does illustrate that the algorithm is design for a 32 bits
+	machine. With a 64 bits machine the algorithm is slightly
+	modified to use the extra space. This also means that the hashid
+	value is not portable across platforms. 
+      </p>
+      
+      <example>
+	# compute string hashid
+	const hashid (s) {
+          const len (s:length)
+          trans cnt 0
+          trans val 0
+          trans sht 17
+          do {
+            # compute the hash value
+	    trans i (Integer (s:get cnt))
+	    val:= (val:xor (i:shl sht))
+	    # adjust shift index
+	    if (&lt; (sht:-= 7) 0) (sht:+= 24)
+	  } (&lt; (cnt:++) len)
+          eval val
+        }
+      </example>
+    </subsect>
+  </section>
+  
+  <!-- regular expression syntax -->
+  <section>
+    <title>Regular expression</title>
+    
+    <p>
+      A regular expression or <em>regex</em> is a special literal
+      object designed to describe a character string in a compact form
+      with regular patterns. A regular expression provides a
+      convenient way to perform pattern matching and filed extraction
+      within a character string.
+    </p>
+
+    <!-- regex syntax -->
+    <subsect>
+      <title>Regex syntax</title>
+
+      <p>
+	A regular expression is defined with a special <code>Regex</code>
+	object. A regular expression can be built implicitly or explicitly
+	with the use of the <code>Regex</code> object. The regex syntax
+	uses the <code>[</code> and <code>]</code> characters as block
+	delimiters. When used in a source file, the parser automatically
+	recognizes a regex and built the object accordingly. The
+	following example shows two equivalent methods for the same
+	regex expression.
+      </p>
+      
+      <example>
+	# syntax built-in regex
+	(== [$d+] 2000)         # true
+	# explicit built-in regex
+	(== (Regex "$d+") 2000) # true
+      </example>
+      
+      <p>
+	In its first form, the <code>[</code> and <code>]</code>
+	characters are used as syntax delimiters. The lexical analyzer
+	automatically recognizes this token as a regex and built
+	the equivalent <code>Regex</code> object. The second form is the
+	explicit construction of the <code>Regex</code> object. Note also
+	that the <code>[</code> and <code>]</code> characters are also
+	used as regex block delimiters.
+      </p>
+    </subsect>
+
+    <!-- regex characters and meta-characters -->
+    <subsect>
+      <title>Regex characters and meta-characters</title>
+      
+      <p>
+	Any character, except the one used as operators can be used in a
+	regex. The <code>$</code> character is used as a meta-character
+	-- or control character -- to represent a particular set of
+	characters. For example, <code>[hello world]</code> is a
+	regex which match only the <code>"hello world"</code>
+	string. The <code>[$d+]</code> regex matches one or more
+	digits. The following meta characters are built-in in the
+	regex engine. 
+      </p>
+      
+      <table>
+	<title>Regular expression meta-characters</title>
+	<tr>
+	  <th>Character</th><th>Description</th>
+	</tr>
+	<tr><td>$a</td><td>matches any letter or digit</td></tr>
+	<tr><td>$b</td><td>matches any blank characters</td></tr>
+	<tr><td>$c</td><td>matches any combining alphanumeric</td></tr>
+	<tr><td>$d</td><td>matches any digit</td></tr>
+	<tr><td>$e</td><td>matches eol, cr and eos</td></tr>
+	<tr><td>$l</td><td>matches any lower case letter</td></tr>
+	<tr><td>$n</td><td>matches eol or cr</td></tr>
+	<tr><td>$s</td><td>matches any letter</td></tr>
+	<tr><td>$u</td><td>matches any upper case letter</td></tr>
+	<tr><td>$v</td><td>matches any valid afnix constituent</td></tr>
+	<tr><td>$w</td><td>matches any word constituent</td></tr>
+	<tr><td>$x</td><td>matches any hexadecimal characters</td></tr>
+      </table>
+      
+      <p>
+	The uppercase version is the complement of the corresponding
+	lowercase character set.
+      </p>
+
+      <p>
+	A character which follows a <code>$</code> character and that is
+	not a meta character is treated as a normal character. For
+	example <code>$[</code> is the <code>[</code> character. A
+	quoted string can be used to define character matching which
+	could otherwise be interpreted as control characters or
+	operator. A quoted string also interprets standard
+	<em>escaped sequences</em> but not meta characters.
+      </p>
+
+      <example>
+	(== [$d+]   2000) # true
+	(== ["$d+"] 2000) # false
+      </example>
+
+      <p>
+	Combining alphanumerical characters can generate surprising
+	result when used with Unicode string. Combining alphanumeric
+	characters are alphanumeric characters and non spacing combining
+	mark as defined by the Unicode consortium. In practice, the
+	combining marks are the diacritics used with regular letter,
+	such like the accents found in the western languages. Because
+	the writing system uses a canonical decomposition for
+	representing the Unicode string, it turns out that the printed
+	string is generally represented with more bytes, making the string
+	length longer than it appears.
+      </p>
+    </subsect>
+
+    <!-- regex character set -->
+    <subsect>
+      <title>Regex character set</title>
+      
+      <p>
+	A character set is defined with the <code>&lt;</code> and
+	<code>&gt;</code> characters. Any enclosed character defines a
+	character set. Note that meta characters are also interpreted
+	inside a character set. For example, <code>&lt;$d+-&gt;</code>
+	represents any digit or a plus or minus. If the first character
+	is the <code>^</code> character in the character set, the
+	character set is complemented with regards to its definition.
+      </p>
+    </subsect>
+    
+    <!-- regex block and operations -->
+    <subsect>
+      <title>Regex blocks and operators</title>
+      
+      <p>
+	The <code>[</code> and <code>]</code> characters are the
+	regex sub-expressions delimiters. When used at the top level of
+	a regex definition, they can identify an implicit object. Their
+	use at the top level for explicit construction is optional. The
+	following example is strictly equivalent. 
+      </p>
+      
+      <example>
+	# simple real number check
+	const real-1 (Regex "$d*.$d+")
+	# another way with [] characters
+	const real-2 (Regex "[$d*.$d+]")
+      </example>
+      
+      <p>
+	Sub-expressions can be nested -- that's their role -- and
+	combined with operators. There is no limit in the nesting
+	level.
+      </p>
+      
+      <example>
+	# pair of digit testing
+	(== [$d$d[$d$d]+] 2000)  # true
+	(== [$d$d[$d$d]+] 20000) # false
+      </example>
+      
+      <p>
+	The following unary operators can be used with single character,
+	control characters and sub-expressions.
+      </p>
+      
+      <table>
+	<title>Regular expression operators</title>
+	<tr>
+	  <th>Operator</th><th>Description</th>
+	</tr>
+	<tr><td>*</td><td>match 0 or more times</td></tr>
+	<tr><td>+</td><td>match 1 or more times</td></tr>
+	<tr><td>?</td><td>match 0 or 1 time</td></tr>
+	<tr><td>|</td><td>alternation</td></tr>
+      </table>
+      
+      <p>
+	Alternation is an operator which work with a secondary
+	expression. Care should be taken when writing the right
+	sub-expression. For example the following regex
+	<code>[$d|hello]</code> is equivalent to
+	<code>[[$d|h]ello]</code>. In other word, the minimal first
+	sub-expression is used when compiling the regex. 
+      </p>
+    </subsect>
+    
+    <!-- grouping -->
+    <subsect>
+      <title>Grouping</title>
+
+      <p>
+	Groups of sub-expressions are created with the <code>(</code>
+	and <code>)</code> characters. When a group is matched, the
+	resulting sub-string is placed on a stack and can be used
+	later. In this respect, the regex engine can be used to extract
+	sub-strings. The following example extracts the month, day and
+	year from a particular date format:
+	<code>[($d$d):($d$d):($d$d$d$d)]</code>. This regex assumes a
+	date in the form <em>mm:dd:yyyy</em>.
+      </p>
+
+      <example>
+	if (== (const re [($d$d):($d$d)]) "12:31") {
+          trans hr (re:get 0)
+	  trans mn (re:get 1)
+	}
+      </example>
+      
+      <p>
+	Grouping is the mechanism to retrieve sub-strings when a match
+	is successful. If the regex is bound to a symbol, the
+	<code>get</code> method can be used to get the sub-string by
+	index.
+      </p>
+    </subsect>
+
+    <!-- regex object -->
+    <subsect>
+      <title>Regex object</title>
+      
+      <p>
+	Although a regex can be built implicitly, the <code>Regex</code>
+	object can also be used to build a new regex. The argument is
+	a string which is compiled during the object construction.
+	A <code>Regex</code> object is a literal object. This means that
+	the <code>to-string</code> method is available and that a call
+	to the <code>println</code> special form will work directly.
+      </p>
+      
+      <example>
+	const   re (Regex "$d+")
+	println re           # $d+
+	println re:to-string # [$d+]
+      </example>
+    </subsect>
+
+    <!-- regex operators -->
+    <subsect>
+      <title>Regex operators</title>
+      
+      <p>
+	The <code>==</code> and <code>!=</code> operators are the
+	primary operators to perform a regex match. The <code>==</code>
+	operator returns <code>true</code> if the regex matches the
+	string argument from the beginning to the end of string. Such
+	operator implies the begin and end of string anchoring. The
+	<code>&lt;</code> operator returns true if the regex matches the
+	string or a sub-string or the string argument.
+      </p>
+    </subsect>
+    
+    <!-- regex methods -->
+    <subsect>
+      <title>Regex methods</title>
+      
+      <p>
+	The primary regex method is the <code>get</code> method which
+	returns by index the sub-string when a group has been
+	matched. The <code>length</code> method returns the number of
+	group match.
+      </p>
+
+      <example>
+	if (== (const re [($d$d):($d$d)]) "12:31") {
+	  re:length # 2
+	  re:get 0  # 12
+	  re:get 1  # 31
+	}
+      </example>
+
+      <p>
+	The <code>match</code> method returns the first string which is
+	matched by the regex.
+      </p>
+      
+      <example>
+	const regex [$d+]
+	regex:match "Happy new year 2000" # 2000
+      </example>
+
+      <p>
+	The <code>replace</code> method any occurrence of the matching
+	string with the string argument.
+      </p>
+      
+      <example>
+	const regex [$d+]
+	regex:replace "Hello year 2000" "3000" # hello year 3000
+      </example>
+    </subsect>
+    
+    <!-- argument conversion -->
+    <subsect>
+      <title>Argument conversion</title>
+      
+      <p>
+	The use of the <code>Regex</code> operators implies that the
+	arguments are evaluated as literal object. For this reason, an
+	implicit string conversion is made during such operator
+	call. For example, passing the integer <code>12</code> or the
+	string <code>"12"</code> is strictly equivalent. Care should be
+	taken when using this implicit conversion with real numbers.
+      </p>
+    </subsect>
+  </section>
+</chapter>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-01-axd.xml                                                   = -->
+<!-- = afnix cross debugger - chapter 1                                   = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter client="axd" number="1">
+  <title>Getting started</title>
+
+  <p>
+    This chapter is short introduction to the cross 
+    debugger or <product>axd</product>. The debugger is a
+    special interpreter that is designed to help the developer to trace
+    an application. The debugger is designed to operate in a
+    stand-alone mode or with <product>Emacs</product>. If you plan to
+    use the debugger with <product>Emacs</product>, you will have to
+    install a <package>gud-mode</package> package.
+  </p>
+
+  <!-- sample session -->
+  <section>
+    <title>A sample debugger session</title>
+
+    <p>
+      The cross debugger or <product>axd</product> is a
+      special interpreter that gives the developer the opportunity to
+      trace an application and examine the object contents during
+      the execution. Operations normally available in a debugger are
+      available with <product>axd</product>. Such operations include
+      breakpoints, stepping, stack tracing, and many others. Because
+      <product>axd</product> is built on top of the interpreter, all
+      standard operations are supported by the debugger. 
+    </p>
+
+    <!-- starting the debugger -->
+    <subsect>
+      <title>Starting the debugger</title>
+
+      <p>
+	The debugger is started with the command
+	<command>axd</command>. Within <product>Emacs</product>, the
+	command <command>Meta-x axd</command> will do the same. When the
+	debugger is started, an <tt>axd</tt> prompt is displayed. At
+	this stage, there is no difference with the standard
+	interpreter, except that a new <em>nameset</em> called
+	<tt>axd</tt> is defined with all debugger commands. The
+	<code>axd:quit</code> or <code>axd:quit</code>
+	commands will terminate the session.
+      </p>
+
+      <example>
+	zsh&gt; axd
+	(axd)axd:quit
+      </example>
+    </subsect>
+
+    <!-- debugger commands -->
+    <subsect>
+      <title>Debugger commands</title>
+
+      <p>
+	All debugger commands are located in the <tt>axd</tt>
+	nameset. For example, the command to set a breakpoint is
+	<code>axd:break</code>. Since typing such command can be
+	annoying, it is possible to rebind them at your convenience. For
+	example, the form <code>const b axd:break</code> will define the
+	symbol <code>b</code> as the breakpoint command, but care should
+	be taken with this approach if your program uses the same symbol.
+      </p>
+    </subsect>
+
+    <!-- debugging session example -->
+    <subsect>
+      <title>Debugging session example</title>
+
+      <p>
+	The first example that demonstrates the use of
+	<product>axd</product> is located in the directory
+	<path>exp/ref</path>, that is part of this distribution. The
+	platform information example <file>EXP0501.als</file> will be used
+	for illustration. A simple session and the original
+	source code is given below.
+      </p>
+
+      <example>
+	zsh&gt; axi EXP0501.als
+	major version number   : 3
+	minor version number   : 2
+	patch version number   : 0
+	interpreter version    : 3.2.0
+	program name           : afnix
+	operating system name  : linux
+	operating system type  : unix
+	machine size           : 64
+	afnix official uri     : http://www.afnix.org
+      </example>
+
+      <p>
+	The source code for this example is given below.
+      </p>
+      
+      <example>
+	# many comments before
+	println "major version number   : " interp:major-version
+	println "minor version number   : " interp:minor-version
+	println "patch version number   : " interp:patch-version
+	println "interpreter version    : " interp:version
+	println "program name           : " interp:program-name
+	println "operating system name  : " interp:os-name
+	println "operating system type  : " interp:os-type
+	println "machine size           : " interp:machine-size
+	println "afnix official url     : " interp:afnix-uri
+      </example>
+
+      <p>
+	The debugger is started with the file to debug. The
+	<code>axd:info</code> command can be used to print some
+	information.
+      </p>  
+
+      <example>
+	zsh&gt; axd EXP0501.als
+	(axd) axd:info
+	debugger version    : 3.2.0
+	os name             : linux
+	os type             : unix
+	initial file        : EXP0501.als
+	form file name      : EXP0501.als
+	form line number    : 17
+	verbose mode        : true
+	max line display    : 10
+	defined breakpoints : 0
+	(axd)
+      </example>
+
+      <p>
+	Along with the version, initial file name and other information,
+	is the <em>form file name</em> and the <em>form line number</em>
+	that indicates where the debugger is position. Another way to
+	get this information is with the <code>axd:list</code> command
+	that display the file at its current break position.
+      </p>
+
+      <example>
+	(axd) axd:list
+	17    println "major version number   : " interp:major-version
+	18    println "minor version number   : " interp:minor-version
+	19    println "patch version number   : " interp:patch-version
+	20    println "interpreter version    : " interp:version
+	21    println "program name           : " interp:program-name
+	22    println "operating system name  : " interp:os-name
+	23    println "operating system type  : " interp:os-type
+	24    println "afnix official uri     : " interp:afnix-uri
+	25    
+	26
+	(axd)
+      </example>
+
+      <p>
+	With this in place it is possible to run the program. The
+	<code>axd:run</code> command will do the job, but will not give
+	you the opportunity to do something since there is no breakpoint
+	installed. So, installing a breakpoint is simply achieved by
+	giving the file name and line number. To make life easier, the
+	<code>axd:break</code> command takes also 0 or argument. Without
+	argument, a breakpoint is set at the current position. With one
+	integer argument, a breakpoint is set at the specified line in
+	the current file. If the verbose mode is active (which is the
+	default), a message is printed to indicate the breakpoint index.
+      </p>
+
+      <example>
+	(axd) axd:break 19
+	setting breakpoint 0 in file EXP0501.als at line 19
+	(axd)axd:run
+	major version number   : 3
+	minor version number   : 2
+	breakpoint 0 in file EXP0501.als at line 19
+	(axd)
+      </example>
+
+      <p>
+	The <code>axd:run</code> command starts the program and
+	immediately stops at the breakpoint. Note that the debugger
+	prints a message to indicate the cause of such break. After
+	this, stepping is achieved with the <code>axd:next</code>
+	command. Resuming the execution is done with the
+	<code>axd:continue</code> command. The <code>axd:exit</code> or
+	<code>axd:quit</code> command terminates the session.
+      </p>
+
+      <example>
+	(axd)axd:next
+	patch version number   : 3
+	(axd)axd:next
+	interpreter version    : 3-2-0
+	(axd)axd:continue
+	program name           : axd
+	operating system name  : linux
+	operating system type  : unix
+	afnix official uri     : http://www.afnix.org
+	(axd)axd:quit
+      </example>
+    </subsect>
+  </section>
+</chapter>

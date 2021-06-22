@@ -1,0 +1,134 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# - afnix-query                                                              -
+# - afnix default option query system                                        -
+# ----------------------------------------------------------------------------
+# - This program is  free software;  you can  redistribute it and/or  modify -
+# - it provided that this copyright notice is kept intact.                   -
+# -                                                                          -
+# - This  program  is  distributed in the hope  that it  will be useful, but -
+# - without  any   warranty;  without  even   the   implied    warranty   of -
+# - merchantability  or fitness for a particular purpose. In not event shall -
+# - the copyright holder be  liable for  any direct, indirect, incidental or -
+# - special damages arising in any way out of the use of this software.      -
+# ----------------------------------------------------------------------------
+# - copyright (c) 1999-2021 amaury darsch                                    -
+# ----------------------------------------------------------------------------
+
+# the program name
+prgnam="$0"
+# the value to query
+qryval="$1"
+# default value to return
+rtnval=
+# the directory list to search
+dirlst=
+# the platform name
+pltnam=
+
+# ----------------------------------------------------------------------------
+# - local function always make life easier                                   -
+# ----------------------------------------------------------------------------
+
+# print a usage message
+usage () {
+    echo "usage: afnix-query [options] name"
+    echo "       -h           print this help message"
+    echo
+    echo "       --default    set the default value"
+    echo "       --dirlist    set the directory list"
+    echo "       --pltname    set the platform name"
+    exit 0
+}
+
+# print an error message
+error () {
+    echo "error: $1"
+    exit 1
+}
+
+# get the default value
+getdef () {
+    # get the platform name
+    basdir=`dirname $prgnam`
+    pltexe="$basdir/afnix-guess"
+    pltnam=`$pltexe -n`
+    if test "$?" != "0"; then
+       echo $pltnam
+       exit 1
+    fi
+    # get the platform directory list
+    fixexe="$basdir/afnix-fxdir"
+    defnam="$basdir/../def"
+    defdir=`$fixexe $defnam`
+    dirlst="~/.afnix /usr/local/etc/afnix /etc/afnix $defdir"
+}
+
+# query the value in the directory list
+query () {
+    for d in $dirlst; do
+	defnam="$d/afnix-${pltnam}.def"
+	if test -f "$defnam"; then
+	    result=`grep "^$qryval" $defnam`
+	    if test "$?" = "0"; then
+		echo $result | awk '{print $2}'
+		exit 0
+	    fi
+	fi
+    done
+}
+
+# ----------------------------------------------------------------------------
+# - parse options - this is where we really start                            -
+# ----------------------------------------------------------------------------
+
+# get the default value
+getdef
+
+# process the options
+preopt=
+for nxtopt
+do
+    # assign the previous option argument
+    if test -n "$preopt"; then
+	eval "$preopt=\$nxtopt"
+	preopt=
+	continue
+    fi
+
+    # extract options
+    case "$nxtopt" in
+    -*=*) argopt=`echo "$nxtopt" | sed 's/[-_a-zA-Z0-9]*=//'`;;
+       *) argopt=;;
+    esac
+
+    # process options now
+    case "$nxtopt" in
+    -h | --help)   usage ;;
+
+    --default)     preopt=default;;
+    --default=*)   rtnval="$argopt";;
+    --dirlist)     preopt=dirlist;;
+    --dirlist=*)   dirlst="$argopt";;
+    --pltname)     preopt=pltnam;;
+    --pltname=*)   pltnam="$argopt";;
+
+    -*)            error "illegal option $nxtopt";;
+     *)            qryval="$nxtopt";;
+    esac
+done
+
+# check for query value
+if test -z "$qryval" ; then
+  error "missing query value"
+fi
+
+# query the value
+query
+if test -z "$rtnval"; then
+    error "cannot query value $qryval"
+fi
+
+# return the default value
+echo $rtnval
+exit 0

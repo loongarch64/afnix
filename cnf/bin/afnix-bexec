@@ -1,0 +1,142 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# - afnix-bexec                                                              -
+# - afnix binary execution script                                            -
+# ----------------------------------------------------------------------------
+# - This program is  free software;  you can  redistribute it and/or  modify -
+# - it provided that this copyright notice is kept intact.                   -
+# -                                                                          -
+# - This  program  is  distributed in the hope  that it  will be useful, but -
+# - without  any   warranty;  without  even   the   implied    warranty   of -
+# - merchantability  or fitness for a particular purpose. In not event shall -
+# - the copyright holder be  liable for  any direct, indirect, incidental or -
+# - special damages arising in any way out of the use of this software.      -
+# ----------------------------------------------------------------------------
+# - copyright (c) 1999-2021 amaury darsch                                    -
+# ----------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------
+# - set default variables                                                    -
+# ----------------------------------------------------------------------------
+
+# the root prefix
+prefix=
+# the lib directory
+libdir=
+# the library path
+ldpath=
+dlpath=
+# the programs to run
+runpgm=
+# show the options
+shwopt="no"
+# arguments loop option
+noloop="no"
+
+# ----------------------------------------------------------------------------
+# - local function always make life easier                                   -
+# ----------------------------------------------------------------------------
+
+# print a usage message
+usage () {
+    echo "usage: afnix-bexec [options] file..."
+    echo "       -h           print this help message"
+    echo "       -v           set verbose mode"
+    echo "       -n           do not loop with arguments"
+    echo
+    echo "       --noloop     do not loop with arguments"
+    echo "       --prefix     set top directory"
+    echo "       --libdir     set lib directory"
+    exit 0
+}
+
+# print an error message
+error () {
+    echo "afnix-bexec: $1"
+    exit 1
+}
+
+# compute the directories
+getdir () {
+    # check library path
+    if test -z "$libdir" ; then
+	libdir="$prefix/lib"
+    fi
+    # set the library path
+    if test -z "$LD_LIBRARY_PATH"; then
+	ldpath="$libdir"
+    else
+	ldpath="$libdir:$LD_LIBRARY_PATH"
+    fi
+    if test -z "$DYLD_LIBRARY_PATH"; then
+	dlpath="$libdir"
+    else
+	dlpath="$libdir:$DYLD_LIBRARY_PATH"
+    fi
+}
+
+# run the program
+dorun () {
+    # check for verbose mode
+    if test "$shwopt" = "yes"; then
+	echo "running: $1"
+    fi
+    # execute the program
+    LD_LIBRARY_PATH=$ldpath DYLD_LIBRARY_PATH=$dlpath ./$1
+    if [ "$?" != "0" ]; then
+	error "failure $1"
+    fi
+}
+
+# ----------------------------------------------------------------------------
+# - parse options - this is where we really start                            -
+# ----------------------------------------------------------------------------
+
+# parse the options
+preopt=
+for nxtopt
+do
+    # assign the previous option argument
+    if test -n "$preopt"; then
+	eval "$preopt=\$nxtopt"
+	preopt=
+	continue
+    fi
+
+    # extract options
+    case "$nxtopt" in
+    -*=*) argopt=`echo "$nxtopt" | sed 's/[-_a-zA-Z0-9]*=//'`;;
+       *) argopt=;;
+    esac
+
+    # process options now
+    case "$nxtopt" in
+    -h)            usage;;
+    -v)            shwopt="yes";;
+    -n)            noloop="yes";;
+
+    --noloop)      noloop="yes";;
+    --prefix)      preopt=prefix;;
+    --prefix=*)    prefix="$argopt";;
+    --libdir)      preopt=libdir;;
+    --libdir=*)    libdir="$argopt:$libdir";;
+
+    -*)            error "illegal option $nxtopt";;
+     *)            runpgm="$runpgm $nxtopt";;
+    esac
+done
+
+# process the directories
+getdir
+
+# loop or not in the files and run
+if test "$noloop" = "yes"; then
+    dorun "$runpgm"
+else
+    for f in $runpgm ; do
+	dorun $f
+    done
+fi
+
+# that's all folks
+exit 0

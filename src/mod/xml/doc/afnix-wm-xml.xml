@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-wm-xml.xml                                                   = -->
+<!-- = standard xml module - writer manual                                = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter module="xml" number="1">
+  <title>Standard XML Module</title>
+  
+  <p>
+    The <em>Standard XML</em> module is an original implementation of
+    the XML markup language. The module provides the necessary objects
+    for parsing a xml description as well as manipulating the parsed
+    tree. The module can be extended to a service as a mean to act as a
+    XML processor. The module also provides the support for a <em>simple
+    model</em> which enable the quick parsing of documents with a relaxed
+    rule checking approach.
+  </p>
+
+  <!-- xml tree representation -->
+  <section>
+    <title>XML tree representation</title>
+
+    <p>
+      A xml document is represented with a tree. At the top of the tree
+      is the <code>XmlRoot</code> object. The root object is not part of
+      the document, but acts as the primary container for other
+      objects. A xml document starts with a root node
+      and all other child elements are <code>XmlNode</code> objects.
+    </p>
+
+    <!-- xml node base object -->
+    <subsect>
+      <title>Node base object</title>
+
+      <p>
+	The xml tree is built with the <code>XmlNode</code> object. The
+	node object has different derivation depending on the required
+	representation. For example, the <code>XmlRoot</code> object is
+	derived from the <code>XmlNode</code> object. A node object can
+	have child object unless the node is marked as an <em>empty
+	node</em>. Trying to add node to an empty node results in an
+	exception. A node can also be marked empty by the user. This
+	situation typically arises with tag node which are used alone
+	such like the <em>&lt;br/&gt;</em> xhtml empty tag or an empty
+	paragraph <em>&lt;p/&gt;</em>. Although a xml node cannot be
+	constructed directly, there is a predicate <code>node-p</code>
+	that can be used to assert the node type.
+      </p>
+
+      <example>
+	# check a node
+	assert true (afnix:xml:node-p node)
+      </example>
+
+      <p>
+	The <code>add-child</code> method adds a child node to the
+	calling node. If the calling node is marked empty, an exception
+	is raised when attempting to add the node. There is no limit for
+	the number of nodes to add. In particular, when a text is to be
+	added, care should be taken that there is no markup within that
+	text. In doubt, the <code>parse</code> method should be used.
+      </p>
+
+      <example>
+	# parse a text and add 3 child nodes
+	p:parse "The quick brown &lt;b&gt;fox&lt;/b&gt; 
+	         jumps over the lazy dog"
+      </example>
+
+      <p>
+	In the previous example, the first child node is a
+	<code>XmlText</code> node with the value <em>The quick brown
+	</em>. The second node is a <code>XmlTag</code> node with name
+	<em>b</em>. Finally, the third node is also a
+	<code>XmlText</code> node with the value <em> jumps over the
+	lazy dog</em>. It should be noted that the tag node has a child
+	<code>XmlText</code> node with the value <em>fox</em>. This
+	example also illustrates the power of the <code>parse</code>
+	method which considerably simplify the creation of a xml
+	tree. Finally, there is a subtle subject to be treated later
+	which concerns the use of <em>character reference</em> with the
+	<code>parse</code> method. Like any other xml parser, character
+	references are evaluated during the parsing phase, thus
+	providing no mechanism to create such reference. For this
+	reason, a special class called <code>XmlCref</code> is provided
+	in the module.
+      </p>
+    </subsect>
+
+    <!-- xml tag object -->
+    <subsect>
+      <title>Tag object</title>
+
+      <p>
+	The <code>XmlTag</code> class is one of the most important class
+	as it holds most of the xml constructs. A tag is defined by a
+	name, a set of attributes and eventually a content. In its
+	simplest form, a tag is created by name. With an additional
+	boolean parameter, the tag can be marked as an empty node.
+      </p>
+
+      <example>
+	# create an empty paragraph tag
+	const p (afnix:xml:XmlTag "p" true)
+      </example>
+
+      <p>
+	Adding attributes to a tag is imply a matter of method call. The
+	<code>add-attribute</code> method operates with a
+	<code>Property</code> object while the
+	<code>set-attribute</code> operates with a name and a literal
+	value. As a matter of fact, the attributes are stored internally
+	as a property list.
+      </p>
+
+      <example>
+	# &lt;p class="text"&gt;
+	# create a paragraph tag
+	const p (afnix:xml:XmlTag "p")
+	# set the class attribute
+	p:set-attribute "class" "text"
+      </example>
+
+      <p>
+	The node empty flag determines whether or not there is a end tag
+	associated with a tag. If the empty flag is false, the node can
+	have children nodes and is associated with a end tag.
+	With the empty flag set, there is no child nodes. Such situation
+	corresponds to the xml <em>/&gt;</em> notation.
+      </p>
+
+      <example>
+	# &lt;br/&gt;
+	# create a br empty tag
+	const br (afnix:xml:XmlTag "br" true)
+      </example>
+    </subsect>
+
+    <!-- xml text node object -->
+    <subsect>
+      <title>Text objects</title>
+
+      <p>
+	The xml module provides two types of xml text node. The basic
+	object is the <code>XmlText</code> node which is designed to
+	hold some text without markup. It is this kind of nodes which is
+	automatically instantiated by the <code>parse</code> method, as
+	described earlier. The other object is the <code>XmlData</code>
+	which corresponds to the xml <em>CDATA</em> special markup. With
+	a character data node, the characters are not interpreted,
+	including those that indicate markup starts like <em>&lt;</em>
+	or end like <em>&gt;</em>. The <code>XmlData</code> is
+	particularly used to store scripts or other <em>program text</em>
+	inside a xml description. As an example, it is recommended to
+	use a character data node inside a script tag with xhtml.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- document reading -->
+  <section>
+    <title>Document reading</title>
+
+    <p>
+      A xml document is read by scanning an input stream an building a
+      representation of the xml tree.
+    </p>
+    
+    <!-- the document object -->
+    <subsect>
+      <title>The document object</title>
+
+      <p>
+	The <code>XmlDocument</code> object is a special object is
+	designed to ease the reading process of an xml document. The
+	process of creating a xml document consists of creating a
+	document object, then binding a xml reader, parsing the input
+	stream and finally storing the root node. When the operation is
+	completed, the root node is available in the document object.
+      </p>
+
+      <example>
+	# create a xml document
+	const xdoc (afnix:xml:XmlDocument "example.xml")
+	# get the root node
+	const rppt (xdoc:get-root)
+      </example>
+    </subsect>
+
+    <!-- the document root content -->
+    <subsect>
+      <title>The root node content</title>
+
+      <p>
+	When a document is parsed, the root node holds all the elements
+	and markup sequentially. At this stage, it shall be noted that
+	the element data are not expanded. Unlike a normal XML reader,
+	the parameter entity are kept in the node data, are expended
+	later by the XML processor.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- xml node location -->
+  <section>
+    <title>Node tree operations</title>
+
+    <p>
+      The class <code>XneTree</code> provides a single framework to
+      operate on a node and its associated tree. Since a node always
+      carries a sub-tree, the <em>node tree</em> term will be used to 
+      reference it.
+    </p>
+
+    <!-- creating a node tree -->
+    <subsect>
+      <title>Creating a node tree</title>
+
+      <p>
+	A node tree is created either from a node at construction or
+	with the help of the <code>set-node</code> method.
+      </p>
+
+      <example>
+	# create a node tree at construction
+	const tree (afnix:xml:XneTree root)
+	# change the node tree
+	tree:set-node node
+      </example>
+
+      <p>
+	Once a tree is created, various methods are provided to operate
+	on the whole tree. The <code>depth</code> method returns the
+	depth of the node tree. The <code>get-node</code> methods
+	returns the the node associated with the tree.
+      </p>
+
+      <example>
+	# get the tree depth
+	println (tree:depth)
+      </example>
+    </subsect>
+
+    <!-- namespace operations -->
+    <subsect>
+      <title>Namespace operations</title>
+
+      <p>
+	The concept of <em>namespace</em> is an extension to the xml
+	standard. Unlike other programming language, the concept of
+	namespace is designed to establish a binding between a name and
+	an uri. Such binding permits to establish a scope for tags
+	without too much burden. In the xml namespace terminology, an
+	<em>expanded name</em> is composed of a <em>prefix</em> and a
+	<em>local name</em>. The basic operations provided at the tree
+	level is the prefix cancellation and the tree prefix setting.
+      </p>
+
+      <example>
+	# clear the prefix for the whole tree
+	tree:clear-prefix
+	# set a prefix for the whole tree
+	tree:set-prefix "afnix"
+      </example>
+
+      <p>
+	The <code>set-prefix</code> changes the prefix for the whole
+	tree. It is not necessary to clear first the prefix.
+      </p>
+    </subsect>
+
+    <!-- attribute operations -->
+    <subsect>
+      <title>Attribute operations</title>
+
+      <p>
+	Each node in the node tree can have its attribute list modified
+	in a single operation. The first operation is to clear all
+	attributes for all nodes. Although this operation might be
+	useful, it should be carried with caution. The attributes can
+	also cleared more selectively by using the tag name as a filter.
+	For more complex operation, the <code>clear-attribute</code>
+	method of the <code>XmlTag</code> is the definitive answer.   
+      </p>
+
+      <example>
+	# clear all attributes
+	tree:clear-attribute
+	# clear all attributes by tag name
+	tree:clear-attribute "p"
+      </example>
+
+      <p>
+	The <code>set-attribute</code> method sets an attribute to the
+	whole tree. The first argument is the attribute name and the
+	second is a literal value. For more selective operations, the
+	<code>set-attribute</code> method can be also called at the tag
+	level.
+      </p>
+
+      <example>
+	# clear all attributes
+	tree:set-attribute "class" "text"
+      </example>
+
+      <p>
+	When it comes to set attributes, there is a special operation
+	related to the "id" attribute. Such attribute is supposed to be
+	unique for the whole tree. For this reason, the
+	<code>generate-id</code> generates a unique id for each node and
+	assign the id attribute. The attribute is unique at the time of
+	the call. If the tree is modified, and in particular, if new
+	node are added, the method must be called again to regenerate
+	the node id.
+      </p>
+
+      <example>
+	# set a unique id for all nodes
+	tree:generate-id
+      </example>
+    </subsect>
+  </section>
+  
+  <!-- xml node location and searching -->
+  <section>
+    <title>Node location and searching</title>
+
+    <p>
+      The node location is the ability to locate one or several
+      nodes in a xml tree. A node is generally located by name, path or
+      id. Once a node has been located, it can be processed. Note that the
+      node locator operates operates almost exclusively with
+      <code>XmlTag</code> node, although it might not be always the
+      case.
+    </p>
+
+    <!-- node selection -->
+    <subsect>
+      <title>Node selection</title>
+      <p>
+	The process of finding a child node is obtained with the help of
+	the <code>XneCond</code> class combined with the
+	<code>select</code> method of the <code>XneTree</code> Object.  
+	The <code>select</code> method traverses the whole tree and
+	attempts to match a condition for each node. If the condition is
+	evaluated successfully for a node, the node is added in the
+	result vector. Note that the tree can be traversed entirely or
+	with only the first layer of children.
+      </p>
+
+      <example>
+	# creating a condition node
+	const xcnd (afnix:xml:XneCond)
+	# create a tree with a root node
+	const tree (afnix:xml:XneTree root)
+	# select all nodes for that condition
+	trans result (tree:select xcnd)
+      </example>
+
+      <p>
+	In the previous example, the condition object is empty. This
+	means that there is no condition, and thus works for all
+	nodes. This previous example will return all nodes in the tree.
+      </p>
+    </subsect>
+
+    <!-- node condition -->
+    <subsect>
+      <title>Node condition</title>
+      <p>
+	The <code>XmlCond</code> class provides several method to add a
+	conditions. The <code>add</code> method is the method of choice
+	to add a condition. The method operates with a condition type
+	and a literal. Note that the object can contain several conditions.
+      </p>
+
+      <example>
+	# creating a condition node
+	const xcnd (afnix:xml:XneCond)
+	# add a condition by name
+	xcnd:add afnix:xml:xne:NAME "p"
+      </example>
+
+      <p>
+	In the previous example, a condition is designed to operate with
+	a tag name. Upon a call to the <code>select</code> method with
+	this condition, all nodes in the tree that have the tag name
+	<em>p</em> will be selected.
+      </p>
+
+      <example>
+	# creating a condition node
+	const xcnd (afnix:xml:XneCond)
+	# add a condition by name
+	xcnd:add afnix:xml:xne:NAME "p"
+	# add an index condition
+	xcnd:add afnix:xml:xne:INDEX 0
+      </example>
+
+      <p>
+	In the previous example, a condition is designed to operate with
+	a tag name and index. Upon a call to the <code>select</code> method with
+	this condition, all nodes in the tree that have the tag name
+	<em>p</em> and those child index is 0 will be selected.
+      </p>
+    </subsect>
+
+    <!-- selection result -->
+    <subsect>
+      <title>Selection result</title>
+
+      <p>
+	The node selection operates by default on the whole tree. The
+	<code>select</code> method, when called with a second boolean
+	argument can restrict the search to the child nodes.
+      </p>
+
+      <example>
+	# creating a condition node
+	const xcnd (afnix:xml:XneCond)
+	# create a tree with a root node
+	const tree (afnix:xml:XneTree root)
+	# select all nodes for that condition
+	trans result (tree:select xcnd false)
+      </example>
+
+      <p>
+	The selection results is stored in a vector object. The node
+	order corresponds to the tree order obtained with a depth
+	first search approach.
+      </p>
+    </subsect>
+  </section>
+  
+  <!-- simple model node -->
+  <section>
+    <title>Simple model node</title>
+
+    <p>
+      The XML simple model is designed to simplify the interpretation of a 
+      general sgml document such like, html or xhtml document. In the simple
+      model approach, there is no tree. Instead, a vector of simple nodes is
+      built, and a document interface can be used to access the
+      nodes. Therefore, this simple model should be considered as a mean
+      to quickly parse document, but should not be used when tree
+      operations come into play. In such case, the xml model is by far
+      more appropriate. The simple model can be used to parse a html
+      document for instance. Note also that the simple model is a relaxed
+      model in terms of parsing rules. For example, the tag start/end
+      consistency is not checked and the attribute parsing is not
+      aggressive as it can be found generally in poorly written html document.
+    </p>  
+    
+    <p>
+      In the simple model, a <code>XsmNode</code> is just a text place
+      holder. The node transports its type which can be either text,
+      tag, reference of end node. For the tag node, a subtype that
+      identifies reserved nodes versus normal type is also available.
+    </p>
+    
+    <!-- creating a node -->
+    <subsect>
+      <title>Creating a node</title>
+
+      <p>
+	A xsm node is created by name or byte and name. In the first
+	case, the node is a text node. In the second case, the node
+	subtype is automatically detected for tag node.
+      </p>
+
+      <example>
+	# create a xsm text node
+	const ntxt (afnix:xml:XsmNode "afnix">
+	# create a xsm tag node
+	const ntag (
+	  afnix:xml:XsmNode afnix:xml:XsmNode:TAG "afnix">
+      </example>
+
+      <p>
+	Note that the text corresponds to the node content. For example,
+	the string "!-- example --" might corresponds to a comment in
+	html which is to say a reserved tag when the type is tag or a
+	simple text if the type is a text node. A reserved tag is
+	defined by a string which start either with the '!' character
+	or the '[' character.
+      </p>
+
+      <example>
+	# create a reserved tag
+	const rtag (
+	  afnix:xml:XsmNode afnix:xml:XsmNode:TAG 
+	  "!-- example --")
+      </example>
+    </subsect>
+
+    <!-- node representation -->
+    <subsect>
+      <title>Node representation</title>
+      
+      <p>
+	The xsm node is a literal node. This means that the
+	<code>to-string</code> and <code>to-literal</code> methods are
+	available. When the <code>to-literal</code> method is called,
+	the node text is automatically formatted to reflect the node type.
+      </p>
+
+      <example>
+	# create a reserved tag
+	const rtag (
+	  afnix:xml:XsmNode afnix:xml:XsmNode:TAG
+	  "!-- example --")
+	# print the node literal
+	rtag:to-literal # &lt;!-- example --&gt;
+      </example>
+      
+      <p>
+	If the node is a reference node, the node literal is represented
+	with the original definition while the <code>to-string</code>
+	method will produce the corresponding character if it known.
+      </p>
+    </subsect>
+
+    <!-- node information -->
+    <subsect>
+      <title>Node information</title>
+      <p>
+	With a xsm node, the operation are a limited number of <em>node
+	information</em> operations. The <code>get-name</code> method
+	returns the first name found in a node. If the node is a normal
+	tag, the <code>get-name</code> will return the tag name. For the
+	other node, the method will return the first available
+	string. This also means, that the method will behave correctly
+	with end tag node.
+      </p>
+
+      <example>
+	# create a tag node
+	const ntag (
+	  afnix:xml:XsmNode afnix:xml:XsmNode:TAG "afnix">
+	# get the tag name
+	ntag:get-name
+      </example>
+
+      <p>
+	There is a predicate for all types. For example, the
+	<code>text-p</code> predicate returns true if the node is a text
+	node. The <code>tag-p</code> predicate returns true if the node
+	is a normal or reserved tag.
+      </p>
+    </subsect>      
+  </section>
+
+  <!-- document reading -->
+  <section>
+    <title>Document reading</title>
+
+    <p>
+      A document is read in a way similar to the
+      <code>XmlDocument</code> with the help of the
+      <code>XsmDocument</code> object. Once created, the document holds
+      a vector of nodes.
+    </p>
+    
+    <!-- the document object -->
+    <subsect>
+      <title>The document object</title>
+
+      <p>
+	The <code>XsmDocument</code> object is a special xsm object
+	designed to ease the reading process of a document. The
+	process of creating a document consists of creating a
+	document object, then binding a xsm reader, parsing the input
+	stream and storing the nodes in a vector. When the operation is
+	completed, the vector can be accessed by index.
+      </p>
+
+      <example>
+	# create a xms document
+	const xdoc (afnix:xml:XsmDocument "example.htm")
+	# get the document length
+	xdoc:length
+      </example>
+    </subsect>
+
+    <!-- simple model operations -->
+    <subsect>
+      <title>Node information object</title>
+      
+      <p>
+	The <code>XsoInfo</code> object is a node information object
+	designed to hold a node name, an attributes list and eventually
+	a text associated with the node. For example, if a html document
+	contains a anchor node, the associated information node, will
+	have the anchoring text stored as the node information text.
+      </p>
+
+      <example>
+	# create a xso node by name and text
+	const info (afnix:xml:XsoInfo "a" "click here")
+      </example>
+    </subsect>
+
+    <!-- simple model operations -->
+    <subsect>
+      <title>Simple model operations</title>
+
+      <p>
+	The <code>XsmDocument</code> is designed to perform simple
+	operations such like searching all nodes that matches a
+	particular name. While this operation can be done easily, it is
+	done in such a way that a vector of <em>node information</em> is
+	returned instead of a vector of nodes which can always be
+	constructed with a simple loop.
+      </p>
+
+      <example>
+	# create a xsm document
+	const xdoc (afnix:xml:XsmDocument "example.htm")
+	# get all node named "a" - forcing lower case
+	xdoc:get-info-vector "a" true
+      </example>
+    </subsect>
+  </section>
+</chapter>

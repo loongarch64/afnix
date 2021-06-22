@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = std-01-notes.xml                                                   = -->
+<!-- = afnix installation guide chapter 1                                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter id="std-01-notes">
+  <title>Installation Guide</title>
+
+  <p>
+    This chapter describes the installation procedures for the 
+    <afnix/> writing system distribution. This chapter explains how
+    to set and compile this distribution.
+  </p>
+
+  <!-- afnix distribution-->
+  <section>
+    <title>Software distribution</title>
+
+    <p>
+      The complete distribution can be downloaded from the
+      <link url="http://www.afnix.org">AFNIX home page</link>. The result
+      is a complete source tree that is ready for compilation. The
+      distribution contains also the documentation as well as
+      examples. The distribution is supported on a
+      variety of platforms as indicated below that can be either 32 bits
+      or 64 bits machines. The distribution is also available at the
+      <link url="http://www.freebsd.org">FreeBSD port collection</link>.
+    </p>
+
+    <table>
+      <title>Supported platforms</title>
+      <tr>
+	<th>Platform</th><th>Processor</th><th>Operating system</th>
+      </tr>
+      <tr>
+	<td>Linux</td> 
+	<td>X86-32, X86-64</td>
+	<td>Linux 3.x, 4.x, 5.x</td>
+      </tr>
+      <tr>
+	<td>FreeBSD</td>
+	<td>X86-32, X86-64</td>
+	<td>FreeBSD 8.x, 9.x, 10.x.x, 11.x.x, 12.x.x</td>
+      </tr>
+      <tr>
+	<td>Gnu</td>
+	<td>X86-32, X86-64</td>
+	<td>GNU KBSD, GNU Hurd</td>
+      </tr>
+    </table>
+  </section>
+
+  <p>
+    Specific processors like the Alpha, M68K, ARM, MIPS, RISCV and
+    SUPERH are also supported on certain distributions. The PowerPC
+    (PPC) processor has been discontinued. The Solaris SPARC platform
+    has been discontinued. Do not hesitate to contact the development team 
+    for specific processor or platform support.
+  </p>
+
+  <!-- installation procedure -->
+  <section>
+    <title>Installation procedure</title>
+    <p>
+      The core software is written in C++. It has been successfully
+      built with the latest <package>GNU GCC 10</package>. The
+      <package>clang</package> compiler has also been succesfully
+      tested. You will also need the <package>GNU Make</package>
+      package. With some distributions the command is called
+      <command>gmake</command>. Note that the <file>Makefile</file>
+      hierarchy is designed to operate safely with the
+      <option>-j</option> <package>GNU Make</package> option.
+    </p>
+
+    <!-- unpacking the distribution -->
+    <subsect>
+      <title>Unpacking the distribution</title>
+
+      <p>
+	The distribution is available as a compressed tar file. Note that the
+	documentation is distributed in a separate file. The following
+	command unpacks the distribution.
+      </p>
+
+      <example>
+	zsh&gt; gzip -d afnix-src-[version].tar.gz
+	zsh&gt; tar  xf afnix-src-[version].tar
+      </example>
+    </subsect>
+
+    <!-- quick command reference -->
+    <subsect>
+      <title>Quick command reference</title>
+      
+      <p>
+	The list of commands to execute is given in the example below. A
+	detailed description for each command is given hereafter. The
+	<command>make world</command> command is the default command that
+	builds the whole tree with the default compiler. 
+      </p>
+
+      <example>
+	zsh&gt; ./cnf/bin/afnix-setup -o --prefix=/usr/local/afnix
+	zsh&gt; make status
+	zsh&gt; make [-j]
+	zsh&gt; make test
+	zsh&gt; make install
+	zsh&gt; make clean
+      </example>
+
+      <p>
+	With some platforms, the <command>make</command> command should
+	be replaced by the <command>gmake</command> command. The
+	<command>make status</command> command is optional and can be used
+	to report the internal value contents. In particular, the
+	version and the installation parameters are reported.
+      </p>
+    </subsect>
+
+    <!-- configuration -->
+    <subsect>
+      <title>Configuration</title>
+      
+      <p>
+	The <command>afnix-setup</command> command can be invoked to
+	setup a particular configuration. You should have your compiler
+	on your search path. Normally, the command given below is enough.
+      </p>
+
+      <example>
+	zsh&gt; ./cnf/bin/afnix-setup -o --prefix=/usr/local/afnix
+      </example>
+
+      <p>
+	This command checks that the target platform can be detected and
+	configured. The <option>-o</option> option configures the compilation
+	in optimized mode. Use the <option>-g</option> option can be used
+	to configure the build process in debug mode. The
+	<option>--prefix</option> option sets the installation 
+	directory. Note that the compilation process is done in the
+	distribution tree and that the <option>--prefix</option> option
+	affects only the installation operations. The <option>-v</option>
+	option is the verbose option. Other options are available for
+	fine tuning.
+      </p>
+
+      <table>
+	<title>Setup options</title>
+	<tr>
+	  <th>Option</th><th>Description</th><th>Default</th>
+	</tr>
+	<tr>
+	  <td>-h</td><td>Print a help message</td><td>n/a</td>
+	</tr>
+	<tr>
+	  <td>-v</td><td>Set the verbose mode</td><td>n/a</td>
+	</tr>
+	<tr>
+	  <td>-g</td><td>Set the debug mode</td><td>yes</td>
+	</tr>
+	<tr>
+	  <td>-o</td><td>Set the optimized mode</td><td>no</td>
+	</tr>
+	<tr>
+	  <td>--help</td><td>Same as -h</td><td>n/a</td>
+	</tr>
+	<tr>
+	  <td>--prefix</td>
+	  <td>Set the target install directory</td> 
+	  <td>/usr/local</td>
+	</tr>
+	<tr>
+	  <td>--shrdir</td>
+	  <td>Set the shared install directory</td>
+	  <td>/usr/local/share</td>
+	</tr>
+	<tr>
+	  <td>--altdir</td>
+	  <td>Set the alternate install directory</td>
+	  <td>/usr/local</td>
+	</tr>
+	<tr>
+	  <td>--sdknam</td>
+	  <td>Set the target sdk by name</td>
+	  <td>platform dependent</td>
+	</tr>
+	<tr>
+	  <td>--sdkdir</td>
+	  <td>Set the target sdk directory</td>
+	  <td>platform dependent</td>
+	</tr>
+	<tr>
+	  <td>--ccname</td>
+	  <td>Set the default compiler</td>
+	  <td>platform dependent</td>
+	</tr>
+	<tr>
+	  <td>--shared</td>
+	  <td>Compile and link dynamically</td> 
+	  <td>yes</td>
+	</tr>
+	<tr>
+	  <td>--static</td>
+	  <td>Compile and link statically</td> 
+	  <td>no</td>
+	</tr>
+	<tr>
+	  <td>--openmp</td>
+	  <td>Enable the optional openmp compilation</td> 
+	  <td>no</td>
+	</tr>
+      </table>
+
+      <p>
+	The <option>prefix</option> option set the root installation
+	directory. The binary and library installation directories are
+	derived from it. The <option>shrdir</option> set the shared
+	installation directory which is normally used for the
+	installation of the manual pages on most popular systems. the
+	<option>altdir</option> sets the alternate installation
+	directory. Normally this path should be empty as it affects the
+	path for the <path>etc</path> directory. This flag should be used
+	when using a prefix to unusual destination.
+	
+	The <option>ccname</option> option can be used to force a particular
+	compiler with the help of a compiler configuration file. The
+	<option>-s</option> or <option>--static</option> option can be
+	used to build a static executable. Normally, this option
+	should not be used since it restrict the use of extension
+	modules. The <option>shared</option> controls whether or not
+	the dynamic libraries should be built. This option is detected
+	automatically for a particular platform and should be used
+	only by package maintainer.
+
+	There exists also specific options which are mostly for
+	package maintainers. At this time, the build process integrates
+	the Debian, Ubuntu and Fedora specific packaging mechanism.	
+      </p>
+
+      <table>
+	<title>Specific package maintainer options</title>
+	<tr>
+	  <th>Option</th><th>Description</th><th>Default</th>
+	</tr>
+	<tr>
+	  <td>--pkgnam</td>
+	  <td>Set the distribution package</td> 
+	  <td>none</td>
+	</tr>
+	<tr>
+	  <td>--pkgbin</td>
+	  <td>Set the optional package bin directory</td> 
+	  <td>none</td>
+	</tr>
+	<tr>
+	  <td>--pkglib</td>
+	  <td>Set the optional package lib directory</td> 
+	  <td>none</td>
+	</tr>
+	<tr>
+	  <td>--pkgprj</td>
+	  <td>Set the optional package prj directory</td> 
+	  <td>none</td>
+	</tr>
+	<tr>
+	  <td>--pkghdr</td>
+	  <td>Set the optional package hdr directory</td> 
+	  <td>none</td>
+	</tr>
+	<tr>
+	  <td>--pkgetc</td>
+	  <td>Set the optional package etc directory</td> 
+	  <td>none</td>
+	</tr>
+	<tr>
+	  <td>--pkgman</td>
+	  <td>Set the optional package man directory</td> 
+	  <td>none</td>
+	</tr>
+	<tr>
+	  <td>--pkgdoc</td>
+	  <td>Set the optional package doc directory</td> 
+	  <td>none</td>
+	</tr>
+	<tr>
+	  <td>--pkgwww</td>
+	  <td>Set the optional package www directory</td> 
+	  <td>none</td>
+	</tr>
+	<tr>
+	  <td>--pkgsrv</td>
+	  <td>Set the optional package srv directory</td> 
+	  <td>none</td>
+	</tr>
+      </table>
+    </subsect>
+
+    <!-- compiling the distribution -->
+    <subsect>
+      <title>Compiling the distribution</title>
+
+      <p>
+	The compilation process is straightforward. With some platforms,
+	the <command>make</command> accepts the <option>-j</option> that
+	enables concurrent operations.
+      </p>
+
+      <example>
+	zsh&gt; make [-j]
+      </example>
+
+      <p>
+	This will build the complete distribution locally. If an error occurs,
+	it is best to report it at the <mail address="bugs@afnix.org">AFNIX bug
+	report</mail> mail address.
+      </p>
+    </subsect>
+
+    <!-- testing the distribution -->
+    <subsect>
+      <title>Testing the distribution</title>
+
+      <p>
+	The distribution contains all test suites. The test suites are
+	compiled and executed with the following command.
+      </p>
+
+      <example>
+	zsh&gt; make test
+      </example>
+
+      <p>
+	This command run the test suites for each library as well as the
+	test suites for each application client. Most of the base library
+	test suites are written in C++ with the application test suites
+	written in the core writing system.
+      </p>
+    </subsect>
+
+    <!-- installing the distribution -->
+    <subsect>
+      <title>Installing the distribution</title>
+
+      <p>
+	Once the system has been built and tested, it can be installed. By
+	default, the distribution tree is installed into the
+	<path>/usr/local</path> directory. This can be overwritten with the
+	<option>--prefix</option> option during the configuration process.
+      </p>
+
+      <example>
+	zsh&gt; make install
+      </example>
+
+      <p>
+	There are several variables that controls the behavior of the
+	<command>install</command> rule. Each variable has its default
+	value sets during the setup configuration. However, this variable
+	can also be altered during the installation process
+      </p>
+
+      <table>
+	<title>Installation rule variables</title>
+	<tr>
+	  <th>Variable</th><th>Description</th><th>Default</th>
+	</tr>
+	<tr>
+	  <td>PREFIX</td>
+	  <td>The root install directory</td>
+	  <td>/usr/local</td>
+	</tr>
+	<tr>
+	  <td>SHRDIR</td>
+	  <td>The shared install directory</td>
+	  <td>/usr/local/share</td>
+	</tr>
+	<tr>
+	  <td>ALTDIR</td>
+	  <td>The shared alternate directory</td>
+	  <td>/usr/local/etc</td>
+	</tr>
+	<tr>
+	  <td>SDKDIR</td>
+	  <td>The system  kit directory</td>
+	  <td>platform dependent</td>
+	</tr>
+	<tr>
+	  <td>BINDIR</td>
+	  <td>The binary install directory</td>
+	  <td>prefix/bin</td>
+	</tr>
+	<tr>
+	  <td>LIBDIR</td>
+	  <td>The library install directory</td>
+	  <td>prefix/lib</td>
+	</tr>
+	<tr>
+	  <td>HDRDIR</td>
+	  <td>The header files install directory</td>
+	  <td>prefix/include/afnix</td>
+	</tr>
+	<tr>
+	  <td>ETCDIR</td>
+	  <td>The extra files install directory</td>
+	  <td>altdir/etc/afnix</td>
+	</tr>
+      </table>
+    </subsect>
+
+    <!-- installing the documentation -->
+    <subsect>
+      <title>Installing the documentation</title>
+      
+      <p>
+	The documentation is installed independently of the software. The 
+	<command>doc</command> rule builds the documentation and the
+	<command>publish</command> rule installs the
+	documentation. Several variables also control the documentation
+	installation path.
+      </p>
+
+      <table>
+	<title>Documentation rule variables</title>
+	<tr>
+	  <th>Variable</th><th>Description</th><th>Default</th>
+	</tr>
+	<tr>
+	  <td>DOCDIR</td>
+	  <td>The documentation install directory</td>
+	  <td>shrdir/doc/afnix</td>
+	</tr>
+	<tr>
+	  <td>MANDIR</td>
+	  <td>The manual pages install directory</td>
+	  <td>shrdir/man</td>
+	</tr>
+      </table>
+    </subsect>
+
+    <!-- cleaning the distribution -->
+    <subsect>
+      <title>Cleaning the distribution</title>
+
+      <p>
+	The distribution is cleaned with the <command>clean</command> rule.
+      </p>
+
+      <example>
+	zsh&gt; make clean
+      </example>
+
+      <p>
+	This rule does not clean the configuration. For a complete cleaning
+	the <command>reset</command> rule is more appropriate.
+      </p>
+
+      <example>
+	zsh&gt; make reset
+      </example>
+    </subsect>
+  </section>
+
+  <!-- running afnix -->
+  <section>
+    <title>Running AFNIX</title>
+
+    <p>
+      The <command>axi</command> command invokes the
+      interpreter. In order to operate properly, the
+      <path>LD_LIBRARY_PATH</path> environment variable must be
+      configured with the directory containing the shared
+      libraries. If the libraries have been installed in a standard
+      location like <path>/usr/local/lib</path>, there is nothing to do.
+    </p>
+
+    <!-- running some examples -->
+    <subsect>
+      <title>Running some examples</title>
+
+      <p>
+	The directory <path>exp</path> contains various examples which can
+	be run. Each example is labeled according to their use in the volume
+	1 of the documentation set. Example <file>0101.als</file> prints
+	the message <tt>hello world</tt>. Example <file>0501.als</file>
+	prints various information about the system configuration.
+      </p>
+
+      <example>
+	zsh&gt; axi EXP0501
+	major version number   : 3
+	minor version number   : 4
+	patch version number   : 0
+	interpreter version    : 3.4.0
+	program name           : axi
+	operating system name  : linux
+	operating system type  : unix
+	machine size           : 64
+	afnix official uri     : http://www.afnix.org
+      </example>
+    </subsect>
+  </section>
+
+  <!-- special targets -->
+  <section>
+    <title>Special features</title>
+    
+    <p>
+      The build process provides several features that permits to
+      customize the compilation process as well as the nature of the
+      final executable. Most of the time, these options are reserved for
+      the package maintainer and are given below for illustration
+      purpose.
+    </p>
+
+    <!-- special target extensions-->
+    <subsect>
+      <title>Special target extensions</title>
+      
+      <p>
+	Extensions are specific libraries or executables which are not build
+	automatically during the build process. The user is responsible to
+	decide which extension is needed for the system All extensions are
+	located under the <path>src/ext</path> directory. Simply going
+	into the appropriate directory and running the
+	<command>make</command> command will build the extension.
+      </p>
+
+      <p>
+	The <path>asi</path> extension creates a static interpreter with
+	all libraries automatically included in the final executable. The
+	extension is simply build with the following command. Note that this
+	extension overwrite the previous executable in the
+	<path>bld/bin</path> directory.
+      </p>
+
+      <example>
+	zsh&gt; make -C src/ext/asi
+      </example>
+    </subsect>
+
+    <!-- extra files -->
+    <subsect>
+      <title>Extra files</title>
+
+      <p>
+	The distribution comes with some extra files. The most
+	important is the Emacs mode <file>afnix-mode</file>. The
+	original source file is written in Emacs Lisp and is available
+	in the <path>etc</path> directory of the distribution. This
+	file should be installed according to the current Emacs
+	installation.
+      </p>
+    </subsect>
+  </section>
+</chapter>

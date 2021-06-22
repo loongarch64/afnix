@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = std-04-guide.xml                                                   = -->
+<!-- = afnix programmer's guide chapter 4                                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter volume="1" number="4">
+  <title>Classes</title>
+
+  <p>
+    This chapter covers the class model and its associated 
+    operations. The class model is slightly different
+    compared to traditional one because dynamic symbol
+    bindings do not enforce to declare the class data members. A
+    class is an object which can be manipulated by itself. Such
+    class is said to belongs to a group of <em>meta class</em> as
+    described later in this chapter. Once the class concept has been
+    detailed, the chapter moves to the concept of instance of that class
+    and shows how instance data members and functions can be used. The
+    chapter terminates with a description of dynamic class programming.
+    <ie>Class</ie><ie>Instance</ie>
+  </p>
+
+  <!-- class object -->
+  <section>
+    <title>Class object</title>
+    
+    <p>
+      A <em>class object</em> is simply a nameset which can be
+      replicated via a construction mechanism. A class is created with
+      the special form <code>class</code>. The result is an object of
+      type <code>Class</code> which supports various symbol binding
+      operations.
+    </p>
+    
+    <!-- class declaration and bindings -->
+    <subsect>
+      <title>Class declaration and bindings</title>
+      
+      <p>
+	A new class is an object created with the reserved keyword
+	<code>class</code>. Such class is an object which can be bound
+	to a symbol.<ie>class</ie>
+      </p>
+      
+      <example>
+	const Color (class)
+      </example>
+      
+      <p>
+	Because a class acts like a nameset, it is possible to bind
+	directly symbols with the <em>qualified name</em> notation.
+      </p>
+
+      <example>
+	const Color (class)
+	const Color:RED-FACTOR   0.75
+	const Color:BLUE-FACTOR  0.75
+	const Color:GREEN-FACTOR 0.75
+      </example>
+
+      <p>
+	When a data is defined in the class nameset, it is common to
+	refer it as a <em>class data member</em>. A class data member
+	is invariant over the instance of that class. When the data
+	member is declared with the <code>const</code> reserved keyword,
+	the symbol binding is in the class nameset.
+      </p>
+    </subsect>
+
+    <!-- class closure bindings -->
+    <subsect>
+      <title>Class closure binding</title>
+      
+      <p>
+	A lambda or gamma expression can be define for a class. If the
+	class do not reference an instance of that class, the resulting
+	closure is called a <em>class method</em> of that class. Class
+	methods are invariant among the class instances. The standard
+	declaration syntax for a lambda or gamma expression is still
+	valid with a class.<ie>Closure</ie>
+      </p>
+
+      <example>
+	const Color:get-primary-by-string (color value) {
+          trans val "0x"
+	  val:+= (switch color (
+            ("red"   (value:substr 1 3))
+            ("green" (value:substr 3 5))
+            ("blue"  (value:substr 5 7))
+          ))
+          Integer val
+        }
+      </example>
+
+      <p>
+	The invocation of a class method is done with the standard
+	<em>qualified name</em> notation.
+      </p>
+      
+      <example>
+	Color:get-primary-by-string "red"   "#23c4e5"
+	Color:get-primary-by-string "green" "#23c4e5"
+	Color:get-primary-by-string "blue"  "#23c4e5"
+      </example>
+    </subsect>
+
+    <!-- class symbol access -->
+    <subsect>
+      <title>Class symbol access</title>
+
+      <p>
+	A class acts as a nameset and therefore provides the mechanism
+	to evaluate any symbol with the qualified name notation.
+      </p>
+
+      <example>
+	const Color:RED-VALUE "#ff0000"
+	const Color:print-primary-colors (color) {
+          println "red   color " (
+	    Color:get-primary-color "red"   color)
+	  println "green color " (
+	    Color:get-primary-color "green" color)
+	  println "blue  color " (
+	    Color:get-primary-color "blue"  color)
+	}
+	# print the color components for the red color
+	Color:print-primary-colors Color:RED-VALUE
+      </example>
+    </subsect>
+  </section>
+
+  <!-- instances -->
+  <section>
+    <title>Instance</title>
+
+    <p>
+      An <em>instance</em> of a class is an object which is
+      constructed by a special class method called a
+      <em>constructor</em>. If an instance constructor does not exist,
+      the instance is said to have a default construction. An instance
+      acts also as a nameset. The only difference with a class, is that
+      a symbol resolution is done first in the instance nameset and then
+      in the instance class. As a consequence, creating an instance is
+      equivalent to define a default nameset hierarchy.
+      <ie>Instance</ie>
+    </p>
+
+    <!-- instance construction -->
+    <subsect>
+      <title>Instance construction</title>
+
+      <p>
+	By default, a instance of the class is an object which defines
+	an instance nameset. The simplest way to define an anonymous
+	instance is to create it directly.
+      </p>
+      
+      <example>
+	const i     ((class))
+	const Color (class)
+	const red   (Color)
+      </example>
+
+      <p>
+	The example above define an instance of an anonymous class. If a
+	class object is bound to a symbol, such symbol can be used to
+	create an instance of that class. When an instance is created,
+	the special symbol named <code>this</code> is defined in the
+	instance nameset. This symbol is bounded to the instance object
+	and can be used to reference in an anonymous way the instance
+	itself.<ie>this</ie>
+      </p>
+    </subsect>
+
+    <!-- instance initialization -->
+    <subsect>
+      <title>Instance initialization</title>
+
+      <p>
+	When an instance is created, the engine looks for a
+	special lambda expression called <code>preset</code>. This
+	lambda expression, if it exists, is executed after the default
+	instance has been constructed. Such lambda expression is a
+	method since it can refer to the <code>this</code> symbol and
+	bind some instance symbols. The arguments which are passed
+	during the instance construction are passed to the
+	<code>preset</code> method.<ie>preset</ie>
+      </p>
+      
+      <example>
+	const Color (class)
+	trans Color:preset (red green blue) {
+          const this:red   (Integer red)
+	  const this:green (Integer green)
+	  const this:blue  (Integer blue)
+	}
+	# create some default colors
+	const Color:RED   (Color 255   0   0)
+	const Color:GREEN (Color   0 255   0)
+	const Color:BLUE  (Color   0   0 255)
+	const Color:BLACK (Color   0   0   0)
+	const Color:WHITE (Color 255 255 255)
+      </example>
+
+      <p>
+	In the example above, each time a color is created, a new
+	instance object is created. The constructor is invoked with the
+	<code>this</code> symbol bound to the newly created
+	instance. Note that the qualified name <code>this:red</code>
+	defines a new symbol in the instance nameset. Such symbol is
+	sometimes referred as an <em>instance data member</em>. Note as
+	well that there is no ambiguity in resolving the symbol
+	<code>red</code>. Once the symbol is created, it shadows the one
+	defined as a constructor argument.
+      </p>
+    </subsect>
+
+    <!-- instance symbol access -->
+    <subsect>
+      <title>Instance symbol access</title>
+
+      <p>
+	An instance acts as a nameset. It is therefore possible to bind
+	locally to an instance a symbol. When a symbol needs to be
+	evaluated, the instance nameset is searched first. If the symbol
+	is not found, the class nameset is searched. When an instance
+	symbol and a class symbol have the same name, the instance
+	symbol is said to shadow the class symbol. The simple example
+	below illustrates this property.
+      </p>
+
+      <example>
+	const c   (class)
+	const c:a 1
+	const i   (c)
+	const j   (c)
+	const i:a 2
+	# class symbol access
+	println   c:a
+	# shadow symbol access
+	println   i:a
+	# non shadow access
+	println   j:a
+      </example>
+
+      <p>
+	When the instance is created, the special symbol
+	<code>meta</code> is bound in the instance nameset with the
+	instance class object. This symbol can therefore be used to
+	access a shadow symbol.<ie>meta</ie>
+      </p>
+
+      <example>
+	const c   (class)
+	const i   (c)
+	const c:a 1
+	const i:a 2
+	println   i:a
+	println   i:meta:a
+      </example>
+
+      <p>
+	The symbol <code>meta</code> must be used carefully, especially
+	inside an initialization since it might create an infinite recursion
+	as shown below.
+      </p>
+
+      <example>
+	const c (class)
+	trans c:preset nil (const i (this:meta))
+	const i (c)
+      </example>
+    </subsect>
+
+    <!-- instance method -->
+    <subsect>
+      <title>Instance method</title>
+
+      <p>
+	When lambda expression is defined within the class or the
+	instance nameset, that lambda expression is callable from the
+	instance itself. If the lambda expression uses the
+	<code>this</code> symbol, that lambda is called an instance
+	method since the symbol <code>this</code> is defined in the
+	instance nameset. If the instance method is defined in the class
+	nameset, the instance method is said to be <em>global</em>, that
+	is, callable by any instance of that class. If the method is
+	defined in the instance nameset, that method is said to be
+	<em>local</em> and is callable by the instance only. Due to the
+	nature of the nameset parent binding, only lambda expression can
+	be used. Gamma expressions will not work since the gamma nameset
+	has always the top level nameset as its parent one.
+	<ie>Instance method</ie>
+      </p>
+
+      <example>
+	const Color (class)
+	# class constructor
+	trans Color:preset (red green blue) {
+          const this:red   (Integer red)
+          const this:green (Integer green)
+	  const this:blue  (Integer blue)
+	}
+	const Color:RF 0.75
+	const Color:GF 0.75
+	const Color:BF 0.75
+	# this method returns a darker color
+	trans Color:darker nil {
+          trans lr (Integer (max (this:red:*   Color:RF) 0))
+	  trans lg (Integer (max (this:green:* Color:GF) 0))
+	  trans lb (Integer (max (this:blue:*  Color:BF) 0))
+	  Color lr lg lb
+	}
+	# get a darker color than yellow
+	const yellow      (Color 255 255 0)
+	const dark-yellow (yellow:darker)
+      </example>
+    </subsect>
+
+    <!-- instance operators -->
+    <subsect>
+      <title>Instance operators</title>
+
+      <p>
+	Any operator can be defined at the class or the instance
+	level. Operators like <code>==</code> or <code>!=</code>
+	generally requires the ability to assert if the argument is of
+	the same type of the instance. The global operator <code>==</code>
+	will return true if two classes are the same. With the use of
+	the <code>meta</code> symbol, it is possible to assert such
+	equality.
+	<ie>Instance operator</ie>
+      </p>
+      
+      <example>
+	# this method checks that two colors are equals
+	trans Color:== (color) {
+          if (== Color color:meta) {
+            if (!= this:red   color:red)   (return false)    
+	    if (!= this:green color:green) (return false)    
+	    if (!= this:blue  color:blue)  (return false)
+	    eval true
+          } false
+	}
+	# create a new yellow color
+	const  yellow (Color 255 255 0)
+	(yellow:== (Color 255 255 0)) # true
+      </example>
+
+      <p>
+	The global operator <code>==</code> returns <code>true</code> if
+	both arguments are the same, even for classes. Method operators
+	are left open to the user.
+      </p>
+    </subsect>
+    
+    <!-- complex number example -->
+    <subsect>
+      <title>Complex number example</title>
+        
+      <p>
+	As a final example, a class simulating the behavior of a complex
+	number is given hereafter. The interesting point to note is the
+	use of the operators. As illustrated before, the class uses uses
+	a default method method to initialize the data members.
+      </p>
+      
+      <example>
+	# class declaration
+	const Complex (class)
+	
+	# constructor
+	trans Complex:preset (re im) {
+          trans this:re (Real re)
+	  trans this:im (Real im)
+        }
+      </example>
+
+      <p>
+	The constructor creates a complex object with the help of the real
+	part and the imaginary part. Any object type which can be bound to a
+	<code>Real</code> object is acceptable.
+      </p>
+
+      <example>
+	# class mutators
+	trans Complex:set-re (x) (trans this:re (Real re))
+	trans Complex:set-im (x) (trans this:im (Real im))
+	
+	# class accessors
+	trans Complex:get-re nil (Real this:re)
+	trans Complex:get-im nil (Real this:im)
+      </example>
+
+      <p>
+	The accessors and the mutators simply provides the interface to the
+	complex number components and perform a cloning of the calling or
+	returned objects.
+      </p>
+
+      <example>
+	# complex number module
+	trans Complex:module nil {
+          trans result (Real (+ (* this:re this:re) 
+	                        (* this:im this:im)))
+	  result:sqrt
+        }
+	# complex number formatting
+	trans Complex:format nil {
+	  trans result (String this:re)
+          result:+= "+i" 
+          result:+= (String this:im)
+	}
+
+      </example>
+
+      <p>
+	The <code>module</code> and <code>format</code> are simple methods.
+	Note the the complex number formatting is arbitrary here.
+      </p>
+
+      <example>      
+	# complex predicate
+	const complex-p (c) (
+        if (instance-p c) (== Complex c:meta) false)
+      </example>
+
+      <p>
+	The <code>complex-p</code> predicate is the perfect illustration of
+	the use of the <code>meta</code> reserved symbol. However, it shall
+	be noted that the meta-comparison is done if and only if the calling
+	argument is an instance.
+      </p>
+
+      <example>    
+        # operators
+        trans Complex:== (c) (
+          if (complex-p c) (and (this:re:== c:re) 
+                                (this:im:== c:im)) (
+	     if (number-p c)  (and (this:re:== c) 
+                              (this:im:zero-p)) false))
+
+	trans Complex:= (c) {
+          if (complex-p c) {
+            this:re:= (Real c:re)
+            this:im:= (Real c:im)
+            return this
+          }
+	  this:re:= (Real c)
+	  this:im:= 0.0
+	  return this
+        }
+
+	trans Complex:+ (c) {
+          trans result (Complex this:re this:im)
+	  if (complex-p c) {
+            result:re:+= c:re
+            result:im:+= c:im
+            return result
+          }
+          result:re:+= (Real c)
+          eval result
+	}
+      </example>
+
+      <p>
+	The operators are a little tedious to write. The comparison can be
+	done with a complex number or a built-in number object. The
+	assignation operator creates a copy for both the real and
+	imaginary part.	The summation operator is given here for
+	illustration purpose.
+      </p>
+    </subsect>
+  </section>
+  
+  <!-- inheritance -->
+  <section>
+    <title>Inheritance</title>
+    
+    <p>
+      Inheritance is the mechanism by which a class or an instance
+      inherits methods and data member access from a parent object. The
+      class model is based on a single inheritance model. When
+      an instance object defines a parent object, such object is called
+      a <em>super instance</em>. The instance which has a super instance
+      is called a <em>derived instance</em>. The main utilization of
+      inheritance is the ability to reuse methods for that super
+      instance.<ie>Inheritance</ie>
+    </p>
+    
+    <!-- derivation construction -->
+    <subsect>
+      <title>Derivation construction</title>
+      
+      <p>
+	A derived object is generally defined within the
+	<code>preset</code> method of that instance by setting the
+	<code>super</code> data member. The <code>super</code> reserved
+	keyword is set to nil at the instance construction. The good
+	news is that any object can be defined as a super instance,
+	including built-in object.<ie>super</ie>
+      </p>
+
+      <example>
+	const c (class)
+	const c:preset nil {
+          trans this:super 0
+	}
+      </example>
+      
+      <p>
+	In the example above, an instance of class <code>c</code> is
+	constructed. The super instance is with an integer object. As a
+	consequence, the instance is derived from the <code>Integer</code>
+	instance. Another consequence of this scheme is that derived
+	instance do not have to be built from the same base class.
+      </p>
+    </subsect>
+
+    <!-- derived symbol access -->
+    <subsect>
+      <title>Derived symbol access</title>
+      
+      <p>
+	When an instance is derived from another one, any symbol which
+	belongs to the super instance can be access with the use of the
+	<code>super</code> data member. If the super class can evaluate
+	a symbol, that symbol is resolved automatically by the derived
+	instance.
+      </p>
+
+      <example>
+	const c       (class)
+	const i       (c)
+	trans i:a     1
+	const j       (c)
+	trans j:super i
+	println j:a
+      </example>
+
+      <p>
+	When a symbol is evaluated, a set of search rules is
+	applied. The engine gives the priority to the class
+	nameset vs the super instance. As a consequence, a class data
+	member might shadow a super instance data member. The rule
+	associated with a symbol evaluation can be summarized as follow.
+      </p>
+      
+      <list>
+        <item>Look in the instance nameset.</item>
+	<item>Look in the class nameset.</item>
+	<item>Look in the super instance if it exists.</item>
+	<item>Look in the base object.</item>
+      </list>
+    </subsect>
+
+    <!-- instance reparenting -->
+    <subsect>
+      <title>Instance re-parenting</title>
+
+      <p>
+	The ability to set dynamically the parent instance make the
+	object model an ideal candidate to support <em>instance
+	re-parenting</em>. In this model, a change in the parent instance
+	is automatically reflected at the instance method call.
+	<ie>Instance re-parenting</ie>
+      </p>
+
+      <example>
+	const c (class)
+	const i (c)
+	trans i:super 0
+	println (i:to-string) # 0
+	trans i:super "hello world"
+	println (i:to-string) # hello world
+      </example>
+
+      <p>
+	In this example, the instance is originally set with an
+	<code>Integer</code> instance parent. Then the instance is
+	<em>re-parented</em> with a <code>String</code> instance
+	parent. The call to the <code>to-string</code> method
+	illustrates this behavior.
+      </p>
+    </subsect>
+
+
+    <!-- instance rebinding -->
+    <subsect>
+      <title>Instance re-binding</title>
+
+      <p>
+	The ability to set dynamically the instance class is another
+	powerful feature of the class model. In this approach,
+	the instance meta class can be changed dynamically with the
+	<code>mute</code> method. Furthermore, it is also possible to
+	create initially an instance without any class binding, which is
+	later muted.<ie>mute</ie>
+      </p>
+
+      <example>
+	# create a point class
+	const  point (class)
+	# point class
+	trans point:preset (x y) {
+          trans this:x x
+	  trans this:y y
+	}
+	# create an empty instance
+	const p (Instance)
+	# bind the point class
+	p:mute point 1 2
+      </example>
+
+      <p>
+	In this example, when the instance is muted, the
+	<code>preset</code> method is called automatically with the
+	extra arguments.<ie>preset</ie>
+      </p>
+    </subsect>
+
+    <!-- instance inference -->
+    <subsect>
+      <title>Instance inference</title>
+
+      <p>
+	The ability to instantiate dynamically inferred instance is offered
+	by the instance model. An instance <em>b</em> is said to
+	be inferred by the instance <em>a</em> when the instance
+	<em>a</em> is the super instance of the instance <em>b</em>. The
+	instance inference is obtained by binding the <code>infer</code>
+	symbol to a class. When an instance of that class is created,
+	the inferred instance is also created.
+	<ie>Instance inference</ie><ie>infer</ie>
+      </p>
+      
+      <example>
+	# base class A
+	const A  (class)
+	# inferred class B
+	const B  (class)
+	const A:infer B
+	
+	# create an instance from A
+	const  x (A)
+	assert B (x:meta)
+	assert A (x:super:meta)
+      </example>
+
+      <p>
+	In this example, when the instance is created, the inferred
+	instance is also created and returned by the instantiation
+	process. The <code>preset</code> method is only called for the 
+	inferred instance if possible or the base instance if there is no
+	inferring class. Because the base <code>preset</code> preset
+	method is not called automatically, the inferred method is
+	responsible to do such call.
+      </p>
+
+      <example>
+	trans B:preset (x y) {
+          trans this:xb x
+          trans this:yb y
+          if (== A this:super:meta) (this:super:preset x y)
+	}
+      </example>
+
+      <p>
+	Because the class can mute from one call to another and also
+	the inferred class, the <code>preset</code> method call must be
+	used after a discrimination of the meta class has been made as
+	indicated by the above example.
+      </p>
+    </subsect>
+
+    <subsect>
+      <title>Instance deference</title>
+
+      <p>
+	In the process of creating instances, one might have a generic class
+	with a method that attempts to access a data member which is bound
+	to another class. The concept of class <em>deference</em> is exactly
+	designed for this purpose. With the help of reserved keyword
+	<code>defer</code>, a class with virtual data member accessors can be
+	bound to a base class as indicated in the example below.
+	<ie>Instance deference</ie><ie>defer</ie>
+      </p>
+      
+      <example>
+	# create the base and defer class
+	const bc (class)
+	const dc (class)
+	# bind the base preset method
+	trans bc:preset nil (const this:y 2)
+	# bind the defer accessor to the base data member
+	trans dc:get-y nil (eval this:y)
+	# bind the defer class in the base class
+	const bc:defer dc
+	# create an instance from the base class
+	const i (bc)
+	# access to the base member with the defer method
+	assert 2 (i:get-y)
+      </example>
+
+      <p>
+	It is worth to note that the class deference is made at the class
+	level. When an instance of the base class is created, all methods
+	associated with the <em>deferent</em> class are visible from the base
+	class, thus making the <em>deferent</em> class a virtual interface
+	to the base class.
+      </p>
+    </subsect>
+  </section>
+</chapter>

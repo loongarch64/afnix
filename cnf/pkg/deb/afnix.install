@@ -1,0 +1,3 @@
+usr/bin/*
+usr/lib/*/libafnix*.*
+usr/share/man/man1/*

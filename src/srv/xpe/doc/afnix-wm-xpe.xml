@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-wm-wax.xml                                                   = -->
+<!-- = xml processing environment service - writer manual                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter service="xpe" number="1">
+  <title>XML Processing Environment Service</title>
+  
+  <p>
+    The <em>XML Processing Environment</em> service is an original
+    implementation that provides the support for processing xml document
+    that could be accessed locally or remotely. In particular, the 
+    processing environment supports the <em>XML include</em> facility.
+  </p>
+
+  <!-- xml content object -->
+  <section>
+    <title>XML content</title>
+
+    <p>
+      The <code>XmlContent</code> class is an extension of the XML
+      document object that provides the service for loading a XML document
+      locally or from the Internet. The class operates with an uri,
+      which permits to selects the appropriate loader from the uri scheme.
+    </p>
+
+    <!-- content creation -->
+    <subsect>
+      <title>Content creation</title>
+
+      <p>
+	The <code>XmlContent</code> operates with an uri that permits to
+	select the appropriate loader. If the uri scheme is a file
+	scheme, the content is retrieved locally. If the uri scheme is
+	http, the content is retrieved by establishing a http connection
+	over the Internet. 
+      </p>
+
+      <example>
+	# create a document from a local file
+	const xdoc (
+	  afnix:xpe:XmlContent "file:///home/afnix/file.xml")
+      </example>
+
+      <p>
+	When the uri scheme is a file, the uri authority is empty (hence
+	the double //) and the path indicates the file to parse. The
+	XmlContent object is derived from the <code>XmlDocument</code>
+	object which contains the parsed tree with the
+	<code>XmlRoot</code> object.
+      </p>
+
+      <example>
+	# create a document from a http connection
+	const xdoc (
+	  afnix:xpe:XmlContent 
+	  "http://www.afnix.org/index.xht")
+      </example>
+
+      <p>
+	When the uri scheme is a http scheme, the document is downloaded
+	by establishing an http connection with the uri authority. When
+	the http header is received, the content is parsed to create a
+	valid xml document. If the http response header indicates that
+	the page has moved and a new location is provided, the object
+	manages automatically to follow such location.
+      </p>
+    </subsect>
+
+    <!-- content and document name  -->
+    <subsect>
+      <title>Content and document name</title>
+      
+      <p>
+	Since the <code>XmlContent</code> object is derived from the
+	<code>XmlContent</code> object, the content object is defined
+	with a uri name and a document name. Under normal circumstances,
+	the document name is derived from the content name by
+	normalizing it. The content name is the object constructor name,
+	while the document name is the normalized document name. The
+	<code>get-name</code> method returns the content name while the
+	<code>get-document-name</code> method returns the document name.
+      </p>
+
+      <example>
+	# create a document by name
+	const xdoc (afnix:xpe:XmlContent "file" "file.xml")
+      </example>
+
+      <p>
+	In the previous example, a xml content object is created by name
+	with a document name. It is the document name that gets
+	normalized. Therefore in the previous example, the
+	<tt>file.xml</tt> document name is normalized into a file
+	uri. The normalization rule always favor the file scheme. This
+	means that without a scheme, the file scheme is automatically
+	added.
+      </p>
+    </subsect>
+
+    <!-- content type -->
+    <subsect>
+      <title>Content type</title>
+      
+      <p>
+	Many times, the content type cannot be detected from the uri
+	name. Once opened, if the content header provides a clue about
+	the content type, the opened input stream get adjusted
+	automatically to reflect this fact. However, this situation does
+	not occurs often and with http scheme, the content type header
+	response does not often provides the character encoding
+	associated with the stream. For this reason, the
+	<code>XmlContent</code> constructor provides a mechanism to
+	accept the encoding mode.
+      </p>
+
+      <example>
+	# create a new content by name and encoding mode
+	const xdoc (
+	  afnix:xpe:XmlContent "file" "file.xml" "UTF-8")
+      </example>
+    </subsect>
+  </section>
+</chapter>

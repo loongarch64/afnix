@@ -1,0 +1,2535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = std-02-norms.xml                                                   = -->
+<!-- = afnix reference manual - chapter 2                                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter volume="2" number="2">
+  <title>Reserved objects</title>
+
+  <p>
+    This chapter is a reference of the reserved objects with
+    their respective builtin methods. The reserved objects are
+    those objects defined in the global interpreter nameset and bind as
+    reserved names.
+
+    All literal have a string representation. The <code>to-string</code>
+    method is always available for these reserved objects. A literal
+    object has a default constructor. Generally, it can also be
+    constructed by a same type object or by a string object.
+  </p>
+
+  <!-- =================================================================== -->
+  <!-- = literal object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Literal</name>
+
+    <p>
+      The <code>Literal</code> object is a base object for all literal
+      object. The sole purpose of a literal object is to provide to
+      methods named <code>to-string</code> and <code>to-literal</code>
+      that return a string representation of the literal object.
+    </p>
+
+    <!-- predicate -->
+    <pred>literal-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Serial</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a string
+	  representation of the literal. The string is expected to
+	  represent at best the literal.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-literal</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-literal</code> method returns a string
+	  representation of the literal. The string differs from the
+	  <code>to-string</code> method in the sense that the string is a
+	  literal representation. For example the literal representation of a
+	  string is the quoted string. 
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = nameable object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Nameable</name>
+
+    <p>
+      The <code>Nameable</code> object is a base object that support
+      name definition. The sole purpose of a literal object is to provide to
+      method named <code>get-name</code> that returns the object name.
+    </p>
+
+    <!-- predicate -->
+    <pred>nameable-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the associated object name.
+	  The object name defined here is a name that the class wishes to
+	  associate with the object. For example, the <code>InputFile</code>
+	  is a nameable class and the name is the file name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = collectable object                                                = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Collectable</name>
+
+    <p>
+      The <code>Collectable</code> object is a base object designed to
+      provide the methods for collectable object. Collectable objects
+      are special objects that can be controlled by a special memory
+      manager, called a memory collector or garbage collector. Unlike
+      a simple object associated with a reference count, the
+      collectable object is also controled by special methods. In
+      particular, the 'release' method can be invoked to release all
+      internal links susceptible to create loops and thus preventing
+      the object to be release by the standard reference count
+      mechanism. Releasing a link do not necessarily result in the
+      object destruction.
+    </p>
+
+    <!-- predicate -->
+    <pred>collectable-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>release</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>release</code> method releases all links
+	  associated with the object. This method is naturally used
+	  to break circular dependencies which prohibits the normal
+	  object destruction by the mean of reference counting.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = item object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Item</name>
+
+    <p>
+      The <code>Item</code> reserved object is an enumeration item. The
+      item is bound to an enumeration object. An item object is created
+      during the evaluation of an enumeration object. An enumeration item
+      cannot be constructed directly.
+    </p>
+
+    <!-- predicate -->
+    <pred>item-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Literal</name>
+    </inherit>
+
+    <!-- operators -->
+    <otors>
+      <oper>
+	<name>==</name>
+	<retn>Boolean</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object
+	  is equal to the boolean argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>!=</name>
+	<retn>Boolean</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object
+	  is not equal to the boolean argument.
+	</p>
+      </oper>
+    </otors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-enum</name>
+	<retn>Enum</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-enum</code> method returns the enumeration object
+	  bound to the item. The item must be a dynamic item or an exception
+	  is thrown.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = boolean object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Boolean</name>
+
+    <p>
+      The <code>Boolean</code> reserved object implements the behavior of
+      a  native boolean type. Two builtin symbols, namely true and false
+      are used to represent the value of a boolean instance. The
+      <code>Boolean</code> type is primarily used for test expression.
+    </p>
+
+    <!-- predicate -->
+    <pred>boolean-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Literal</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Boolean</name>
+	<args>none</args>
+	<p>
+	  The <code>Boolean</code> constructor create a boolean object those
+	  default value is false.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Boolean</name>
+	<args>Boolean</args>
+	<p>
+	  The <code>Boolean</code> constructor create a boolean object with
+	  the boolean object argument.
+	</p>
+      </ctor> 
+
+      <ctor>
+	<name>Boolean</name>
+	<args>String</args>
+	<p>
+	  The <code>Boolean</code> constructor create a boolean object with
+	  the string object argument. The string <code>"true"</code> denotes
+	  the true value while the string <code>"false"</code> denotes the
+	  false value.
+	</p>
+      </ctor>
+    </ctors>
+    
+    <!-- operators -->
+    <otors>
+      <oper>
+	<name>==</name>
+	<retn>Boolean</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object is
+	  equal to the boolean argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>!=</name>
+	<retn>Boolean</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object is
+	  not equal to the boolean argument.
+	</p>
+      </oper>
+    </otors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = number object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Number</name>
+
+    <p>
+      The <code>Number</code> reserved objectis a base class for all number
+      objects. The number base object is used by the <code>Integer</code>, 
+      <code>Real</code> and <code>Relatif</code> objects. The class provides
+      essentially the methods needed to format a number. 
+    </p>
+
+    <!-- predicate -->
+    <pred>number-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Literal</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>format</name>
+	<retn>String</retn>
+	<args>none|Integer</args>
+	<p>
+	  The <code>format</code> method format the calling number instance with
+	  a certain number of digits after the decimal point. In the first
+	  form without argument, the default formating representation is
+	  performed with a null precision. In the second format, a number
+	  is represented with a certain precision given by the calling argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-hexa</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-hexa</code> method returns a signed hexadecimal
+	  representation of a number. This method works well with 
+	  <code>Integer</code> and <code>Relatif</code> objects.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-hexa-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-hexa-string</code> method returns a hexadecimal
+	  representation of a number without a prefix. The number is always
+	  considered positive. This method works well with <code>Integer</code> 
+	  and <code>Relatif</code> objects.  
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = integer object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Integer</name>
+
+    <p>
+      The <code>Integer</code> reserved object implements the behavior
+      of a native 64 bits signed integer type. Standard decimal notation
+      is used to construct integer object from a literal. The integer
+      object can also be constructed from a string. Standard operators
+      are provided for this class. The <code>Integer</code> object is a
+      literal object derived from the <code>Number</code> object.
+    </p>
+
+    <!-- predicate -->
+    <pred>integer-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Number</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Integer</name>
+	<args>none</args>
+	<p>
+	  The <code>Integer</code> constructor create an integer object
+	  those default value is 0.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Integer</name>
+	<args>Real</args>
+	<p>
+	  The <code>Integer</code> constructor create an integer object
+	  with the real object argument those value is truncated to an
+	  integer value.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Integer</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Integer</code> constructor create an integer object
+	  with the integer object argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Integer</name>
+	<args>Character</args>
+	<p>
+	  The <code>Integer</code> constructor create an integer object
+	  with the character object argument. The character encoding value
+	  is used as the integer value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- operators -->
+    <otors>
+      <oper>
+	<name>==</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object
+	  is equal to the integer or real argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>!=</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>!=</code> operator returns true if the calling object is
+	  not equal to the integer or real argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>+</name>
+	<retn>Integer</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>+</code> operator returns the sum of the calling integer
+	  with an integer or a real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>-</name>
+	<retn>Integer</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>-</code> operator returns the subtraction of the
+	  calling integer with an integer or a real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>*</name>
+	<retn>Integer</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>*</code> operator returns the multiplication of the
+	  calling integer with an integer or a real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>/</name>
+	<retn>Integer</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>/</code> operator returns the division of the calling
+	  integer with an integer or a real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>&lt;</code> operator returns true if the calling
+	  integer is less than the integer or real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;=</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>&lt;=</code> operator returns true if the calling
+	  integer is less equal than the integer or real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>&gt;</code> operator returns true if the calling integer
+	  is greater than the integer or real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;=</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>&gt;=</code> operator returns true if the calling
+	  integer is greater equal than the integer or real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>++</name>
+	<retn>Integer</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>++</code> operator increments the calling integer by 1.
+	</p>
+      </oper>
+
+      <oper>
+	<name>--</name>
+	<retn>Integer</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>--</code> operator decrements the calling integer by 1.
+	</p>
+      </oper>
+
+      <oper>
+	<name>+=</name>
+	<retn>Integer</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>+=</code> operator add and assign the calling integer
+	  with an integer or real argument object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>-=</name>
+	<retn>Integer</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>-=</code> operator subtracts and assign the calling
+	  integer with an integer or real argument object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>*=</name>
+	<retn>Integer</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>*=</code> operator multiply and assign the calling
+	  integer with an integer or real argument object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>/=</name>
+	<retn>Integer</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>/=</code> operator divide and assign the calling
+	  integer with an integer or real argument object.
+	</p>
+      </oper>
+    </otors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>or</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>or</code> method returns the binary or between the integer
+	  and the integer argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>abs</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>abs</code> method returns the absolute value of the
+	  calling integer instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>not</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>not</code> method returns the binary negation of the
+	  calling integer instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>shl</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>shl</code> method returns a new integer corresponding
+	  to the calling integer instance shifted left by the integer
+	  argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>shr</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>shr</code> method returns a new integer corresponding to
+	  the calling integer instance shifted right by the integer argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>and</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>and</code> method returns a new integer corresponding
+	  to the binary and between the calling integer instance and the
+	  integer argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>xor</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>xor</code> method returns a new integer corresponding
+	  to the binary xor between the calling integer instance and the
+	  integer argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>mod</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>mod</code> method returns the modulo between the
+	  integer instance and the integer argument. A
+	  <code>type-error</code> exception is raised if the argument is
+	  not an argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>odd-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>odd-p</code> method returns true if the integer
+	  instance is odd, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>even-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>even-p</code> method returns true if the integer
+	  instance is even, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>zero-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>zero-p</code> method returns true if the integer
+	  instance is null, false otherwise.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = relatif object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Relatif</name>
+
+    <p>
+      The <code>Relatif</code> reserved object implements the behavior
+      of an unlimited signed integer type. Standard decimal notation
+      followed by the 'r' or 'R' character is used to construct relatif
+      object from a literal. The relatif object can also be constructed
+      from a string. This class is similar to the <code>Integer</code>
+      class. The <code>Relatif</code> is a literal object derived from
+      the <code>Number</code> object.
+    </p>
+
+    <!-- predicate -->
+    <pred>relatif-p</pred>
+    
+    <!-- inheritance -->
+    <inherit>
+      <name>Number</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Relatif</name>
+	<args>none</args>
+	<p>
+	  The <code>Relatif</code> constructor create a relatif object
+	  those default value is 0.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Relatif</name>
+	<args>Real</args>
+	<p>
+	  The <code>Relatif</code> constructor create an relatif object
+	  with the real object argument those value is truncated to an
+	  integer value.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Relatif</name>
+	<args>Relatif</args>
+	<p>
+	  The <code>Relatif</code> constructor create an relatif object
+	  with the relatif object argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Relatif</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Relatif</code> constructor create an relatif object
+	  with the integer object argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Relatif</name>
+	<args>Character</args>
+	<p>
+	  The <code>Relatif</code> constructor create an relatif object
+	  with the character object argument. The character encoding value
+	  is used as the relatif value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- operators -->
+    <otors>
+      <oper>
+	<name>==</name>
+	<retn>Boolean</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object
+	  is equal to the relatif or integer argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>!=</name>
+	<retn>Boolean</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object
+	  is not equal to the relatif or integer argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>+</name>
+	<retn>Relatif</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>+</code> operator returns the sum of the calling
+	  relatif with an relatif or a integer object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>-</name>
+	<retn>Relatif</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>-</code> operator returns the subtraction of the
+	  calling relatif 
+	  with an relatif or a integer object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>*</name>
+	<retn>Relatif</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>*</code> operator returns the multiplication of the
+	  calling relatif with an relatif or a integer object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>/</name>
+	<retn>Relatif</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>/</code> operator returns the division of the calling
+	  relatif with an relatif or a integer object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;</name>
+	<retn>Boolean</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>&lt;</code> operator returns true if the calling
+	  relatif is less than the relatif or integer object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;=</name>
+	<retn>Boolean</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>&lt;=</code> operator returns true if the calling
+	  relatif is less equal than the relatif or integer object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;</name>
+	<retn>Boolean</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>&gt;</code> operator returns true if the calling
+	  relatif is greater than the relatif or integer object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;=</name>
+	<retn>Boolean</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>&gt;=</code> operator returns true if the calling
+	  relatif is greater equal than the relatif or integer object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>++</name>
+	<retn>Relatif</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>++</code> operator increments the calling relatif by 1.
+	</p>
+      </oper>
+
+      <oper>
+	<name>--</name>
+	<retn>Relatif</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>--</code> operator decrements the calling relatif by 1.
+	</p>
+      </oper>
+
+      <oper>
+	<name>+=</name>
+	<retn>Relatif</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>+=</code> operator add and assign the calling relatif
+	  with an relatif or integer argument object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>-=</name>
+	<retn>Relatif</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>-=</code> operator subtracts and assign the calling
+	  relatif with an relatif or integer argument object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>*=</name>
+	<retn>Relatif</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>*=</code> operator multiply and assign the calling
+	  relatif with an relatif or integer argument object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>/=</name>
+	<retn>Relatif</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>/=</code> operator divide and assign the calling
+	  relatif with an relatif or integer argument object.
+	</p>
+      </oper>
+    </otors>
+
+    <!--  methods -->
+    <methods>
+      <meth>
+	<name>or</name>
+	<retn>Relatif</retn>
+	<args>Relatif</args>
+	<p>
+	  The <code>or</code> method returns the binary or between the
+	  relatif and the relatif argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>abs</name>
+	<retn>Relatif</retn>
+	<args>none</args>
+	<p>
+	  The <code>abs</code> method returns the absolute value of the
+	  calling relatif instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>not</name>
+	<retn>Relatif</retn>
+	<args>none</args>
+	<p>
+	  The <code>not</code> method returns the binary negation of the
+	  calling relatif instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>shl</name>
+	<retn>Relatif</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>shl</code> method returns a new relatif corresponding
+	  to the calling relatif instance shifted left by the integer
+	  argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>shr</name>
+	<retn>Relatif</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>shr</code> method returns a new relatif corresponding
+	  to the calling relatif instance shifted right by the integer
+	  argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>pow</name>
+	<retn>Relatif</retn>
+	<args>Integer|Relatif|Integer Integer|Relatif Relatif</args>
+	<p>
+	  The <code>pow</code> method returns a new relatif corresponding
+	  to the power of the calling relatif instance with the integer or relatif 
+	  argument. With one argument, the power is computed directly. With two
+	  arguments, a fast modular exponentiation is performed with the second 
+	  argument as the modulus.
+	</p>
+      </meth>
+
+      <meth>
+	<name>mmi</name>
+	<retn>Relatif</retn>
+	<args>Integer|Relatif</args>
+	<p>
+	  The <code>mmi</code> method returns the multiplicative modular
+	  inverse of the calling relatif. The argument is the modulus to
+	  use for the inverse calculation.
+	</p>
+      </meth>
+
+      <meth>
+	<name>and</name>
+	<retn>Relatif</retn>
+	<args>Relatif</args>
+	<p>
+	  The <code>and</code> method returns a new relatif corresponding to
+	  the binary and between the calling relatif instance and the relatif
+	  argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>xor</name>
+	<retn>Relatif</retn>
+	<args>Relatif</args>
+	<p>
+	  The <code>xor</code> method returns a new relatif corresponding
+	  to the binary xor between the calling relatif instance and the
+	  relatif argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>mod</name>
+	<retn>Relatif</retn>
+	<args>Relatif|Integer</args>
+	<p>
+	  The <code>mod</code> method returns the modulo between the
+	  relatif instance and the relatif or integer argument. A
+	  <code>type-error</code> exception is raised if the argument is
+	  invalid.
+	</p>
+      </meth>
+
+      <meth>
+	<name>odd-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>odd-p</code> method returns true if the relatif
+	  instance is odd, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>even-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>even-p</code> method returns true if the relatif
+	  instance is even, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>zero-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>zero-p</code> method returns true if the relatif
+	  instance is null, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-msb</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-msb</code> method returns the most significnd bit position
+	  for the calling relatif. If the number is null, 0 is returned. The msb
+	  position is thus counted from 1.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = real object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Real</name>
+
+    <p>
+      The <code>Real</code> reserved object implements the behavior of a
+      double floating point number type. Standard decimal dot notation or
+      scientific notation is used to construct real object from a
+      literal. The real object can also be constructed from an integer, a
+      character or a string. The <code>Real</code> object is a
+      literal object derived from the <code>Number</code> object.
+    </p>
+
+    <!-- predicate -->
+    <pred>real-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Number</name>
+    </inherit>
+    
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Real</name>
+	<args>none</args>
+	<p>
+	  The <code>Real</code> constructor create an real object those
+	  default value is 0.0.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Real</name>
+	<args>Real</args>
+	<p>
+	  The <code>Real</code> constructor create an real object with
+	  the real object argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Real</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Real</code> constructor create an real object with
+	  the integer object argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Real</name>
+	<args>Character</args>
+	<p>
+	  The <code>Real</code> constructor create an real object with the
+	  character object argument. The character encoding value is used
+	  as the integer value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- operators -->
+    <otors>
+      <oper>
+	<name>==</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object is
+	  equal to the integer or real argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>!=</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object is
+	  not equal to the integer or real argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>+</name>
+	<retn>Real</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>+</code> operator returns the sum of the calling real
+	  with an integer or a real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>-</name>
+	<retn>Real</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>-</code> operator returns the subtraction of the
+	  calling real with an integer or a real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>*</name>
+	<retn>Real</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>*</code> operator returns the multiplication of the
+	  calling real with an integer or a real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>/</name>
+	<retn>Real</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>/</code> operator returns the division of the calling
+	  real with an integer or a real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>&lt;</code> operator returns true if the calling real
+	  is less than the integer or real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;=</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>&lt;=</code> operator returns true if the calling real
+	  is less equal than the integer or real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>&gt;</code> operator returns true if the calling real
+	  is greater than the integer or real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;=</name>
+	<retn>Boolean</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>&gt;=</code> operator returns true if the calling real
+	  is greater equal than the integer or real object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>++</name>
+	<retn>Real</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>++</code> operator increments the calling real by 1.
+	</p>
+      </oper>
+
+      <oper>
+	<name>--</name>
+	<retn>Real</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>--</code> operator decrements the calling real by 1.
+	</p>
+      </oper>
+
+      <oper>
+	<name>+=</name>
+	<retn>Real</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>+=</code> operator add and assign the calling real with
+	  an integer or real argument object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>-=</name>
+	<retn>Real</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>-=</code> operator subtracts and assign the calling
+	  real with an integer or real argument object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>*=</name>
+	<retn>Real</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>*=</code> operator multiply and assign the calling
+	  real with an integer or real argument object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>/=</name>
+	<retn>Real</retn>
+	<args>Integer|Real</args>
+	<p>
+	  The <code>+=</code> operator divide and assign the calling real
+	  with an integer or real argument object.
+	</p>
+      </oper>
+    </otors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>nan-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>nan-p</code> method returns true if the calling real
+	  number instance is not-a-number (nan).
+	</p>
+      </meth>
+
+      <meth>
+	<name>ceiling</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>ceiling</code> method returns the ceiling of the calling
+	  real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>floor</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>floor</code> method returns the floor of the calling
+	  real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>abs</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>abs</code> method returns the absolute value of the
+	  calling real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>pow</name>
+	<retn>Real</retn>
+	<args>Real|Integer</args>
+	<p>
+	  The <code>pow</code> method returns the power of the calling 
+	  real with the argument. The exponent argument can be either an
+	  integer or a real number.
+	</p>
+      </meth>
+
+      <meth>
+	<name>sqrt</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>sqrt</code> method returns the square root of the calling
+	  real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>ln</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>ln</code> method returns the natural logarithm of the
+	  calling real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>exp</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>exp</code> method returns the exponential of the calling
+	  real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>sin</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>sin</code> method returns the sine of the calling floating
+	  point instance. The angle is expressed in radian.
+	</p>
+      </meth>
+
+      <meth>
+	<name>cos</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>cos</code> method returns the cosine of the calling
+	  floating point instance. The angle is expressed in radian.
+	</p>
+      </meth>
+
+      <meth>
+	<name>tan</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>tan</code> method returns the tangent of the calling
+	  floating point instance. The angle is expressed in radian.
+	</p>
+      </meth>
+
+      <meth>
+	<name>asin</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>asin</code> method returns the arc sine of the calling
+	  floating point instance. The result is in radian.
+	</p>
+      </meth>
+
+      <meth>
+	<name>acos</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>acos</code> method returns the arc cosine of the
+	  calling floating point instance. The result is in radian.
+	</p>
+      </meth>
+
+      <meth>
+	<name>atan</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>atan</code> method returns the arc tangent of the
+	  calling floating point instance. The result is in radian.
+	</p>
+      </meth>
+
+      <meth>
+	<name>sinh</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>sinh</code> method returns the hyperbolic sine of the
+	  calling real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>cosh</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>cosh</code> method returns the hyperbolic cosine of the
+	  calling real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>tanh</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>atan</code> method returns the hyperbolic tangent of the
+	  calling real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>asinh</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>asinh</code> method returns the hyperbolic arc sine of
+	  the calling real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>acosh</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>acosh</code> method returns the hyperbolic arc cosine
+	  of the calling real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>atanh</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>atanh</code> method returns the hyperbolic arc tangent of
+	  the calling real number instance.
+	</p>
+      </meth>
+
+      <meth>
+	<name>zero-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>zero-p</code> method returns true if the calling real
+	  instance is null, false otherwise.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = character object                                                = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Character</name>
+
+    <p>
+      The <code>Character</code> reserved object implements the behavior
+      of an Unicode character type. A character can be constructed from a
+      literal quoted notation, with a string or with the <code>U+</code>
+      hexadecimal notation. The character class is designed to handle
+      the full range of the Unicode character space by using an internal
+      32 bit quad representation with 31 bit valid. The <code>Character</code>
+      class conform also with the ISO 10646 character representation.
+    </p>
+
+    <!-- predicate -->
+    <pred>character-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Literal</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Character</name>
+	<args>none</args>
+	<p>
+	  The <code>Character</code> constructor create a character
+	  object those default value is the null character.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Character</name>
+	<args>String</args>
+	<p>
+	  The <code>Character</code> constructor create a character
+	  object with the string object argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Character</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Character</code> constructor create a character
+	  object with the integer object argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Character</name>
+	<args>Character</args>
+	<p>
+	  The <code>Character</code> constructor create a character
+	  object with the character object argument.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- operators -->
+    <otors>
+      <oper>
+	<name>==</name>
+	<retn>Boolean</retn>
+	<args>Character</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object
+	  is equal to the character argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>!=</name>
+	<retn>Boolean</retn>
+	<args>Character</args>
+	<p>
+	  The <code>!=</code> operator returns true if the calling object
+	  is not equal to the character argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;</name>
+	<retn>Boolean</retn>
+	<args>Character</args>
+	<p>
+	  The <code>&lt;</code> operator returns true if the calling
+	  character is less than the character object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;=</name>
+	<retn>Boolean</retn>
+	<args>Character</args>
+	<p>
+	  The <code>&lt;=</code> operator returns true if the calling
+	  character is less equal than the character object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;</name>
+	<retn>Boolean</retn>
+	<args>Character</args>
+	<p>
+	  The <code>&gt;</code> operator returns true if the calling
+	  character is greater than the character object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;=</name>
+	<retn>Boolean</retn>
+	<args>Character</args>
+	<p>
+	  The <code>&gt;=</code> operator returns true if the calling
+	  character is greater equal than the character object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>++</name>
+	<retn>Character</retn>
+	<args>Character</args>
+	<p>
+	  The <code>++</code> operator increments the calling character
+	  by the next one in lexicographic order.
+	</p>
+      </oper>
+
+      <oper>
+	<name>--</name>
+	<retn>Character</retn>
+	<args>Character</args>
+	<p>
+	  The <code>--</code> operator decrements the calling character by
+	  the previous one in lexicographic order.
+	</p>
+      </oper>
+
+      <oper>
+	<name>+=</name>
+	<retn>Character</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>+=</code> operator add the integer argument to the calling
+	  character.
+	</p>
+      </oper>
+
+      <oper>
+	<name>-=</name>
+	<retn>Character</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>-=</code> operator subtracts the integer argument to the
+	  calling character.
+	</p>
+      </oper>
+    </otors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>letter-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>letter-p</code> predicate returns true if the character is a
+	  letter character, <code>false</code> otherwise.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>digit-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>digit-p</code> predicate returns true if the character is a
+	  digit character, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>alpha-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>alpha-p</code> predicate returns true if the character is an
+	  alphanumeric character, <code>false</code> otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>blank-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>blank-p</code> predicate returns true if the character is a
+	  blank or tab character, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>eol-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>eol-p</code> predicate returns true if the character is an
+	  <tt>end-of-line</tt> character, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>eos-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>eos-p</code> predicate returns true if the character is an
+	  <tt>end-of-stream</tt> character, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>nil-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>nil-p</code> predicate returns true if the character is the
+	  nil character, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-integer</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-integer</code> method returns an integer representation
+	  of the characters.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = byte object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Byte</name>
+
+    <p>
+      The <code>Byte</code> reserved object implements the behavior
+      of an 8 bit character type. A byte can be constructed from a
+      integer or from another byte. The <code>Byte</code> class is
+      similar to the <code>Character</code> class but is not a literal
+      object because it does not have a literal representation. Most of
+      the time, a byte object is created by another object like a
+      stream, when using the <code>read</code> method for example.
+    </p>
+
+    <!-- predicate -->
+    <pred>byte-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Serial</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Byte</name>
+	<args>none</args>
+	<p>
+	  The <code>Byte</code> constructor create a byte object those
+	  default value is the null byte.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Byte</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Byte</code> constructor create a byte object with the
+	  integer object argument. The integer value must be in the range
+	  of 0x00 to 0xFF.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Byte</name>
+	<args>Byte</args>
+	<p>
+	  The <code>Byte</code> constructor create a byte object with the
+	  byte object argument.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- operators -->
+    <otors>
+      <oper>
+	<name>==</name>
+	<retn>Boolean</retn>
+	<args>Byte</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object
+	  is equal to the byte argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>!=</name>
+	<retn>Boolean</retn>
+	<args>Byte</args>
+	<p>
+	  The <code>!=</code> operator returns true if the calling object
+	  is not equal to the byte argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;</name>
+	<retn>Boolean</retn>
+	<args>Byte</args>
+	<p>
+	  The <code>&lt;</code> operator returns true if the calling
+	  byte is less than the byte object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;=</name>
+	<retn>Boolean</retn>
+	<args>Byte</args>
+	<p>
+	  The <code>&lt;=</code> operator returns true if the calling
+	  byte is less equal than the byte object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;</name>
+	<retn>Boolean</retn>
+	<args>Byte</args>
+	<p>
+	  The <code>&gt;</code> operator returns true if the calling
+	  byte is greater than the byte object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;=</name>
+	<retn>Boolean</retn>
+	<args>Byte</args>
+	<p>
+	  The <code>&gt;=</code> operator returns true if the calling
+	  byte is greater equal than the byte object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>++</name>
+	<retn>Byte</retn>
+	<args>Byte</args>
+	<p>
+	  The <code>++</code> operator increments the calling byte by one.
+	</p>
+      </oper>
+
+      <oper>
+	<name>--</name>
+	<retn>Byte</retn>
+	<args>Byte</args>
+	<p>
+	  The <code>--</code> operator decrements the calling byte by one.
+	</p>
+      </oper>
+
+      <oper>
+	<name>+=</name>
+	<retn>Byte</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>+=</code> operator adds the integer argument to the calling
+	  byte.
+	</p>
+      </oper>
+
+      <oper>
+	<name>-=</name>
+	<retn>Byte</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>-=</code> operator subtracts the integer argument to
+	  the calling byte.
+	</p>
+      </oper>
+    </otors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>eos-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>eos-p</code> predicate returns true if the character is an
+	  <tt>end-of-stream</tt> character, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>nil-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>nil-p</code> predicate returns true if the byte is the
+	  nil byte, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-integer</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-integer</code> method returns an integer representation
+	  of the byte.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-char</name>
+	<retn>Character</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-char</code> method returns a character representing
+	  the byte.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = string object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>String</name>
+    
+    <p>
+      The <code>String</code> reserved object implements the behavior of
+      an internal character array. The double quote notation is the
+      literal notation for a string. A string can also be constructed 
+      from the standard objects. Strings can be compared,
+      transformed or extracted with the help of the methods listed
+      below. Internally, the string is represented as an array of
+      Unicode characters.    
+    </p>
+
+    <!-- predicate -->
+    <pred>string-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Literal</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>String</name>
+	<args>none</args>
+	<p>
+	  The <code>String</code> constructor create a string object those
+	  default value is the null string.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>String</name>
+	<args>Literal</args>
+	<p>
+	  The <code>String</code> constructor create a string object with
+	  the literal object argument.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- operators -->
+    <otors>
+      <oper>
+	<name>==</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object is
+	  equal to the string argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>!=</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>!=</code> operator returns true if the calling object is
+	  not equal to the string argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>&lt;</code> operator returns true if the calling string
+	  is less than the string argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;=</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>&lt;=</code> operator returns true if the calling string
+	  is less equal than the string argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>&gt;</code> operator returns true if the calling string
+	  is greater than the string argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;=</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>&gt;=</code> operator returns true if the calling string
+	  is greater equal than the string argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>+</name>
+	<retn>String</retn>
+	<args>String</args>
+	<p>
+	  The <code>+</code> operator returns the sum of the calling string
+	  with an string object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>+=</name>
+	<retn>String</retn>
+	<args>String</args>
+	<p>
+	  The <code>+=</code> operator add and assign the calling string with
+	  the string argument.
+	</p>
+      </oper>
+    </otors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>first</name>
+	<retn>Character</retn>
+	<args>none</args>
+	<p>
+	  The <code>first</code> method returns the first character in the
+	  string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>last</name>
+	<retn>Character</retn>
+	<args>none</args>
+	<p>
+	  The <code>last</code> method returns the last character in the
+	  string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>strip-left</name>
+	<retn>String</retn>
+	<args>none|String</args>
+	<p>
+	  The <code>strip-left</code> method removes the leading blanks and
+	  tabs and returns a new string. With a string argument, each
+	  character in the string is taken as a character separator that
+	  should be stripped.
+	</p>
+      </meth>
+
+      <meth>
+	<name>strip-right</name>
+	<retn>String</retn>
+	<args>none|String</args>
+	<p>
+	  The <code>strip-right</code> method removes the trailing blanks
+	  and tabs and returns a new string.With a string argument, each
+	  character in the string is taken as a character separator that
+	  should be stripped.
+	</p>
+      </meth>
+
+      <meth>
+	<name>strip</name>
+	<retn>String</retn>
+	<args>none|String</args>
+	<p>
+	  The <code>strip</code> method removes the leading, trailing
+	  blanks and tabs and returns a new string. With a string
+	  argument, each character in the string is taken as a character
+	  separator that should be stripped.
+	</p>
+      </meth>
+
+      <meth>
+	<name>split</name>
+	<retn>Vector</retn>
+	<args>none|String</args>
+	<p>
+	  The <code>split</code> method split the string into one or more
+	  string according to break sequence. If no argument is passed to the
+	  call, the break sequence is assumed to be a blank, tab and eol
+	  characters.
+	</p>
+      </meth>
+
+      <meth>
+	<name>extract</name>
+	<retn>Vector</retn>
+	<args>Character</args>
+	<p>
+	  The <code>extract</code> method extracts one or more string
+	  which are enclosed by a control character passed as an
+	  argument. The method returns a vector of strings.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-upper</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-upper</code> converts all string characters to
+	  upper case and returns a new string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-lower</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-lower</code> method converts all string characters
+	  to lower case and returns a new string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Character</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns a the string character at
+	  the position given by the argument. If the index is invalid, an
+	  exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>sub-left</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>sub-left</code> method returns the left sub string of
+	  the calling string up-to the argument index. If the index is out
+	  of range, the string is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>sub-right</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>sub-right</code> method returns the right sub string
+	  of the calling string starting at the argument index. If the
+	  index is out of range, the string is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>fill-left</name>
+	<retn>String</retn>
+	<args>Character Integer</args>
+	<p>
+	  The <code>fill-left</code> method returns a string filled on the
+	  left with the character argument. The second argument is the
+	  desired length of the resulting string. If the calling is too
+	  long, the string is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>fill-right</name>
+	<retn>String</retn>
+	<args>Character Integer</args>
+	<p>
+	  The <code>fill-left</code> method returns a string filled on the
+	  right with the character argument. The second argument is the
+	  desired length of the resulting string. If the calling is too
+	  long, the string is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>substr</name>
+	<retn>String</retn>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>substr</code> method returns a string starting at the
+	  first argument index and ending at the second argument index. If the
+	  indexes are out of range, an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>strcic</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>strcic</code> method compare the calling string
+	  with the argument string in a case insensitive way.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = regex object                                                    = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Regex</name>
+
+    <p>
+      The <code>Regex</code> object is a special object which is
+      automatically instantiated by the interpreter when using the
+      delimiter character <code>[</code> and <code>]</code>. The
+      regex syntax involves the use of standard characters, meta
+      characters and control characters. Additionally, a string can be
+      use to specify a series of characters. 
+
+      In its first form, the <code>[</code> and <code>]</code>
+      characters are used as syntax delimiters. The lexical analyzer
+      automatically recognizes this token as a regex and built the
+      equivalent <code>Regex</code> object. The second form is the
+      explicit construction of the <code>Regex</code> object. Note also
+      that the <code>[</code> and <code>]</code> characters are also
+      used as regex block delimiters.
+
+      Any character, except the one used as operators can be used in a 
+      regex. The <code>$</code> character is used as a meta-character -- or
+      control character -- to represent a particular set of
+      characters. For example, <code>[hello world]</code> is a regex which
+      match only the <code>"hello world"</code> string. The
+      <code>[$d+]</code> regex matches one or more digits. The following
+      control characters are builtin in the regex engine.
+    </p>
+
+    <table>
+      <title>Regular expression meta-characters</title>
+      <tr>
+	<th>Character</th><th>Description</th>
+      </tr>
+      <tr><td>$a</td><td>matches any letter or digit</td></tr>
+      <tr><td>$b</td><td>matches any blank characters</td></tr>
+      <tr><td>$c</td><td>matches any combining characters</td></tr>
+      <tr><td>$d</td><td>matches any digit</td></tr>
+      <tr><td>$e</td><td>matches eol, cr and eos</td></tr>
+      <tr><td>$l</td><td>matches any lower case letter</td></tr>
+      <tr><td>$n</td><td>matches eol or cr</td></tr>
+      <tr><td>$s</td><td>matches any letter</td></tr>
+      <tr><td>$u</td><td>matches any upper case letter</td></tr>
+      <tr><td>$v</td><td>matches any valid constituent</td></tr>
+      <tr><td>$w</td><td>matches any word constituent</td></tr>
+      <tr><td>$x</td><td>matches any hexadecimal characters</td></tr>
+    </table>
+
+    <p>
+      The uppercase version is the complement of the corresponding
+      lowercase character set. A character which follows a <code>$</code>
+      character and that is not a meta character is treated as a normal
+      character. For example <code>$[</code> is the <code>[</code>
+      character. A quoted string can be used to define character matching
+      which could otherwise be interpreted as control characters or
+      operator. A quoted string also interprets standard escaped sequences
+      but not meta characters.
+    </p>
+
+    <table>
+      <title>Regular expression meta-characters complement</title>
+      <tr>
+	<th>Character</th><th>Description</th>
+      </tr>
+      <tr><td>$A</td><td>any character except letter or digit</td></tr>
+      <tr><td>$B</td><td>any character except blank characters</td></tr>
+      <tr><td>$C</td><td>any character except combining characters</td></tr>
+      <tr><td>$D</td><td>any character except digit</td></tr>
+      <tr><td>$E</td><td>any character except eol, cr and eos</td></tr>
+      <tr><td>$L</td><td>any character except lower case letter</td></tr>
+      <tr><td>$N</td><td>any character except eol or cr</td></tr>
+      <tr><td>$S</td><td>any character except letter</td></tr>
+      <tr><td>$U</td><td>any character except upper case letter</td></tr>
+      <tr><td>$V</td><td>any character except constituent</td></tr>
+      <tr><td>$W</td><td>any character except word constituent</td></tr>
+      <tr><td>$X</td><td>any character except hex characters</td></tr>
+    </table>
+
+    <p>
+      A character set is defined with the <code>&lt;</code> and
+      <code>&gt;</code> characters. Any enclosed character defines a  
+      character set. Note that meta characters are also interpreted
+      inside a character set. For example, <code>&lt;$d+-&gt;</code>
+      represents any digit or a plus or minus. If the first character is
+      the <code>^</code> character in the character set, the character
+      set is complemented with regards to its definition.
+
+      The following unary operators can be used with single character,
+      control characters and sub-expressions.
+    </p>
+
+    <table>
+      <title>Regular expression operators</title>
+      <tr>
+	<th>Operator</th><th>Description</th>
+      </tr>
+      <tr><td>*</td><td>match 0 or more times</td></tr>
+      <tr><td>+</td><td>match 1 or more times</td></tr>
+      <tr><td>?</td><td>match 0 or 1 time</td></tr>
+      <tr><td>|</td><td>alternation</td></tr>
+    </table>
+
+    <p>
+      Alternation is an operator which work with a secondary
+      expression. Care should be taken when writing the right 
+      sub-expression. For example the following regex
+      <code>[$d|hello]</code> is equivalent to
+      <code>[[$d|h]ello]</code>. In other word, the minimal first 
+      sub-expression is used when compiling the regex. 
+    </p>
+
+    <!-- predicate -->
+    <pred>regex-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Literal</name>
+    </inherit>
+    
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Regex</name>
+	<args>none</args>
+	<p>
+	  The <code>Regex</code> constructor create a regex object those
+	  default value is the null regex.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Regex</name>
+	<args>String</args>
+	<p>
+	  The <code>Regex</code> constructor create a regex object with
+	  the string object argument. The string argument is the regex
+	  specification.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- regex operators -->
+    <otors>
+      <oper>
+	<name>==</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>==</code> operator returns true if the argument is
+	  matched by the regex.
+	</p>
+      </oper>
+
+      <oper>
+	<name>!=</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>!=</code> operator returns true if the argument is not
+	  matched by the regex.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>&lt;</code> operator returns true if the argument is
+	  partially matched by the regex.
+	</p>
+      </oper>
+    </otors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the group
+	  vector when a regex match has been successful.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns by index the group sub-string
+	  when a regex match has been successful.
+	</p>
+      </meth>
+
+      <meth>
+	<name>match</name>
+	<retn>String</retn>
+	<args>String</args>
+	<p>
+	  The <code>match</code> method returns the first matching string of the
+	  argument string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>replace</name>
+	<retn>String</retn>
+	<args>String String</args>
+	<p>
+	  The <code>replace</code> method returns a string constructed by
+	  replacing all matching sub-string -- from the first argument --
+	  with the second argument string.
+	</p>
+      </meth>
+    </methods>
+  </object>
+</chapter>

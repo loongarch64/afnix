@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-wm-net.xml                                                   = -->
+<!-- = standard networking module - writer manual                         = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter module="net" number="1">
+  <title>Standard Networking Module</title>
+  
+  <p>
+    The <em>Standard Networking</em> module is an original implementation
+    of networking facilities for the Internet Protocol. The module features
+    standard TCP and UDP sockets for point to point communication as well as
+    multicast socket. Numerous functions and objects for address manipulation
+    are also included in this module. This module is also designed to support
+    IP version 6 with certain platforms.
+  </p>
+
+  <!-- IP address -->
+  <section>
+    <title>IP address</title>
+
+    <p>
+      The IP based communication uses a standard address to reference a
+      particular peer. With IP version 4, the standard dot notation is
+      with 4 bytes. With IP version 6, the standard semicolon notation
+      is with 16 bytes. The current implementation supports both versions.
+    </p>
+
+    <example>
+      127.0.0.1       # ipv4 localhost
+      0:0:0:0:0:0:0:1 # ipv6 localhost
+    </example>
+    
+    <p>
+      IP address architecture and behavior are described in various
+      documents as listed in the bibliography. 
+    </p>
+
+    <!-- domain name system -->
+    <subsect>
+      <title>Domain name system</title>
+
+      <p>
+	The translation between a host name and an IP address is
+	performed by a <em>resolver</em> which uses the <em>Domain Name
+	System</em> or DNS. Access to the DNS is automatic with the
+	implementation. Depending on the machine resolver
+	configuration, a particular domain name translation might result
+	in an IP version 4 or IP version 6 address. Most of the time,
+	an IP version 4 address is returned.
+      </p>
+
+      <p>
+	The mapping between an IP address and a host name returns the
+	associated <em>canonical name</em> for that IP address. This is
+	the reverse of the preceding operation.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- address class -->
+  <section>
+    <title>The Address class</title>
+
+    <p>
+      The <code>Address</code> class allows manipulation of IP
+      address. The constructor takes a string as its arguments. The
+      argument string can be either an IP address or a host name
+      which can be qualified or not. When the address is constructed
+      with a host name, the IP address resolution is done immediately.
+    </p>
+
+    <!-- name to address translation -->
+    <subsect>
+      <title>Name to address translation</title>
+
+      <p>
+	The most common operation is to translate a host name to its
+	equivalent IP address. Once the <code>Address</code> object is
+	constructed, the <code>get-address</code> method returns a
+	string representation of the internal IP address. The following
+	example prints the IP address of the localhost, that is
+	<em>127.0.0.1</em> with IP version 4.
+      </p>
+
+      <example>
+	# load network module
+	interp:library "afnix-net"
+
+	# get the localhost address
+	const addr (afnix:net:Address "localhost")
+
+	# print the ip address
+	println (addr:get-address)
+      </example>
+
+      <p>
+	As another example, the <code>get-host-name</code>
+	function returns the host name of the running machine. The
+	previous example can be used to query its IP address. 
+      </p>
+    </subsect>
+
+    <!-- address to name translation -->
+    <subsect>
+      <title>Address to name translation</title>
+
+      <p>
+	The reverse operation of name translation maps an IP address to
+	a <em>canonical name</em>. It shall be noted that the reverse
+	lookup is not done automatically, unless the <em>reverse
+	flag</em> is set in the constructoor. The
+	<code>get-canonical-name</code> method of the
+	<code>Address</code> class returns such name. Example
+	<file>XNET001.als</file> is a demonstration program 
+	which prints the address original name, the IP address and the
+	canonical name. Fell free to use it with your favorite site to
+	check the equivalence between the original name and the
+	canonical name.
+      </p>
+
+      <example>
+	# print the ip address information of the arguments
+	# usage: axi XNET001.als [hosts ...]
+
+	# get the network module
+	interp:library "afnix-net"
+	
+	# print the ip address
+	const ip-address-info (host) {
+          try {
+	    const addr (afnix:net:Address host true)
+	    println "host name        : " (addr:get-name)
+	    println "  ip address     : " (addr:get-address)
+	    println "  canonical name : " (
+	      addr:get-canonical-name)
+	    # get aliases
+	    const size (addr:get-alias-size)
+	    loop (trans i 0) (&lt; i size) (i:++) {
+	      println "  alias address  : " (
+	      addr:get-alias-address i)
+	      println "  alias name     : " (
+	        addr:get-alias-name i)
+	    }      
+	  } (errorln "error: " what:reason)
+	}
+
+	# get the hosts 
+	for (s) (interp:argv) (ip-address-info s)
+
+	zsh&gt; axi net-0001.als localhost
+	host name        : localhost
+        ip address     : 127.0.0.1
+        canonical name : localhost
+      </example>
+    </subsect>
+
+    <!-- address operations -->
+    <subsect>
+      <title>Address operations</title>
+
+      <p>
+	The <code>Address</code> class provides several methods and
+	operators that ease the address manipulation in a protocol
+	indepedant way. For example, the <code>==</code> operator
+	compares two addresses. The <code>++</code> operator can also be
+	used to get the next IP address.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- transport layers -->
+  <section>
+    <title>Transport layers</title>
+
+    <p>
+      The two transport layer protocols supported by the Internet 
+      protocol is the TCP, a full-duplex oriented protocol, and
+      UDP, a datagram protocol. TCP is a reliable protocol while UDP is
+      not. By reliable, we mean that the protocol provides automatically
+      some mechanisms for error recovery, message delivery,
+      acknowledgment of reception, etc... The use of TCP vs. UDP is
+      dictated mostly by the reliability concerns, while UDP reduces the
+      traffic congestion.
+    </p>
+
+    <!-- service port -->
+    <subsect>
+      <title>Service port</title>
+
+      <p>
+	In the client-server model, a connection is established between
+	two hosts. The connections is made via the IP address and the
+	port number. For a given service, a port identifies that service
+	at a particular address. This means that multiple services can
+	exist at the same address. More precisely, the transport layer
+	protocol is also used to distinguish a particular service.
+	
+	The network module provides a simple mechanism to
+	retrieve the port number, given its name and protocol. The function
+	<code>get-tcp-service</code> and <code>get-udp-service</code>
+	returns the port number for a given service by name. For
+	example, the <em>daytime</em> server is located at port number
+	13.
+      </p>
+
+      <example>
+	assert 13 (afnix:net:get-tcp-service "daytime")
+	assert 13 (afnix:net:get-udp-service "daytime")
+      </example>
+    </subsect>
+
+    <!-- host and peer -->
+    <subsect>
+      <title>Host and peer</title>
+
+      <p>
+	With the client server model, the only information needed to
+	identify a particular client or server is the address and the
+	port number. When a client connects to a server, it specify the
+	port number the server is operating. The client uses a random
+	port number for itself. When a server is created, the port
+	number is used to bind the server to that particular port. If
+	the port is already in use, that binding will fail. From a
+	reporting point of view, a connection is therefore identified by
+	the running host address and port, and the peer address and
+	port. For a client, the peer is the server. For a server, the
+	peer is the client.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- tcp client socket -->
+  <section>
+    <title>TCP client socket</title>
+
+    <p>
+      The <code>TcpClient</code> class creates an TCP client object by
+      address and port. The address can be either a string or an
+      <code>Address</code> object. During the object construction, the
+      connection is established with the server. Once the connection is
+      established, the client can use the <code>read</code> and
+      <code>write</code> method to communicate with the server. The
+      <code>TcpClient</code> class is derived from the
+      <code>Socket</code> class which is derived from
+      the <code>InputStream</code> and <code>OutputStream</code> classes.
+    </p>
+
+    <!-- day and time client -->
+    <subsect>
+      <title>Day time client</title>
+
+      <p>
+	The simplest example is a client socket which communicates with
+	the daytime server. The server is normally running on all
+	machines and is located at port 13.
+      </p>
+
+      <example>
+	# get the network module
+	interp:library "afnix-net"
+
+	# get the daytime server port
+	const port (afnix:net:get-tcp-service "daytime")
+
+	# create a tcp client socket
+	const s (afnix:net:TcpClient "localhost" port)
+
+	# read the data - the server close the connection
+	while (s:valid-p) (println (s:readln))
+      </example>
+
+      <p>
+	Example <file>3201.als</file> in the example directory prints
+	the day time of the local host without argument or the day time
+	of the argument. Feel free to use it with
+	<em>www.afnix.org</em>. If the server you are trying to contact
+	does not have a day time server, an exception will be raised and
+	the program terminates.
+      </p>
+
+      <example>
+	zsh&gt; axi 3201.als www.afnix.org
+      </example>
+    </subsect>
+
+    <!-- http request example -->
+    <subsect>
+      <title>HTTP request example</title>
+
+      <p>
+	Another example which illustrates the use of the
+	<code>TcpClient</code> object is a simple client which download
+	a web page. At this stage we are not concern with the
+	URL but rather the mechanics involved. The request is made by
+	opening a TCP client socket on port 80 (the HTTP server port)
+	and sending a request by writing some HTTP commands. When the
+	commands have been sent, the data sent by the server are read
+	and printed on the standard output. Note that this example is
+	not concerned by error detection.
+      </p>
+
+      <example>
+	# fetch an html page by host and page
+	# usage: axi 3203.als [host] [page]
+
+	# get the network module
+	interp:library "afnix-net"
+	interp:library "afnix-sys"
+
+	# connect to the http server and issue a request
+	const send-http-request (host page) {
+        # create a client sock on port 80
+	const s     (afnix:net:TcpClient host 80)
+	const saddr (s:get-socket-address)
+
+	# format the request
+	s:writeln "GET " page " HTTP/1.1"
+	s:writeln "Host: " (saddr:get-canonical-name)
+	s:writeln "Connection: close"
+	s:writeln "User-Agent: afnix tcp client example"
+	s:newline
+
+	# write the result
+	while (s:valid-p) (println (s:readln))
+	}
+
+	# get the argument
+	if (!= (interp:argv:length) 2) (afnix:sys:exit 1)
+	const host (interp:argv:get 0)
+	const page (interp:argv:get 1)
+
+	# send request
+	send-http-request host page
+      </example>
+    </subsect>
+  </section>
+
+  <!-- udp client socket -->
+  <section>
+    <title>UDP client socket</title>
+
+    <p>
+      UDP client socket is similar to TCP client socket. However, due to
+      the unreliable nature of UDP, UDP clients are somehow more
+      difficult to manage. Since there is no flow control, it becomes
+      more difficult to assess whether or not a datagram has reached its
+      destination. The same apply for a server, where a reply datagram
+      might be lost. The <code>UdpClient</code> class is the class which
+      creates a UDP client object. Its usage is similar to the
+      <code>TcpClient</code>. 
+    </p>
+
+    <!-- the time client -->
+    <subsect>
+      <title>The time client</title>
+
+      <p>
+	The UDP time server normally runs on port 37 is the best place
+	to enable it. A UDP client is created with the
+	<code>UdpClient</code> class. Once the object is created, the
+	client sends an empty datagram to the server. The server send a
+	reply datagram with 4 bytes, in network byte order,
+	corresponding to the date as of January 1st 1900. Example
+	<file>3204.als</file> prints date information after contacting
+	the local host time server or the host specified as the first
+	argument.
+      </p>
+
+      <example>
+	# get the libraries
+	interp:library "afnix-net"
+	interp:library "afnix-sys"
+
+	# get the daytime server port
+	const port (afnix:net:get-udp-service "time")
+
+	# create a client socket and read the data
+	const print-time (host) {
+        # create a udp client socket
+	const s (afnix:net:UdpClient host port)
+	# send an empty datagram
+	s:write
+	# read the 4 bytes data and adjust to epoch
+	const buf (s:read 4)
+	const val (- (buf:get-quad) 2208988800)
+	# format the date
+	const time (afnix:sys:Time val)
+	println (time:format-date) ' ' (time:format-time)
+	}
+
+	# check for one argument or use localhost
+	const host (if (== (interp:argv:length) 0) 
+	"localhost" (interp:argv:get 0))
+	print-time host
+      </example>
+
+      <p>
+	This example calls for several comments. First the
+	<code>write</code> method without argument sends an empty
+	datagram. It is the datagram which trigger the server. The
+	<code>read</code> method reads 4 bytes from  the reply datagram
+	and places them in a <code>Buffer</code> object. Since the bytes
+	are in network byte order, the conversion into an integer value
+	is done with the <code>get-quad</code> method. Finally, in order
+	to use the <code>Time</code> class those epoch is January 1st
+	1970, the constant <code>2208988800</code> is subtracted from
+	the result. Remember that the time server sends the date in
+	reference to January 1st 1900. More information about the time
+	server can be found in RFC738.
+      </p>
+    </subsect>
+
+    <!-- more on reliability -->
+    <subsect>
+      <title>More on reliability</title>
+
+      <p>
+	The previous example has some inherent problems due to the
+	unreliability of UDP. If the first datagram is lost, the
+	<code>read</code> method will block indefinitely. Another
+	scenario which causes the <code>read</code> method to block is
+	the loss of the server reply datagram. Both problem can
+	generally be fixed by checking the socket with a timeout using
+	the <code>valid-p</code> method. With one argument, the method
+	timeout and return false. In this case, a new datagram can be
+	send to the server. Example <file>3205.als</file> illustrates
+	this point. We print below the extract of code.
+      </p>
+
+      <example>
+	# create a client socket and read the data
+	const print-time (host) {
+        # create a udp client socket
+	const s (afnix:net:UdpClient host port)
+	# send an empty datagram until the socket is valid
+	s:write
+	# retransmit datagram each second
+	while (not (s:valid-p 1000)) (s:write)
+	# read the 4 bytes data and adjust to epoch
+	const buf (s:read 4)
+	const val (- (buf:get-quad) 2208988800)
+	# format the date
+	const time (afnix:sys:Time val)
+	println (time:format-date) ' ' (time:format-time)
+	}
+      </example>
+
+      <p>
+	Note that this solution is a naive one. In the case of multiple
+	datagrams, a sequence number must be placed because there is no
+	clue about the lost datagram. A simple rule of thumb is to use
+	TCP as soon as reliability is a concern, but this choice might
+	not so easy.
+      </p>
+    </subsect>
+    
+    <!-- error detection -->
+    <subsect>
+      <title>Error detection</title>
+
+      <p>
+	Since UDP is not reliable, there is no simple solution to detect
+	when a datagram has been lost. Even worse, if the server is not 
+	running, it is not easy to detect that the client datagram has
+	been lost. In such situation, the client might indefinitely send
+	datagram without getting an answer. One solution to this problem
+	is again to count the number of datagram re-transmit and
+	eventually give up after a certain time.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- socket class -->
+  <section>
+    <title>Socket class</title>
+
+    <p>
+      The <code>Socket</code> class is the base class for both
+      <code>TcpClient</code> and <code>UdpClient</code>. The class
+      provides methods to query the socket port and address as well as
+      the peer port and address. Note at this point that the UDP socket
+      is a connected socket. Therefore, these methods will work
+      fine. The <code>get-socket-address</code> and
+      <code>get-socket-port</code> returns respectively the address and
+      port of the connected socket. The <code>get-peer-address</code>
+      and <code>get-peer-port</code> returns respectively the address
+      and port of the connected socket's peer. Example
+      <file>3206.als</file> illustrates the use of these methods. 
+    </p>
+
+    <example>
+      # create a client socket and read the data
+      const print-socket-info (host) {
+      # create a tcp client socket
+      const s (afnix:net:TcpClient host port)
+      # print socket address and port
+      const saddr (s:get-socket-address)
+      const sport (s:get-socket-port)
+      println "socket ip address     : " (
+        saddr:get-address)
+      println "socket canonical name : " (
+        saddr:get-canonical-name)
+      println "socket port           : " sport
+      # print peer address and port
+      const paddr (s:get-peer-address)
+      const pport (s:get-peer-port)
+      println "peer ip address       : " (
+        paddr:get-address)
+      println "peer canonical name   : " (
+        paddr:get-canonical-name)
+      println "peer port             : " pport
+      }
+    </example>
+
+    <!-- socket predicates -->
+    <subsect>
+      <title>Socket predicates</title>
+
+      <p>
+	The <code>Socket</code> class is associated with the
+	<code>socket-p</code> predicate. The respective client objects
+	have the <code>tcp-client-p</code> predicate and
+	<code>udp-client-p</code> predicate.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- tcp server socket -->
+  <section>
+    <title>TCP server socket</title>
+
+    <p>
+      The <code>TcpServer</code> class creates an TCP server
+      object. There are several constructors for the TCP server. In its
+      simplest form, without port, a TCP server is created on the
+      <code>localhost</code> with an ephemeral port number (i.e port 0
+      during the call). With a port number, the TCP server is created on
+      the <code>localhost</code>. For a multi-homed host, the address to
+      use to run the server can be specified as the first argument. The
+      address can be either a string or an <code>Address</code>
+      object. In both cases, the port is specified as the second 
+      argument. Finally, a third argument called the
+      <code>backlog</code> can be specified to set the number of
+      acceptable incoming connection. That is the maximum number of
+      pending connection while processing a connection. The following
+      example shows various ways to create a TCP server. 
+    </p>
+
+    <example>
+      trans s (afnix:net:TcpServer)
+      trans s (afnix:net:TcpServer 8000)
+      trans s (afnix:net:TcpServer 8000 5)
+      trans s (afnix:net:TcpServer "localhost" 8000)
+      trans s (afnix:net:TcpServer "localhost" 8000 5)
+      trans s (afnix:net:TcpServer (
+        Address "localhost") 8000)
+      trans s (afnix:net:TcpServer (
+        Address "localhost") 8000 5)
+    </example>
+
+    <!-- echo server -->
+    <subsect>
+      <title>Echo server example</title>
+
+      <p>
+	A simple <em>echo server</em> can be built and tested with the
+	standard <command>telnet</command> application. The application
+	will echo all lines that are typed with the
+	<command>telnet</command> client. The server is bound on the
+	port 8000, since ports 0 to 1024 are privileged ports.
+      </p>
+
+      <example>
+	# get the network module
+	interp:library "afnix-net"
+
+	# create a tcp server on port 8000
+	const srv (afnix:net:TcpServer 8000)
+
+	# wait for a connection
+	const s (srv:accept)
+
+	# echo the line until the end
+	while (s:valid-p) (s:writeln (s:readln))
+      </example>
+
+      <p>
+	The <command>telnet</command> session is then quite simple. The
+	line <em>hello world</em> is echoed by the server.
+      </p>
+
+      <example>
+	zsh&gt; telnet localhost 8000
+	Trying 127.0.0.1...
+	Connected to localhost.
+	Escape character is '^]'.
+	hello world
+	^D
+      </example>
+    </subsect>
+
+    <!-- accept method -->
+    <subsect>
+      <title>The accept method</title>
+
+      <p>
+	The previous example illustrates the mechanics of a server. When
+	the server is created, the server is ready to accept
+	connection. The <code>accept</code> method blocks until a client
+	connect with the server. When the connection is established, the
+	<code>accept</code> method returns a socket object which can be
+	used to read and write data.
+      </p>
+    </subsect>
+
+    <subsect>
+      <title>Multiple connections</title>
+
+      <p>
+	One problem with the previous example is that the server accepts only
+	one connection. In order to accept multiple connection, the
+	<code>accept</code> method must be placed in a loop, and the
+	server operation in a thread (There are some situations where a
+	new process might be more appropriate than a thread). Example
+	<file>3302.als</file> illustrates such point.
+      </p>
+
+      <example>
+	# get the network module
+	interp:library "afnix-net"
+
+	# this function echo a line from the client
+	const echo-server (s) {
+        while (s:valid-p) (s:writeln (s:readln))
+	}
+
+	# create a tcp server on port 8000
+	const srv (afnix:net:TcpServer 8000)
+
+	# wait for a connection
+	while true {
+        trans s (srv:accept)
+	launch  (echo-server s)
+	}
+      </example>
+    </subsect>
+  </section>
+
+  <!-- udp server socket -->
+  <section>
+    <title>UDP server socket</title>
+
+    <p>
+      The <code>UdpServer</code> class is similar to the
+      <code>TcpServer</code> object, except that there is no backlog
+      parameters. In its simplest form, the UDP server is created on the
+      <code>localhost</code> with an ephemeral port (i.e port 0). With a
+      port number, the server is created on the
+      <code>localhost</code>. For a multi-homed host, the address used
+      to run the server can be specified as the first argument. The
+      address can be either a string or an <code>Address</code>
+      object. In both cases, the port is specified as the second
+      argument.
+    </p>
+
+    <example>
+      trans s (afnix:net:UdpServer)
+      trans s (afnix:net:UdpServer 8000)
+      trans s (afnix:net:UdpServer "localhost" 8000)
+      trans s (afnix:net:UdpServer (
+        Address "localhost") 8000)
+    </example>
+
+    <!-- echo server example -->
+    <subsect>
+      <title>Echo server example</title>
+
+      <p>
+	The <em>echo server</em> can be revisited to work with udp
+	datagram. The only  difference is the use of the
+	<code>accept</code> method. For a UDP server, the method return
+	a <code>Datagram</code> object which can be used to read and
+	write data.
+      </p>
+
+      <example>
+	# get the network module
+	interp:library "afnix-net"
+
+	# create a udp server on port 8000
+	const srv (afnix:net:UdpServer 8000)
+
+	# wait for a connection
+	while true {
+        trans dg   (srv:accept)
+	dg:writeln (dg:readln)
+	}
+      </example>
+    </subsect>
+
+    <!-- datagram object -->
+    <subsect>
+      <title>Datagram object</title>
+
+      <p>
+	With a UDP server, the <code>accept</code> method returns a
+	<code>Datagram</code> object. Because a UDP is connection-less,
+	the server has no idea from whom the datagram is coming until
+	that one has been received. When a datagram arrives, the
+	<code>Datagram</code> object is constructed with the peer
+	address being the source address. Standard i/o methods can be
+	used to read or write. When a write method is used, the data are
+	sent back to the peer in a form of another datagram.
+      </p>
+
+      <example>
+	# wait for a datagram
+	trans dg (s:accept)
+
+	# assert datagram type
+	assert true (datagram-p dg)
+
+	# get contents length
+	println "datagram buffer size : " (dg:get-buffer-length)
+
+	# read a line from this datagram
+	trans line (dg:readln)
+
+	# send it back to the sender
+	s:writeln line
+      </example>
+    </subsect>
+    
+    <!-- input data buffer -->
+    <subsect>
+      <title>Input data buffer</title>
+
+      <p>
+	For a datagram, and generally speaking, for a UDP socket, all
+	input operations are buffered. This means that when a datagram
+	is received, the <code>accept</code> method places all data in
+	an input buffer. This means that a read operation does not
+	necessarily flush the whole buffer but rather consumes only the
+	requested character. For example, if one datagram contains the
+	string <em>hello world</em>. A call to <code>readln</code> will
+	return the entire string. A call to read will return only the
+	character 'h'. Subsequent call will return the next available
+	characters. A call like <code>read 5</code> will return a buffer
+	with 5 characters. Subsequent calls will return the remaining
+	string. In any case, the <code>get-buffer-length</code> will
+	return the number of available characters in the buffer. A call
+	to <code>valid-p</code> will return true if there are some
+	characters in the buffer or if a new datagram has arrived.
+
+	Care should be taken with the <code>read</code> method. For
+	example if there is only 4 characters in the input buffer and a
+	call to read for 10 characters is made, the method will block
+	until a new datagram is received which can fill the remaining 6
+	characters. Such situation can be avoided by using the
+	<code>get-buffer-length</code> and the <code>valid-p</code>
+	methods. Note also that a timeout can be specified with the
+	<code>valid-p</code> method.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- low level socket method -->
+  <section>
+    <title>Low level socket methods</title>
+
+    <p>
+      Some folks always prefer to do everything by themselves. Most of
+      the time for good reasons. If this is your case, you might have to
+      use the low level socket methods. Instead of using a client or
+      server class, the implementation let's you create a
+      <code>TcpSocket</code> or <code>UdpSocket</code>. Once this done,
+      the <code>bind</code>, <code>connect</code> and other methods can
+      be used to create the desired connection.
+    </p>
+
+    <!-- a client socket -->
+    <subsect>
+      <title>A socket client</title>
+      
+      <p>
+	A simple TCP socket client is created with the
+	<code>TcpSocket</code> class. Then the <code>connect</code>
+	method is called to establish the connection.
+      </p>
+
+      <example>
+	# create an address and a tcp socket
+	const addr (afnix:net:Address "localhost")
+	const sid  (afnix:net:TcpSocket)
+	# connect the socket
+	sid:connect 13 addr
+      </example>
+
+      <p>
+	Once the socket is connected, normal read and write operations
+	can be performed. After the socket is created, it is possible to
+	set some options. A typical one is <code>NO-DELAY</code> which
+	disable the Naggle algorithm.
+      </p>
+
+      <example>
+	# create an address and a tcp socket
+	const addr (afnix:net:Address "localhost")
+	const sid  (afnix:net:TcpSocket)
+	# disable the naggle algorithm
+	sid:set-option sid:NO-DELAY true
+	# connect the socket
+	sid:connect 13 addr
+      </example>
+    </subsect>
+  </section>
+</chapter>

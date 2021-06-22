@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-rm-sys.xml                                                   = -->
+<!-- = standard system access module - reference manual                   = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix module="sys" number="i">
+  <title>Standard System Access Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = time object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sys">
+    <name>Time</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Time</code> class is a simple class used to manipulate
+      time. The <afnix/> system operates with a special coordinated
+      time which uses the reference of Jan 1st 0000 in a modified
+      <em>proleptic gregorian calendar</em>. Note that the time can be
+      negative. Although, the class provides several methods to access
+      the time fields, it is also possible to get a string
+      representation that conforms to ISO-8601 or to RFC-2822. 
+      The resolution is in seconds. With 1 argument, the object is
+      initialized with the time clock specified as an integer
+      argument. With 3 arguments, the time is expressed with its
+      different elements.
+    </p>
+
+    <!-- predicate -->
+    <pred>time-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Time</name>
+	<args>none</args>
+	<p>
+	  The <code>Time</code> constructor create a time object which is
+	  initialized with the current time.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Time</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Time</code> constructor create a time object which is
+	  initialized with the time argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Time</name>
+	<args>Integer Integer Integer</args>
+	<p>
+	  The <code>Time</code> constructor create a time object which is
+	  initialized with the time specific arguments, which are the
+	  hour, the minutes and the seconds.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>add</code> method adds the time argument in seconds to 
+	  the current time value This method is useful to compute a time
+	  in the future, in reference to the current time.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-minutes</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>add-minutes</code> method adds one or several minutes to
+	  the current time value. This method is useful to compute a time
+	  in the future, in reference to the current time.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-hours</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>add-hour</code> method adds one or several hours to
+	  the current time value. This method is useful to compute a time
+	  in the future, in reference to the current time.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-days</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>add-days</code> method adds one or several days to
+	  the current time value. This method is useful to compute a time
+	  in the future, in reference to the current time.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-time</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-time</code> method set the absolute time in seconds.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-time</name>
+	<retn>Integer</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>get-time</code> method returns absolute time in
+	  seconds. Without argument, the absolute time is computed in
+	  reference to the UTC time. With a boolean argument set
+	  to <code>true</code>, the time is computed in reference to the
+	  UTC time. If the argument is <code>false</code>, the local time
+	  is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>seconds</name>
+	<retn>Integer</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>seconds</code> method returns the number of
+	  seconds after the minute. Without argument, the number of
+	  seconds is computed in reference to the UTC time. With a
+	  boolean argument set to <code>true</code>, the number of seconds
+	  is computed in reference to the UTC time. If the argument is
+	  <code>false</code>, the local time is used. The returned value
+	  is the range 0 to 60.
+	</p>
+      </meth>
+
+      <meth>
+	<name>minutes</name>
+	<retn>Integer</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>minutes</code> method returns the number of
+	  minutes after the hour. Without argument, the number of
+	  minutes is computed in reference to the UTC time. With a
+	  boolean argument set to <code>true</code>, the number of minutes
+	  is computed in reference to the UTC time. If the argument is
+	  <code>false</code>, the local time is used. The returned value
+	  is the range 0 to 60.
+	</p>
+      </meth>
+
+      <meth>
+	<name>hours</name>
+	<retn>Integer</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>hours</code> method returns the number of hours
+	  since midnight. Without argument, the number of
+	  hours is computed in reference to the local time. With a
+	  boolean argument set to <code>true</code>, the number of hours
+	  is computed in reference to the UTC time. If the argument is
+	  <code>false</code>, the local time is used. The returned value
+	  is the range 0 to 23.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>format</name>
+	<retn>String</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>format</code> method returns a formatted representation
+	  of the time in the form of <em>hh:mm:ss</em>. Without argument,
+	  the time is computed in reference to the local time. With a
+	  boolean argument set to <code>true</code>, the time is computed
+	  in reference to the UTC time. If the argument
+	  is <code>false</code>, the local time is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-iso</name>
+	<retn>String</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>to-iso</code> method returns a formatted representation
+	  of the time as specified by ISO-8601. Without argument, the time
+	  is computed in reference to the local time. With a boolean
+	  argument set to <code>true</code>, the time is computed in
+	  reference to the UTC time. If the argument
+	  is <code>false</code>, the local time is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-rfc</name>
+	<retn>String</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>to-rfc</code> method returns a formatted representation
+	  of the time as specified by RFC-2822. Without argument, the time
+	  is computed in reference to the local time. With a boolean
+	  argument set to <code>true</code>, the time is computed in
+	  reference to the UTC time. If the argument
+	  is <code>false</code>, the local time is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-base-day</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-base-day</code> method returns the absolute time
+	  rounded to the beginning of the day.
+	</p>
+      </meth>
+
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = date object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sys">
+    <name>Date</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Date</code> is a derived class designed to manipulate
+      dates. The date computation is based on an <em>modified proleptic
+      gregorian</em> calendar. This proleptic feature means that the
+      actual calendar (gregorian) is extended beyond year 1582 (its
+      introduction year) and modified in order to support the year
+      0. This kind of calendar is somehow similar to the astronomical
+      gregorian calendar except that the reference date is 0 for
+      special coordinated time. This method presents the 
+      advantage to support negative time. It should be noted that the 0 
+      reference does not means year 1BC since year 0 did not exist at that 
+      time (the concept of zero is fairly new) and more important, the date 
+      expressed in the form 1BC generally refers to the Julian calendar 
+      since the date is before 1582. Although, the class provides several 
+      methods to access the individual fields, it is also possible to get a
+      string representation that conforms to ISO-8601 or to
+      RFC-2822. With 1 argument, the date is initialized with the time
+      clock specified as an integer argument. With 3 or 6 arguments, the
+      date is expressed with its different elements.
+    </p>
+
+    <!-- predicate -->
+    <pred>date-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Time</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Date</name>
+	<args>none</args>
+	<p>
+	  The <code>Date</code> constructor creates a date object which is
+	  initialized with the current time.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>date</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Date</code> constructor creates a date object which is
+	  initialized with the time argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Date</name>
+	<args>Integer Integer Integer</args>
+	<p>
+	  The <code>Date</code> constructor creates a date object which is
+	  initialized with the date specific arguments, which are the
+	  year, the month and the day in the month.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Date</name>
+	<args>Integer Integer Integer Integer Integer Integer</args>
+	<p>
+	  The <code>Date</code> constructor creates a date object which is
+	  initialized with the date specific arguments, which are the
+	  year, the month, the day in the month, the hours, the minutes
+	  and the seconds.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>year</name>
+	<retn>Integer</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>year</code> method returns the date year. the returned
+	  value is an absolute year value which can be negative. Without
+	  argument, the number of years is computed in reference to the
+	  local time. With a boolean argument set to <code>true</code>,
+	  the number of years is computed in reference to the UTC time. If
+	  the argument is <code>false</code>, the local time is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>month</name>
+	<retn>Integer</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>month</code> method returns the month in the year. The
+	  returned value is the range 1 to 12. Without argument, the number of
+	  months is computed in reference to the local time. With a
+	  boolean argument set to <code>true</code>, the number of months
+	  is computed in reference to the UTC time. If the argument is
+	  <code>false</code>, the local time is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>day</name>
+	<retn>Integer</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>day</code> method returns the day in the
+	  month. The returned value is the range 1 to 31. Without argument,
+	  the number of days is computed in reference to the local
+	  time. With a boolean argument set to <code>true</code>, the
+	  number of days is computed in reference to the UTC time. If the
+	  argument is <code>false</code>, the local time is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>week-day</name>
+	<retn>Integer</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>week-day</code> method returns the day in the
+	  week. The returned value is the range 0 to 6 in reference to
+	  Sunday. Without argument, the day is computed in
+	  reference to the local time. With a boolean argument set
+	  to <code>true</code>, the day is computed in reference to the
+	  UTC time. If the argument is <code>false</code>, the local time
+	  is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>year-day</name>
+	<retn>Integer</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>year-day</code> method returns the day in the
+	  year. The returned value is the range 1 to 366 in reference to
+	  January 1st. Without argument, the day is computed in
+	  reference to the local time. With a boolean argument set
+	  to <code>true</code>, the day is computed in reference to the
+	  UTC time. If the argument is <code>false</code>, the local time
+	  is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>map-day</name>
+	<retn>String</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>map-day</code> method returns a formatted representation
+	  of the day. Without argument, the day is computed in
+	  reference to the local time. With a boolean argument set
+	  to <code>true</code>, the day is computed in reference to the
+	  UTC time. If the argument is <code>false</code>, the local time
+	  is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>map-month</name>
+	<retn>String</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>map-month</code> method returns a formatted representation
+	  of the month. Without argument, the month is computed in
+	  reference to the local time. With a boolean argument set
+	  to <code>true</code>, the month is computed in reference to the
+	  UTC time. If the argument is <code>false</code>, the local time
+	  is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>format</name>
+	<retn>String</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>format</code> method returns a formatted representation
+	  of the date. Without argument, the time is computed in reference
+	  to the local time. With a boolean argument set to
+	  <code>true</code>, the time is computed in reference to the UTC
+	  time. If the argument is <code>false</code>, the local time is
+	  used. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-iso</name>
+	<retn>String</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>to-iso</code> method returns a formatted representation
+	  of the date as specified by ISO-8601. Without argument, the time
+	  is computed in reference to the local time. With a boolean
+	  argument set to <code>true</code>, the time is computed in
+	  reference to the UTC time. If the argument
+	  is <code>false</code>, the local time is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-web</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-web</code> method returns a formatted representation
+	  of the date as specified by RFC-1123.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-rfc</name>
+	<retn>String</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>to-rfc</code> method returns a formatted representation
+	  of the date as specified by RFC-2822. Without argument, the time
+	  is computed in reference to the local time. With a boolean
+	  argument set to <code>true</code>, the time is computed in
+	  reference to the UTC time. If the argument
+	  is <code>false</code>, the local time is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-date</name>
+	<retn>String</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>to-date</code> method returns a formatted representation
+	  of the date only as specified by ISO-8601. With this method, the
+	  time value is not included in the representation. Without
+	  argument, the date is computed in reference to the local
+	  time. With a boolean argument set to <code>true</code>, the date
+	  is computed in reference to the UTC time. If the argument
+	  is <code>false</code>, the local time is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-time</name>
+	<retn>String</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>to-time</code> method returns a formatted representation
+	  of the time as returned by the <code>Time format</code>
+	  method. Without argument, the time is computed in reference to
+	  the local time. With a boolean argument set
+	  to <code>true</code>, the time is computed in reference to the
+	  UTC time. If the argument is <code>false</code>, the local time
+	  is used.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-years</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>add-years</code> method add one or several years to the
+	  current date.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-months</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>add-months</code> method add one or several months to the
+	  current date.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = option object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:sys">
+    <name>Options</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Options</code> class is a simple class used to define
+      and retrieve user options. The object is constructed by
+      specifying which option is valid and how it behaves. The
+      arguments can be passed to the object for subsequent analysis. An
+      option can be either a unique option or a string option. In this
+      later case, multiple value for the same option can be accepted. In
+      that case, the option is said to be a string vector option. An
+      option can be also an option list. I that case, the option is
+      defined with a set of valid string. A list option is associated
+      with a boolean flag for each string defined with that option.
+    </p>
+
+    <!-- predicate -->
+    <pred>options-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Options</name>
+	<args>none</args>
+	<p>
+	  The <code>Options</code> constructor creates a default option
+	  object without a user message.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Options</name>
+	<args>String</args>
+	<p>
+	  The <code>Options</code> constructor creates an empty option object
+	  with a user message. The user message is used by the
+	  <code>usage</code> method.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the object data structure
+	  but do not remove the option descriptors. After a reset operation, the
+	  class is ready to parse another string vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>usage</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>usage</code> method prints a usage message with a user
+	  message and a one line description per option.
+	  removing all messages.
+	</p>
+      </meth>
+
+      <meth>
+	<name>parse</name>
+	<retn>Vector</retn>
+	<args>none</args>
+	<p>
+	  The <code>parse</code> method parse a vector and fill the option
+	  data structure. The parse method is generally called with the
+	  interpreter argument vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>empty-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>empty-</code> predicate returns true if the argument
+	  vector is empty. The argument vector is filled wit the string
+	  that are not options during the parsing process.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-list-option</name>
+	<retn>none</retn>
+	<args>Character String String</args>
+	<p>
+	  The <code>add-list-option</code> method creates a new list
+	  option. The list option is defined by the option character and
+	  the option string. The first argument is the option
+	  character. The second argument is the option list string. The
+	  third argument is the option message. During the parsing
+	  process, the list option have a string argument which must match
+	  one string associated with the option character.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-unique-option</name>
+	<retn>Character String</retn>
+	<args>none</args>
+	<p>
+	  The <code>add-unique-option</code> method creates a new single
+	  option. The option is defined only by its character. The first
+	  argument is the option character. The second argument is the
+	  option message. During the parsing process, a unique option does
+	  not have an argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-string-option</name>
+	<retn>none</retn>
+	<args>Character String</args>
+	<p>
+	  The <code>add-string-option</code> method creates a new string
+	  option. The option is defined only by its character. The first
+	  argument is the option character. The second argument is the
+	  option message. During the parsing process, a string option have
+	  a string argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add-vector-option</name>
+	<retn>Character String</retn>
+	<args>none</args>
+	<p>
+	  The <code>add-vector-option</code> method creates a new vector
+	  option. The option is defined only by its character. The first
+	  argument is the option character. The second argument is the
+	  option message. During the parsing process, a vector option have
+	  a string argument which is accumulated in a vector.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>set-user-message</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-user-message</code> method sets the global
+	  option user message. The user message is used by the
+	  <code>usage</code> method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-user-message</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-user-message</code> method returns the global
+	  option user message. The user message is used by the
+	  <code>usage</code> method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-unique-option</name>
+	<retn>Boolean</retn>
+	<args>Character</args>
+	<p>
+	  The <code>get-unique-option</code> method returns the flag
+	  associated with an option. If the option has been detected
+	  during the parsing process, the method returns true. This method
+	  works also for string option or list option to indicate if the
+	  string has been set for that option. with a vector option, it is
+	  simpler to get the vector and check for the vector length. The
+	  first argument is the option character to use for testing.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-string-option</name>
+	<retn>String</retn>
+	<args>Character</args>
+	<p>
+	  The <code>get-string-option</code> method returns the string
+	  associated with a string option. In order to make sure that a
+	  string option has been properly set during the parsing process,
+	  it is recommended to use the <code>get-unique-option</code>
+	  method. The first argument is the option character to use for
+	  the string retrieval.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-vector-option</name>
+	<retn>Vector</retn>
+	<args>Character</args>
+	<p>
+	  The <code>get-vector-option</code> method returns the vector
+	  associated with a vector option. The first argument is the
+	  option character to use for the vector retrieval.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-vector-arguments</name>
+	<retn>Vector</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-vector-arguments</code> method returns the vector
+	  arguments built during the parsing process.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = global functions                                                = -->
+  <!-- =================================================================== -->
+
+  <functions>
+    <func nameset="afnix:sys">
+      <name>exit</name>
+      <retn>none</retn>
+      <args>Integer</args>
+      <p>
+	The <code>exit</code> function terminates the executing program
+	with the exit code specified as the argument.
+      </p>
+    </func>
+
+    <func nameset="afnix:sys">
+      <name>sleep</name>
+      <retn>none</retn>
+      <args>Integer</args>
+      <p>
+	The <code>sleep</code> function pause the specific thread for a
+	certain time. The time argument is expressed in milliseconds. This
+	function returns nil.
+      </p>
+    </func>
+
+    <func nameset="afnix:sys">
+      <name>get-option</name>
+      <retn>String</retn>
+      <args>Character</args>
+      <p>
+	The <code>get-option</code> function returns a formatted string
+	equivalent to the system option as specified by the character
+	argument.
+      </p>
+    </func>
+
+    <func nameset="afnix:sys">
+      <name>get-unique-id</name>
+      <retn>Integer</retn>
+      <args>none</args>
+      <p>
+	The <code>get-unique-id</code> function returns an unique integer
+	number. The returned number is unique across the session.
+      </p>
+    </func>
+
+    <func nameset="afnix:sys">
+      <name>get-pid</name>
+      <retn>Integer</retn>
+      <args>none</args>
+      <p>
+	The <code>get-pid</code> function returns the process identifier
+	(pid). The returned value is a positive integer.
+      </p>
+    </func>
+
+    <func nameset="afnix:sys">
+      <name>get-env</name>
+      <retn>String</retn>
+      <args>String</args>
+      <p>
+	The <code>get-env</code> function returns the environment variable
+	associated with the string argument. If the environment does not
+	exist an exception is raised.
+      </p>
+    </func>
+
+    <func nameset="afnix:sys">
+      <name>get-host-fqdn</name>
+      <retn>String</retn>
+      <args>none</args>
+      <p>
+	The <code>get-host-fqdn</code> function returns the host fully
+	qualified domain name. This is the combined host and domain
+	names which is sometimes called the canonical name.
+      </p>
+    </func>
+
+    <func nameset="afnix:sys">
+      <name>get-domain-name</name>
+      <retn>String</retn>
+      <args>none</args>
+      <p>
+	The <code>get-domain-name</code> function returns the host
+	domain name.
+      </p>
+    </func>
+
+    <func nameset="afnix:sys">
+      <name>get-host-name</name>
+      <retn>String</retn>
+      <args>none</args>
+      <p>
+	The <code>get-host-name</code> function returns the host
+	name. If the host does not have a domain name, the host name
+	is equal to the fully qualified domain name.
+      </p>
+    </func>
+
+    <func nameset="afnix:sys">
+      <name>get-user-name</name>
+      <retn>String</retn>
+      <args>none</args>
+      <p>
+	The <code>get-user-name</code> function returns the current user
+	name.
+      </p>
+    </func>
+  </functions>
+</appendix>

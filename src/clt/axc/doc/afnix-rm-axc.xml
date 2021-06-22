@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-rm-axc.xml                                                   = -->
+<!-- = afnix cross compiler - synopsis                                    = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<client>
+  <!-- client name -->
+  <name>axc</name>
+  <!-- synopsis -->
+  <synopsis>axc [options] file</synopsis>
+  <!-- options -->
+  <options>
+    <optn>
+      <name>h</name>
+      <p>
+	prints the help message
+      </p>
+    </optn>
+
+    <optn>
+      <name>v</name>
+      <p>
+	prints the program version
+      </p>
+    </optn>
+
+    <optn>
+      <name>i path</name>
+      <args>path</args>
+      <p>
+	add a directory path to the resolver
+      </p>
+    </optn>
+  </options>
+
+  <!-- description -->
+  <remark>
+    <title>Description</title>
+    
+    <p>
+      <product>axc</product> invokes the <afnix/> cross compiler. At
+      this stage of development, the  compiler is merely a form
+      serializer. Syntax checking is done and a binary file is generated
+      for each input file. The compiled file can be read by the <afnix/>
+      interpreter or included in a librarian.
+    </p>
+  </remark>
+
+  <!-- version -->
+  <remark>
+    <title>Version</title>
+    
+    <p>
+      The current version is the <major/>.<minor/>.<patch/> release.
+    </p>
+  </remark>
+
+  <!-- see also -->
+  <remark>
+    <title>See also</title>
+
+    <p>
+      <link url="afnix-us-axd.xht">axd</link>,
+      <link url="afnix-us-axi.xht">axi</link>,
+      <link url="afnix-us-axl.xht">axl</link>,
+    </p>
+  </remark>
+
+  <!-- notes -->
+  <remark>
+    <title>Notes</title>
+
+    <p>
+      <afnix/> comes with an extensive documentation. The documentation
+      is available <link url="http://www.afnix.org">online</link>
+      or in the <path>doc</path> directory in
+      the form of formatted xhtml documents.
+    </p>
+  </remark>
+
+  <!-- author -->
+  <remark>
+    <title>Author</title>
+    
+    <p>
+      <product>axc</product> has been written by
+      <mail address="amaury@afnix.org">Amaury Darsch</mail>.
+    </p>
+  </remark>
+</client>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-wm-csm.xml                                                   = -->
+<!-- = standard csm service - writer manual                               = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter service="csm" number="1">
+  <title>Standard Content Session Management Service</title>
+  
+  <p>
+    The <em>Standard Content Session Management</em> service is an
+    original implementation of various objects dedicated to the management
+    of sessions, realms, identities and more generaly with data
+    concentration in the form of binary blobs.
+  </p>
+
+  <!-- general concepts -->
+  <section>
+    <title>General concepts</title>
+
+    <p>
+      The <code>afnix-csm</code> provides the support for manipulating
+      content session in an ecclectic form. There are multiple types of
+      objects which can broadly be categorized into general data
+      management in the form of data blobs, identity and credential
+      management and finally session management.
+      
+    </p>
+
+    <!-- blob -->
+    <subsect>
+      <title>Blob</title>
+      
+      <p>
+	The concept of blo=b is central in the <em>csm</em> service. A
+	blob is a registrable part. A part is an abstract taggable
+	object uniquely identified by a uuid. The blob adds a
+	registration identification, which enables them to be group
+	into domains.
+      </p>
+    </subsect>
+  </section>
+</chapter>

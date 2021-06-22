@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-wm-wgt.xml                                                   = -->
+<!-- = standard wgt services module - writer manual                       = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter module="wgt" number="1">
+  <title>Standard Widget Module</title>
+  
+  <p>
+    The <em>Standard Widget</em> module is a set of comprehensive objects
+    designed to be used as widgets for a particular applications.
+  </p>
+
+  <!-- conditional class -->
+  <section>
+    <title>The conditional class</title>
+
+    <p>
+      The <code>Conditional</code> class is a widget class that
+      provides a mechanism for conditional expression evaluation. A
+      conditional object, if active, is valuated by evaluating the
+      operator and the associated left and right operands. A
+      conditional can also be defined by name and info.
+    </p> 
+
+    <example>
+      const cond (afnix:wgt:Conditional "test" "test example")
+    </example>
+
+    <p>
+      The conditional is defined with the <code>set</code> method which
+      accepts one or two operands.
+    </p>
+
+    <example>
+      cond:set "==" "x" 2
+    </example>
+  </section>
+</chapter>

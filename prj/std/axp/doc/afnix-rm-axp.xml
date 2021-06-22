@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-rm-axp.xml                                                   = -->
+<!-- = afnix:axp client manual                                            = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<client>
+  <!-- client name -->
+  <name>axp</name>
+  <!-- synopsis -->
+  <synopsis>axi [i] afnix-std-axp.axl [m] [][] [options]</synopsis>
+  <!-- options -->
+  <options>
+    <optn>
+      <name>h</name>
+      <p>
+	prints the help message
+      </p>
+    </optn>
+
+    <optn>
+      <name>v</name>
+      <p>
+	prints the program version
+      </p>
+    </optn>
+
+    <optn>
+      <name>p</name>
+      <args>file</args>
+      <p>
+	parse and verify the input file
+      </p>
+    </optn>
+
+    <optn>
+      <name>o</name>
+      <args>file</args>
+      <p>
+	set the output file name
+      </p>
+    </optn>
+  </options>
+
+  <!-- description -->
+  <remark>
+    <title>Description</title>
+    
+    <p>
+      <product>axp</product> is the xml processor. The
+      <product>axp</product> operates with an uri and  
+      produces eventually an output file. The xml processor
+      is mostly used for including various xml files.
+    </p>
+  </remark>
+
+  <!-- version -->
+  <remark>
+    <title>Version</title>
+    
+    <p>
+      The current version is the <major/>.<minor/>.<patch/> release.
+    </p>
+  </remark>
+
+  <!-- author -->
+  <remark>
+    <title>Author</title>
+    
+    <p>
+      The <product>axp</product> client has be written by
+      <mail address="amaury@afnix.org">Amaury Darsch</mail>.
+    </p>
+  </remark>
+</client>

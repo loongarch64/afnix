@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-wm-mth.xml                                                   = -->
+<!-- = standard math module - writer manual                               = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter module="mth" number="1">
+  <title>Standard Math Module</title>
+  
+  <p>
+    The <em>Standard Mathematical</em> module is an original implementation
+    of various mathematical facilities. The module can be divided into 
+    several catgeories which include convenient functions, linear algebra
+    and real analysis.
+  </p>
+
+  <!-- random number -->
+  <section>
+    <title>Random number</title>
+    
+    <p>
+      The <em>math</em> module provides various functions
+      that generate random numbers in different formats.
+    </p>
+
+    <table>
+      <title>Random number functions</title>
+      <tr><th>Function</th><th>Description</th></tr>
+      <tr>
+	<td>get-random-integer</td>
+	<td>return a random integer number</td>
+      </tr>
+      <tr>
+	<td>get-random-real</td> 
+	<td>return a random real number between 0.0 and 1.0</td>
+      </tr>
+      <tr>
+	<td>get-random-relatif</td>
+	<td>return a random relatif number</td>
+      </tr>
+      <tr>
+	<td>get-random-prime</td>
+	<td>return a random probable prime relatif number</td>
+      </tr>
+    </table>
+    
+    <p>
+      The numbers are generated with the help of the system random
+      generator. Such generator is machine dependant and results can
+      vary from one machine to another.
+    </p>
+  </section>
+
+  <!-- primality testing -->
+  <section>
+    <title>Primality testing</title>
+
+    <p>
+      The <em>math</em> module provides various predicates
+      that test a number for a primality condition. Most of these
+      predicates are intricate and are normally not used except
+      the <code>prime-probable-p</code> predicate.
+    </p>
+
+    <table>
+      <title>Primality test predicates</title>
+      <tr><th>Predicate</th><th>Description</th></tr>
+      <tr>
+	<td>fermat-p</td>
+	<td>Fermat test predicate</td>
+      </tr>
+      <tr>
+	<td>miller-rabin-p</td> 
+	<td>Miller-Rabin test predicate</td>
+      </tr>
+      <tr>
+	<td>prime-probable-p</td>
+	<td>general purpose prime probable test</td>
+      </tr>
+      <tr>
+	<td>get-random-prime</td>
+	<td>return a random probable prime relatif number</td>
+      </tr>
+    </table>
+
+    <p>
+      The <code>fermat-p</code> and <code>miller-rabin-p</code>
+      predicates return true if the primality condition is
+      verified. These predicate operate with a base number. The prime
+      number to test is the second argument.
+    </p>
+
+    <subsect>
+      <title>Fermat primality testing</title>
+      <p>
+	The <code>fermat-p</code> predicate is a simple primality test
+	based on the "little Fermat theorem". A base number greater than
+	1 and less than the number to test must be given to run the
+	test.
+      </p>
+
+      <example>
+	afnix:mth:fermat-p 2 7
+      </example>
+
+      <p>
+	In the preceeding example, the number 7 is tested, and
+	the <code>fermat-p</code> predicate returns true. If a number is
+	prime, it is guaranted to pass the test. The oppositte is not
+	true. For example, 561 is a composite number, but the Fermat
+	test will succeed with the base 2. Numbers that successfully pass
+	the Fermat test but which are composite are called Carmichael
+	numbers. For those numbers, a better test needs to be employed,
+	such like the Miller-Rabin test.
+      </p>
+    </subsect>
+
+    <subsect>
+      <title>Miller-Rabin primality testing</title>
+      <p>
+	The <code>miller-rabin-p</code> predicate is a complex primality
+	test that is more efficient in detecting prime number at the
+	cost of a longer computation. A base number greater than
+	1 and less than the number to test must be given to run the
+	test.
+      </p>
+
+      <example>
+	afnix:mth:miller-rabin-p 2 561
+      </example>
+
+      <p>
+	In the preceeding example, the number 561, which is a Carmichael
+	number, is tested, and the <code>miller-rabin-p</code> predicate
+	returns false. The probability that a number is prime depends on
+	the number of times the test is ran. Numerous studies have been
+	made to determine the optimal number of passes that are needed
+	to declare that a number is prime with a good probability. The
+	<code>prime-probable-p</code> predicate takes care to run the
+	optimal number of passes.
+      </p>
+    </subsect>
+
+    <subsect>
+      <title>General primality testing</title>
+      <p>
+	The <code>prime-probable-p</code> predicate is a complex primality
+	test that incorporates various primality tests. To make the
+	story short, the prime candidate is first tested with a series
+	of small prime numbers. Then a fast Fermat test is
+	executed. Finally, a series of Miller-Rabin tests are executed.
+	Unlike the other primality tests, this predicate operates with a
+	number only and optionally, the number of test passes. This
+	predicate is the recommended test for the folks who want to
+	test their numbers.
+      </p>
+
+      <example>
+	afnix:mth:prime-probable-p 17863
+      </example>
+    </subsect>
+  </section>
+
+  <!-- linear algebra -->
+  <section>
+    <title>Linear algebra</title>
+    
+    <p>
+      The <em>math</em> module provides an original and extensive
+      support for linear and non linear algebra. This includes vector,
+      matrix and solvers. Complex methods for non linear operations
+      are also integrated tightly in this module.
+    </p>
+
+    <subsect>
+      <title>Real vector</title>
+
+      <p>
+	The <em>math</em> module provides the <code>Rvector</code>
+	object which implements the real vector interface
+	<code>Rvi</code>. Such interface provides numerous operators
+	and methods for manipulating vectors as traditionnaly found in
+	linear algebra packages.
+      </p>
+
+      <table>
+	<title>Standard vector operators</title>
+	<tr><th>Operator</th><th>Description</th></tr>
+	<tr>
+	  <td>==</td>
+	  <td>compare two vectors for equality</td>
+	</tr>
+	<tr>
+	  <td>!=</td>
+	  <td>compare two vectors for difference</td>
+	</tr>
+	<tr>
+	  <td>?=</td>
+	  <td>compare two vectors upto a precision</td>
+	</tr>
+	<tr>
+	  <td>+=</td> 
+	  <td>add a scalar or vector to the vector</td>
+	</tr>
+	<tr>
+	  <td>-=</td>
+	  <td>substract a scalar or vector to the vector</td>
+	</tr>
+	<tr>
+	  <td>*=</td>
+	  <td>multiply a scalar or vector to the vector</td>
+	</tr>
+	<tr>
+	  <td>/=</td>
+	  <td>divide a vector by a scalar</td>
+	</tr>
+      </table>
+
+      <table>
+	<title>Standard vector methods</title>
+	<tr><th>Method</th><th>Description</th></tr>
+	<tr>
+	  <td>set</td>
+	  <td>set a vector component by index</td>
+	</tr>
+	<tr>
+	  <td>get</td> 
+	  <td>get a vector component  by index</td>
+	</tr>
+	<tr>
+	  <td>clear</td>
+	  <td>clear a vector</td>
+	</tr>
+	<tr>
+	  <td>reset</td>
+	  <td>reset a vector</td>
+	</tr>
+	<tr>
+	  <td>get-size</td>
+	  <td>get the vector dimension</td>
+	</tr>
+	<tr>
+	  <td>dot</td>
+	  <td>compute the dot product with another vector</td>
+	</tr>
+	<tr>
+	  <td>norm</td>
+	  <td>compute the vector norm</td>
+	</tr>
+      </table>
+    </subsect>
+
+    <subsect>
+      <title>Creating a vector</title>
+
+      <p>
+	A vector is always created by size. A null size is perfectly
+	valid. When a vector is created, it can be filled  by setting
+	the components by index.
+      </p>
+
+      <example>
+	# create a simple vector
+	const rv (afnix:mth:Rvector 3)
+	# set the components by index
+	rv:set 0 0.0
+	rv:set 1 3.0
+	rv:set 2 4.0
+      </example>
+    </subsect>
+
+    <subsect>
+      <title>Real matrix</title>
+
+      <p>
+	The <em>math</em> module provides the <code>Rmatrix</code>
+	object which implements the real matrix interface
+	<code>Rmi</code>. This interface is designed to operate with
+	the vector interface and can handle sparse or full matrix.
+      </p>
+
+      <table>
+	<title>Standard matrix operators</title>
+	<tr><th>Operator</th><th>Description</th></tr>
+	<tr>
+	  <td>==</td>
+	  <td>compare two matrices for equality</td>
+	</tr>
+	<tr>
+	  <td>!=</td>
+	  <td>compare two matrices for difference</td>
+	</tr>
+	<tr>
+	  <td>?=</td>
+	  <td>compare two matrices upto a precision</td>
+	</tr>
+      </table>
+
+      <table>
+	<title>Standard matrix methods</title>
+	<tr><th>Method</th><th>Description</th></tr>
+	<tr>
+	  <td>set</td>
+	  <td>set a matrix component by index</td>
+	</tr>
+	<tr>
+	  <td>get</td> 
+	  <td>get a matrix component  by index</td>
+	</tr>
+	<tr>
+	  <td>clear</td>
+	  <td>clear a vector</td>
+	</tr>
+	<tr>
+	  <td>get-row-size</td>
+	  <td>get the matrix row dimension</td>
+	</tr>
+	<tr>
+	  <td>get-col-size</td>
+	  <td>get the matrix column dimension</td>
+	</tr>
+	<tr>
+	  <td>norm</td>
+	  <td>compute the matrix norm</td>
+	</tr>
+      </table>
+    </subsect>
+  </section>
+</chapter>

@@ -1,0 +1,167 @@
+afnix (3.4.0-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Mon, 04 Jan 2021 00:00:00 +0100
+
+afnix (3.3.0-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Fri, 07 Aug 2020 00:00:00 +0100
+
+afnix (3.2.0-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Thu, 12 Mar 2020 00:00:00 +0100
+
+afnix (3.1.0-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Sat, 28 Dec 2019 00:00:00 +0100
+
+afnix (3.0.3-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Mon, 23 Sep 2019 00:00:00 +0100
+
+afnix (3.0.2-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Mon, 22 Apr 2019 00:00:00 +0100
+
+afnix (3.0.1-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Wed, 10 Apr 2019 00:00:00 +0100
+
+afnix (3.0.0-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Sat, 23 Mar 2019 00:00:00 +0100
+
+afnix (2.9.3-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Thu, 07 Feb 2019 00:00:00 +0100
+
+afnix (2.9.2-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Sun, 20 Jan 2019 00:00:00 +0100
+
+afnix (2.9.1-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Sun, 13 Jan 2019 00:00:00 +0100
+
+afnix (2.9.0-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Tue, 01 Jan 2019 00:00:00 +0100
+
+afnix (2.8.3-1) stable; urgency=low
+
+  * Fixed minor issues when commpiling with GCC 8
+
+ -- Amaury Darsch <amaury@afnix.org>  Fri, 26 Aug 2018 00:00:00 +0200
+
+afnix (2.8.2-1) stable; urgency=low
+
+  * Added support GCC 8
+
+ -- Amaury Darsch <amaury@afnix.org>  Fri, 03 Aug 2018 00:00:00 +0200
+
+afnix (2.8.1-1) stable; urgency=low
+
+  * Added support GCC 7 and AMD 64
+
+ -- Amaury Darsch <amaury@afnix.org>  Sun, 28 Sep 2017 00:00:00 +0200
+
+afnix (2.8.0-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Sun, 01 Jan 2017 00:00:00 +0200
+
+afnix (2.7.0-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Mon, 11 Jul 2016 00:00:00 +0200
+
+afnix (2.6.3-1) stable; urgency=low
+
+  * Support for GCC 6
+
+ -- Amaury Darsch <amaury@afnix.org>  Sun, 26 Jun 2016 00:00:00 +0200
+
+afnix (2.6.2-1) stable; urgency=low
+
+  * FreeBSD and Debian patch merge
+
+ -- Amaury Darsch <amaury@afnix.org>  Sat, 23 Jan 2016 00:00:00 +0100
+
+afnix (2.6.0-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Sun, 03 Jan 2016 00:00:00 +0100
+
+afnix (2.5.2-1) stable; urgency=low
+
+  * Added support for GCC5
+
+ -- Amaury Darsch <amaury@afnix.org>  Sat, 27 Jun 2015 00:00:00 +0100
+
+afnix (2.5.1-1) stable; urgency=low
+
+  * Uri percent encoding fix
+
+ -- Amaury Darsch <amaury@afnix.org>  Sat, 03 Jan 2015 15:00:00 +0100
+
+afnix (2.5.0-1) stable; urgency=low
+
+  * New upstream relase
+
+ -- Amaury Darsch <amaury@afnix.org>  Thu, 01 Jan 2015 00:00:00 +0100
+
+afnix (2.4.0-2) stable; urgency=low
+
+  * Fixed release with year 2014.
+
+ -- Amaury Darsch <amaury@afnix.org>  Sun, 05 Jan 2014 20:00:00 +0100
+
+afnix (2.4.0-1) stable; urgency=low
+
+  * New upstream release
+
+ -- Amaury Darsch <amaury@afnix.org>  Sun, 11 Nov 2013 22:16:00 -0500
+
+afnix (2.3.2-1) stable; urgency=low
+
+  * Fixed real samples streaming
+
+ -- Amaury Darsch <amaury@afnix.org>  Mon, 04 Feb 2013 22:14:00 -0500
+
+afnix (2.3.1-1) stable; urgency=low
+
+  * Improve debian packaging.
+
+ -- Amaury Darsch <amaury@afnix.org>  Fri, 18 Jan 2013 21:47:12 -0500
+
+afnix (2.3.0-1) stable; urgency=low
+
+  * Initial Release.
+
+ -- Amaury Darsch <amaury@afnix.org>  Wed, 09 Jan 2013 23:07:32 +0100

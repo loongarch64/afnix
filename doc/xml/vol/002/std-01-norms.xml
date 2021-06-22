@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = std-01-norms.xml                                                   = -->
+<!-- = afnix reference manual - chapter 1                                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter volume="2" number="1">
+  <title>Reserved keywords</title>
+
+  <p>
+    Reserved keyword are, with symbols and literals, the basic
+    constituents of the writing system. With couple of exception,
+    reserved keywords are in fact special forms. During the execution,
+    a special 
+  </p>
+
+  <!-- =================================================================== -->
+  <!-- = assert special form                                             = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>assert</name>
+    
+    <p>
+      The <code>assert</code> special form check for equality
+      between two operands. Both objects must be of the same type. If
+      the equality test fails, the special form print a message and
+      abort the execution. An optional boolean can be used to disabe
+      exact compare. This is usefull for real number assertion where
+      an apprroximate comparison is needed. By default, the assertion
+      checking is turned off. The interpreter option
+      <option>-f assert</option> enables the
+      assertion checking. When the interpreter is compiled in debug
+      mode, the assertion checking is turned on by default.
+    </p>
+
+    <syntax>
+      assert "form 1" "form 2"
+      assert "form 1" "form 2" "exact compare"
+    </syntax>
+    
+    <example>
+      assert true (== 1 1)
+      assert 3    (+  2 1)
+      assert 1.234567 1.234568 false
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = block special form                                              = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>block</name>
+
+    <p>
+      The <code>block</code> special form defines a new nameset for
+      sequential execution of regular form or implicit form. When the
+      block form is evaluated, the block nameset is linked to its parent
+      nameset. When all forms have been executed, the block nameset is
+      destroyed and the result of the last evaluation in the block is
+      considered to be the result of the block evaluation. 
+    </p>
+
+    <syntax>
+      block "regular form"
+      block "block form"
+    </syntax>
+
+    <example>
+      trans a 1
+      block {
+      assert    a 1
+      trans     a (+ 1 1)
+      assert    a 2
+      assert ..:a 1
+      }
+      assert 1 a
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = class special form                                              = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>class</name>
+
+    <p>
+      The <code>class</code> special form creates a new class
+      object. Without argument, an instance of that class is created without
+      data members.
+    </p>
+
+    <syntax>
+      class
+    </syntax>
+
+    <example>
+      const Color (class)
+      trans Color:preset (red green blue) {
+      const this:red   red
+      const this:green green
+      const this:blue  blue
+      }
+      const red   (Color 255   0   0)
+      const green (Color   0 255   0)
+      const blue  (Color   0   0 255)
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = const special form                                              = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>const</name>
+
+    <p>
+      The <code>const</code> special form binds a symbol with an
+      object and marks it as a constant symbol. When used with three or
+      four argument, a gamma expression is automatically
+      created. <code>const</code> can also be used to bind class or
+      instance members.
+    </p>
+
+    <syntax>
+      const symbol "object"
+      const symbol "argument" "body"
+      const symbol "argument" "closed variables" "body"
+    </syntax>
+
+    <example>
+      const number 123
+      const max (x y) (if (> x y) x y)
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = delay special form                                              = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>delay</name>
+
+    <p>
+      The <code>delay</code> special form delays the evaluation of the
+      form argument by creating a <code>Promise</code> object. The promise
+      evaluate to itself until a call to force the evaluation has been
+      made. When the promise has been forced, the evaluation result is
+      stored. Further call to force will produce the same
+      result. Without argument, the delayed evaluation is nil. With
+      one argument, a <code>Promise</code> object is created
+      directly. With several argument, a cons cell is created with the
+      first argument left unevaluated and the other evaluated. This
+      permit to delay a form while evaluatin the calling arguments.
+    </p>
+
+    <syntax>
+      delay "form"
+    </syntax>
+
+    <example>
+      trans  y 3
+      const  l ((lambda (x) (+ x y)) 1)
+      assert 4 (force l)
+      trans  y 0
+      assert 4 (force l)
+      trans  y 1
+      trans  d (delay (lambda (x) (+ x 1)) y)
+      assert 2 (force d)
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = do special form                                                 = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>do</name>
+
+    <p>
+      The <code>do</code> special form is used to build loop with
+      forward condition. The loop construct accepts either 2 or 3
+      arguments. With 2 argument, the first argument is the loop body and
+      the second argument is the loop condition which must evaluates to a
+      boolean object. With 3 arguments, the first argument is the initial
+      condition that is executed only once.
+    </p>
+
+    <syntax>
+      do "body" "condition"
+      do "initial" "body" "condition"
+    </syntax>
+
+    <example>
+      const number-of-digits (s) {
+      const len (s:length) 
+      trans index 0
+      trans count 0
+      do {
+      trans c (s:get index)
+      if (c:digit-p) (count:++)
+      } (&lt; (index:++) len)
+      eval count
+      }
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = enum special form                                               = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>enum</name>
+
+    <p>
+      The <code>enum</code> special form creates an enumeration from a
+      list of literal. The result object is an <code>Enum</code> object
+      that holds the enumerated items. An item evaluation results with an
+      <code>Item</code> object that is bound to the enumeration object.
+    </p>
+    
+    <syntax>
+      enum "literal" ...
+    </syntax>
+
+    <example>
+      const e (enum E1 E2 E3)
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = errorln special form                                            = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>errorln</name>
+
+    <p>
+      The <code>errorln</code> special form prints on the interpreter
+      error stream a set of arguments. Each arguments have to be a literal
+      which are converted to a string. When all arguments have been
+      printed a new line character is printed. The <code>error</code>
+      special form behaves like <code>errorln</code> excepts that a
+      new line character is not printed at the end of the arguments.
+    </p>
+
+    <syntax>
+      errorln
+      errorln "nil"
+      errorln "literal list"
+    </syntax>
+
+    <example>
+      errorln
+      errorln "hello millennium" ' ' 2000
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = errorln special form                                            = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>eval</name>
+
+    <p>
+      The <code>eval</code> special form simply evaluates the object
+      argument. The form is useful when returning an argument from a
+      lambda or gamma expression using an implicit form.
+    </p>
+
+    <syntax>
+      eval "object"
+    </syntax>
+
+    <example>
+      const ret (x) (eval x)
+      eval (protect (+ 1 2))
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = for special form                                                = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>for</name>
+
+    <p>
+      The <code>for</code> special form provides a facility to iterate
+      on iterable objects. The <code>Cons</code>,
+      <code>List</code> and <code>Vector</code> objects are typical
+      iterable objects. For each iterable objects, a symbol is set after
+      each iteration. Each object symbol value can be used for further
+      computation. The iteration stops when one of the objects iterator is
+      at the end position.
+    </p>
+
+    <syntax>
+      for "symbol list" "iterable object list" "body"
+    </syntax>
+
+    <example>
+      # compute the scalar product of two vectors
+      const scalar-product (u v) {
+      trans result 0
+      for (x y) (u v) (result:+= (* x y))
+      eval result
+      }
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = force special form                                              = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>force</name>
+
+    <p>
+      The <code>force</code> special form forces the evaluation of its
+      argument. If the argument evaluates to a promise object,
+      the promise evaluation is forced. If the argument is not a promise,
+      <code>force</code> keyword behaves like <code>eval</code>. When a
+      promise has been forced, further call to force will not change the
+      evaluation result.
+    </p>
+
+    <syntax>
+      force "object"
+    </syntax>
+
+    <example>
+      trans  y 3
+      const  l ((lambda (x) (+ x y)) 1)
+      assert 4 (force l)
+      trans  y 0
+      assert 4 (force l)
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = if special form                                                 = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>if</name>
+
+    <p>
+      The <code>if</code> special form executes a form based on the
+      evaluation of a boolean expression. In its first representation,
+      <code>if</code> executes a form if the condition is evaluated to
+      true. An alternate form can be specified and is executed if the
+      boolean expression evaluates to false. It is an error to use a
+      conditional form which does not evaluate to a boolean object.
+    </p>
+
+    <syntax>
+      if "condition" "true form"
+      if "condition" "true form" "else form"
+    </syntax>
+
+    <example>
+      const max (x y) (if (> x y) x y)
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = lambda special form                                             = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>lambda</name>
+
+    <p>
+      The <code>lambda</code> special form creates a new closure
+      object with eventually a set of arguments and a set of closed
+      variables. In its first form, the closure is declared with a set of
+      arguments or nil to indicate no argument. In its second form, the
+      closure is declared with a set of arguments and a set of closed
+      variables. The closed variables are evaluated at the construction of
+      the closure and become part of the closure object. When the closure
+      is called, a new nameset is created and linked with the parent
+      nameset. The set of calling arguments are bounded in that nameset
+      with  the formal argument list to become the actual arguments. The
+      set of closed variables is linked at runtime to the closure
+      nameset. A lambda or gamma expression can have its argument declared
+      as <code>const</code> argument.
+    </p>
+
+    <syntax>
+      lambda "nil" "body"
+      lambda "argument list" "body"
+      lambda "argument list" "closed variables list" "body"
+    </syntax>
+
+    <example>
+      const no-args (lambda nil (+ 1 1))
+      const add     (lambda ((const x) (const y)) (+ x y))
+      const closed  (lambda (x) (y) (+ x y))
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = launch special form                                             = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>launch</name>
+
+    <p>
+      The <code>launch</code> special form creates a new thread
+      by executing the form argument in a normal thread. The created
+      thread is added in the normal thread list by creating a clone of the
+      interpreter and starting immediately the execution of the form with
+      the cloned interpreter. The command returns the thread object in the
+      calling thread. When the thread terminates, the thread object holds
+      the result of the last executed form. The main thread is suspended
+      until all normal threads have completed their execution.
+    </p>
+
+    <syntax>
+      launch "form"
+      launch "thread" "form"
+    </syntax>
+
+    <example>
+      launch (println "hello world")
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = loop special form                                               = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>loop</name>
+
+    <p>
+      The <code>loop</code> special form executes a loop based on
+      an initial condition, an exit condition and a step form. The initial
+      condition is only executed one time. The exit condition is tested at
+      each loop iteration. The <code>loop</code> special form creates
+      its own nameset since the initial condition generally binds symbol
+      locally for the loop.
+    </p>
+
+    <syntax>
+      loop "init form" "exit form" "step" "form"
+    </syntax>
+
+    <example>
+      loop (trans i 0) (&lt; i 10) (i:++) (println i)
+    </example>
+  </keyword>
+  
+  <!-- =================================================================== -->
+  <!-- = nameset special form                                            = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>nameset</name>
+
+    <p>
+      The <code>nameset</code> special form creates a new
+      nameset. With no argument, a new nameset is created and no parent is
+      binded to this nameset. With one argument, the argument must evaluate
+      to a nameset and that nameset is used as the parent one. If a nameset
+      has to be created with the global nameset as the parent, the symbol
+      <code>...</code> can be used to reference the top level nameset. The
+      symbol <code>.</code> references the current nameset. The symbol
+      <code>..</code> references the parent nameset of the current
+      nameset.
+    </p>
+
+    <syntax>
+      nameset
+      nameset "parent nameset"
+    </syntax>
+
+    <example>
+      const local-nameset-not-bound (nameset)
+      const local-nameset-bounded   (nameset ...)
+      const ...:global-nameset      (nameset)
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = println special form                                            = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>println</name>
+
+    <p>
+      The <code>println</code> special form prints on the interpreter
+      output stream a set of arguments. Each arguments have to be a
+      literal which is converted to a string. When all arguments have been
+      printed a new line character is printed. The <code>print</code>
+      special form behaves like <code>println</code> excepts that a
+      new line character is not printed at the end of the arguments.
+    </p>
+
+    <syntax>
+      println
+      println "nil"
+      println "literal list"
+    </syntax>
+
+    <example>
+      println
+      println "hello millennium" ' ' 2000
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = protect special form                                            = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>protect</name>
+
+    <p>
+      The <code>protect</code> special form take a single argument and
+      returns it without evaluation. Protect is mainly use to get a symbol
+      or form object.
+    </p>
+
+    <syntax>
+      protect "object"
+    </syntax>
+
+    <example>
+      const cons (protect (+ 1 2))
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = return special form                                             = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>return</name>
+
+    <p>
+      The <code>return</code> special form causes the current
+      expression to stop its evaluation and returns the argument or
+      nil. The <code>return</code> keyword is primarily used in lambda or
+      gamma expressions. If used in a top level block, the block execution
+      is stopped and the control is transferred to the top level.
+    </p>
+
+    <syntax>
+      return "object"
+    </syntax>
+
+    <example>
+      return (+ 1 2)
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = sync special form                                               = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>sync</name>
+
+    <p>
+      The <code>sync</code> special form is a form synchronizer. 
+      Within a multi-threaded environment, the engine guarantees
+      that only one thread will execute the form. The other threads are
+      suspended until the form has been completed.
+    </p>
+
+    <syntax>
+      sync "form"
+    </syntax>
+
+    <example>
+      const print-message (code mesg) (
+      sync {
+      errorln "error  : " code
+      errorln "message: " mesg
+      }
+      )
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = switch special form                                             = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>switch</name>
+
+    <p>
+      The <code>switch</code> special form is a form selector. The
+      first argument is the object to switch. The second argument is a
+      list of forms with an object matcher and an execution form. The
+      <code>else</code> special form can be used as default matcher.
+    </p>
+
+    <syntax>
+      switch "selector" "list of conditions"
+    </syntax>
+
+    <example>
+      const get-primary-color (color value) (
+      switch color (
+      ("red"   (return (value:substr 0 2))
+      ("green" (return (value:substr 2 4))
+      ("blue"  (return (value:substr 4 6))
+      )
+      )
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = throw special form                                              = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>throw</name>
+
+    <p>
+      The <code>throw</code> special form throws an exception. Without
+      argument, an exception of type user-exception is thrown. With one
+      argument, the exception id is set. With two arguments, the
+      exception id and exception reason are set. With three arguments,
+      the exception id, exception reason and exception object are
+      set. An exception object represented by the symbol
+      <code>what</code> can also be thrown. This is the method used to
+      re-throw an exception.
+    </p>
+
+    <syntax>
+      throw
+      throw what
+      throw "id"
+      throw "id" "reason"
+      throw "id" "reason" "object"
+    </syntax>
+
+    <example>
+      throw              
+      throw "type-error" 
+      throw "type-error" "invalid argument"
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = trans special form                                              = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>trans</name>
+
+    <p>
+      The <code>trans</code> special form creates or sets a symbol
+      with an object. <code>trans</code> searches in the current nameset
+      only. If a symbol is found, it is set with the object. If the symbol
+      is not found, it is created in the current nameset. The
+      <code>trans</code> keyword can also be used with qualified
+      names. With 3 or 4 arguments, <code>trans</code> creates
+      automatically a lambda expression.
+    </p>
+
+    <syntax>
+      trans symbol "object"
+      trans symbol "argument" "body"
+      trans symbol "argument" "closed variables" "body"
+    </syntax>
+
+    <example>
+      trans a 1
+      trans fact (n) (if (&lt; n 1) 1 (* n (fact (- n 1))))
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = try special form                                                = -->
+  <!-- =================================================================== -->
+
+  <!-- try special form -->
+  <keyword>
+    <name>try</name>
+
+    <p>
+      The <code>try</code> special form catch an exception in the
+      current execution nameset. The first argument is a form to
+      execute. The optional second argument is the exception
+      handler to be called in case of exception. If there is no
+      exception handler, all exceptions are caught. The result of
+      execution is either the result of the form execution, or the
+      exception object in case of exception, or nil if the exception is a
+      native one. If there is an exception handler, the handler is
+      executed with a new nameset and the special symbol <code>what</code>
+      is   bound to the exception. If the exception is nil, the symbol
+      <code>what</code> is undefined.
+    </p>
+
+    <syntax>
+      try "form"
+      try "form" " exception handler"
+    </syntax>
+
+    <example>
+      try (+ 1 2)
+      try (throw)
+      try (throw "hello")
+      try (throw "hello" "world")
+      try (throw "hello" "world" "folks")
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = unref special form                                              = -->
+  <!-- =================================================================== -->
+
+  <keyword>
+    <name>unref</name>
+
+    <p>
+      The <code>unref</code> special form unreference a symbol.
+    </p>
+
+    <syntax>
+      unref symbol
+    </syntax>
+
+    <example>
+      const number 123
+      unref number
+    </example>
+  </keyword>
+
+  <!-- =================================================================== -->
+  <!-- = while special form                                              = -->
+  <!-- =================================================================== -->
+
+  <!-- while special form -->
+  <keyword>
+    <name>while</name>
+
+    <p>
+      The <code>while</code> special form is used to build loop with
+      backward condition. The loop construct accepts either 2 or 3
+      arguments. With 2 argument, the first argument is the loop condition
+      and the second argument is the loop body that must evaluate to a
+      boolean. With 3 arguments, the first argument is the initial
+      condition that is executed only once.
+    </p>
+
+    <syntax>
+      while "condition" "body"
+      while "initial" "condition" "body"
+    </syntax>
+
+    <example>
+      const gcd (u v) {
+      while (!= v 0) {
+      trans r (u:mod v)
+      u:= v
+      v:= r
+      }
+      eval u
+      }
+    </example>
+  </keyword>
+</chapter>

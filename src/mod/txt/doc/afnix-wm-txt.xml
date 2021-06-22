@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-wm-txt.xml                                                   = -->
+<!-- = standard text processing module - writer manual                    = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter module="txt" number="1">
+  <title>Standard Text Processing Module</title>
+  
+  <p>
+    The <em>Standard Text Processing</em> module is an original
+    implementation of an object collection dedicated to text processing.
+    Although text scaning is the current operation perfomed in the field
+    of text processing, the module provides also specialized object
+    to store and index text data. Text sorting and transliteration is also
+    part of this module.
+  </p>
+
+  <!-- scanning capabilities -->
+  <section>
+    <title>Scanning concepts</title>
+
+    <p>
+      Text scanning is the ability to extract lexical elements or
+      <em>lexemes</em> from a stream. A scanner or lexical analyzer is
+      the principal object used to perform this task. A scanner is
+      created by adding special object that acts as a pattern
+      matcher. When a pattern is matched, a special object called a
+      <em>lexeme</em> is returned. 
+    </p>
+    
+    <!-- pattern object -->
+    <subsect>
+      <title>Pattern object</title>
+
+      <p>
+	A <code>Pattern</code> object is a special object that acts as
+	model for the string to match. There are several ways to build a
+	pattern. The simplest way to build it is with a regular
+	expression. Another type of pattern is a balanced pattern. In
+	its first form, a pattern object can be created with a regular
+	expression object.
+      </p>
+
+      <example>
+	# create a pattern object
+	const pat (afnix:txt:Pattern "$d+")
+      </example>
+
+      <p>
+	In this example, the pattern object is built to detect integer
+	objects.
+      </p>
+
+      <example>
+	pat:check "123" # true
+	pat:match "123" # 123
+      </example>
+
+      <p>
+	The <code>check</code> method return true if the input string
+	matches the pattern. The <code>match</code> method returns the
+	string that matches the pattern. Since the pattern object can
+	also operates with stream object, the <code>match</code> method
+	is appropriate to match a particular string. The pattern object
+	is, as usual, available with the appropriate predicate.
+      </p>
+
+      <example>
+	afnix:txt:pattern-p pat # true
+      </example>
+
+      <p>
+	Another form of pattern object is the balanced pattern. A
+	balanced pattern is determined by a starting string and an
+	ending string. There are two types of balanced pattern. One is a
+	single balanced pattern and the other one is the recursive
+	balanced pattern. The single balanced pattern is appropriate for
+	those lexical element that are defined by a character. For
+	example, the classical C-string is a single balanced pattern
+	with the double quote character.
+      </p>
+
+      <example>
+	# create a balanced pattern
+	const pat (afnix:txt:Pattern "ELEMENT" "&lt;" "&gt;")
+	pat:check "&lt;xml&gt;" # true
+	pat:match "&lt;xml&gt;" # xml
+      </example>
+
+      <p>
+	In the case of the C-string, the pattern might be more
+	appropriately defined with an additional <em>escape
+	character</em>. Such character is used by the pattern matcher to
+	grab characters that might be part of the pattern definition.
+      </p>
+
+      <example>
+	# create a balanced pattern
+	const pat (afnix:txt:Pattern "STRING" "'" '\\')
+	pat:check "'hello'" # true
+	pat:match "'hello'" # "hello"
+      </example>
+
+      <p>
+	In this form, a balanced pattern with an escape character is
+	created. The same string is used for both the starting and
+	ending string. Another constructor that takes two strings can be
+	used if the starting and ending strings are different.
+
+	The last pattern form is the balanced recursive form. In this
+	form, a starting and ending string are used to delimit the
+	pattern. However, in this mode, a recursive use of the starting
+	and ending strings is allowed. In order to have an exact match,
+	the number of starting string must equal the number of ending
+	string. For example, the C-comment pattern can be viewed as
+	recursive balanced pattern.
+      </p>
+
+      <example>
+	# create a c-comment pattern
+	const pat (afnix:txt:Pattern "STRING" "/*" "*/" )
+      </example>
+    </subsect>
+
+    <!-- lexeme object -->
+    <subsect>
+      <title>Lexeme object</title>
+
+      <p>
+	The <code>Lexeme</code> object is the object built by a scanner
+	that contains the matched string. A lexeme is therefore a tagged
+	string. Additionally, a lexeme can carry additional information
+	like a source name and index.
+      </p>
+
+      <example>
+	# create an empty lexeme
+	const lexm (afnix:txt:Lexeme)
+	afnix:txt:lexeme-p lexm # true
+      </example>
+
+      <p>
+	The default lexeme is created with any value. A value can be set
+	with the <code>set-value</code> method and retrieved with the
+	<code>get-value</code> methods.
+      </p>
+
+      <example>
+	lexm:set-value "hello"
+	lexm:get-value # hello
+      </example>
+
+      <p>
+	Similar are the <code>set-tag</code> and <code>get-tag</code>
+	methods which operate with an integer. The source name and index
+	are defined as well with the same methods.
+      </p>
+
+      <example>
+	# check for the source
+	lexm:set-source "world"
+	lexm:get-source # world
+
+	# check for the source index
+	lexm:set-index 2000
+	lexm:get-index # 2000
+      </example>
+    </subsect>
+  </section>
+
+  <!-- text scanning -->
+  <section>
+    <title>Text scanning</title>
+
+    <p>
+      Text scanning is the ability to extract lexical elements or
+      lexemes from an input stream. Generally, the lexemes are the
+      results of a matching operation which is defined by a pattern
+      object. As a result, the definition of a scanner object is the
+      object itself plus one or several pattern object.
+    </p>
+
+    <!-- scanner construction -->
+    <subsect>
+      <title>Scanner construction</title>
+
+      <p>
+	By default, a scanner is created without pattern objects. The
+	<code>length</code> method returns the number of pattern
+	objects. As usual, a predicate is associated with the scanner
+	object.
+      </p>
+
+      <example>
+	# the default scanner
+	const  scan (afnix:txt:Scanner)
+	afnix:txt:scanner-p scan # true
+
+	# the length method
+	scan:length # 0
+      </example>
+
+      <p>
+	The scanner construction proceeds by adding pattern
+	objects. Each pattern can be created independently, and later
+	added to the scanner. For example, a scanner that reads real,
+	integer and string can be defined as follow:
+      </p>
+
+      <example>
+	# create the scanner pattern
+	const REAL    (
+	  afnix:txt:Pattern "REAL"    [$d+.$d*])
+	const STRING  (
+	  afnix:txt:Pattern "STRING"  "&quot;" '\\')
+	const INTEGER (
+	  afnix:txt:Pattern "INTEGER" [$d+|"0x"$x+])
+	# add the pattern to the scanner
+	scanner:add INTEGER REAL STRING
+      </example>
+
+      <p>
+	The order of pattern integration defines the priority at which a
+	token is recognized. The symbol name for each pattern is
+	optional since the functional programming permits the creation
+	of patterns directly. This writing style makes the scanner
+	definition easier to read.
+      </p>
+    </subsect>
+
+    <!-- unsing the scanner -->
+    <subsect>
+      <title>Using the scanner</title>
+
+      <p>
+	Once constructed, the scanner can be used <em>as is</em>. A
+	stream is generally the best way to operate. If the scanner
+	reaches the end-of-stream or cannot recognize a lexeme, the nil
+	object is returned. With a loop, it is easy to get all lexemes.
+      </p>
+
+      <example>
+	while (trans valid (is:valid-p)) {
+        # try to get the lexeme
+	trans lexm (scanner:scan is)
+	# check for nil lexeme and print the value
+	if (not (nil-p lexm)) (println (lexm:get-value))
+	# update the valid flag
+	valid:= (and (is:valid-p) (not (nil-p lexm)))
+	}
+      </example>
+
+      <p>
+	In this loop, it is necessary first to check for the end of the
+	stream. This is done with the help of the special loop construct
+	that initialize the <code>valid</code> symbol. As soon as the
+	the lexeme is built, it can be used. The lexeme holds the value
+	as well as it tag.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- text sorting -->
+  <section>
+    <title>Text sorting</title>
+
+    <p>
+      Sorting is one the primary function implemented inside the
+      <em>text processing</em> module. There are three sorting
+      functions available in the module.
+    </p>
+
+    <!-- ascending and descending order sorting -->
+    <subsect>
+      <title>Ascending and descending order sorting</title>
+
+      <p>
+	The <code>sort-ascent</code> function operates with a vector
+	object and sorts the elements in ascending order. Any kind of
+	objects can be sorted as long as they support a comparison
+	method. The elements are sorted in placed by using a <em>quick
+	sort</em> algorithm.
+      </p>
+
+      <example>
+	# create an unsorted vector
+	const v-i (Vector 7 5 3 4 1 8 0 9 2 6)
+	# sort the vector in place
+	afnix:txt:sort-ascent v-i
+	# print the vector
+	for (e) (v) (println e)
+      </example>
+
+      <p>
+	The <code>sort-descent</code> function is similar to the
+	<code>sort-ascent</code> function except that the object are
+	sorted in descending order.
+      </p>
+    </subsect>
+
+    <!-- lexical sorting -->
+    <subsect>
+      <title>Lexical sorting</title>
+
+      <p>
+	The <code>sort-lexical</code> function operates with a vector
+	object and sorts the elements in ascending order using a
+	lexicographic ordering relation. Objects in the vector must be
+	literal objects or an exception is raised.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- transliteration -->
+  <section>
+    <title>Transliteration</title>
+
+    <p>
+      Transliteration is the process of changing characters my mapping
+      one to another one. The transliteration process operates with a
+      character source and produces a target character with the help of
+      a mapping table. The transliteration process is not necessarily
+      reversible as often indicated in the literature.
+    </p>
+
+    <!-- literate object -->
+    <subsect>
+      <title>Literate object</title>
+
+      <p>
+	The <code>Literate</code> object is a transliteration object
+	that is bound by default with the identity function mapping. As
+	usual, a predicate is associate with the object.
+      </p>
+
+      <example>
+	# create a transliterate object
+	const tl (afnix:txt:Literate)
+
+	# check the object
+	afnix:txt:literate-p tl # true
+      </example>
+
+      <p>
+	The transliteration process can also operate with an escape
+	character in order to map double character sequence into a
+	single one, as usually found inside programming language.
+      </p>
+
+      <example>
+	# create a transliterate object by escape
+	const tl (afnix:txt:Literate '\\')
+      </example>
+    </subsect>
+
+    <!-- transliteration configuration -->
+    <subsect>
+      <title>Transliteration configuration</title>
+
+      <p>
+	The <code>set-map</code> configures the transliteration mapping
+	table while the <code>set-escape-map</code> configure the escape
+	mapping table. The mapping is done by setting the source
+	character and the target character. For instance, if one want to
+	map the tabulation character to a white space, the mapping table
+	is set as follow:
+      </p>
+
+      <example>
+	tl:set-map '\t' ' '
+      </example>
+
+      <p>
+	The escape mapping table operates the same way. It should be
+	noted that the mapping algorithm translate first the input
+	character, eventually yielding to an escape character and then
+	the escape mapping takes place. Note also that the
+	<code>set-escape</code> method can be used to set the escape
+	character.
+      </p>
+
+      <example>
+	tl:set-map '\t' ' '
+      </example>
+    </subsect>
+
+    <!-- transliteration process -->
+    <subsect>
+      <title>Transliteration process</title>
+
+      <p>
+	The transliteration process is done either with a string or an
+	input stream. In the first case, the <code>translate</code>
+	method operates with a string and returns a translated
+	string. On the other hand, the <code>read</code> method returns
+	a character when operating with a stream. 
+      </p>
+
+      <example>
+	# set the mapping characters
+	tl:set-map '\h' 'w'
+	tl:set-map '\e' 'o'
+	tl:set-map '\l' 'r'
+	tl:set-map '\o' 'd'
+
+	# translate a string
+	tl:translate "helo" # word
+      </example>
+    </subsect>
+  </section>
+</chapter>

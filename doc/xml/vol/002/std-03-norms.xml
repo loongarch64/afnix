@@ -1,0 +1,2470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = std-03-norms.xml                                                   = -->
+<!-- = afnix reference manual - chapter 3                                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter volume="2" number="3">
+  <title>Container objects</title>
+
+  <p>
+    This chapter is a reference of the reserved container objects
+    with their respective builtin methods. Some of these container
+    objects are <em>iterable objects</em>.
+
+    When an object is iterable, an iterator constructor constructor is
+    provided. The <code>iterable-p</code> predicate returns true if the
+    container is an iterable object. The <code>iterator</code>
+    method can be used to construct an object iterator. For a given
+    iterator, the predicates <code>end-p</code> and <code>valid-p</code>
+    can be used to check for the end or a valid iterator position. The 
+    <code>next</code> method move the iterator to its next position. The 
+    <code>prev</code> method move the iterator -- if possible -- to its
+    previous position. The <code>get-object</code> method returns the
+    object at the current iterator position.
+  </p>
+
+  <!-- =================================================================== -->
+  <!-- = cons object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Cons</name>
+
+    <p>
+      A <code>Cons</code> instance or simply a <em>cons cell</em> is a
+      simple element used to build linked list. The cons cell holds an
+      object and a pointer to the next cons cell. The cons cell object
+      is called <em>car</em> and the next cons cell is called the
+      <em>cdr</em>. Historically, <em>car</em> means <em>Current Address
+      Register</em> and <em>cdr</em> means <em>Current Data
+      Register</em>. This notation is still present here for the sake of
+      tradition.
+    </p>
+
+    <!-- predicate -->
+    <pred>cons-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Serial</name>
+      <name>Iterable</name>
+      <name>Collectable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Cons</name>
+	<args>none</args>
+	<p>
+	  The <code>Cons</code> constructor create a default cons cell with
+	  the <em>car</em> and <em>cdr</em> set to <code>nil</code>. 
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Cons</name>
+	<args>Objects...</args>
+	<p>
+	  The <code>Cons</code> constructor create a list of cons cells with
+	  the object arguments. Each argument object is assigned to the
+	  <em>car</em> of the cons cell while the <em>cdr</em> is used to link
+	  the cell together.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-car</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-car</code> method returns the car of the calling
+	  cons cell.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-cdr</name>
+	<retn>Cons</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-cdr</code> method returns the cdr of the calling cons
+	  cell.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-cadr</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-cadr</code> method returns the car of the cdr of the
+	  calling cons cell or nil if the cdr is nil.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-caddr</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-caddr</code> method returns the car of the cdr of the
+	  cdr of the calling cons cell or nil if the cdr is nil.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-cadddr</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-cadddr</code> method returns the car of the cdr of the
+	  cdr of the cdr of the calling cons cell or nil if the cdr is nil.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the cons
+	  cell. The minimum length returned is always 1. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>nil-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>nil-p</code> predicate returns true if the car of the
+	  calling cons cell is nil, false otherwise. 
+	</p>
+      </meth>
+      
+      <meth>
+	<name>block-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>block-p</code> predicate returns true if the cons cell
+	  is of type block, false otherwise. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-car</name>
+	<retn>Object</retn>
+	<args>Object</args>
+	<p>
+	  The <code>set-car</code> set the car of the calling cons cell. The
+	  object argument is returned by the method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-cdr</name>
+	<retn>Cons</retn>
+	<args>Cons</args>
+	<p>
+	  The <code>set-cdr</code> set the cdr of the calling cons cell. The
+	  cons cell argument is returned by the method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>Object</retn>
+	<args>Object</args>
+	<p>
+	  The <code>add</code> method appends an object at the end of the
+	  cons cell chain by creating a new cons cell and linking it with the
+	  last cdr. The object argument is returned by this method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Object</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns the car of the cons cell chain
+	  at a certain position specified by the integer index argument.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = enum object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Enum</name>
+
+    <p>
+      The <code>Enum</code> builtin object is an enumeration object. The
+      enumeration is constructed with the reserved keyword
+      <code>enum</code> and a list of literals or by string name with a
+      constructor.
+    </p>
+
+    <!-- predicate -->
+    <pred>enum-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Enum</name>
+	<args>none</args>
+	<p>
+	  The <code>Enum</code> constructor create an empty enumeration.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Enum</name>
+	<args>String...</args>
+	<p>
+	  The <code>Enum</code> constructor create an enumeration from a
+	  list of string arguments.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the enumeration and makes
+	  it empty.
+	</p>
+      </meth>
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the number of items in
+	  the enumeration.
+	</p>
+      </meth>
+      <meth>
+	<name>exists-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>exists-p</code> predicate returns true if the name
+	  argument exists as an item. The name argument must be a lexical
+	  name or an exception is thrown.
+	</p>
+      </meth>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>add</code> method adds a new item to the enumeration by
+	  name. This method returns nil.
+	</p>
+      </meth>
+      <meth>
+	<name>get</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns an item string
+	  representation by index. The integer argument is the item index.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = list object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>List</name>
+
+    <p>
+      The <code>List</code> builtin object provides the facility of a
+      double-link list. The <code>List</code> object is another example of
+      <em>iterable object</em>. The <code>List</code> object provides
+      support for forward and backward iteration.
+    </p>
+
+    <!-- predicate -->
+    <pred>list-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Iterable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>List</name>
+	<args>none</args>
+	<p>
+	  The <code>List</code> constructor create an empty list.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>List</name>
+	<args>Object...</args>
+	<p>
+	  The <code>List</code> constructor create a list from a list of
+	  object arguments.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the
+	  list. The minimum length is 0 for an empty list.
+	</p>
+      </meth>
+
+      <meth>
+	<name>iterator</name>
+	<retn>Iterator</retn>
+	<args>none</args>
+	<p>
+	  The <code>iterator</code> returns a forward/backward iterator
+	  for this list.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>Object</retn>
+	<args>Object</args>
+	<p>
+	  The <code>add</code> method appends an object at the end of the
+	  list. The object argument is returned by this method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>insert</name>
+	<retn>Object</retn>
+	<args>Object</args>
+	<p>
+	  The <code>insert</code> method inserts an object at the beginning of
+	  the list. The object argument is returned by this method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Object</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns the object in the list at a
+	  certain position specified by the integer index argument. 
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = strvec object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Strvec</name>
+
+    <p>
+      The <code>Strvec</code> builtin object provides the facility of an index
+      array of strings. The <code>Strvec</code> object is serializable object
+      that stores strings. The strings can be added with an optional
+      preference for a unique string value. The class is similar to the
+      general purpose <code>Vector</code> class.
+    </p>
+
+    <!-- predicate -->
+    <pred>strvec-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Serial</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Strvec</name>
+	<args>none</args>
+	<p>
+	  The <code>Strvec</code> constructor create an empty string vector.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Strvec</name>
+	<args>Integer|Boolean</args>
+	<p>
+	  The <code>Strvec</code> constructor create a string vector with
+	  a predefined size or with a uniq flag. In the first form, the
+	  preferred vector size is given as an argument. In the second
+	  form, the string unicity flag is given as an argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Strvec</name>
+	<args>Integer Boolean</args>
+	<p>
+	  The <code>Strvec</code> constructor create a string vector with
+	  a predefined size and a uniq flag. The first argument is the
+	  preferred vector size. The second argument is the string unicity flag.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the string vector. When
+	  the method is complete, the string vector is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the string
+	  vector. The minimum length is 0 for an empty vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>min-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>min-length</code> method returns the minimum string
+	  length of the string vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>max-length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>max-length</code> method returns the maximum string
+	  length of the string vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>empty-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>empty-p</code> predicate returns true if the
+	  vector is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>active-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>active-p</code> predicate returns true if the vector
+	  is not empty. This predicate is the negation of
+	  the <code>empty-p</code> predicate.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns the string in the vector at a
+	  certain position specified by the integer index argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>Integer String</args>
+	<p>
+	  The <code>set</code> method set a vector position with a string.
+	  The first argument is the vector index. The second argument
+	  is the string to set.
+	</p>
+      </meth>
+
+      <meth>
+	<name>first</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>first</code> method returns the first string in the
+	  vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>last</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p> 
+	  The <code>last</code> method returns the last string in the
+	  vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>pop</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>pop</code> method removes the first element in the
+	  string vector and returns it.
+	</p>
+      </meth>
+
+      <meth>
+	<name>pop-last</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>pop-last</code> method removes the last element in the
+	  string vector and returns it.
+	</p>
+      </meth>
+
+      <meth>
+	<name>find</name>
+	<retn>Integer</retn>
+	<args>String</args>
+	<p>
+	  The <code>find</code> method try to find a string in the vector. If
+	  the string is found, the vector index is returned else the -1
+	  value is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>lookup</name>
+	<retn>Integer</retn>
+	<args>String</args>
+	<p>
+	  The <code>lookup</code> method try to find a string in the vector. If
+	  the string is found, the vector index is returned else an
+	  exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>add</code> method adds an object at the end of
+	  the vector. If the uniq flag is active, the string argument is
+	  not added if it already exists.
+	</p>
+      </meth>
+
+      <meth>
+	<name>exists-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>exists-p</code> method returns true if the string
+	  argument exists in the vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>remove</name>
+	<retn>none</retn>
+	<args>Integer|String</args>
+	<p>
+	  The <code>remove</code> method removes a string from the vector
+	  by index or value. In the first form, the vector index is used
+	  as the place to remove. In the second form, the string argument
+	  is used as a key for removal. This method repacks the vector
+	  when the string has been removed.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-unique</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>set-unique</code> method set the string vector unique
+	  flag. When the unique flag is set, there is only no string
+	  duplicate in the vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-unique</name>
+	<retn>Boolean</retn>
+	<args></args>
+	<p>
+	  The <code>get-unique</code> method returns the string vector
+	  unique flag value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>concat</name>
+	<retn>String</retn>
+	<args>none | Character</args>
+	<p>
+	  The <code>concat</code> method concatenates the string vector
+	  elements with a character separator. In the first form, with a
+	  separator character, the resulting string is the concatenation
+	  of the string vector elements. In the second form, the resulting
+	  string is the concatenation of the vector elements with a
+	  character separator. If the character separator
+	  is <code>nil</code> then no separator is placed.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = vector object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Vector</name>
+
+    <p>
+      The <code>Vector</code> builtin object provides the facility of an index
+      array of objects. The <code>Vector</code> object is another example
+      of  <em>iterable object</em>. The <code>Vector</code> object
+      provides support for forward and backward iteration.
+    </p>
+
+    <!-- predicate -->
+    <pred>vector-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Serial</name>
+      <name>Iterable</name>
+      <name>Collectable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Vector</name>
+	<args>none</args>
+	<p>
+	  The <code>Vector</code> constructor create an empty vector.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Vector</name>
+	<args>Object...</args>
+	<p>
+	  The <code>Vector</code> constructor create a vector from a list of
+	  object arguments.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset the vector. When the method is
+	  complete, the vector is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the vector. The
+	  minimum length is 0 for an empty vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>empty-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>empty-p</code> predicate returns true if the
+	  vector is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Object</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns the object in the vector at a
+	  certain position specified by the integer index argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set</name>
+	<retn>Object</retn>
+	<args>Integer Object</args>
+	<p>
+	  The <code>set</code> method set a vector position with an
+	  object. The first argument is the vector index. The second argument
+	  is the object to set. The method returns the object to set.
+	</p>
+      </meth>
+
+      <meth>
+	<name>first</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>first</code> method returns the first element in the
+	  vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>last</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>last</code> method returns the last element in the
+	  vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>pop</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>pop</code> method removes the first element in the
+	  vector and returns it.
+	</p>
+      </meth>
+
+      <meth>
+	<name>pop-last</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>pop-last</code> method removes the last element in the
+	  vector and returns it.
+	</p>
+      </meth>
+
+      <meth>
+	<name>find</name>
+	<retn>Integer</retn>
+	<args>Object</args>
+	<p>
+	  The <code>find</code> method try to find an object in the vector. If
+	  the object is found, the vector index is returned as an Integer
+	  object, else nilp is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>Object</retn>
+	<args>Object|Integer Object</args>
+	<p>
+	  The <code>add</code> method appends an object at the end of
+	  the vector or at a certain index. In the first form, the object
+	  argument is added at the end of the vector. In the second form,
+	  the object argument is inserted in the vector at the specified
+	  index. In both cases, the object argument is returned by this
+	  method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>exists-p</name>
+	<retn>Boolean</retn>
+	<args>Object</args>
+	<p>
+	  The <code>exists-p</code> method returns true if the object
+	  argument exists in the vector. This method is useful to make
+	  sure that only one occurrence of an object is added to a vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>clean</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>clean</code> method removes an object from the vector
+	  by index and repack the vector.
+	</p>
+      </meth>
+
+      <meth>
+	<name>remove</name>
+	<retn>none</retn>
+	<args>Object</args>
+	<p>
+	  The <code>remove</code> method removes an object from the vector
+	  and repack the vector. If duplicate exists in the file, only one
+	  is removed.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = hash table object                                               = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>HashTable</name>
+
+    <p>
+      The <code>HashTable</code> builtin object is a container object
+      which maps an object with a name. The hash table is dynamic and
+      get resized automatically when needed. The lookup method throw an
+      exception if the name is not found. The get method returns nilp if
+      the object is not found.  The table can be configured to operate
+      in a case insensitive way. If the case flag is changed, the
+      table is automatically reset. 
+    </p>
+
+    <!-- predicate -->
+    <pred>hashtable-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>HashTable</name>
+	<args>none</args>
+	<p>
+	  The <code>HashTable</code> constructor create an empty table.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>HashTable</name>
+	<args>Boolean</args>
+	<p>
+	  The <code>HashTable</code> constructor create a table by
+	  case insensitive flag.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>HashTable</name>
+	<args>Integer</args>
+	<p>
+	  The <code>HashTable</code> constructor create a table with a specific
+	  size.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>HashTable</name>
+	<args>Integer Boolean</args>
+	<p>
+	  The <code>HashTable</code> constructor create a table by
+	  size and case insensitive flag.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the table so that it
+	  becomes empty. 
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>String Object</args>
+	<p>
+	  The <code>add</code> method adds a new object in the table by
+	  key. The first argument is the key used to associate the object
+	  in the table. The second argument is the object to add.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> returns the number of objects in the table.
+	</p>
+      </meth>
+
+      <meth>
+	<name>empty-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>empty-p</code> predicate returns true if the table is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-case-flag</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>set-case-flag</code> method sets the case
+	  insensitive flag. The table is automatically reset when is
+	  method is called.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-case-flag</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-case-flag</code> method returns the case
+	  insensitive flag.
+	</p>
+      </meth>
+      <meth>
+	<name>get</name>
+	<retn>Object</retn>
+	<args>String</args>
+	<p>
+	  The <code>get</code> method returns the object associated with
+	  a key. If the key is not found, nil is returned.
+	</p>
+      </meth>
+
+
+      <meth>
+	<name>lookup</name>
+	<retn>Object</retn>
+	<args>String</args>
+	<p>
+	  The <code>lookup</code> method returns the object associated with
+	  a key. If the key is not found, an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-key</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-key</code> method returns the key associated with
+	  an entry in the table by index. If the index is out of range, an
+	  exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-object</name>
+	<retn>Object</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-object</code> method returns the object associated with
+	  an entry in the table by index. If the index is out of range, an
+	  exception is raised.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = set object                                                      = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Set</name>
+
+    <p>
+      The <code>Set</code> builtin object provides the facility of a uniform
+      set of objects. The <code>Set</code> object is another example
+      of  <em>iterable object</em>. The <code>Set</code> object
+      provides support for forward and backward iteration.
+    </p>
+
+    <!-- predicate -->
+    <pred>set-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Serial</name>
+      <name>Iterable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Set</name>
+	<args>none</args>
+	<p>
+	  The <code>Set</code> constructor create an empty set.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Set</name>
+	<args>Object...</args>
+	<p>
+	  The <code>Set</code> constructor create a set from a list of
+	  object arguments.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset the set. When the method is
+	  complete, the set is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the number of elements in
+	  the set. The minimum length is 0 for an empty set.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>Object</retn>
+	<args>Object</args>
+	<p>
+	  The <code>add</code> method appends an object in the set. If
+	  the object already exists in the set, it is not added
+	  twice. This is the main difference between a set and a vector.
+	  The object argument is returned by this method.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Object</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method return object by index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>empty-p</name>
+	<retn>Boolean</retn>
+	<args>Object</args>
+	<p>
+	  The <code>empty-p</code> predicate returns true if the set
+	  is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>exists-p</name>
+	<retn>Boolean</retn>
+	<args>Object</args>
+	<p>
+	  The <code>exists</code> predicate returns true if the object
+	  argument exists in the set.
+	</p>
+      </meth>
+
+      <meth>
+	<name>merge</name>
+	<retn>none</retn>
+	<args>Set</args>
+	<p>
+	  The <code>merge</code> method merges the set argument into the
+	  calling set. If an element already exists in the set, it is not
+	  added.
+	</p>
+      </meth>
+
+      <meth>
+	<name>remix</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>remix</code> method mixes the set by randomly swapping
+	  all the elements. This method is useful when the set has been
+	  filled with a certain order by the access must be done randomly.
+	</p>
+      </meth>
+
+      <meth>
+	<name>remove</name>
+	<retn>Boolean</retn>
+	<args>Object</args>
+	<p>
+	  The <code>remove</code> method removes the object argument from
+	  the set. if the object is removed, the method returns true. If
+	  the object is not in the set, the method returns false.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-random-subset</name>
+	<retn>Set</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-random-subset</code> method returns a subset those
+	  cardinal is at least the size argument with a set of randomly
+	  chosen elements. The result set might have a cardinal less than
+	  the requested size if the calling set cardinal is less than the
+	  requested size.
+	</p>
+      </meth>
+
+      <meth>
+	<name>iterator</name>
+	<retn>Iterator</retn>
+	<args>none</args>
+	<p>
+	  The <code>iterator</code> returns an iterator for
+	  this set. The iterator supports forward and backward iteration.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = queue object                                                    = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Queue</name>
+
+    <p>
+      The <code>Queue</code> builtin object is a container used to queue
+      and dequeue objects. The order of entry in the queue defines the
+      order of exit from the queue. The queue is constructed either empty
+      or with a set of objects.
+    </p>
+
+    <!-- predicate -->
+    <pred>queue-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Queue</name>
+	<args>none</args>
+	<p>
+	  The <code>Queue</code> constructor create an empty queue.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Queue</name>
+	<args>Object...</args>
+	<p>
+	  The <code>Queue</code> constructor create a queue with a list of
+	  object arguments
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>enqueue</name>
+	<retn>Object</retn>
+	<args>Object</args>
+	<p>
+	  The <code>enqueue</code> adds an object in the queue and returns the
+	  queued object.
+	</p>
+      </meth>
+
+      <meth>
+	<name>dequeue</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>dequeue</code> dequeue an object in the order it was
+	  queued.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> returns the number of queued objects.
+	</p>
+      </meth>
+
+      <meth>
+	<name>empty-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>empty-p</code> method returns true if the queue is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>flush</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>flush</code> method flushes the queue so that it is empty.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = heap object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Heap</name>
+
+    <p>
+      The <code>Heap</code> builtin object is an object based heap class
+      that organizes object with respect to a key. The heap is organized
+      as a binary tree those root element is either the object with the
+      highest or the lowest key. A flag controls whether the heap is
+      operating in ascending or descending mode. By default, the heap
+      operates in ascending mode, which means that the root node is the
+      lowest one. The heap is self-resizable. The object insertion is
+      also controlled by a minimum and maximum key. if the key is below
+      the minimum key or above the maximum key, the object is not
+      inserted.   
+    </p>
+
+    <!-- predicate -->
+    <pred>heap-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Heap</name>
+	<args>none</args>
+	<p>
+	  The <code>Heap</code> constructor create an empty heap. By
+	  default the heap operates in ascending mode.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Heap</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Heap</code> constructor create a heap with a specific
+	  size. By default the heap operates in ascending mode.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Heap</name>
+	<args>Boolean</args>
+	<p>
+	  The <code>Heap</code> constructor create a heap with a specific
+	  mode. If the mode is true, the heap operates in ascending
+	  order. If the mode is false, the heap operates in descending
+	  order. In ascending order, the first object is the object with
+	  the lowest key.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Heap</name>
+	<args>Integer Boolean</args>
+	<p>
+	  The <code>Heap</code> constructor create a heap with a specific
+	  size and mode. The first argument is the heap size. The second
+	  argument is the heap mode. If the mode is true, the heap
+	  operates in ascending order. If the mode is false, the heap
+	  operates in descending order. In ascending order, the first
+	  object is the object with the lowest key.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>Integer Object</args>
+	<p>
+	  The <code>add</code> method adds a new object in the heap by
+	  key. The first argument is the key used to set the object
+	  position in the heap. The second argument is the object to add.
+	</p>
+      </meth>
+
+      <meth>
+	<name>pop</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>pop</code> pops the first available in the heap. If
+	  the heap is empty, an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> returns the number of objects in the heap.
+	</p>
+      </meth>
+
+      <meth>
+	<name>empty-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>empty-p</code> method returns true if the heap is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset the heap so that it becomes empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-key</name>
+	<retn>Integer</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-key</code> method returns the key associated with
+	  an entry in the heap by index. If the index is out of range, an
+	  exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-object</name>
+	<retn>Object</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-object</code> method returns the object associated with
+	  an entry in the heap by index. If the index is out of range, an
+	  exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-mode</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-mode</code> method returns the heap operating
+	  mode. If the mode is true, the heap operates in ascending
+	  order. If the mode is false, the heap operates in descending
+	  order. In ascending order, the first object is the object with
+	  the lowest key.
+	</p>
+      </meth>
+
+      <meth>
+	<name>min-key-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>min-key-p</code> predicate returns true if a minimum
+	  key has been set. The <code>get-min-key</code> method can be
+	  used to retrieve the minimum key value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>max-key-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>max-key-p</code> predicate returns true if a maximum
+	  key has been set. The <code>get-max-key</code> method can be
+	  used to retrieve the maximum key value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset-min-key</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset-min-key</code> method resets the minimum key
+	  flag and value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset-max-key</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset-max-key</code> method resets the maximum key
+	  flag and value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-min-key</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-min-key</code> method sets the minimum key value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-min-key</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-min-key</code> method returns the minimum key value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-max-key</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-max-key</code> method sets the maximum key value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-max-key</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-max-key</code> method returns the maximum key value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>resize</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>resize</code> method resize the heap with a new
+	  size. if the size is lower than the number of elements, the
+	  procedure does nothing.
+	</p>
+      </meth>   
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = bitset object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Bitset</name>
+    
+    <p>
+      The <code>Bitset</code> builtin object is a container for multi bit
+      storage. The size of the bitset is determined at construction. With
+      the use of an index, a particular bit can be set, cleared and
+      tested.
+    </p>
+
+    <!-- predicate -->
+    <pred>bitset-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Bitset</name>
+	<args>none</args>
+	<p>
+	  The <code>BitSet</code> constructor create an empty bitset.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Bitset</name>
+	<args>Integer</args>
+	<p>
+	  The <code>Bitset</code> constructor create a bitset those size is
+	  given by the integer argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Bitset</name>
+	<args>String</args>
+	<p>
+	  The <code>Bitset</code> constructor create a bitset by parsing
+	  the string argument. The string can be either in the normal
+	  binary form with or without the <code>0b</code> prefix or in
+	  hexadecimal form with the <code>0x</code> prefix.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Bitset</name>
+	<args>Buffer Boolean</args>
+	<p>
+	  The <code>Bitset</code> constructor create a bitset from a
+	  buffer content. Each byte in the buffer is to be placed in the
+	  bitset. The boolean argument is the <em>ascending
+	  flag</em>. When true the buffer bytes are used in ascending
+	  index order, thus making the fist byte in the buffer to be used
+	  as the first right byte in the bitset. When false, the buffer
+	  bytes are used in descending index order, thus making the last
+	  byte in the buffer to be used as the first byte in the bitset.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset the bitset and force the initial
+	  size to 0.
+	</p>
+      </meth>
+
+      <meth>
+	<name>marked-p</name>
+	<retn>Boolean</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>marked-p</code> predicate returns true if the bit is
+	  set at the index argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>clear</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>clear</code> method clears a bit by the index argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>mark</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>mark</code> method marks a bit by the index argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>mark</name>
+	<retn>none</retn>
+	<args>Integer Boolean</args>
+	<p>
+	  The <code>mark</code> method set the bit value by the index argument
+	  with the boolean second argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>Integer Boolean</args>
+	<p>
+	  The <code>add</code> method add a bit in the bitset at the given
+	  position. The first argument is the bit position and the second
+	  argument is the bit value. The add method is the only method
+	  that resize a bitset.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>Integer|String</args>
+	<p>
+	  The <code>set</code> method set a bitset with an integer
+	  value. In the first form with an integer argument, the bitset is
+	  completely reset to a 64 bits bitset and the value set as an
+	  unsigned integer. In the second form with a string argument, the
+	  bitset is reset and the string argument is parsed as a binary
+	  string with or without binary prefix or as a hexadecimal string.
+	</p>
+      </meth>
+
+      <meth>
+	<name>clamp</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>clamp</code> method clamp a bitset by boolean value. The
+	  bitset size is determined by finding the upper bit index that
+	  match the boolean argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the bitset
+	  in bits.
+	</p>
+      </meth>
+
+      <meth>
+	<name>to-byte</name>
+	<retn>Integer</retn>
+	<args>Byte</args>
+	<p>
+	  The <code>to-byte</code> method maps a portion of the bitset to
+	  a byte at a specific position. The integer argument is the bit
+	  position that is mapped to the byte lsb.
+	</p>
+      </meth>
+
+      <meth>
+	<name>subset</name>
+	<retn>Integer</retn>
+	<args>Bitset</args>
+	<p>
+	  The <code>subset</code> method returns a sub bitset by size.
+	</p>
+      </meth>
+
+      <meth>
+	<name>subset</name>
+	<retn>Integer Integer</retn>
+	<args>Bitset</args>
+	<p>
+	  The <code>subset</code> method returns a sub bitset by size and
+	  position. The first integer argument is the sub bitset size. The
+	  second argument is the bitset position where the sub bitset is
+	  extracted.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = buffer object                                                   = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Buffer</name>
+
+    <p>
+      The <code>Buffer</code> builtin object is a byte buffer that
+      is widely used with i/o operations. The buffer can be constructed
+      with or without literal arguments. The standard methods to add or
+      push-back byte or characters are available. One attractive method is the
+      write method which can write a complete buffer to an output stream
+      specified as an argument. By default, the buffer operates in
+      resize mode. If the buffer is configured to operate in non-resize
+      mode, an exception is raised when trying to add a character when
+      the buffer is full. 
+    </p>
+
+    <!-- predicate -->
+    <pred>buffer-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Buffer</name>
+	<args>none</args>
+	<p>
+	  The <code>Buffer</code> constructor create an empty buffer. The
+	  buffer is configured to operate in resize mode.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Buffer</name>
+	<args>Literal...</args>
+	<p>
+	  The <code>Buffer</code> constructor create a buffer with a list
+	  of literal object arguments. Each literal argument is used to
+	  produce a byte representation which is added into the buffer.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add</name>
+	<retn>Integer</retn>
+	<args>Byte|Literal|Buffer</args>
+	<p>
+	  The <code>add</code> method adds a byte, a literal object or a buffer to
+	  the calling buffer. The object argument is automatically converted to a
+	  sequence of bytes. For a buffer, the entire content is copied
+	  into the buffer. The method returns the number of bytes added
+	  into the buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Byte</retn>
+	<args>none</args>
+	<p>
+	  The <code>get</code> method returns the next available byte in
+	  the buffer but do not remove it.
+	</p>
+      </meth>
+
+      <meth>
+	<name>read</name>
+	<retn>Byte</retn>
+	<args>none</args>
+	<p>
+	  The <code>read</code> method returns the next available character
+	  and remove it from the buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method reset the entire buffer and destroy
+	  its contents.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the length of the buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>full-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>full-p</code> predicate return true if the buffer is
+	  full. If the buffer is re-sizeable, the method always return false.
+	</p>
+      </meth>
+
+      <meth>
+	<name>empty-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>empty-p</code> predicate return true if the buffer is
+	  empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>resize-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>resize-p</code> predicate return true if the buffer is
+	  re-sizeable.
+	</p>
+      </meth>
+      
+      <meth>
+	<name>to-string</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>to-string</code> method returns a string representation of
+	  the buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>format</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>format</code> method returns an octet string representation of
+	  the buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>pushback</name>
+	<retn>Integer</retn>
+	<args>Byte|Literal|Buffer</args>
+	<p>
+	  The <code>pushback</code> method push back a byte, a literal
+	  object or a buffer in the calling buffer. The object argument is
+	  automatically converted to a sequence of bytes. For a buffer,
+	  the entire content is copied into the buffer. The method returns
+	  the number of byte pushbacked.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-host-word</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-host-word</code> method reads a word from the buffer and
+	  convert it to an integer. The word is assumed to be in network byte
+	  order and is converted into the host byte order before becoming an
+	  integer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-host-quad</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-host-quad</code> method reads a quad from the buffer and
+	  convert it to an integer. The quad is assumed to be in network byte
+	  order and is converted into the host byte order before becoming an
+	  integer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-host-octa</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-host-octa</code> method reads an octa from the buffer and
+	  convert it to an integer. The octa is assumed to be in network byte
+	  order and is converted into the host byte order before becoming an
+	  integer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-resize</name>
+	<retn>none</retn>
+	<args>Boolean</args>
+	<p>
+	  The <code>set-resize</code> method set the resize flag for a
+	  particular buffer. This method can be used at any time.
+	</p>
+      </meth>
+
+      <meth>
+	<name>shl</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>shl</code> method shift left the buffer by a certain
+	  number of characters. The integer argument is the number of
+	  characters to shift.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = block buffer object                                             = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>BlockBuffer</name>
+
+    <p>
+      The <code>BlockBuffer</code> builtin object is a special buffer
+      class designed to hold bytes in a bound or unbound way. In the
+      bound mode, the buffer size is know and the buffer cannot be
+      resized. In the unbound mode, the buffer size is unknown and the
+      buffer can be resized as needed. The block buffer is designed to
+      be loaded by various means, including data, buffer or
+      stream. Additionaly, the block buffer can be used to write into
+      another buffer or a stream by block. By default the read and write
+      block size is the system block size and the default mode is the
+      bound mode, which can be changed by setting the buffer resize flag.
+    </p>
+
+    <!-- predicate -->
+    <pred>block-buffer-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Buffer</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>BlockBuffer</name>
+	<args>none</args>
+	<p>
+	  The <code>BlockBuffer</code> constructor create a non-resizable
+	  empty block buffer.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>BlockBuffer</name>
+	<args>Integer</args>
+	<p>
+	  The <code>BlockBuffer</code> constructor create a non-resizable
+	  block buffer. The integer argument is the block buffer size.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>read-count</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>read-count</code> method returns the number of
+	  characters read by the buffer. The read counter is increased
+	  during any read operation that might decrease the buffer length.
+	</p>
+      </meth>
+
+      <meth>
+	<name>write-count</name>
+	<retn>Byte</retn>
+	<args>none</args>
+	<p>
+	  The <code>write-count</code> method returns the number of
+	  characters writen into the buffer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>copy</name>
+	<retn>Integer</retn>
+	<args>String|Buffer|InputStream|OutputStream</args>
+	<p>
+	  The <code>copy</code> method copies an object into or from the
+	  block buffer. Inthe first form, a string, a buffer or an input
+	  stream is isued to fill the buffer. If the buffer is resizable,
+	  the whole contents of the objects are copied into the block
+	  buffer. If the buffer is not resizable, the copy operation stops
+	  when the buffer is full. The copy method consumes characters
+	  with a buffer or an input stream object. With an output stream
+	  object, the block buffer characters are consumed while beeing
+	  written to the output stream. The total number of characters
+	  copied is returned by this method. When using a multiple types
+	  object that implements both the input and output stream model,
+	  the priority is given to the input stream type.
+	</p>
+      </meth>
+
+      <meth>
+	<name>copy-input-stream</name>
+	<retn>Integer</retn>
+	<args>InputStream</args>
+	<p>
+	  The <code>copy-input-stream</code> method copies an input stream
+	  into the block buffer. This method is similar to
+	  the <code>copy</code> method except that it operates only with
+	  an input stream. Such method is usefull when using object that
+	  implements multiple stream types.
+	</p>
+      </meth>
+
+      <meth>
+	<name>copy-output-stream</name>
+	<retn>Integer</retn>
+	<args>OutputStream</args>
+	<p>
+	  The <code>copy-output-stream</code> method copies an output stream
+	  into the block buffer. This method is similar to
+	  the <code>copy</code> method except that it operates only with
+	  an output stream. Such method is usefull when using object that
+	  implements multiple stream types.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = property object                                                 = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Property</name>
+
+    <p>
+      The <code>Property</code> builtin object is container for a
+      name/value pair. Generally, the property object is used within a
+      property list. An optional information field can be inserted into the
+      property.
+    </p>
+
+    <!-- predicate -->
+    <pred>property-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Serial</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Property</name>
+	<args>none</args>
+	<p>
+	  The <code>Property</code> constructor create an empty property.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Property</name>
+	<args>String</args>
+	<p>
+	  The <code>Property</code> constructor create a property by
+	  name. The first argument is the property name.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Property</name>
+	<args>String Literal</args>
+	<p>
+	  The <code>Property</code> constructor create a property by
+	  name and value. The first argument is the property name. The
+	  second argument is the property value.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Property</name>
+	<args>String String Literal</args>
+	<p>
+	  The <code>Property</code> constructor create a property by
+	  name, info and value. The first argument is the property name. The
+	  second argument is the property info. The third argument is the 
+	  property value.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>String Literal</args>
+	<p>
+	  The <code>set</code> method sets the property name and
+	  value. The first argument is the property name. The second
+	  argument is the property value, which is a literal 
+	  converted to its string representation.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the property name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the property name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-info</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-info</code> method sets the property information.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-info</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-info</code> method returns the property information.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-value</name>
+	<retn>none</retn>
+	<args>Literal</args>
+	<p>
+	  The <code>set-value</code> method sets the property value. The
+	  literal argument is converted to its string representation.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-value</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-value</code> method returns the property string value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-boolean-value</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-boolean-value</code> method returns the property boolean
+	  value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-integer-value</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-integer-value</code> method returns the property
+	  integer value.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-real-value</name>
+	<retn>Real</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-real-value</code> method returns the property
+	  real value.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = plist object                                                    = -->
+  <!-- =================================================================== -->
+
+  <object type="reserved">
+    <name>Plist</name>
+
+    <p>
+      The <code>Plist</code> builtin object is a base container class
+      used to manage property objects in an ordered way. The property
+      list operates by maintaining a vector of property object along
+      with a hash table that permits to find the object quickly.
+    </p>
+
+    <!-- predicate -->
+    <pred>plist-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Serial</name>
+      <name>Iterable</name>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Plist</name>
+	<args>none</args>
+	<p>
+	  The <code>Plist</code> constructor create an empty property list.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Plist</name>
+	<args>Boolean</args>
+	<p>
+	  The <code>Plist</code> constructor create a property list
+	  with a case flag.
+	</p>
+      </ctor>
+     <ctor>
+	<name>Plist</name>
+	<args>String</args>
+	<p>
+	  The <code>Plist</code> constructor create a property list by name.
+	</p>
+      </ctor>
+     <ctor>
+	<name>Plist</name>
+	<args>String String</args>
+	<p>
+	  The <code>Plist</code> constructor create a property list by name
+	  and info.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-name</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-name</code> method sets the property list name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-info</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-info</code> method sets the property list info.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-info</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-info</code> method returns the property list info.
+	</p>
+      </meth>
+
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>Property | String Literal | String String Literal</args>
+	<p>
+	  The <code>add</code> method add a property by object or name and
+	  value in the property list. In its first form the object is a
+	  property object. In the second form, the first argument is the
+	  property name and the second argument is the property value. In the
+	  the third form the first argument is the property name, the second
+	  argument is the property info and the this argument is the property
+	  value. if the property already exists an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set</name>
+	<retn>none</retn>
+	<args>Property | String Literal | String String Literal</args>
+	<p>
+	  The <code>set</code> method add or sets the property by object or
+	  name and value in the property list. In the first form, the argument
+	  is the property itself. In the second form, the first argument is the
+	  property name and the second argument is the property value. In the
+	  third form, the property is set by name, info and value. If the
+	  property already exists, the property value is changed.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get</name>
+	<retn>Property</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get</code> method returns a property by index.
+	</p>
+      </meth>
+
+      <meth>
+	<name>reset</name>
+	<retn>none</retn>
+	<args>none</args>
+	<p>
+	  The <code>reset</code> method resets the property lists
+	</p>
+      </meth>
+
+      <meth>
+	<name>empty-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>emptyp-</code> predicate returns true if the property
+	  list is empty.
+	</p>
+      </meth>
+
+      <meth>
+	<name>length</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>length</code> method returns the number of properties
+	  in the property list.
+	</p>
+      </meth>
+
+      <meth>
+	<name>exists-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>exists-p</code> method returns true if a property
+	  exists. The string argument is the property name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>find</name>
+	<retn>Property</retn>
+	<args>String</args>
+	<p>
+	  The <code>find</code> method  finds a property by name. The string
+	  argument is the property name. If the property does not exists,
+	  nil is returned.
+	</p>
+      </meth>
+
+      <meth>
+	<name>lookup</name>
+	<retn>Property</retn>
+	<args>String</args>
+	<p>
+	  The <code>lookup</code> method finds a property by name. The string
+	  argument is the property name. If the property does not exists,
+	  an exception is raised.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-value</name>
+	<retn>String</retn>
+	<args>String</args>
+	<p>
+	  The <code>get-value</code> method returns the property
+	  value. The string argument is the property name. If the property
+	  does not exist, an exception is raised.
+	</p>
+      </meth>
+
+     <meth>
+	<name>to-print-table</name>
+	<retn>PrintTable</retn>
+	<args>none | Boolean | Boolean Boolean</args>
+	<p>
+	  The <code>to-print-table</code> method converts the property list
+	  into a print table. The print table can be formated with the
+	  property info and value. In the first form, the print table is
+	  formated without the info field in normal value. In the second
+	  form, the boolean flag controls whther or not the info field is 
+	  added in the table. In the third form, the second boolean value
+	  controls whther or not the real property value are converted in
+	  scientific notation.
+	</p>
+      </meth>
+    </methods>
+  </object>
+</chapter>

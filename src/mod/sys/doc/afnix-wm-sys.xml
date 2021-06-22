@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-wm-sys.xml                                                   = -->
+<!-- = standard system access module - writer manual                      = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter module="sys" number="1">
+  <title>Standard System Access Module</title>
+  
+  <p>
+    The <em>Standard System Access</em> module is an original implementation
+    of various objects designed to provide a specialized access to the
+    underlying system. Most of the system accesses are provided in the form
+    of functions which have been designed to be portable as possible. One
+    example of this, are the time and date management objects.
+  </p>
+
+  <!-- interpreter information -->
+  <section>
+    <title>Interpreter information</title>
+
+    <p>
+      The interpreter provides a set reserved names that are
+      related to the system platform. Example <file>0501.als</file>
+      demonstrates the available information.
+    </p>
+
+    <example>
+      zsh&gt; axi 0501.als
+      program name           : afnix
+      operating system name  : linux
+      operating system type  : unix
+      afnix official uri     : http://www.afnix.org
+    </example>
+
+    <!-- interpreter version -->
+    <subsect>
+      <title>Interpreter version</title>
+
+      <p>
+	The interpreter version is identified by 3 numbers called 
+	<em>major</em>, <em>minor</em> and <em>patch</em> numbers. A
+	change in the major number represents a major change in the
+	writing system. The minor number indicates a major change in
+	the interface or libraries. A change in the patch number
+	indicates bug fixes. All values are accessed via the interpreter
+	itself. The <code>major-version</code>,
+	<code>minor-version</code>, <code>patch-version</code>
+	symbols are bound to these values.
+      </p>
+
+      <example>
+	println "major version number   : " 
+	  interp:major-version
+	println "minor version number   : " 
+	  interp:minor-version
+	println "patch version number   : " 
+	  interp:patch-version
+      </example>
+    </subsect>
+
+    <!-- operating system -->
+    <subsect>
+      <title>Operating system</title>
+
+      <p>
+	The operating system is uniquely identified by its name. The
+	operating system type (or category) uniquely identifies the
+	operating system flavor.
+      </p>
+
+      <example>
+	println "operating system name  : " 
+	  interp:os-name
+	println "operating system type  : " 
+	  interp:os-type
+      </example>
+    </subsect>
+
+    <!-- program information -->
+    <subsect>
+      <title>Program information</title>
+
+      <p>
+	Program information are carried by two symbols that identifies
+	the program name and the official uri. While the first
+	might be useful, the second one is mostly used by demo
+	programs.
+      </p>
+
+      <example>
+	println "program name           : " 
+	  interp:program-name
+	println "afnix official uri     : " 
+	  interp:afnix-uri
+      </example>
+    </subsect>
+  </section>
+
+  <!-- system services -->
+  <section>
+    <title>System services</title>
+
+    <p>
+      The <em>system services</em> module provides various functions
+      that cannot be classified into any particular category.
+    </p>
+
+    <table>
+      <title>System services functions</title>
+      <tr><th>Function</th><th>Description</th></tr>
+      <tr><td>exit</td>            <td>terminate with an exit code</td></tr>
+      <tr><td>sleep</td>           <td>pause for a certain time</td></tr>
+      <tr><td>get-pid</td>         <td>get the process identifier</td></tr>
+      <tr><td>get-env</td>         <td>get an environment variable</td></tr>
+      <tr><td>get-host-name</td>   <td>get the host name</td></tr>
+      <tr><td>get-user-name</td>   <td>get the user name</td></tr>
+    </table>
+
+    <p>
+      The <code>exit</code> function terminates the program with an exit
+      code specified as the argument. The <code>sleep</code> function
+      pause the specific thread for a certain time. The time argument is
+      expressed in milliseconds. The <code>get-pid</code> function
+      returns the process identifier. The <code>get-env</code> function
+      returns the environment variable associated with the string argument.
+      The <code>get-host-name</code> function returns the host name. The
+      host name can be either a simple name or a canonical name with its
+      domain, depending on the system configuration. The
+      <code>get-user-name</code> function returns the current user
+      name.
+    </p>
+  </section>
+
+  <!-- time and date -->
+  <section>
+    <title>Time and date</title>
+
+    <p>
+      The <code>Time</code> and <code>Date</code> classes are classes
+      designed to manipulate time and date. The writing system operates
+      with a special coordinated time which uses the
+      reference of Jan 1st 0000 in a modified proleptic Gregorian
+      calendar. This proleptic feature means that the actual calendar
+      (Gregorian) is extended beyond year 1582 (its introduction year)
+      and modified in order to support the year 0. This kind of calendar
+      is somehow similar to the astronomical Gregorian calendar except
+      that the reference date is 0 for the writing system. This method
+      presents the advantage to support negative time. It should be
+      noted that the 0 reference does not means year 1BC since year 0 did
+      not exist at that time (the concept of zero is fairly new) and more
+      important, the date expressed in the form 1BC generally refers to
+      the Julian calendar since the date is before 1582. Although, the class
+      provides several methods to access the time and date fields, it is also
+      possible to get a string representation that conforms to ISO-8601
+      or to RFC-2822.
+    </p>
+
+    <!-- time and date construction -->
+    <subsect>
+      <title>Time and date construction</title>
+
+      <p>
+	By default, a time instance of current time is constructed. This
+	time reference is obtained form the machine time and adjusted for
+	the internal representation. One feature of this class
+	is that the time instance does not have to be bounded with 24
+	hours. The time stored is the absolute time, which should be
+	considered like a temporal reference -- or date -- those origin
+	is 0 in some calendar representation.
+      </p>
+
+      <example>
+	const  time (afnix:sys:Time)
+	assert true (afnxi:sys:time-p time)
+      </example>
+
+      <p>
+	A simple time representation can also be built by hours, minutes
+	and seconds. In this case, the time is a time definition at day
+	0 in the reference calendar.
+      </p>
+
+      <example>
+	const  time (afnix:sys:Time 12 23 54)
+      </example>
+
+      <p>
+	By default a date instance of the current date is constructed. 
+	The current date is computed from the machine time and expressed
+	in a particular calendar. By default, the engine uses a
+	special Gregorian calendar as explained before. The important
+	point here s that the date will show up like the user should
+	expect.
+      </p>
+
+      <example>
+	const  date (afnix:sys:Date)
+	assert true (afnix:sys:date-p date)
+      </example>
+
+      <p>
+	A date instance can also be built with an absolute time expressed
+	in seconds or with specific elements. with one argument, the
+	date is expressed in seconds since the origin. Since the
+	internal representation is 64 bits, the date room is
+	quite large. For example, the absolute time to represent Jan 1st
+	1970 is 62167219200 seconds. This <em>epoch</em> is used to
+	adjust the system time on some UNIX system. Another way to
+	create a specific date is to use the date descriptor by year,
+	month and day. With 6 arguments, the time components can also be
+	given. This makes <code>Date</code> one of the constructor that
+	accept the largest number of arguments.
+      </p>
+
+      <example>
+	const  date (afnix:sys:Date 1789 7 14 16 0 0)
+	assert true (afnix:sys:date-p date)
+      </example>
+
+      <p>
+	In the previous example, at 17:00 local time, 16:00Z although
+	the concept of time zone was not formalized, the Bastille
+	surrenders on July 14 1789. This example shows that extreme care
+	should be used when dealing with old dates. Note that a simpler
+	form could have been used to set that date. With 3 argument, the
+	date is set at time 00:00:00Z.
+      </p>
+
+      <example>
+	const  date (afnix:sys:Date 1789 7 14)
+	assert true (afnix:sys:date-p date)
+      </example>      
+    </subsect>
+
+    <!-- time and date representation -->
+    <subsect>
+      <title>Time and date representation</title>
+
+      <p>
+	Except for some special applications -- like the cookie maximum
+	age --, the date representation is quite standard and can be
+	found either in the form of ISO-8601 or RFC-2822.
+      </p>
+
+      <example>
+	const time (afnix:sys:Time 12 44 55)
+	println    (time:format) # 12:44:55
+	println    (time:to-iso) # 14:44:55
+	println    (time:to-rfc) # 14:44:55 +0200
+      </example>
+
+      <p>
+	in the first form, the time is represented naturally by hour,
+	minutes and seconds. By default, it is the local time that is
+	given. With a flag set to true, the UTC time is displayed. In
+	the second form, the time is displayed in the ISO-8601 form
+	which is the same as before. In the third form, the time is
+	displayed in the RFC-2822 form. This form is always expressed
+	locally with the timezone difference associated with it. It
+	shall be noted that the ISO-8601 mandate to use the suffix 'Z'
+	for the zulu time. This is the difference when using the
+	<code>true</code> flag with the <code>format</code> and
+	<code>to-iso</code> methods.
+      </p>
+
+      <example>
+	println (time:format true) # 12:44:55
+	println (time:to-iso true) # 12:44:55Z
+      </example>
+
+      <p>
+	The date representation also operates with 3 methods, namely
+	<code>format</code>, <code>to-iso</code> and
+	<code>to-rfc</code>. For example, if the time is 12:00 in Paris
+	on July 14th 2000, the date will be displayed like below.
+      </p>
+
+      <example>
+	const date (afnix:sys:Date 2000 7 14 12 0 0)
+	# Fri Jul 14 07:00:00 2000
+	println (date:format)
+	# 2000-07-14T07:00:00
+	println (date:to-iso)
+	# Fri, 14 Jul 2000 07:00:00 -0500	
+	println (date:to-rfc)
+      </example>
+
+      <p>
+	The example show the local time. With UTC display, only the
+	first two methods can be used.
+      </p>
+
+      <example>
+	const date (afnix:sys:Date 2000 7 14 12 0 0)
+	println (date:format true) # Fri Jul 14 12:00:00 2000
+	println (date:to-iso true) # 2000-07-14T12:00:00Z
+      </example>
+    </subsect>
+  </section>
+
+  <!-- option parsing -->
+  <section>
+    <title>Options parsing</title>
+
+    <p>
+      The <code>Options</code> class provides a convenient mechanism to
+      define a set of options and to parse them in a simple way. The
+      object is constructed by specifying which option is valid
+      and how it behaves. The arguments can be passed to the object
+      for subsequent analysis. An option can be either a unique option
+      or a string option. In this later case, multiple value for the
+      same option can be accepted. In that case, the option is said to
+      be a string vector option. An option can be also an option list. I
+      that case, the option is defined with a set of valid string. A
+      list option is associated with a boolean flag for each string defined
+      with that option.
+    </p>
+
+    <!-- option creation -->
+    <subsect>
+      <title>Option creation</title>
+
+      <p>
+	An <code>Options</code> is created by invoking the constructor
+	with or without a user message. The user message is used by the
+	<code>usage</code> method which display an information message.
+      </p>
+
+      <example>
+	const options (
+	  afnix:sys:Options "axi [options] [file [arguments]]")
+      </example>
+
+      <p>
+	Eventually, the <code>set-user-message</code> method can be used
+	to set the user message.
+      </p>
+    </subsect>
+
+    <!-- options definition -->
+    <subsect>
+      <title>Options definition</title>
+
+      <p>
+	The process of defining options is done by specifying the option
+	character, eventually an option string and an option message. 
+      </p>
+
+      <example>
+	options:add-unique-option 'h'
+	  "print this help message"
+	options:add-unique-option 'v'
+	  "print system version"
+	options:add-vector-option 'i'
+	  "add a resolver path"
+	options:add-string-option 'e'
+          "force the encoding mode"
+	options:add-list-option   'f' "assert" 
+	  "enable assertion checks"
+	options:add-list-option   'f' "nopath" 
+	  "do not set initial path"
+      </example>
+
+      <p>
+	The above example shows the option descriptors for the
+	interpreter. Since <option>i</option> is a vector option,
+	multiple occurrences of that option is allowed. It shall be noted
+	that the list option <option>f assert</option> is a debug option. This
+	means that this option is always set when the program is
+	compiled in debug mode.
+      </p>
+    </subsect>
+
+    <!-- options parsing and retrieval -->
+    <subsect>
+      <title>Options parsing and retrieval</title>
+
+      <p>
+	A string vector is parsed with the <code>parse</code>
+	method. Generally, the vector argument is the interpreter
+	argument vector defined in the qualified name
+	<code>interp:args</code>. When the vector has been successfully
+	parsed, it is possible to check the option that have been set.
+      </p>
+
+      <example>
+	options:parse (Vector "-h")
+	if (options:get-unique-option 'h') {
+        options:usage
+	afnix:sys:exit 0
+	}
+      </example>
+
+      <p>
+	In the above example, the option vector is parsed with the
+	<code>parse</code> method. The <code>get-unique-option</code>
+	method returns true for the <option>h</option> thus triggering the
+	display of the usage message.
+      </p>
+
+      <example>
+	usage: axi [options] [file [arguments]]
+	[h]           print this help message
+	[v]           print system version
+	[i   path]    add a resolver path
+	[e   mode]    force the encoding mode
+	[f assert]    enable assertion checks
+	[f nopath]    do not set initial path
+      </example>
+
+      <p>
+	If the option is a string option, the
+	<code>get-string-option</code> will return the string associated
+	with that option. It shall be noted that the
+	<code>get-unique-option</code> method can be used to check if
+	the option has been set during the parsing process. If the
+	option is a vector option, the <code>get-vector-option</code>
+	method is more appropriate. In this case, a vector is returned
+	with all strings matching this option.
+      </p>
+
+      <example>
+	options:parse (
+	  Vector "-i" "../" "-i" "../.." -e "UTF-08" "hello")
+      </example>
+      
+      <p>
+	In the previous example, the vector option <option>i</option> is
+	set two times. The associated vector option has therefore a
+	length of 2. The string option <option>e</option> is set to
+	<tt>UTF-08</tt>. For this option <option>e</option>, the
+	<code>get-unique-option</code> method will return true. Finally,
+	the vector argument is filled with one string argument.
+      </p>
+    </subsect>    
+  </section>
+</chapter>

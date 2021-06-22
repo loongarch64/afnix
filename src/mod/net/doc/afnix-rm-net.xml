@@ -1,0 +1,1062 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-rm-net.xml                                                   = -->
+<!-- = standard networking module - reference manual                      = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix module="net" number="i">
+  <title>Networking reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = address object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:net">
+    <name>Address</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Address</code> class is the Internet address manipulation
+      class. The class can be used to perform the conversion between a
+      host name and an IP address. The opposite is also possible. Finally,
+      the class supports both IP version 4 and IP version 6 address
+      formats.
+    </p>
+
+    <!-- predicate -->
+    <pred>address-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Object</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Address</name>
+	<args>String</args>
+	<p>
+	  The <code>Address</code> constructor create an IP address object
+	  by name. The name argument is a string of a host name or a valid
+	  IP address representation.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Address</name>
+	<args>String Boolean</args>
+	<p>
+	  The <code>Address</code> constructor create an IP address object
+	  by name and force the reverse lookup resolution depending on the
+	  boolean flag value. The first argument is a string of a host name
+	  or a valid IP address representation. The second argument is a
+	  boolean flag that indicates whether or not reverse lookup must
+	  occur during the construction.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- operators -->
+    <otors>
+      <oper>
+	<name>==</name>
+	<retn>Boolean</retn>
+	<args>Address</args>
+	<p>
+	  The <code>==</code> operator returns true if the calling object
+	  is equal to the address argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>!=</name>
+	<retn>Boolean</retn>
+	<args>Address</args>
+	<p>
+	  The <code>!=</code> operator returns true if the calling object is
+	  not equal to the address argument.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;</name>
+	<retn>Boolean</retn>
+	<args>Address</args>
+	<p>
+	  The <code>&lt;</code> operator returns true if the calling
+	  address is less than the address object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&lt;=</name>
+	<retn>Boolean</retn>
+	<args>Address</args>
+	<p>
+	  The <code>&lt;=</code> operator returns true if the calling
+	  address is less equal than the address object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;</name>
+	<retn>Boolean</retn>
+	<args>Address</args>
+	<p>
+	  The <code>&gt;</code> operator returns true if the calling
+	  address is greater than the address object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>&gt;=</name>
+	<retn>Boolean</retn>
+	<args>Address</args>
+	<p>
+	  The <code>&lt;=</code> operator returns true if the calling
+	  address is greater equal than the address object.
+	</p>
+      </oper>
+
+      <oper>
+	<name>++</name>
+	<retn>Address</retn>
+	<args>Address</args>
+	<p>
+	  The <code>++</code> operator increments the calling address by
+	  one position.
+	</p>
+      </oper>
+    </otors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>resolve</name>
+	<retn>String Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>resolve</code> method resolves an host name and
+	  eventually performs a reverse lookup. The first argument is a
+	  string of a host name or a valid IP address representation. The
+	  second argument is a boolean flag that indicates whether or not
+	  reverse lookup must occur during the resolution.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-name</code> method returns the original name used
+	  during the object construction.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-address</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-address</code> method returns a string
+	  representation of the IP address. The string representation 
+	  follows the IP version 4 or IP version 6 preferred formats,
+	  depending on the internal representation.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-vector</name>
+	<retn>Vector</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-vector</code> method returns a vector
+	  representation of the IP address. The vector result follows the
+	  IP version 4 or IP version 6 preferred format, depending on the
+	  internal representation.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-canonical-name</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-canonical-name</code> method returns a fully
+	  qualified name of the address. The resulting name is obtained by
+	  performing a reverse lookup. Note that the name can be different
+	  from the original name.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-alias-size</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-alias-size</code> method returns the number of
+	  aliases for the address. The number of aliases includes as well
+	  the primary resolved name which is located at index 0.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-alias-name</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-alias-name</code> method returns a fully
+	  qualified name of the address alias by index. The first argument
+	  is the alias index number which must be in the alias index
+	  range. The resulting name is obtained by performing a reverse
+	  lookup. Note that the name can be different from the original
+	  name. Using index 0 is equivalent to call
+	  <code>get-canonical-name</code>.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-alias-address</name>
+	<retn>String</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-alias-address</code> method returns a string
+	  representation of the IP address alias by index. The first argument
+	  is the alias index number which must be in the alias index
+	  range. The string representation follows the IP version 4 or IP
+	  version 6 preferred formats, depending on the internal
+	  representation. Using index 0 is equivalent to call
+	  <code>get-address</code>.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-alias-vector</name>
+	<retn>Vector</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>get-alias-vector</code> method returns a vector
+	  representation of the IP address alias by index. The first
+	  argument is the alias index number which must be in the alias
+	  index range. The vector result follows the IP version 4 or IP
+	  version 6 preferred format, depending on the internal
+	  representation. Using index 0 is equivalent to call
+	  <code>get-vector</code>.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = global functions                                                = -->
+  <!-- =================================================================== -->
+  
+  <functions>
+    <func nameset="afnix:net">
+      <name>get-loopback</name>
+      <retn>String</retn>
+      <args>none</args>
+      <p>
+	The <code>get-loopback</code> function returns the name of the
+	machine loopback. On a UNIX system, that name is <tt>localhost</tt>. 
+      </p>
+    </func>
+
+    <func nameset="afnix:net">
+      <name>get-tcp-service</name>
+      <retn>String</retn>
+      <args>Integer</args>
+      <p>
+	The <code>get-tcp-service</code> function returns the name of the
+	tcp service given its port number. For example, the tcp service at
+	port 13 is the <tt>daytime</tt> server.
+      </p>
+    </func>
+
+    <func nameset="afnix:net">
+      <name>get-udp-service</name>
+      <retn>String</retn>
+      <args>Integer</args>
+      <p>
+	The <code>get-udp-service</code> function returns the name of the
+	udp service given its port number. For example, the udp service at
+	port 19 is the <tt>chargen</tt> server.
+      </p>
+    </func>
+  </functions>
+
+  <!-- =================================================================== -->
+  <!-- = socket object                                                   = -->
+  <!-- =================================================================== -->
+  
+  <object nameset="afnix:net">
+    <name>Socket</name>
+
+    <!-- synopsis -->
+    <p> 
+      The <code>Socket</code> class is a base class for the <afnix/>
+      network services. The class is automatically constructed by a
+      derived class and provide some common methods for all socket
+      objects.
+    </p>
+
+    <!-- predicate -->
+    <pred>socket-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>InputStream</name>
+      <name>OutputStream</name>
+    </inherit>
+
+    <!-- constants -->
+    <constants>
+      <const>
+	<name>REUSE-ADDRESS</name>
+	<p>
+	  The <code>REUSE-ADDRESS</code> constant is used by the
+	  <code>set-option</code> method to enable socket address
+	  reuse. This option changes the rules that validates the address
+	  used by bind. It is not recommended to use that option as it
+	  decreases TCP reliability.
+	</p>
+      </const>
+
+      <const>
+	<name>BROADCAST</name>
+	<p>
+	  The <code>BROADCAST</code> constant is used by the
+	  <code>set-option</code> method to enable broadcast of
+	  packets. This options only works with IP version 4 address. The
+	  argument is a boolean flag only. 
+	</p>
+      </const>
+
+      <const>
+	<name>DONT-ROUTE</name>
+	<p>
+	  The <code>DONT-ROUTE</code> constant is used by the
+	  <code>set-option</code> method to control if a packet is to be
+	  sent via the routing table. This option is rarely used with
+	  <afnix/>. The argument is a boolean flag only. 
+	</p>
+      </const>
+
+      <const>
+	<name>KEEP-ALIVE</name>
+	<p>
+	  The <code>KEEP-ALIVE</code> constant is used by the
+	  <code>set-option</code> method to check periodically if the
+	  connection is still alive. This option is rarely used with
+	  <afnix/>. The argument is a boolean flag only. 
+	</p>
+      </const>
+
+      <const>
+	<name>LINGER</name>
+	<p>
+	  The <code>LINGER</code> constant is used by the
+	  <code>set-option</code> method to turn on or off the lingering
+	  on close. If the first argument is true, the second argument is
+	  the linger time.
+	</p>
+      </const>
+
+      <const>
+	<name>RCV-SIZE</name>
+	<p>
+	  The <code>RCV-SIZE</code> constant is used by the
+	  <code>set-option</code> method to set the receive buffer size. 
+	</p>
+      </const>
+
+      <const>
+	<name>SND-SIZE</name>
+	<p>
+	  The <code>SND-SIZE</code> constant is used by the
+	  <code>set-option</code> method to set the send buffer size.
+	</p>
+      </const>
+
+      <const>
+	<name>HOP-LIMIT</name>
+	<p>
+	  The <code>HOP-LIMIT</code> constant is used by the
+	  <code>set-option</code> method to set packet hop limit.
+	</p>
+      </const>
+
+      <const>
+	<name>MULTICAST-LOOPBACK</name>
+	<p>
+	  The <code>MULTICAST-LOOPBACK</code> constant is used by the
+	  <code>set-option</code> method to control whether or not
+	  multicast packets are copied to the loopback. The argument is a
+	  boolean flag only.
+	</p>
+      </const>
+
+      <const>
+	<name>MULTICAST-HOP-LIMIT</name>
+	<p>
+	  The <code>MULTICAST-HOP-LIMIT</code> constant is used by the
+	  <code>set-option</code> method to set the hop limit for
+	  multicast packets.
+	</p>
+      </const>
+
+      <const>
+	<name>MAX-SEGMENT-SIZE</name>
+	<p>
+	  The <code>MAX-SEGMENT-SIZE</code> constant is used by the
+	  <code>set-option</code> method to set the TCP maximum segment size.
+	</p>
+      </const>
+
+      <const>
+	<name>NO-DELAY</name>
+	<p>
+	  The <code>NO-DELAY</code> constant is used by the
+	  <code>set-option</code> method to enable or disable the Naggle
+	  algorithm.
+	</p>
+      </const>
+    </constants>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>bind</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>bind</code> method binds this socket to the port
+	  specified as the argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>bind</name>
+	<retn>none</retn>
+	<args>Integer Address</args>
+	<p>
+	  The <code>bind</code> method binds this socket to the port
+	  specified as the first argument and the address specified as the
+	  second argument.
+	</p>
+      </meth>
+
+      <meth>
+	<name>connect</name>
+	<retn>none</retn>
+	<args>Integer Address [Boolean]</args>
+	<p>
+	  The <code>connect</code> method connects this socket to the port
+	  specified as the first argument and the address specified as the
+	  second argument. A connected socket is useful with udp client
+	  that talks only with one fixed server. The optional third
+	  argument is a boolean flag that permits to select whether or not
+	  the alias addressing scheme should be used. If the flag is false,
+	  the default address is used. If the flag is true, an attempt is
+	  made to connect to the first successful address that is part
+	  of the alias list.
+	</p>
+      </meth>
+
+      <meth>
+	<name>open-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>open-p</code> predicate returns true if the socket is
+	  open. The method checks that a descriptor is attached to the
+	  object. This does not mean that the descriptor is valid in the
+	  sense that one can read or write on it. This method is useful to
+	  check if a socket has not been closed.
+	</p>
+      </meth>
+
+      <meth>
+	<name>shutdown</name>
+	<retn>Boolean</retn>
+	<args>none|Boolean</args>
+	<p>
+	  The <code>shutdown</code> method shutdowns or close the
+	  connection. Without argument, the connection is closed without
+	  consideration for those symbols attached to the object. With one
+	  argument, the connection is closed in one direction only. If the
+	  mode argument is false, further receive is disallowed. If the
+	  mode argument is true, further send is disallowed. The method
+	  returns true on success, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>ipv6-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>ipv6-p</code> predicate returns true if the socket
+	  address is an IP version 6 address, false otherwise.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-socket-address</name>
+	<retn>Address</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-socket-address</code> method returns an address
+	  object of the socket. The returned object can be later used to
+	  query the canonical name and the ip address.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-socket-port</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-socket-port</code> method returns the port
+	  number of the socket.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-socket-authority</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-socket-authority</code> method returns the authority
+	  string in the form of an address and port pair of the socket.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-peer-address</name>
+	<retn>Address</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-peer-address</code> method returns an address
+	  object of the socket's peer. The returned object can be later
+	  used to query the canonical name and the ip address.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-peer-port</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-peer-port</code> method returns the port
+	  number of the socket's peer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-peer-authority</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-peer-authority</code> method returns the authority
+	  string in the form of an address and port pair of the socket's peer.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-option</name>
+	<retn>Boolean</retn>
+	<args>constant [Boolean|Integer] [Integer]</args>
+	<p>
+	  The <code>set-option</code> method set a socket option. The
+	  first argument is the option to set. The second argument is a
+	  boolean value which turn on or off the option. The optional
+	  third argument is an integer needed for some options.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-encoding-mode</name>
+	<retn>none</retn>
+	<args>Item|String</args>
+	<p>
+	  The <code>set-encoding-mode</code> method sets the input and
+	  output encoding mode. In the first form, with an item, the
+	  stream encoding mode is set directly. In the second form, the
+	  encoding mode is set with a string and might also alter the
+	  stream transcoing mode.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-input-encoding-mode</name>
+	<retn>none</retn>
+	<args>Item|String</args>
+	<p>
+	  The <code>set-input-encoding-mode</code> method sets the input
+	  encoding mode. In the first form, with an item, the
+	  stream encoding mode is set directly. In the second form, the
+	  encoding mode is set with a string and might also alter the
+	  stream transcoing mode.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-input-encoding-mode</name>
+	<retn>Item</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-input-encoding-mode</code> method return the input
+	  encoding mode.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-output-encoding-mode</name>
+	<retn>none</retn>
+	<args>Item|String</args>
+	<p>
+	  The <code>set-output-encoding-mode</code> method sets the output
+	  encoding mode. In the first form, with an item, the
+	  stream encoding mode is set directly. In the second form, the
+	  encoding mode is set with a string and might also alter the
+	  stream transcoing mode.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-output-encoding-mode</name>
+	<retn>Item</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-output-encoding-mode</code> method return the output
+	  encoding mode.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = tcp socket object                                               = -->
+  <!-- =================================================================== -->
+  
+  <object nameset="afnix:net">
+    <name>TcpSocket</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>TcpSocket</code> class is a base class for all tcp
+      socket objects. The class is derived from the <code>Socket</code>
+      class and provides some specific tcp methods. If a
+      <code>TcpSocket</code> is created, the user is responsible to
+      connect it to the proper address and port.
+    </p>
+
+    <!-- predicate -->
+    <pred>tcp-socket-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Socket</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>TcpSocket</name>
+	<args>none</args>
+	<p>
+	  The <code>TcpSocket</code> constructor creates a new tcp socket.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>accept</name>
+	<retn>TcpSocket</retn>
+	<args>none</args>
+	<p>
+	  The <code>accept</code> method waits for incoming connection and
+	  returns a <code>TcpSocket</code> object initialized with the
+	  connected peer. The result socket can be used to perform i/o
+	  operations. This method is used by tcp server.
+	</p>
+      </meth>
+
+      <meth>
+	<name>listen</name>
+	<retn>Boolean</retn>
+	<args>none|Integer</args>
+	<p>
+	  The <code>listen</code> method initialize a socket to accept
+	  incoming connection. Without argument, the default number of
+	  incoming connection is 5. The integer argument can be used to
+	  specify the number of incoming connection that socket is willing
+	  to queue. This method is used by tcp server.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = tcp client object                                               = -->
+  <!-- =================================================================== -->
+  
+  <object nameset="afnix:net">
+    <name>TcpClient</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>TcpClient</code> class creates a tcp client by host and
+      port. The host argument can be either a name or an address
+      object. The port argument is the server port to contact. The
+      <code>TcpClient</code> class is derived from the
+      <code>TcpSocket</code> class. This class has no specific methods.
+    </p>
+
+    <!-- predicate -->
+    <pred>tcp-client-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>TcpSocket</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>TcpClient</name>
+	<args>String Integer</args>
+	<p>
+	  The <code>TcpClient</code> constructor creates a new tcp client
+	  socket by host name and port number.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = tcp server object                                               = -->
+  <!-- =================================================================== -->
+  
+  <object nameset="afnix:net">
+    <name>TcpServer</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>TcpServer</code> class creates a tcp server by port. An
+      optional host argument can be either a name or an address
+      object. The port argument is the server port to bind. The
+      <code>TcpServer</code> class is derived from the
+      <code>TcpSocket</code> class. This class has no specific
+      methods. With one argument, the server bind the port argument on
+      the local host. The backlog can be specified as the last
+      argument. The host name can also be specified as the first
+      argument, the port as second argument and eventually the
+      backlog. Note that the host can be either a string or an address
+      object.
+    </p>
+
+    <!-- predicate -->
+    <pred>tcp-server-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>TcpSocket</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>TcpServer</name>
+	<args>none</args>
+	<p>
+	  The <code>TcpServer</code> constructor creates a default tcp
+	  server.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>TcpServer</name>
+	<args>Integer</args>
+	<p>
+	  The <code>TcpServer</code> constructor creates a default tcp
+	  server which is bound on the specified port argument.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>TcpServer</name>
+	<args>Integer Integer</args>
+	<p>
+	  The <code>TcpServer</code> constructor creates a default tcp
+	  server which is bound on the specified port argument. The second
+	  argument is the backlog value.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>TcpServer</name>
+	<args>String Integer</args>
+	<p>
+	  The <code>TcpServer</code> constructor creates a tcp server by
+	  host name and port number. The first argument is the host
+	  name. The second argument is the port number.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>TcpServer</name>
+	<args>String Integer Integer</args>
+	<p>
+	  The <code>TcpServer</code> constructor creates a tcp server by
+	  host name and port number. The first argument is the host
+	  name. The second argument is the port number. The third argument
+	  is the backlog.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = datagram object                                                 = -->
+  <!-- =================================================================== -->
+  
+  <object nameset="afnix:net">
+    <name>Datagram</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Datagram</code> class is a socket class used by udp
+      socket. A datagram is constructed by the <code>UdpSocket</code>
+      <code>accept</code> method. The purpose of a datagram is to store
+      the peer information so one can reply to the sender. The datagram
+      also stores in a buffer the data sent by the peer. This class does
+      not have any constructor nor any specific method.
+    </p>
+
+    <!-- predicate -->
+    <pred>datagram-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Socket</name>
+    </inherit>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = udp socket object                                               = -->
+  <!-- =================================================================== -->
+  
+  <object nameset="afnix:net">
+    <name>UdpSocket</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>UdpSocket</code> class is a base class for all udp
+      socket objects. The class is derived from the <code>Socket</code>
+      class and provides some specific udp methods.
+    </p>
+
+    <!-- predicate -->
+    <pred>udp-socket-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Socket</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>UdpSocket</name>
+	<args>none</args>
+	<p>
+	  The <code>UdpSocket</code> constructor creates a new udp socket.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>accept</name>
+	<retn>Datagram</retn>
+	<args>none</args>
+	<p>
+	  The <code>accept</code> method waits for an incoming datagram
+	  and returns a <code>Datagram</code> object. The datagram is
+	  initialized with the peer address and port as well as the
+	  incoming data.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = udp client object                                               = -->
+  <!-- =================================================================== -->
+  
+  <object nameset="afnix:net">
+    <name>UdpClient</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>UdpClient</code> class creates a udp client by host and
+      port. The host argument can be either a name or an address
+      object. The port argument is the server port to contact. The
+      <code>UdpClient</code> class is derived from the
+      <code>UdpSocket</code> class. This class has no specific methods.
+    </p>
+
+    <!-- predicate -->
+    <pred>udp-client-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>UdpSocket</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>UdpClient</name>
+	<args>String Integer</args>
+	<p>
+	  The <code>UdpClient</code> constructor creates a new udp client
+	  by host and port. The first argument is the host name. The
+	  second argument is the port number.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = udp server object                                               = -->
+  <!-- =================================================================== -->
+  
+  <object nameset="afnix:net">
+    <name>UdpServer</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>UdpServer</code> class creates a udp server by port. An
+      optional host argument can be either a name or an address
+      object. The port argument is the server port to bind. The
+      <code>UdpServer</code> class is derived from the
+      <code>UdpSocket</code> class. This class has no specific
+      methods. With one argument, the server bind the port argument on
+      the local host. The host name can also be specified as the first
+      argument, the port as second argument. Note that the host can be
+      either a string or an address object.
+    </p>
+
+    <!-- predicate -->
+    <pred>udp-server-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>UdpSocket</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>UdpServer</name>
+	<args>none</args>
+	<p>
+	  The <code>UdpServer</code> constructor creates a default udp
+	  server object.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>UdpServer</name>
+	<args>String|Address</args>
+	<p>
+	  The <code>UdpServer</code> constructor creates a udp server
+	  object by host. The first argument is the host name or host address.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>UdpServer</name>
+	<args>String|Address Integer</args>
+	<p>
+	  The <code>UdpServer</code> constructor creates a udp server
+	  object by host and port. The first argument is the host name or
+	  host address. The second argument is the port number.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = multicast object                                                = -->
+  <!-- =================================================================== -->
+  
+  <object nameset="afnix:net">
+    <name>Multicast</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Multicast</code> class creates a udp multicast socket by
+      port. An optional host argument can be either a name or an address
+      object. The port argument is the server port to bind. The
+      <code>Multicast</code> class is derived from the
+      <code>UdpSocket</code> class. This class has no specific
+      methods. With one argument, the server bind the port argument on
+      the local host. The host name can also be specified as the first
+      argument, the port as second argument. Note that the host can be
+      either a string or an address object. This class is similar to the
+      <code>UdpServer</code> class, except that the socket join the
+      multicast group at construction and leave it at destruction.
+    </p>
+
+    <!-- predicate -->
+    <pred>multicast-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>UdpSocket</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Multicast</name>
+	<args>String|Address</args>
+	<p>
+	  The <code>Multicast</code> constructor creates a multicast socket
+	  object by host. The first argument is the host name or host address.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Multicast</name>
+	<args>String|Address Integer</args>
+	<p>
+	  The <code>Multicast</code> constructor creates a multicast socket
+	  object by host and port. The first argument is the host name or
+	  host address. The second argument is the port number.
+	</p>
+      </ctor>
+    </ctors>
+  </object>
+</appendix>

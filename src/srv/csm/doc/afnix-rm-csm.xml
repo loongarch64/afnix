@@ -1,0 +1,777 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = afnix-rm-csm.xml                                                   = -->
+<!-- = standard csm service - reference manual                            = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix service="csm" number="i">
+  <title>Standard Content Session Management Reference</title>
+
+  <!-- =================================================================== -->
+  <!-- = part object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:csm">
+    <name>Part</name>
+
+    <p>
+      The <code>Part</code> class is a taggable object which is bound
+      by a unique key and provide a plist interface access. The part
+      object is the foundation of the blob object and is also used to
+      feed a collection. The key is represented by a uuid object.
+    </p>
+
+    <!-- predicate -->
+    <pred>part-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Taggable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Part</name>
+	<args>none</args>
+	<p>
+	  The <code>Part</code> constructor creates an empty part
+	</p>
+      </ctor>
+      <ctor>
+	<name>Part</name>
+	<args>String</args>
+	<p>
+	  The <code>Part</code> constructor creates a part by name.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Part</name>
+	<args>String String</args>
+	<p>
+	  The <code>Part</code> constructor creates a part by name and
+	  info strings.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>kid-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>kip-p</code> predicate returns true if the part
+	  kid can be validated.
+	</p>
+      </meth>
+      <meth>
+	<name>property-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>property-p</code> predicate returns true if the property
+	  name argument is defined in the part.
+	</p>
+      </meth>
+      <meth>
+	<name>get-kid</name>
+	<retn>Uuid</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-kid</code> method returns the part kid.
+	</p>
+      </meth>
+      <meth>
+	<name>add</name>
+	<retn>none</retn>
+	<args>String Literal</args>
+	<p>
+	  The <code>add</code> method adds a property to the part.
+	</p>
+      </meth>
+      <meth>
+	<name>get-header</name>
+	<retn>Plist</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-header</code> method returns the part header
+	  which is a plist with the part name, info and uuid.
+	</p>
+      </meth>
+      <meth>
+	<name>get-plist</name>
+	<retn>Plist</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-plist</code> method returns the part plist.
+	</p>
+      </meth>
+      <meth>
+	<name>get-value</name>
+	<retn>String</retn>
+	<args>String</args>
+	<p>
+	  The <code>get-value</code> method returns the a part
+	  property value by name.
+	</p>
+      </meth>
+      <meth>
+	<name>to-lteral</name>
+	<retn>Literal</retn>
+	<args>String</args>
+	<p>
+	  The <code>toliteral</code> method returns the a part
+	  property literal by name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = blob object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:csm">
+    <name>Blob</name>
+
+    <p>
+      The <code>Blob</code> class is a base class that models the
+      behavior of a registered blob through the use of a registration
+      id. The blob is registered as soon as its registration id is
+      set. If the registration id is unset, the object is unregistered
+      or anonymous. The registration id can be anything as long as as
+      it is understood by the implementation that such registration is
+      to be interpreted somewhere else. The blob is also a part which
+      means that it has a name, info and unique key.
+    </p>
+
+    <!-- predicate -->
+    <pred>blob-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Part</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Blob</name>
+	<args>none</args>
+	<p>
+	  The <code>Blob</code> constructor creates an empty blob.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Blob</name>
+	<args>String</args>
+	<p>
+	  The <code>Blob</code> constructor creates a blob by name.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Blob</name>
+	<args>String String</args>
+	<p>
+	  The <code>Blob</code> constructor creates a blob by name and
+	  info strings.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Blob</name>
+	<args>String String String</args>
+	<p>
+	  The <code>Blob</code> constructor creates a blob by rid, name and
+	  info strings.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>rid-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>rid-p</code> predicate returns true if the blob
+	  registration id is set.
+	</p>
+      </meth>
+
+      <meth>
+	<name>set-rid</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-rid</code> method sets the blob rid.
+	</p>
+      </meth>
+
+      <meth>
+	<name>get-rid</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-rid</code> method returns the blob rid.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = bloc object                                                     = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:csm">
+    <name>Bloc</name>
+
+    <p>
+      The <code>Bloc</code> class is a derived class which
+      encapsulates the functionality of a blob coupled with a plist
+      and a table of conditionals.
+    </p>
+
+    <!-- predicate -->
+    <pred>bloc-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Blob</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Bloc</name>
+	<args>none</args>
+	<p>
+	  The <code>Bloc</code> constructor creates an empty bloc.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Bloc</name>
+	<args>String</args>
+	<p>
+	  The <code>Bloc</code> constructor creates a bloc by name.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Bloc</name>
+	<args>String String</args>
+	<p>
+	  The <code>Bloc</code> constructor creates a bloc by name and
+	  info strings.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Bloc</name>
+	<args>String String String</args>
+	<p>
+	  The <code>Bloc</code> constructor creates a bloc by rid, name and
+	  info strings.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>add-credential</name>
+	<retn>none</retn>
+	<args>Credential</args>
+	<p>
+	  The <code>add-credential</code> method add a credential to
+	  the bloc.
+	</p>
+      </meth>
+      <meth>
+	<name>get-credential</name>
+	<retn>Credential</retn>
+	<args>String</args>
+	<p>
+	  The <code>get-credential</code> method returns a credential
+	  object by name.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = carrier object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:csm">
+    <name>Carrier</name>
+
+    <p>
+      The <code>Carrier</code> class is a blob used to transport an
+      object. The object transported by the carrier must be serializable.
+    </p>
+
+    <!-- predicate -->
+    <pred>carrier-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Blob</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Carrier</name>
+	<args>none</args>
+	<p>
+	  The <code>Carrier</code> constructor creates an empty carrier.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Carrier</name>
+	<args>Object</args>
+	<p>
+	  The <code>Carrier</code> constructor creates a carrier with
+	  an object.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Carrier</name>
+	<args>Object String</args>
+	<p>
+	  The <code>Carrier</code> constructor creates a carrier with
+	  an object by name.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Carrier</name>
+	<args>Object String String</args>
+	<p>
+	  The <code>Carrier</code> constructor creates a carrier with
+	  an object by name and info strings.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Carrier</name>
+	<args>Carrier String String String</args>
+	<p>
+	  The <code>Carrier</code> constructor creates a carrier with
+	  an object by rid, name and info strings.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>get-object</name>
+	<retn>Object</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-object</code> method returns the carrier object.
+	</p>
+      </meth>
+    </methods>
+  </object>
+
+  <!-- =================================================================== -->
+  <!-- = delegate object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:csm">
+    <name>Delegate</name>
+
+    <p>
+      The <code>Delegate</code> class is a carrier blob which
+      delegates its transport to another object. Such approach is used
+      when the carried object needs to remains locally (aka it cannot
+      be serialized) but a reference to it can be sent to the remote peer.
+    </p>
+
+    <!-- predicate -->
+    <pred>delegate-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Carrier</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Delegate</name>
+	<args>none</args>
+	<p>
+	  The <code>Delegate</code> constructor creates an empty delegate.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Delegate</name>
+	<args>Object</args>
+	<p>
+	  The <code>Delegate</code> constructor creates a delegate with
+	  an object.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Delegate</name>
+	<args>Object String</args>
+	<p>
+	  The <code>Delegate</code> constructor creates a delegate with
+	  an object by name.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Delegate</name>
+	<args>Object String String</args>
+	<p>
+	  The <code>Delegate</code> constructor creates a delegate with
+	  an object by name and info strings.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Delegate</name>
+	<args>Delegate String String String</args>
+	<p>
+	  The <code>Delegate</code> constructor creates a delegate with
+	  an object by rid, name and info strings.
+	</p>
+      </ctor>
+      <ctor>
+	<name>Delegate</name>
+	<args>Delegate String String String String</args>
+	<p>
+	  The <code>Delegate</code> constructor creates a delegate with
+	  an object by rid, name, info strings and delegation address.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>set-address</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-address</code> method sets the delegate
+	  address.
+	</p>
+      </meth>
+      <meth>
+	<name>get-address</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-address</code> method returns the delegate
+	  address.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = realm object                                                    = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:csm">
+    <name>Realm</name>
+
+    <p>
+      The <code>Realm</code> class is an abstract class design for the
+      storage and management of authorities. The class provides the
+      basic methods to create, check and validate an authority.
+    </p>
+
+    <!-- predicate -->
+    <pred>realm-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Nameable</name>
+    </inherit>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>exists-p</name>
+	<retn>Boolean</retn>
+	<args>String</args>
+	<p>
+	  The <code>exists-p</code> predicate checks if an authority
+	  exists by kid.
+	</p>
+      </meth>
+      <meth>
+	<name>valid-p</name>
+	<retn>Boolean</retn>
+	<args>String Credential</args>
+	<p>
+	  The <code>valid-p</code> predicate validates an authority by name
+	  and credential.
+	</p>
+      </meth>
+      <meth>
+	<name>get-info</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-info-p</code> method the real information
+	  string. Note that the <code>get-name</code> method is also
+	  available through the <code>Nameable</code> interface.
+	</p>
+      </meth>
+      <meth>
+	<name>create</name>
+	<retn>none</retn>
+	<args>String Credential</args>
+	<p>
+	  The <code>create</code> method creates an authority by name
+	  and credential.
+	</p>
+      </meth>
+
+      <meth>
+	<name>update</name>
+	<retn>none</retn>
+	<args>Authority</args>
+	<p>
+	  The <code>update</code> method updates a workzone by authority.
+	</p>
+      </meth>
+    </methods>
+  </object>
+  
+  <!-- =================================================================== -->
+  <!-- = session object                                                  = -->
+  <!-- =================================================================== -->
+
+  <object nameset="afnix:csm">
+    <name>Session</name>
+
+    <!-- synopsis -->
+    <p>
+      The <code>Session</code> class is a class that defines a session
+      to be associated with a transaction. The session object is
+      designed to be persistent so that its data information can be
+      retreived at any time. A session object has also the
+      particularity to have a limited lifetime. A session object is
+      created by name with an identifier. The session object is
+      designed to hold a variety of parameters that are suitable for
+      both the authentication and the session lifetime. A session is
+      primarily defined by name with an optional information
+      string. The session is generally associated an authentication
+      visa which contains the session identity. The visa provides a
+      secure mechanism compatible with a single sign on session. A
+      session key is automatically generated when the session is
+      created. Such key is used to generate a session hash id which
+      can be used as a cookie value. The cookie name is also stored in
+      the session object. When a cookie is generated, the session hash
+      name is combined with the session hash id for the cookie production.
+    </p>
+
+    <!-- predicate -->
+    <pred>session-p</pred>
+
+    <!-- inheritance -->
+    <inherit>
+      <name>Taggable</name>
+    </inherit>
+
+    <!-- constructors -->
+    <ctors>
+      <ctor>
+	<name>Session</name>
+	<args>String</args>
+	<p>
+	  The <code>Session</code> constructor creates a session by name.
+	  The string argument is the session name.
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Session</name>
+	<args>String String</args>
+	<p>
+	  The <code>Session</code> constructor creates a session with a name
+	  and a user. The first argument is the session name. The second
+	  argument is the session information..
+	</p>
+      </ctor>
+
+      <ctor>
+	<name>Session</name>
+	<args>String String Integer</args>
+	<p>
+	  The <code>Session</code> constructor creates a session with a name,
+	  a user and a maximum age. The first argument is the session name. The
+	  second argument is the session informartion. The third argument is
+	  the session maximum age expressed in seconds.
+	</p>
+      </ctor>
+    </ctors>
+
+    <!-- methods -->
+    <methods>
+      <meth>
+	<name>expire-p</name>
+	<retn>Boolean</retn>
+	<args>none</args>
+	<p>
+	  The <code>expire-p</code> predicate returns true if the session
+	  has expired.
+	</p>
+      </meth>
+      <meth>
+	<name>set-hash-id</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-hash-id</code> method sets the session hash
+	  identifier. The session hash id must be unique and secured
+	  enough so that the session name cannot be derived from it.
+	</p>
+      </meth>
+      <meth>
+	<name>get-hash-id</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-hash-id</code> method returns the session hash
+	  identifier. 
+	</p>
+      </meth>
+      <meth>
+	<name>set-path</name>
+	<retn>none</retn>
+	<args>String</args>
+	<p>
+	  The <code>set-path</code> method sets the session path.
+	</p>
+      </meth>
+      <meth>
+	<name>get-path</name>
+	<retn>String</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-path</code> method returns the session path.
+	</p>
+      </meth>
+      <meth>
+	<name>get-max-age</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-max-age</code> method returns the session
+	  maximum age.
+	</p>
+      </meth>
+      <meth>
+	<name>set-max-age</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-max-age</code> method sets the session maximum age.
+	  The maximum age is an integer in seconds relative to the current
+	  time. If the maximum age is set to 0, the session is closed.
+	</p>
+      </meth>
+      <meth>
+	<name>get-remaining-time</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-remaining-time</code> method returns the remaining
+	  valid session time.
+	</p>
+      </meth>
+      <meth>
+	<name>get-expire-time</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-expire-time</code> method returns the session
+	  expiration time in seconds. The expiration time is an absolute
+	  time.
+	</p>
+      </meth>
+      <meth>
+	<name>set-expire-time</name>
+	<retn>none</retn>
+	<args>Integer</args>
+	<p>
+	  The <code>set-expire-time</code> method sets the session
+	  expiration time. The expiration time is an absolute time in seconds.
+	</p>
+      </meth>
+      <meth>
+	<name>get-creation-time</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-creation-time</code> method returns the session
+	  creation time. The creation time is an absolute time in seconds.
+	</p>
+      </meth>
+      <meth>
+	<name>get-modification-time</name>
+	<retn>Integer</retn>
+	<args>none</args>
+	<p>
+	  The <code>get-modification-time</code> method returns the session
+	  creation time. The modification time is an absolute time in seconds.
+	</p>
+      </meth>
+      <meth>
+	<name>get-cookie</name>
+	<retn>Cookie</retn>
+	<args>name</args>
+	<p>
+	  The <code>get-cookie</code> method bakes a session
+	  cookie. The string argument is the cookie name those value
+	  is the session hash id value.
+	</p>
+      </meth>
+      <meth>
+	<name>close</name>
+	<retn>Cookie</retn>
+	<args>name</args>
+	<p>
+	  The <code>close</code> method close a session by reseting the
+	  session maximum age to 0. The method returns a cookie that
+	  can be used for closing the session on the peer side. The
+	  string argument is the cookie name those value is the
+	  session hash id value.
+	</p>
+      </meth>
+      <meth>
+	<name>set-visa</name>
+	<retn>None</retn>
+	<args>Visa</args>
+	<p>
+	  The <code>set-visa</code> method set the session visa.
+	</p>
+      </meth>
+      <meth>
+	<name>get-visa</name>
+	<retn>Visa</retn>
+	<args>None</args>
+	<p>
+	  The <code>get-visa</code> method returns the session visa.
+	</p>
+      </meth>
+    </methods>
+  </object>
+</appendix>

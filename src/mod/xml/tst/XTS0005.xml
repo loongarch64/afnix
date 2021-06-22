@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = XTS0005.xml                                                        = -->
+<!-- = afnix xml test suite reference                                     = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<!-- dtd public id -->
+<!ENTITY % axmxa.public.id "-//AFNIX//DTD AXMXA//EN">
+<!-- dtd system id -->
+<!ENTITY % axmxa.system.id "http://www.afnix.org/dtd/axmxa.dtd">
+
+<!-- pre-load definition module -->
+<!ENTITY % axmxa-preld.module "IGNORE" >
+<![%axmxa-preld.module;[
+   %axmxa.preld.mod;]]>
+
+<!-- main definition module -->
+<!ENTITY % axmxa-major.module "INCLUDE" >
+<![%axmxa-major.module;[
+   <!ENTITY % axmxa.major.mod 
+     PUBLIC "-//AFNIX//DTD AXMXA MODULE//EN"
+            "http://www.afnix.org/dtd/axmxa.mod">
+   %axmxa.major.mod;]]>
+
+<!-- post-load definition module -->
+<!ENTITY % axmxa-postl.module "IGNORE" >
+<![%axmxa-postl.module;[
+   %axmxa.postl.mod;]]>

@@ -1,0 +1,964 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-wm-sec.xml                                                   = -->
+<!-- = standard security module - writer manual                           = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter module="sec" number="1">
+  <title>Standard Security Module</title>
+  
+  <p>
+    The <em>Standard Security</em> module is an original implementation of 
+    several standards and techniques used in the field of cryptography. The
+    module provides the objects than enables message hashing, symetric and
+    assymetric ciphers and digital signature computation. The implementation
+    follows the recommendation from NIST and PKCS and the standard reference
+    that it implements is always attached to the underlying object.
+  </p>
+
+  <!-- hash objects -->
+  <section>
+    <title>Hash objects</title>
+
+    <p>
+      Hashing is the ability to generate an <em>almost</em> unique
+      representation from a string. Although, there is no guarantee that two
+      different string will not produce the same result -- known as a
+      collision -- the sophistication of the hashing function attempt to
+      minimize such eventuality. The hashing process is not reversible.
+
+      There are several hashing functions available in the public
+      domain. To name a few, MD5 is the <em>message digest 5</em>, and
+      SHA is the <em>secure hash algorithm</em>. The following table
+      illustrates the size of the result with different hashing
+      functions.
+    </p>
+
+    <table>
+      <title>Hasher function result size</title>
+      <tr><th>Function</th><th>Result size</th></tr>
+      <tr><td>MD-2</td>    <td>128 bits</td></tr>
+      <tr><td>MD-4</td>    <td>128 bits</td></tr>
+      <tr><td>MD-5</td>    <td>128 bits</td></tr>
+      <tr><td>SHA-1</td>   <td>160 bits</td></tr>
+      <tr><td>SHA-224</td> <td>224 bits</td></tr>
+      <tr><td>SHA-256</td> <td>256 bits</td></tr>
+      <tr><td>SHA-384</td> <td>384 bits</td></tr>
+      <tr><td>SHA-512</td> <td>512 bits</td></tr>
+    </table>
+
+    <!-- hasher object -->
+    <subsect>
+      <title>Hasher object</title>
+
+      <p>
+	The <code>Hasher</code> class is a text hashing computation
+	class. The class computes a <em>hash value </em> from a literal
+	object, a buffer or an input stream. Once computed, the hash
+	value is stored as an array of bytes that can be retrieved one
+	by one or at all in the form of a string representation.
+      </p>
+    </subsect>
+
+    <!-- creating a hasher -->
+    <subsect>
+      <title>Creating a hasher</title>
+      
+      <p>
+	Several hasher objects are available in the module. For example,
+	the <code>Md5</code> object is the hasher object that implements
+	the MD-5 algorithm. The constructor does not take any argument.
+      </p>
+
+      <example>
+	# get a  MD-5 hasher
+	const md (afnix:sec:Md5)
+	# check the object
+	afnix:sec:hasher-p md # true
+      </example>
+
+      <p>
+	The <code>compute</code> method computes the hash value. For
+	example, the string "abc" returns the value
+	<tt>"900150983CD24FB0D6963F7D28E17F72"</tt> which is 16 bytes long.
+      </p>
+
+      <example>
+	const hval (md:compute "abc")
+      </example>
+    </subsect>
+    
+    <!-- creating a sha hasher -->
+    <subsect>
+      <title>Creating a SHA hasher</title>
+      
+      <p>
+	There are several SHA objects that produces results of different
+	size as indicated in the next table.
+      </p>
+
+      <table>
+	<title>Secure hash algorithm size and constructor</title>
+	<tr><th>Hasher</th>  <th>Size</th>     <th>Constructor</th></tr>
+	<tr><td>SHA-1</td>   <td>160 bits</td> <td>Sha1</td></tr>
+	<tr><td>SHA-224</td> <td>224 bits</td> <td>Sha224</td></tr>
+	<tr><td>SHA-256</td> <td>256 bits</td> <td>Sha256</td></tr>
+	<tr><td>SHA-384</td> <td>384 bits</td> <td>Sha384</td></tr>
+	<tr><td>SHA-512</td> <td>512 bits</td> <td>Sha512</td></tr>
+      </table>
+
+      <p>
+	The <code>compute</code> method computes the hash value. For
+	example, the string "abc" returns with SHA-1 the 20 bytes long 
+	value:
+      </p>
+      <p>
+	<tt>"A9993E364706816ABA3E25717850C26C9CD0D89D"</tt>
+      </p>
+    </subsect>
+  </section>
+
+  <!-- cipher key principles -->
+  <section>
+    <title>Cipher key principles</title>
+
+    <p>
+      Cipher key management is an important concept in the ciphering land.
+      In a simple mode, a key is used by a cipher to encode some data.
+      Although the key can be any sequence of bytes, it is preferable to
+      have the key built from a specific source such like a
+      pass-phrase. A cipher key comes basically into two flavors: keys
+      for symmetric ciphers and keys for asymmetric ciphers. A key for
+      a symmetric cipher is easy to derive and generally follows a
+      standard process which is independent of the cipher itself. A key
+      for an asymmetric cipher is more complex to derive and is
+      generally dependent on the cipher itself.
+    </p>
+
+    <!-- key operations -->
+    <subsect>
+      <title>Key operations</title>
+      
+      <p>
+	The basic operations associated with a key are the key
+	identification by type and size. The key type is an item that
+	identifies the key nature. The <code>get-type</code> method
+	returns the key type as specified by the table below.
+      </p>
+
+      <table>
+	<title>Supported key type</title>
+	<tr><th>Key</th><th>Description</th></tr>
+	<tr><td>KSYM</td> <td>Symmetric cipher key</td></tr>
+	<tr><td>KRSA</td> <td>Asymmetric RSA cipher key</td></tr>
+	<tr><td>KMAC</td> <td>Message authentication key</td></tr>
+	<tr><td>KDSA</td> <td>Message signature key</td></tr>
+      </table>
+
+      <p>
+	The message authentication key as represented by
+	the <code>KMAC</code> symbol is similar to the symmetric
+	key. The key type can be obtained with the <code>get-type</code>
+	method.
+      </p>
+
+      <example>
+	# get the key type
+	const type (key:get-type)
+      </example>
+
+      <p>
+	The key size is the canonical size as specified by the key or
+	the cipher specification. The <code>get-bits</code> returns the
+	key size in bits. The <code>get-size</code> returns the key size
+	in bytes rounded to the nearest value. The table below describes
+	the nature of the key size returned.
+      </p>
+
+      <table>
+	<title>Key size nature</title>
+	<tr><th>Key</th>  <th>Type</th> <th>Description</th></tr>
+	<tr><td>KSYM</td> <td>byte</td> <td>Byte array size</td></tr>
+	<tr><td>KRSA</td> <td>bits</td> <td>Modulus size</td></tr>
+	<tr><td>KMAC</td> <td>byte</td> <td>Byte array size</td></tr>
+	<tr><td>KDSA</td> <td>bits</td> <td>Signature size</td></tr>
+      </table>
+
+      <example>
+	const bits (key:get-bits)
+	const size (key:get-size)
+      </example>
+    </subsect>
+
+    <!-- key representation -->
+    <subsect>
+      <title>Key representation</title>
+
+      <p>
+	Unfortunately, it is not easy to represent a key, since the
+	representation depends on the key's type. For
+	example, a symmetric key can be formatted as a simple octet
+	string. On the other hand, a RSA key has two components; namely
+	the modulus and the exponent, which needs to be
+	distinguished and therefore making the representation more
+	difficult. Other cipher keys are even more complicated. For this
+	reason, the representation model is a relaxed
+	one. The <code>format</code> method can be called without
+	argument to obtain an unique octet string representation if this
+	representation is possible. If the key representation requires
+	some parameters, the format method may accept one or several
+	arguments to distinguish the key components.
+      </p>
+
+      <table>
+	<title>Key format method argument</title>
+	<tr><th>Key</th>  <th>Argument</th> <th>Description</th></tr>
+	<tr><td>KSYM</td> <td>none</td>
+	<td>Symmetric key octet string</td></tr>
+	<tr><td>KRSA</td> <td>RSA-MODULUS</td>
+	<td>RSA modulus octet string</td></tr>
+	<tr><td>KRSA</td> <td>RSA-PUBLIC-EXPONENT</td> 
+	<td>RSA public exponent octet string</td></tr>
+	<tr><td>KRSA</td> <td>RSA-SECRET-EXPONENT</td> 
+	<td>RSA secret exponent octet string</td></tr>
+	<tr><td>KMAC</td> <td>none</td>
+	<td>Message authentication key octet string</td></tr>
+	<tr><td>KDSA</td> <td>DSA-P-PRIME</td> 
+	<td>DSA secret prime octet string</td></tr>
+	<tr><td>KDSA</td> <td>DSA-Q-PRIME</td> 
+	<td>DSA secret prime octet string</td></tr>
+	<tr><td>KDSA</td> <td>DSA-SECRET-KEY</td> 
+	<td>DSA secret key</td></tr>
+	<tr><td>KDSA</td> <td>DSA-PUBLIC-KEY</td> 
+	<td>DSA public key</td></tr>
+	<tr><td>KDSA</td> <td>DSA-PUBLIC-GENERATOR</td> 
+	<td>DSA public generator</td></tr>
+      </table>
+
+      <example>
+	# get a simple key representation
+	println (key:format)
+	# get a rsa modulus key representation
+	println (key:format afnix:sec:Key:RSA-MODULUS)
+      </example>
+
+      <p>
+	There are other key representations. The natural one is the byte
+	representation for a symmetric key, while a number based
+	representation is generally more convenient with asymmetric
+	keys. The <code>get-byte</code> method returns a key byte by
+	index if possible. The <code>get-relatif-key</code> returns a
+	key value by relatif number if possible.
+      </p>
+    </subsect>
+  </section>
+  
+  <!-- symmetric cipher key -->
+  <section>
+    <title>Symmetric cipher key</title>
+
+    <!-- creating a symmetric cipher key -->
+    <subsect>
+      <title>Creating a symmetric cipher key</title>
+
+      <p>
+	The <code>Key</code> class can be used to create a cipher key
+	suitable for a symmetric cipher. By default a 128 bits random
+	key is generated, but the key can be also generated from an
+	octet string.
+      </p>
+
+      <example>
+	const  key  (afnix:sec:Key)
+	assert true (afnix:sec:key-p key)
+      </example>
+
+      <p>
+	The constructor also supports the use of an octet string
+	representation of the key.
+      </p>
+
+      <example>
+	# create an octet string key
+	const  key  (afnix:sec:Key "0123456789ABCDEF")
+	assert true (afnix:sec:key-p key)
+      </example>
+    </subsect>
+
+    <!-- symmetric key functions -->
+    <subsect>
+      <title>Symmetric key functions</title>
+      
+      <p>
+	The basic operation associated with a symmetric key is the byte
+	extraction. The <code>get-size</code> method can be used to
+	determine the byte key size. Once the key size has been
+	obtained, the key byte can be accessed by index with
+	the <code>get-byte</code> method.
+      </p>
+
+      <example>
+	# create a 256 random symmetric key
+	const key  (afnix:sec:Key afnix:sec:Key:KSYM 256)
+
+	# get the key size
+	const size (key:get-size)
+	# get the first byte
+	const byte (key:get-byte 0)
+      </example>
+    </subsect>
+  </section>
+
+  <!-- asymmetric cipher key -->
+  <section>
+    <title>Asymmetric cipher key</title>
+
+    <p>
+      An asymmetric cipher key can be generated for a particular
+      asymmetric cipher, such like RSA. Generally, the key contains
+      several components identified as the public and secret key
+      components. These components are highly dependent on the cipher
+      type. Under some circumstances, all components might not be available.
+    </p>
+
+    <!-- creating an asymmetric cipher key -->
+    <subsect>
+      <title>Creating an asymmetric cipher key</title>
+
+      <p>
+	The <code>Key</code> class can be used to create a specific
+	asymmetric cipher key. Generally, the key is created by type and
+	and bits size.
+      </p>
+
+      <example>
+	# create a 1024 bits rsa key
+	const  key  (afnix:sec:Key afnix:sec:Key:KRSA 1024)
+      </example>
+
+      <p>
+	An asymmetric cipher key constructor is extremely dependent on
+	the cipher type. For this reason, there is no constructor that
+	can operate with a pass-phrase.
+      </p>
+    </subsect>
+
+    <!-- asymmetric key functions -->
+    <subsect>
+      <title>Asymmetric key functions</title>
+      
+      <p>
+	The basic operation associated with a asymmetric key is the relatif
+	based representation which is generally available for all key
+	components. For example, in the case of the RSA cipher, the
+	modulus, the public and secret exponents can be obtained in a
+	relatif number based representation with the help of
+	the <code>get-relatif-key</code> method.
+      </p>
+
+      <example>
+	# create a 512 rsa key
+	const key  (afnix:sec:Key afnix:sec:Key:KRSA 512)
+
+	# get the key modulus
+	const kmod (
+	  key:get-relatif-key afnix:sec:Key:RSA-MODULUS)
+	# get the public exponent
+	const pexp (
+	  key:get-relatif-key afnix:sec:Key:RSA-PUBLIC-EXPONENT)
+	# get the secret exponent
+	const sexp (
+	  key:get-relatif-key afnix:sec:Key:RSA-SECRET-EXPONENT)
+      </example>
+    </subsect>
+  </section>
+
+  <!-- message authentication key -->
+  <section>
+    <title>Message authentication key</title>
+
+    <!-- creating a message authentication key -->
+    <subsect>
+      <title>Creating a message authentication key</title>
+
+      <p>
+	The <code>Key</code> class can also be used to create a message
+	authentication key suitable for a message authentication code
+	generator or validator. By default a 128 bits random
+	key is generated, but the key can be also generated from an octet
+	string.
+      </p>
+
+      <example>
+	const  key  (afnix:sec:Key afnix:sec:Key:KMAC)
+	assert true (afnix:sec:key-p key)
+      </example>
+
+      <p>
+	The constructor also supports the use of an octet string
+	as a key representation.
+      </p>
+
+      <example>
+	# create an octet string key
+	const key (
+	  afnix:sec:Key afnix:sec:Key:KMAC "0123456789ABCDEF")
+	assert true (afnix:sec:key-p key)
+      </example>
+    </subsect>
+
+    <!-- message authentication key functions -->
+    <subsect>
+      <title>Message authentication key functions</title>
+      
+      <p>
+	The basic operation associated with a message authentication key
+	is the byte extraction. The <code>get-size</code> method can be
+	used to determine the byte key size. Once the key size has been
+	obtained, the key byte can be accessed by index with
+	the <code>get-byte</code> method.
+      </p>
+
+      <example>
+	# create a 256 random message authentication key
+	const key  (afnix:sec:Key afnix:sec:Key:KMAC 256)
+
+	# get the key size
+	const size (key:get-size)
+	# get the first byte
+	const byte (key:get-byte 0)
+      </example>
+    </subsect>
+
+    <!-- signature key functions -->
+    <subsect>
+      <title>Signature key functions</title>
+      
+      <p>
+	The basic operation associated with a signature key is the
+	relatif based representation which is generally available for all key
+	components. For example, in the case of the DSA signer, the
+	prime numbers, the public and secret components can be obtained in a
+	relatif number based representation with the help of
+	the <code>get-relatif-key</code> method.
+      </p>
+
+      <example>
+	# create a 1024 dsa key
+	const key  (afnix:sec:Key afnix:sec:Key:KDSA)
+
+	# get the key size
+	const size (key:get-size)
+	# get the secret component
+	const sexp (
+	  key:get-relatif-key afnix:sec:Key:DSA-SECRET-KEY)
+      </example>
+    </subsect>
+  </section>
+
+  <!-- stream cipher -->
+  <section>
+    <title>Stream cipher</title>
+
+    <p>
+      A stream cipher is an object that encodes an input stream into an
+      output stream. The data are read from the input stream, encoded
+      and transmitted onto the output stream. There are basically two
+      types of stream ciphers known as symmetric cipher and asymmetric
+      cipher.   
+    </p>
+
+    <!-- symmetric cipher -->
+    <subsect>
+      <title>Symmetric cipher</title>
+
+      <p>
+	A symmetric cipher is a cipher that encodes and decode data with
+	the same key. Normally, the key is kept secret, and the data are
+	encoded by block. For this reason, symmetric cipher are also
+	called block cipher. In normal mode, a symmetric cipher is
+	created with key and the data are encoded from an input stream
+	as long as they are available. The block size depends on the
+	nature of the cipher. As of today, the recommended symmetric
+	cipher is the <em>Advanced Encryption Standard</em> or AES, also
+	known as Rijndael.
+      </p>
+    </subsect>
+
+    <!-- asymmetric cipher -->
+    <subsect>
+      <title>Asymmetric cipher</title>
+
+      <p>
+	An asymmetric cipher is a cipher that encodes and decode data with
+	two keys. Normally, the data are encoded with a public key and
+	decoded with a private key. In this model, anybody can encode a
+	data stream, but only one person can read them. Obviously, the
+	model can be reverse to operate in a kind of signature mode,
+	where only one person can encode the data stream and anybody can
+	read them. Asymmetric cipher are particularly useful when
+	operating on unsecured channels. In this model, one end can send
+	its public key as a mean for other people to crypt data that can
+	only be read by the sender who is supposed to have the private
+	key. As of today, the recommended asymmetric ciphers are RSA and
+	DH.
+      </p>
+    </subsect>
+
+    <!-- serial cipher -->
+    <subsect>
+      <title>Serial cipher</title>
+
+      <p>
+	A serial cipher is a cipher that encodes and decode data on a
+	byte basis. Normally, the data are encoded and decoded with the
+	same key, thus making the symmetric cipher key, the ideal
+	candidate for a serial cipher key. Since the data is encoded on
+	a byte basis, it can be used efficiently with a stream. However,
+	the serial cipher does not define a block size and therefore
+	require some mechanism to prevent a buffer overrun when reading
+	bytes from a stream. For this reason, the serial cipher defines
+	a default <em>serial block size</em> that can be used to
+	buffer the stream data. A method is provided in the class to
+	control the buffer size and is by default set to 4Kib bytes.
+      </p>
+    </subsect>
+
+    <!-- cipher base class -->
+    <subsect>
+      <title>Cipher base class</title>
+
+      <p>
+	The <code>Cipher</code> base class is an abstract class that
+	supports the symmetric, asymmetric and serial cipher models. A
+	cipher object has a name and is bound to a key that is used by
+	the cipher. The class provides some base methods that can be
+	used to retrieve some information about the cipher. 
+	The <code>get-name</code> method returns the cipher
+	name. The <code>set-key</code> and <code>get-key</code> methods
+	are both used to set or retrieve the cipher key.
+      </p>
+
+      <p> 
+	The cipher operating mode can be found with the
+	<code>get-reverse</code> method. If the <code>get-reverse</code>
+	method returns true, the cipher is operating in decoding
+	mode. Note that a <code>set-reverse</code> method also exists.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- block cipher -->
+  <section>
+    <title>Block cipher</title>
+
+    <p>
+      A block cipher is an object that encodes an input stream with a
+      symmetric cipher bound to a unique key. Since a block cipher is
+      symmetric, the data can be coded and later decoded to their
+      original form. The difference with the <code>Cipher</code> base
+      class is that the <code>BlockCipher</code> class provides
+      a <code>get-block-size</code> method which returns the cipher block
+      size.
+    </p>
+
+    <!-- cipher base class -->
+    <subsect>
+      <title>Block Cipher base</title>
+
+      <p>
+	The <code>BlockCipher</code> class is a base class for the block
+	cipher engine. The class implements the <code>stream</code> method
+	that reads from an input stream and write into an output
+	stream. The <code>BlockCipher</code> class is an abstract class and
+	cannot be instantiated by itself. The object is actually created
+	by using a cipher algorithm class such like the <code>Aes</code>
+	class.
+      </p>
+
+      <example>
+	trans count (cipher:stream os is)
+      </example>
+
+      <p>
+	The <code>stream</code> method returns the number of characters
+	that have been encoded. Care should be taken that most of the
+	stream cipher operates by block and therefore, will block until
+	a complete block has been read from the input stream, unless the
+	end of stream is read. The block cipher is always associated
+	with a padding scheme. By default, the NIST 800-38A
+	recommendation is associated with the block cipher, but can be
+	changed with the <code>set-padding-mode</code>.
+      </p>
+    </subsect>
+
+    <!-- creating a block cipher -->
+    <subsect>
+      <title>Creating a block cipher</title>
+
+      <p>
+	A <code>BlockCipher</code> object can be created with a cipher
+	constructor. As of today, the <em>Advanced Encryption
+	Standard</em> or AES is the recommended symmetric cipher.
+	The <code>Aes</code> class creates a new block cipher that
+	conforms to the AES standard.
+      </p>
+
+      <example>
+	const cipher (afnix:sec:Aes)
+      </example>
+
+      <p>
+	A block cipher can be created with a key and eventually a reverse
+	flag. With one argument, the block cipher key is associated with
+	the cipher. Such key can be created as indicated in the previous
+	section. The reverse flag is used to determine if the cipher
+	operate in encoding or decoding mode. By default, the cipher
+	operates in coding mode.
+      </p>
+
+      <example>
+	# create a 256 bits random key
+	const key (afnix:sec:Key afnix:sec:KSYM 256)
+	# create an aes block cipher
+	const aes (afnix:sec:Aes key)
+      </example>
+    </subsect>
+
+    <!-- block cipher information -->
+    <subsect>
+      <title>Block cipher information</title>
+
+      <p>
+	The <code>BlockCipher</code> class is derived from
+	the <code>Cipher</code> class and contains several methods that
+	provide information about the cipher. This include the cipher
+	block size with the <code>get-block-size</code> method.
+      </p>
+
+      <example>
+	println (aes:get-block-size)
+      </example>
+    </subsect>
+  </section>
+
+  <!-- input cipher -->
+  <section>
+    <title>Input cipher</title>
+    
+    <p>
+      In the presence of a <code>Cipher</code> object, it is difficult
+      to read an input stream and encode the character of a block
+      basis. Furthermore, the existence of various method for block
+      padding makes the coding operation even more difficult. For this
+      reason, the <code>InputCipher</code> class provides the necessary
+      method to code or decode an input stream in various mode of
+      operations.
+    </p>
+    
+    <!-- input cipher mode -->
+    <subsect>
+      <title>Input cipher mode</title>
+      
+      <p>
+	The <code>InputCipher</code> class is an input stream that binds
+	an input stream with a cipher. The class acts like an input
+	stream, read the character from the bounded input stream and
+	encode or decode them from the bended cipher. The
+	<code>InputCipher</code> defines several modes of operations. In
+	<em>electronic codebook mode</em> or ECB, the character are
+	encoded in a block basis. In <em>cipher block chaining</em>
+	mode, the block are encoded by doing an XOR operation with the
+	previous block. Other modes are also available such
+	like <em>cipher feedback mode</em> and <em>output feedback
+	mode</em>.
+      </p>
+    </subsect>
+
+    <!-- creating an input cipher -->
+    <subsect>
+      <title>Creating an input cipher</title>
+
+      <p>
+	By default an input cipher is created with a cipher
+	object. Eventually, an input stream and/or the input mode can be
+	specified at the object construction.
+      </p>
+      
+      <example>
+	# create a key
+	const key (afnix:sec:Key "hello world")
+	# create a direct cipher
+	const aes (afnix:sec:Aes key)
+	# create an input cipher
+	const ic (afnix:sec:InputCipher aes)
+      </example>
+
+      <p>
+	In this example, the input cipher is created in ECB mode. The
+	input stream is later associated with the <code>set-is</code>
+	method.
+      </p>
+    </subsect>
+
+    <!-- input cipher operation -->
+    <subsect>
+      <title>Input cipher operation</title>
+
+      <p>
+	The <code>InputCipher</code> class operates with one or several
+	input streams. The <code>set-is</code> method sets the input
+	stream. Read operation can be made with the help of the
+	<code>valid-p</code> predicate.
+      </p>
+
+      <example>
+	while (ic:valid-p) (os:write (ic:read))
+      </example>
+
+      <p>
+	Since the <code>InputCipher</code> operates like an input
+	stream, the stream can be read as long as the
+	<code>valid-p</code> predicate returns true. Note that the
+	<code>InputCipher</code> manages automatically the padding
+	operations with the mode associated with the block cipher.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- asymmetric cipher -->
+  <section>
+    <title>Asymmetric cipher</title>
+
+    <p>
+      A public cipher is an object that encodes an input stream with a
+      asymmetric cipher bound to a public and secret key. In theory,
+      there is no difference between a block cipher and a public
+      cipher. Furthermore, the interface provided by the engine
+      is the same for both objects. 
+    </p>
+
+    <!-- public cipher -->
+    <subsect>
+      <title>Public cipher</title>
+      
+      <p>
+	A public cipher is an asymmetric stream cipher which operates with
+	an asymmetric key. The main difference between a block cipher and
+	a public cipher is the key nature as well as the encoded block
+	size. With an asymmetric cipher, the size of the message to encode
+	is generally not the same as the encoded block, because a message
+	padding operation must occurs for each message block.
+      </p>
+
+      <example>
+	trans count (cipher:stream os is)
+      </example>
+
+      <p>
+	The <code>stream</code> method returns the number of characters
+	that have been encoded. Like the block cipher,
+	the <code>stream</code> method encodes an input stream or a
+	buffer object. The number of encoded bytes is returned by the
+	method.
+      </p>
+    </subsect>
+
+    <!-- creating a public cipher -->
+    <subsect>
+      <title>Creating a public cipher</title>
+
+      <p>
+	A <code>PublicCipher</code> object can be created with a cipher
+	constructor. The <em>RSA</em> asymmetric cipher is the typical
+	example of public cipher. It is created by binding a RSA key to
+	it. For security reasons, the key size must be large enough,
+	typically with a size of at lease 1024 bits.
+      </p>
+
+      <example>
+	const key (afnix:sec:Key afnix:sec:Key:KRSA 1024)
+	const rsa (afnix:sec:Rsa key)
+      </example>
+
+      <p>
+	A block cipher can be created with a key and eventually a reverse
+	flag. Additional constructors are available to support various
+	padding mode. Such padding mode depends on the cipher type. For
+	example, the RSA cipher supports the ISO 18033-2 padding mode
+	with a KDF1 or KDF2 object. Such constructor requires a hasher
+	object as well.
+      </p>
+
+      <example>
+	# create a 1024 bits rsa key
+	const key (afnix:sec:Key afnix:sec:KRSA 1024)
+	# create a SHA-1 hasher
+	const ash (afnix:sec:Sha1)
+	# create a rsa public cipher
+	const rsa (afnix:sec:Rsa key ash "Demo")
+	# set the padding mode
+	rsa:set-padding-mode afnix:sec:Rsa:PAD-OAEP-K1
+      </example>
+    </subsect>
+
+    <!-- public cipher padding mode-->
+    <subsect>
+      <title>Public cipher padding mode</title>
+
+      <p>
+	Like any cipher, a padding mode can be associated with the
+	cipher. The <code>set-padding-mode</code> method can be used to
+	set or change the padding mode. Depending on the padding mode
+	type, additional objects might be needed at construction.
+      </p>
+
+      <table>
+	<title>Supported cipher padding mode</title>
+	<tr><th>Cipher</th><th>Padding mode</th><th>Default</th></tr>
+	<tr><td>RSA</td> 
+	<td>PKCS 1.5, PKCS 2.1, ISO/IEC 18033-2</td><td>PKCS 1.5</td></tr>
+      </table>
+
+      <p>
+	The default padding mode depends on the cipher type. For RSA,
+	the default padding mode is set to PKCS 1.5 for compatibility
+	reason.
+      </p>
+    </subsect>
+  </section>
+
+  <section>
+    <title>Signature objects</title>
+
+    <p>
+      A digital signature is a unique representation, supposedly non
+      forgeable, designed to authenticate a document, in whatever form
+      it is represented. For example, a signature is used to sign a
+      certificate which is used during the process of establish a
+      secured connection over the Internet. A signature can also be used
+      to sign a <em>courrier</em> or keys as it is in the Openssh
+      protocol.
+
+      Digital signatures come into several flavors eventually associated
+      with the signed document. Sometimes, the signature acts as a
+      container and permits to retrieve the document itself. Whatever
+      the method, the principle remains the same. As of today
+      technology, there are two standards used to sign document as
+      indicated below.
+    </p>
+
+    <table>
+      <title>Digital signature standard</title>
+      <tr><th>Standard</th> <th>Name</th></tr>
+      <tr><td>DSS</td>      <td>Digital Signature Standard</td> </tr>
+      <tr><td>RSA</td>      <td>RSA based signature</td>        </tr>
+    </table>
+
+    <!-- signer and signature objects -->
+    <subsect>
+      <title>Signer and signature objects</title>
+
+      <p>
+	The process of generating a signature is done with the help of
+	a <code>Signer</code> object. A signer object is a generic
+	object, similar in functionality to the hasher object. The
+	result produced by a signer object is a <code>Signature</code>
+	object which holds the generated signature.
+      </p>
+    </subsect>
+
+    <!-- signature key -->
+    <subsect>
+      <title>Signature key</title>
+
+      <p>
+	The process of generating a signature often requires the use of
+	a key. Such key can be generated with the help of
+	the <code>Key</code> object. The nature of the key will depend
+	on the target signature. The following table is a resume of the
+	supported keys.
+      </p>
+
+      <table>
+	<title>Digital signature key</title>
+	<tr><th>Standard</th> <th>Key</th>   <th>Signer</th> </tr>
+	<tr><td>DSS</td>      <td>KDSA</td>  <td>Dsa</td>    </tr>
+      </table>
+
+      <p>
+	In the case of DSS, a key can be generated automatically,
+	although this process is time consuming. The default key size is
+	1024 bits.
+      </p>
+
+      <example>
+	const key (afnix:sec:Key afnix:sec:Key:KDSA)
+	assert 1024 (key:get-bits)
+      </example>
+    </subsect>
+
+    <!-- creating a signer -->
+    <subsect>
+      <title>Creating a signer</title>
+      
+      <p>
+	A <code>Signer</code> object is created with a particular
+	signature object such like DSA. The <code>Dsa</code> object is a
+	signer object that implements the <em>Digital Signature
+	Algorithm</em> as specified by the <em>Digital Signature
+	Standard (DSS)</em> in <em>FIPS-PUB 186-3</em>.
+      </p>
+
+      <example>
+	# create a dsa signer
+	const dsa (afnix:sec:Dsa key)
+	assert true (afnix:sec:dsa-p dsa)
+      </example>
+    </subsect>
+
+    <!-- creating a signature -->
+    <subsect>
+      <title>Creating a signature</title>
+      
+      <p>
+	A signature is created with the help of the <code>compute</code>
+	method. The <code>Signature</code> object is similar to
+	the <code>Hasher</code> and operates with string or streams.
+      </p>
+
+      <example>
+	# create a signature object
+	const sgn   (dsa:compute "afnix")
+	assert true (afnix:sec:signature-p sgn)
+      </example>
+
+      <p>
+	Once the signature is created, each data can be accessed
+	directly with the associated component mapper. In the case of
+	DSS, there are two components as show below.
+      </p>
+
+      <example>
+	# get the DSS S component
+	sgn:get-relatif-component 
+	  afnix:sec:Signature:DSA-S-COMPONENT
+	# get the DSS R component
+	sgn:get-relatif-component 
+	  afnix:sec:Signature:DSA-R-COMPONENT
+      </example>      
+    </subsect>
+  </section>
+</chapter>

@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-wm-nwg.xml                                                   = -->
+<!-- = standard nwg services module - writer manual                       = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter module="nwg" number="1">
+  <title>Standard Network Working Group Module</title>
+  
+  <p>
+    The <em>Standard Network Working Group</em> module is an original
+    implemtation of the recommendations proposed by the NWG and currently
+    found in the form of <em>Request for Comments</em> (RFC). Most of the
+    objects are used with networking application, with the most common one
+    beeing the <em>Universal Resource Identifier</em> (URI) object.
+  </p>
+
+  <!-- uri class -->
+  <section>
+    <title>The uri class</title>
+
+    <p>
+      The <code>Uri</code> class is a base class that parses a
+      <em>Uniform Resource Identifier</em> or uri string and provides
+      methods to access individual component of that uri. The
+      implementation conforms to RFC 3986. The URI components are the
+      scheme, the authority, the path, the query and the fragment. The
+      class also takes care of the character escaping.
+    </p>
+
+    <example>
+      const uri (afnix:www:Uri "http://www.afnix.org")
+    </example>
+
+    <p>
+      An uri can be broken into several components called the
+      <em>scheme</em>, the <em>authority</em>, the <em>path</em>,
+      optionally the <em>query</em> and the <em>fragment</em>. The
+      <code>Uri</code> class provide a method to retrieve each component
+      of the parsed uri.
+    </p>
+
+    <example>
+      const uri (afnix:www:Uri "http://www.afnix.org/")
+      println (uri:get-scheme)    # http
+      println (uri:get-authority) # www.afnix.org
+      println (uri:get-path)      # /
+    </example>
+    
+    <!-- character conversion -->
+    <subsect>
+      <title>Character conversion</title>
+
+      <p>
+	The <code>Uri</code> class performs automatically the character
+	conversion in the input uri. For example, the <tt>+</tt>
+	character is replaced by a blank. The <tt>%</tt> character
+	followed by two hexadecimal values is replaced by the
+	corresponding ASCII character. Note that this conversion does
+	now apply to the query string.
+      </p>
+    </subsect>
+
+    <!-- query string -->
+    <subsect>
+      <title>Query string</title>
+
+      <p>
+	The <code>get-query</code> method returns the query string of
+	the uri. The query string starts after the <tt>?</tt>
+	character. The query string is a series of key-pair values
+	separated by the <tt>&amp;</tt> character.
+      </p>
+
+      <example>
+	const uri (afnix:www:Uri 
+	"http://www.afnix.org?name=hello&amp;value=world")
+	println (uri:get-query) # name=hello&amp;value=world
+      </example>
+
+      <p>
+	The module also provides the <code>UriQuery</code> class that
+	parses the query string and store the result in the form of a
+	property list. The query string parse is particularly useful
+	when writing automated scripts.
+      </p>
+    </subsect>
+
+    <example>
+      # create a query string object
+      const qs (afnix:nwg:UriQuery (uri:get-query))
+      # get the name value
+      qs:get-value "name"
+    </example>
+  </section>
+
+  <!-- cgi request handling -->
+  <section>
+    <title>Managing a cgi request</title>
+
+    <p>
+      Managing a cgi request involves primarily  the parsing of the
+      requesting uri. The uri generally contains the http referrer as
+      well as parameter which are stored in the form of a query
+      string. However, depending on the cgi method which can be of type
+      <em>GET</em> or <em>POST</em>, the treatment is somewhat
+      different.
+    </p>
+
+    <!-- checking the protocol version -->
+    <subsect>
+      <title>Checking the protocol version</title>
+
+      <p>
+	In the presence of a cgi protocol, it is always a good idea to
+	check the protocol version, or at least to put an assertion. The
+	protocol version is normally <em>CGI/1.1</em> and is stored in
+	the <em>GATEWAY_INTERFACE</em> environment variable.
+      </p>
+
+      <example>
+	# check the cgi protocol
+	assert "CGI/1.1" (
+	  afnix:sys:get-env "GATEWAY_INTERFACE")
+      </example>
+    </subsect>
+
+    <!-- getting the query string -->
+    <subsect>
+      <title>Getting the query string</title>
+
+      <p>
+	If the request method is <tt>GET</tt>, then the query string is
+	available in the environment variable <tt>QUERY_STRING</tt>. If 
+	the request method is <tt>POST</tt>, the query string is
+	available in the input stream. The length of the query string is
+	given by the <tt>CONTENT_LENGTH</tt> environment variable. The 
+	following example illustrates the extraction of the query
+	string.
+      </p>
+
+      <example>
+	# check the cgi protocol
+	assert "CGI/.1" (
+	  afnix:sys:get-env "GATEWAY_INTERFACE")
+	# initialize the query string
+	const query (afnix:sys:get-env "QUERY_STRING")
+	# get the request method
+	const rqm (afnix:sys:get-env "REQUEST_METHOD")
+	# check for a post request and update the query string
+	if (== rqm "POST") {
+        # create a buffer from the content length
+        const len (
+	  Integer (afnix:sys:get-env "CONTENT_LENGTH"))
+        # get the standard input stream and read content
+        const is  (interp:get-input-stream)
+        const buf (is:read len)
+        # set the query string
+        query:= (buf:to-string)
+	}
+      </example>
+    </subsect>
+
+    <!-- parsing the query string -->
+    <subsect>
+      <title>Parsing the query string</title>
+
+      <p>
+	The <code>UriQuery</code> class is designed to parse a cgi query 
+	string. Once the string has been parsed, it is possible to
+	perform a query by key since the class operates with a property
+	list.
+      </p>
+
+      <example>
+	const query (
+	  afnix:www:UriQuery "name=hello&amp;value=world")
+	query:length      # 2
+	query:get-value "name"  # hello
+	query:get-value "value" # world
+      </example>
+
+      <p>
+	The <code>UriQuery</code> class is the foundation to build
+	cgi script. When the library is combined with the <em>web
+	application management (wam)</em> service, powerful
+	applications can be built easily.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- special functions -->
+  <section>
+    <title>Special functions</title>
+
+    <p>
+      Several dedicated functions are available in the library as a way
+      to ease the object manipulations. Theses functions operate mostly
+      on uri and files as described below.
+    </p>
+
+    <!-- mime functions -->
+    <subsect>
+      <title>Uri functions</title>
+
+      <p>
+	Several functions are designed to ease the uri
+	manipulation. Most of them operate on the uri name or their
+	associated system name. The <code>normalize-uri-name</code>
+	function normalizes a string argument by adding a uri scheme if
+	missing in the original string. If the function detects that the
+	name starts with a host name, the <em>http</em> scheme is
+	added. If the function detects that the string starts with a
+	path, the <em>file</em> scheme is added. otherwise, the name
+	argument is left untouched. The <code>system-uri-name</code>
+	function normalizes the string argument by prioritizing the
+	system name. The function attempts to find a file that match the
+	sring argument and eventually build a uri file scheme. If the
+	file is not fond, the normalization process occurs with
+	the <code>normalize-uri-name</code> function.
+      </p>
+
+      <example>
+	# normalize a uri name
+	trans  unm "http://www.afnix.org"
+	assert unm (
+	  afnix:nwg:normalize-uri-name unm)
+	assert unm (
+	  afnix:nwg:normalize-uri-name "www.afnix.org")
+	assert unm (
+	  afnix:nwg:normalize-uri-name "//www.afnix.org")
+      </example>
+
+    </subsect>
+
+    <!-- mime functions -->
+    <subsect>
+      <title>Mime functions</title>
+
+      <p>
+	Mime functions are dedicated to easee the mainpulation of media
+	types or mime. A media type is defined by a string in the form
+	of a type and content value such
+	as <em>text/plain</em>. The <code>mime-value-p</code> predicate
+	returns true if a string mime value is a valid media type. From
+	a file perspective, the <code>mime-extension-p</code> predicate
+	returns true if the string extension has a valid media type
+	associated to it. Finally, the <code>extension-to-mime</code>
+	function can be used to get the string mime value associated
+	with a file extension.
+      </p>
+
+      <example>
+	# check a media type
+	assert true (afnix:nwg:mime-value-p "text/plain")
+	# check the mime extension predicate
+	assert true (afnix:nwg:mime-extension-p "txt")
+	# check the extension to mime
+	assert "text/plain" (
+	  afnix:nwg:extension-to-mime "txt")
+      </example>
+    </subsect>
+  </section>
+
+  <!-- http transaction objects -->
+  <section>
+    <title>HTTP transaction objects</title>
+
+    <p>
+      The concept of HTTP transactions is defined in RFC 2616. In the
+      client/server approach, a client issues a request which is
+      answered with a response. A special case arise when the server is
+      asked to perform some extra works, such like executing a
+      script. In this case, the answer is called a reply which is
+      formatted into a response when the server does its job correctly.
+    </p>
+
+    <p>
+      The nature of the HTTP objects determines how the associated
+      stream behaves. With a HTTP request, the object is filled by
+      reading an input stream when operating on the server side. On the
+      other hand, the request is filled by data when operating on the
+      client side. With a HTTP response, the opposite situation
+      occurs. The HTTP response is filled by reading an input stream
+      when operating on the client side and filled by data when
+      operating on the server side.
+    </p>
+
+    <subsect>
+      <title>HTTP protocol</title>
+
+      <p>
+	The <code>HttpProto</code> class is a base class designed to
+	handle a HTTP header that is found in both HTTP request and
+	response. The class is built around a property list that is
+	filled either by parsing an input stream or by processing
+	specific methods. The <code>HttpProto</code> defines also
+	some methods which are often used with a HTTP request or
+	response.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- http response -->
+  <section>
+    <title>HTTP response</title>
+
+    <p>
+      The <code>HttpResponse</code> class is a class designed to handle
+      a HTTP response. When operating on the client side, the response 
+      object is built by reading an input stream. When operating on the
+      server side, the response object is built by calling specific
+      methods.
+    </p>
+
+    <!-- creating a server response -->
+    <subsect>
+      <title>Creating a server response</title>
+
+      <p>
+	A server response is created by specifying the response status
+	code. By default, a HTTP response is created with the default
+	media type <em>text/html</em>. If the media type needs to be
+	changed, it can be passed as the second argument to the response
+	constructor. By default, the empty constructor creates an empty
+	constructor with a valid status code.
+      </p>
+
+      <example>
+	#create a valid response
+	const hr (afnix:nwg:HttpResponse 200)
+      </example>
+
+      <p>
+	Once the server response is created, it can be augmented with
+	some headed values. Typically, a server will add some information
+	about the response, such like the content length, the
+	modification time or a tag. The <code>HttpResponse</code>
+	provides several methods that ease the generation of these
+	header values.
+      </p>
+    </subsect>
+
+    <!-- creating a client response -->
+    <subsect>
+      <title>Creating a client response</title>
+
+      <p>
+	A client response is created by binding an input stream to a
+	response object. During the construction, the input stream is
+	read and the HTTP protocol header is filled. It is also during
+	this phase that the status code is processed. It is therefore
+	important to ensure that a response object is built correctly
+	before attempting to access it.      
+      </p>
+
+      <example>
+	# create a client response by stream
+	const hr (afnix:nwg:HttpResponse is)
+      </example>
+    </subsect>
+
+    <!-- reading a client response -->
+    <subsect>
+      <title>Reading a client response</title>
+
+      <p>
+	When the response has been created, it is important to check its
+	status code. Most of the time, the response is valid and its
+	content can be read directly. The <code>status-ok-p</code>
+	predicate returns true if the status code is valid. In such
+	case, a HTTP stream can be built in order to read the
+	response.
+      </p>
+      
+      <example>
+	# check that a response is valid
+	if (hr:status-ok-p) {
+        # create a http stream
+        const rs (afnix:nwg:HttpStream ht is)
+        # read the response stream
+        while (rs:eos-p) (rs:read)
+	}
+      </example>
+
+      <p>
+	Before reading a http stream, it is important to detect and verify
+	the nature of the response content. The <code>media-type-p</code>
+	predicate returns true if the media type is defined and the
+	<code>get-media-type</code> method returns the response type
+	in the form of a mime code such like <em>text/html</em>. 
+	Eventually, the character set associated with the media type can
+	also be detected. The <code>encoding-mode-p</code>
+	predicate and the <code>get-encoding-mode</code> method
+	can be used to detect the content encoding mode. However, it is
+	worth to note that the <code>HttpStream</code> object is
+	automatically sets with the proper encoding if it can be found
+	in the response header.
+      </p>
+    </subsect>
+
+    <!-- special client response -->
+    <subsect>
+      <title>Special client response</title>
+
+      <p>
+	Certain response can sometime contains special status codes that
+	require a specific treatment. This is the case when the response
+	corresponds to a http redirection. In this case, the new uri
+	must be fetched to get the desired response. 
+	The <code>location-p</code> predicate returns true if the
+	response corresponds to a http redirect and
+	the <code>get-location</code> method can be used to get the new
+	location uri. If this situation arises, it is up to the
+	implementation to decide what to do with the new uri. In most
+	cases, a new request will be sent to the server.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- cookies -->
+  <section>
+    <title>Cookie object</title>
+
+    <p>
+      The <code>Cookie</code> object is a special object that can be
+      used during a http session, to post data to the http client. The
+      idea behind <em>cookies</em> is to be able to maintain some state,
+      during the user session for some time. A cookie is a
+      <em>name/value</em> pair and eventually an expiration time. By
+      default, the cookie object are defined for one http client
+      session, but this behavior can be changed. 
+    </p>
+
+    <!-- managing cookies -->
+    <subsect>
+      <title>Managing cookies</title>
+
+      <p>
+	A cookie is created with a <em>name/value</em> pair and
+	eventually an expiration time. Such expiration time is called
+	the <em>maximum-age</em> and is automatically formatted by the
+	object. With two arguments a session cookie is created. With a
+	third argument as an integer, the constructor set the maximum
+	age in seconds.
+      </p>
+
+      <example>
+	# create a cookie with name/value
+	const cookie (afnix:nwg:Cookie "cartid" "123456789")
+      </example>
+
+      <p>
+	The cookie implementation follows the recommendation of the
+	RFC-2965 for http state management. The most important point to
+	remember is the interpretation of the maximum age that differs
+	from one cookie version to another. With version 1, which is the
+	default, the maximum age is defined relatively in seconds, while
+	it is absolute with version 0.The maximum age is set either at
+	construction or with the <code>set-max-age</code> method.
+	The <code>set-max-age</code> method sets the cookie life time in
+	seconds, in reference to the current time. A negative value is
+	always reset to -1 and defined a session cookie. A 0 value tells
+	the http client to remove the cookie. The <code>set-path</code>
+	method defines the path for which this cookie apply.
+      </p>
+    </subsect>
+
+    <!-- adding a cookie -->
+    <subsect>
+      <title>Adding a cookie</title>
+
+      <p>
+	Once the cookie is defined, the <code>set-cookie</code> method
+	of the <code>HttpResponse</code> object can be used to install the
+	cookie. Combined with the <code>write</code> method, the
+	cookie can be send to the http client.
+      </p>
+    </subsect>
+  </section>
+</chapter>

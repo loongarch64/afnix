@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-02-axd.xml                                                   = -->
+<!-- = afnix cross debugger - chapter 2                                   = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter client="axd" number="2">
+  <title>Using the debugger</title>
+
+  <p>
+    This chapter describes in detail the usage of the cross debugger
+    or <product>axc</product>. The debugger is a special  
+    application that is built on top of the interpreter. For
+    this reason, the debugger provides the full execution environment
+    with special commands bound into a dedicated nameset.
+  </p>
+
+  <!-- invocation and termination -->
+  <section>
+    <title>Invocation and termination</title>
+
+    <p>
+      The <product>axd</product> debugger is started by typing the
+      command <command>axd</command>. Once started, the debugger reads
+      the commands from the terminal. Since the debugger is built on top
+      of the interpreter, any command is in fact a special form
+      that is executed by the interpreter. The natural way to invoke the
+      debugger is to pass the primary file to debug with eventually some
+      arguments.
+    </p>
+
+    <example>
+      zsh&gt; axd PROGRAM [arguments]
+    </example>
+
+    <p>
+      When the debugger is started, a prompt <tt>'(axd)'</tt> indicates
+      that the  session is running. The debugger session is terminated
+      with the commands <code>axd:exit</code> or <code>axd:quit</code>.
+    </p>
+
+    <example>
+      zsh&gt; axd PROGRAM
+      (axd) axd:quit
+      zsh&gt;
+    </example>
+
+    <!-- debugger options -->
+    <subsect>
+      <title>Debugger options</title>
+      
+      <p>
+	The available options can be seen with the <option>h</option>
+	option and the current version with the <option>v</option>
+	option. This mode of operations is similar to the one found with
+	the interpreter.
+      </p>
+
+      <example>
+	zsh&gt; axd [h]
+	usage: axd [options] [file] [arguments]
+	[h]              print this help message
+	[v]              print version information
+	[i] path         add a path to the resolver
+	[e   mode]       force the encoding mode
+	[f runini]       run initial file
+	[f  emacs]       enable emacs mode
+	[f assert]       enable assertion checks
+	[f nopath]       do not set initial path
+      </example>
+    </subsect>
+
+    <!-- running the program -->
+    <subsect>
+      <title>Running the program</title>
+
+      <p>
+	When a program is run within the debugger, a primary file must
+	be used to indicate where to start the program. The file name
+	can be given either as an <command>axd</command> command
+	argument or with the <code>axd:load</code> command. The first
+	available form in the primary file is used as the program
+	starting point.
+      </p>
+    </subsect>
+
+    <!-- program loading -->
+    <!-- running the program -->
+    <subsect>
+      <title>Loading the program</title>
+
+      <p>
+	The <code>axd:load</code> command loads the primary file and
+	mark the first available form as the starting form for the
+	program execution. The command takes a file name as its first
+	argument. The resolver rule apply for the file name
+	resolution.
+      </p>
+
+      <list>
+        <item>
+	  If the string name has the <extn>.als</extn> extension, the
+	  string is considered to be the file name.
+	</item>
+	<item>
+	  If the string name has the <extn>.axc</extn> extension or no
+	  extension, the string is used to search a file that has a
+	  <extn>.als</extn> extension or that belongs to a librarian.
+	</item>
+      </list>
+
+      <p>
+	Note that these operations are also dependent on the
+	<option>i</option> option that adds a path or a librarian to
+	the search-path.
+      </p>
+    </subsect>
+
+    <!-- starting the program -->
+    <subsect>
+      <title>Starting the program</title>
+
+      <p>
+	The <code>axd:run</code> command starts the program at the first
+	available form in the primary file. The program is executed
+	until a breakpoint or any other halting condition is
+	reached. Generally, when the program execution is suspended, an
+	entry into the debugger is done and the prompt is shown at the
+	command line.
+      </p>
+
+      <example>
+	(axd)axd:run
+      </example>
+
+      <p>
+	The <code>axd:run</code> is the primary command to execute
+	before the program can be debugged. Eventually, a file name can
+	be used as the primary file to execute.
+      </p>
+
+      <example>
+	(axd)axd:run "test.als"
+      </example>
+    </subsect>
+
+    <!-- setting the program arguments -->
+    <subsect>
+      <title>Setting program arguments</title>
+
+      <p>
+	Since the debugger is built on top of the interpreter,
+	it is possible to set directly the argument vector. The argument
+	vector is bound to the interpreter with the qualified name
+	<code>interp:argv</code>. The standard vector can be used to
+	manipulate the argument vector.
+      </p>
+
+      <example>
+	(axd)interp:argv:reset
+	(axd)interp:argv:append "hello"
+      </example>
+
+      <p>
+	In this example, the interpreter argument vector is reset and
+	then a single argument string is added to the vector. If one
+	wants to see the interpreter argument vector, a simple procedure
+	can be used as shown below.
+      </p>
+
+      <example>
+	const argc (interp:argv:length)
+	loop (trans i 0) (&lt; i argc) (i:++) {
+        trans arg (interp:argv:get i)
+	println "argv[" i "] = " arg
+	}
+      </example>
+    </subsect>
+  </section>
+
+  <!-- breakpoint operations -->
+  <section>
+    <title>Breakpoints operations</title>
+
+    <p>
+      Breakpoints are set with the <code>axd:break</code> command. If a
+      breakpoint is reached during the program execution, the program is
+      suspended and the debugger session is resumed with a command
+      prompt. At the command prompt, the full interpreter is
+      available. It permits to examine symbols.
+    </p>
+
+    <subsect>
+      <title>Breakpoint command</title>
+
+      <p>
+	The <code>axd:break</code> command sets a breakpoint in a file
+	at a specified line number. If the file is not specified, the
+	primary file is used instead. If the line number is not
+	specified, the first available form in the current file is
+	used.
+      </p>
+
+      <example>
+	(axd) axd:break "demo.als" 12
+	Setting breakpoint 0 in file demo.als at line 12
+      </example>
+
+      <p>
+	In this example, a breakpoint is set in the file
+	<file>demo.als</file> at the line number 12. The file name does
+	not have to be the primary file. If another file name is
+	specified, the file is loaded, instrumented and the breakpoint
+	is set.
+      </p>
+    </subsect>
+
+    <!-- viewing breakpoints -->
+    <subsect>
+      <title>Viewing breakpoints</title>
+
+      <p>
+	The <code>axd:break-info</code> command reports some information
+	about the current breakpoint setting.
+      </p>
+
+      <example>
+	(axd) axd:break "demo.als" 12
+	(axd) axd:break "test.als" 18
+	(axd) axd:break-info
+	Breakpoint 0 in file demo.als at line 12
+	Breakpoint 1 in file test.als at line 18
+      </example>
+    </subsect>
+
+    <!-- resuming execution -->
+    <subsect>
+      <title>Resuming execution</title>
+      
+      <p>
+	The <code>axd:continue</code> command resumes the program
+	execution after a breakpoint. The program execution continues
+	until another breaking condition is reached or the program
+	terminates.
+      </p>
+
+      <example>
+	(axd) axd:run
+	Breakpoint 0 in file demo.als at line 12
+	(axd) axd:continue
+      </example>
+
+      <p>
+	In this example, the program is run and stopped at breakpoint
+	0. The <code>axd:continue</code> command resumes the program
+	execution.
+      </p>
+    </subsect>
+  </section>
+</chapter>

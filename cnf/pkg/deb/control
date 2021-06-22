@@ -1,0 +1,44 @@
+Source: afnix
+Section: interpreters
+Priority: optional
+Maintainer: Amaury Darsch <amaury@afnix.org>
+Build-Depends: debhelper (>= 10)
+Standards-Version: 4.3.0
+Homepage: http://www.afnix.org/
+
+Package: afnix
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Suggests: afnix-doc
+Description: The Afnix Writing System
+ The Afnix Writing System is a multi-threaded functional writing system
+ with dynamic symbol bindings that supports the object oriented paradigm.
+ The distribution features a set of application clients, modules and services,
+ including the original interpreter and the compiler. This package contains
+ the interpreter, clients, modules and services.
+
+Package: afnix-doc
+Section: doc
+Priority: optional
+Architecture: all
+Suggests: afnix
+Description: The Afnix Writing System documentation
+ The Afnix Writing System is a multi-threaded functional writing system
+ with dynamic symbol bindings that supports the object oriented paradigm.
+ The distribution features a set of application clients, modules and services,
+ including the original interpreter and the compiler. This package contains
+ the documentation for the Afnix Writing System.
+
+Package: afnix-dev
+Section: devel
+Priority: optional
+Architecture: all
+Depends: afnix (= ${binary:Version}), ${misc:Depends}
+Suggests: afnix-doc
+Description: The Afnix Writing System development files
+ The Afnix Writing System is a multi-threaded functional writing system
+ with dynamic symbol bindings that supports the object oriented paradigm.
+ The distribution features a set of application clients, modules and services,
+ including the original interpreter and the compiler. This package contains
+ the development files for the Afnix Writing System.

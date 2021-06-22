@@ -1,0 +1,10 @@
+Boolean, Integer,  Real, String
+false,         0,   0.0,    "0"
+true,          1,   1.0,    "1"
+Integer, Integer,  Real,   Real
++0,           -0,  +0.0,   -0.0
++3,           -3, +3.14,  -3.14
+Boolean, Character, Relatif, Regex
+false,         'f',      0R,   [0]
+Date,        Time
+20000101,00:00:00

@@ -1,0 +1,1857 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== -->
+<!-- = std-01-guide.xml                                                   = -->
+<!-- = afnix programmer's guide chapter 1                                 = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<chapter volume="1" number="1">
+  <title>Getting started</title>
+
+  <p>
+    <afnix/> is a multi-threaded functional engine with dynamic symbol
+    bindings that supports the object oriented paradigm. The system
+    features a state of the art runtime engine that runs on both 32 and
+    64 bits platforms. The system specification offers a rich syntax
+    that makes the functional programming a pleasant activity. When the
+    interpreter is used interactively, <em>text</em> is entered on the 
+    command line and executed when a complete and valid syntactic object
+    has been constructed. Alternatively, the interpreter can execute a
+    source file or operates with an input stream.
+  </p>
+
+  <p>
+    <afnix/> is a comprehensive set of application clients, modules and
+    services. The original distribution contains the core interpreter
+    with additional clients like the compiler, the librarian and the
+    debugger. The distribution contains also a rich set of modules that
+    are dedicated to a particular domain. The basic modules are the
+    standard i/o module, the system module and the networking
+    module. Above modules are services. A service is another extension
+    of the engine that provides extra functionalities with help of several
+    modules. This hierarchy is strictly enforced in the system design and
+    provides a clear functional separation between application
+    domain. When looking for a particular feature, it is always a good
+    idea to think in term of module or service functionality.
+  </p>
+  
+  <p>
+    <afnix/> operates with a set of keywords and predicates.
+    The engine has a native Unicode database. The set of standard
+    objects provides support for integers, real numbers, strings,
+    characters and boolean. Various containers like list, vector, hash 
+    table, bitset, and graphs are also available in the core
+    distribution. The syntax incorporates the concept of lambda
+    expression with explicit closure. Symbol scope limitation within a
+    lambda expression is a feature called gamma expression. Form like
+    notation with an easy block declaration is also another extension
+    with respect to other system. The object model provides a single
+    inheritance mechanism with dynamic symbol resolution. Special
+    features include instance parenting, class binding instance
+    inference and deference. Native class derivation and method 
+    override is also part of the object model with fixed class objects
+    and forms. The engine incorporates an original regular expression
+    engine with group matching, exact or partial match and
+    substitution. An advanced exception engine is also provided with
+    native run-time compatibility.
+  </p>
+  
+  <p>
+    <afnix/> implements a true multi-threaded engine with an automatic
+    object protection mechanism against concurrent access. A read and
+    write locking system which operates with the thread engine is
+    also built in the core system. The object memory management is
+    automatic inside the core interpreter. Finally, the engine is
+    written in C++ and provides runtime compatibility with it. Such
+    compatibility includes the ability to instantiate C++ classes, use
+    virtual methods and raise or catch exceptions. A comprehensive
+    programming interface has been designed to ease the integration of
+    foreign libraries.
+  </p>
+  
+  <!-- first contact -->
+  <section>
+    <title>First contact</title>
+    
+    <p>
+      The fundamental syntactic object is a <em>form</em>. A form is
+      parsed and immediately executed by the interpreter. A form is
+      generally constructed with a function name and a set of
+      arguments. The process of executing a form is called the
+      <em>evaluation</em>. The next example illustrates one of the
+      simplest form which is supported by the engine. This form simply
+      displays the message <em>hello world</em>.<ie>Hello world</ie>
+    </p>
+    
+    <!-- hello world example -->
+    <subsect>
+      <title>Hello world</title>
+      
+      <p>
+	At the interpreter prompt, a form is constructed with the
+	special object <code>println</code>. The unique argument is a
+	string which is placed between double quotes.
+      </p>
+      
+      <example>
+	(axi) println "Hello World"
+	Hello World
+      </example>
+      
+      <p>
+	The interpreter can be invoked to enter one or several forms
+	interactively. The form can also be placed in a text file and
+	the interpreted called to execute it. The <extn>als</extn> is
+	the referred extension for a text file, but it can be
+	anything. A simple session which executes the above file --
+	assuming the original file is called <file>hello.als</file> --
+	is shown below.<ie>Interactive mode</ie>
+      </p>
+      
+      <example>
+	zsh&gt; axi hello.als
+	Hello World
+      </example>
+
+      <p>
+	In interactive mode, the interpreter waits for a form. When a
+	form is successfully constructed, it is then immediately
+	executed by the engine. Upon completion, the interpreter
+	prompt is displayed and the interpreter is ready to accept a
+	new form. A session is terminated by typing
+	<command>ctrl-d</command>. Another way to use the engine is to
+	call the compiler client called <product>axc</product>, and
+	then invoke the interpreter with the compiled file. The
+	interpreter assumes the <extn>.axc</extn> extension for
+	compiled file and will automatically figure out which file to 
+	execute when a file name is given without an extension.
+      </p>
+
+      <example>
+	zsh&gt; axc hello.als
+	zsh&gt; axi hello.axc
+	Hello World
+	zsh&gt; axi hello
+	Hello World
+      </example>
+
+      <p>
+	The order of search is determined by a special system called the
+	<em>file resolver</em>. Its behavior is described in a special
+	chapter of this manual.
+      </p>
+    </subsect>
+    
+    <!-- interpreter commands -->
+    <subsect>
+      <title>Interpreter command</title>
+      
+      <p>
+	The interpreter can be invoked with several options, a file to
+	execute and some program arguments. The <option>h</option>
+	option prints the various interpreter options.
+	<ie>Interpreter options</ie>
+      </p>
+
+      <example>
+	zsh&gt; axi -h
+	usage: axi [options] [file] [arguments]
+	           [h]           print this help message
+	           [v]           print system version
+	           [m]           enable the start module
+	           [i   path]    add a resolver path
+	           [e   mode]    force the encoding mode
+	           [f assert]    enable assertion checks
+	           [f nopath]    do not set initial path
+	           [f noseed]    do not seed random engine
+	           [f   seed]    seed random engine
+      </example>
+
+      <p>
+	The <option>v</option> option prints the interpreter version
+	and operating system. The <option>f</option> option turns on or
+	off some additional options like the assertion checking. The
+	use of program arguments is illustrated later in this chapter. The
+	<option>i</option> option adds a path to the interpreter
+	resolver. Several <option>i</option> options can be 
+	specified. The order of search is determined by the option
+	order. As mentioned earlier, the use of the resolver combined
+	with the <em>librarian</em> is described in a specific
+	chapter. If the initial file name to execute contains a
+	directory path, such path is added automatically to the
+	interpreter resolver path unless the <option>nopath</option>
+	option is specified.
+      </p>
+    </subsect>
+
+    <!-- interactive line editing -->
+    <subsect>
+      <title>Interactive line editing</title>
+
+      <p>
+	Line editing capabilities is provided when the interpreter is used
+	interactively. Error messages are displayed in red if the terminal
+	supports colors. Various accelerators are bound to the
+	terminal as indicated in the table below.<ie>Line editing</ie>
+      </p>
+      
+      <table>
+	<title>Interactive line editing key bindings</title>
+       <tr>
+	 <th>Binding</th><th>Description</th>
+       </tr>
+       <tr><td>backspace</td><td>Erase the previous character</td></tr>
+       <tr><td>delete</td>   <td>Erase at the cursor position</td></tr>
+       <tr><td>insert</td>   <td>Toggle insert with in-place</td></tr>
+       <tr><td>ctrl-a</td>   <td>Move to the beginning of the line</td></tr>
+       <tr><td>ctrl-e</td>   <td>Move to the end of the line</td></tr>
+       <tr><td>ctrl-u</td>   <td>Clear the input line</td></tr>
+       <tr><td>ctrl-k</td>   <td>Clear from the cursor position</td></tr>
+       <tr><td>ctrl-l</td>   <td>Refresh the line editing</td></tr>
+      </table>
+      
+      <p>
+	The arrow are also bound to their usual functions. Note that when
+	using the history, a multi-line command editing access is
+	provided by the interpreter.
+      </p>
+
+      <table>
+	<title>Arrow key bindings</title>
+       <tr>
+	 <th>Binding</th><th>Description</th>
+       </tr>
+       <tr><td>left</td>     <td>Move the cursor to the left</td></tr>
+       <tr><td>right</td>    <td>Move the cursor to the right</td></tr>
+       <tr><td>up</td>       <td>Move up in the history list</td></tr>
+       <tr><td>down</td>     <td>Move down in the history list</td></tr>
+      </table>
+    </subsect>
+
+    <!-- command line arguments -->
+    <subsect>
+      <title>Command line arguments</title>
+
+      <p>
+	The interpreter command line arguments are stored in a vector
+	called <code>argv</code> which is part of the
+	<code>interp</code> object. A complete discussion about object
+	and class is covered in the <em>class object chapter</em>. At
+	this time, it is just necessary to note that a method is
+	invoked by a name separated from the object symbol name with a
+	semicolon. The example below illustrates the use of the vector
+	argument.<ie>Command arguments</ie>
+      </p>
+      
+      <example>
+	# argv.als
+	# print the argument length and the first one
+	println "argument length: " (interp:argv:length)
+	println "first argument : " (interp:argv:get 0)
+	
+	zsh&gt; axi argv.als hello world
+	2
+	hello
+      </example>
+    </subsect>
+
+    <!-- loading a source file -->
+    <subsect>
+      <title>Loading a source file</title>
+    
+      <p>
+	The interpreter object provides also the <code>load</code>
+	method to load a file. The argument must be a valid file
+	path or an exception is raised. The <code>load</code> method
+	returns <code>nil</code>. When the file is loaded, the
+	interpreter input, output and error streams are used. The load
+	operation reads one form after another and executes them
+	sequentially.<ie>File loading</ie>
+      </p>
+      
+      <example>
+	# load the source file demo.als
+	(axi) interp:load "demo.als"
+
+	# load the compiled file demo.axc
+	(axi) interp:load "demo.axc"
+	
+	# load whatever is found
+	(axi) interp:load "demo"
+      </example>
+
+      <p>
+	The <code>load</code> method operates with the help of the
+	interpreter resolver. By default the source file extension is
+	<extn>als</extn>. If the file has been compiled, the
+	<extn>axc</extn> extension can be used instead. This force the
+	interpreter to load the compiled version. If you are not sure,
+	or do not care about which file is loaded, the extension can
+	be omitted. Without extension, the compiled file is searched
+	first. If it is not found the source file is searched and loaded.
+      </p>
+    </subsect>
+
+    <!-- compiler -->
+    <subsect>
+      <title>The compiler</title>
+      
+      <p>
+	The client <command>axc</command> is the <em>cross
+	compiler</em>. It generates a binary file that can be run across
+	several platforms. The <option>h</option> option prints the
+	compiler options.<ie>Compile client</ie>
+      </p>
+
+      <example>
+	usage: axc [options] [files]
+	           [h]            print this help message
+                   [v]            print version information
+                   [i] path       add a path to the resolver
+                   [e  mode]      force the encoding mode
+      </example>
+
+      <p>
+	One or several files can be specified on the command line. The
+	source file is searched with the help of the resolver. The
+	resolver <option>i</option> option can be used to add a path
+	to the resolver.
+      </p>
+    </subsect>
+  </section>
+
+  <!-- Writing structure -->
+  <section>
+    <title>Writing structure</title>
+
+    <p>
+      The structure of file is a succession of valid syntactic objects
+      separated by blank lines or comments. During the compilation or
+      the execution process, each syntactic object is processed one
+      after another in a single pass. Reserved keywords are an
+      integral part of the writing systems. The association of
+      symbols and literal constitutes a <em>form</em>. A form is the
+      basic execution block in the writing system. When the form uses
+      reserved keyword, it is customary to refer to it as a
+      <em>special form</em>.<ie>Writing structure</ie>
+    </p>
+
+    <!-- comments -->
+    <subsect>
+      <title>Character set and comments</title>
+
+      <p>
+	The writing system operates with the standard Unicode character
+	set. Comments starts with the character <code>#</code>. All
+	characters are consumed until the end of line. Comments can be
+	placed anywhere in the source file. Comments entered during an
+	interactive session are discarded.<ie>Comments</ie><ie>#</ie>
+      </p>
+    </subsect>
+
+    <!-- built-in objects -->
+    <subsect>
+      <title>Native objects</title>
+
+      <p>
+	The writing system operates mostly with objects. An object is
+	created upon request or automatically by the engine when a
+	native representation is required. To perform this task,
+	several native objects, namely <code>Boolean</code> for
+	boolean objects, <code>Integer</code> , <code>Relatif</code>
+	for integer numbers, <code>Real</code> for floating-point number, 
+	<code>Byte</code>, <code>Character</code> and
+	<code>String</code> for character or string manipulation are
+	built inside the engine. Most of the time, a native object is
+	built implicitly from its lexical representation, but an
+	explicit representation can also be used.<ie>Native objects</ie>
+      </p>
+
+      <example>
+	const boolean  true
+	const integer  1999
+	const relatif  1234567890R
+	const real     2000.0
+	const string   "afnix"
+	const char     'a'
+	
+	trans symbol   "hello world"
+	trans symbol   2000
+      </example>
+
+      <p>
+	The <code>const</code> and <code>trans</code> reserve keywords
+	are used to declare a new symbol. A symbol is simply a binding
+	between a name and an object. Almost any standard characters can
+	be used to declare a symbol.
+	The <code>const</code> reserved keyword creates a <em>constant
+	symbol</em> and returns the last evaluated object. As a
+	consequence, nested <code>const</code> constructs are possible
+	like <code>trans b (const a 1)</code>. The <code>trans</code>
+	reserved keyword declare a new transient symbol. When a symbol is
+	marked transient, the object bound to the symbol can be
+	changed while this is not possible with a constant
+	symbol. Eventually, a symbol can be destroyed with the special
+	form <code>unref</code>. It is worth to note that it is the
+	symbol which is destroyed and not the object associated with
+	it.<ie>const</ie><ie>trans</ie>
+      </p>
+    </subsect>
+
+    <subsect>
+      <title>Stop and resume parsing</title>
+      
+      <p>
+	The parsing process is stopped in the presence of
+	the <code>&#x25C0;</code> character (Unicode U+25C0). The
+	parsing operation is resumed with the <code>&#x25B6;</code>
+	character (Unicode U+25B6). Such mechanism is useful when
+	dealing with multi line statements. This mechanism is also a
+	good example of Unicode based control characters.
+	<ie>Parsing</ie><ie>&#x25C0;</ie><ie>&#x25B6;</ie>
+      </p>
+    </subsect>
+    
+    <!-- forms -->
+    <subsect>
+      <title>Forms</title>
+
+      <p>
+	An implicit form is a single line command. When a command is
+	becoming complex, the use of the standard form notation is
+	more readable. The standard form uses the <code>(</code> and
+	<code>)</code> characters to start and close a form.
+	A form causes an <em>evaluation</em>. When a form is
+	evaluated, each symbol in the form are evaluated to their
+	corresponding internal object. Then the interpreter treats the
+	first object of the form as the object to execute and the rest
+	is the argument list for the calling object. The use of form
+	inside a form is the standard way to perform recursive
+	evaluation with complex expressions.<ie>Forms</ie>
+      </p>
+
+      <example>
+	const three (+ 1 2)
+      </example>
+
+      <p>
+	This example defines a symbol which is initialized with
+	the integer 3, that is the result of the computation <code>(+ 1
+	2)</code>. The example shows also that a Polish notation is used
+	for arithmetic. If fact, <code>+</code> is a built-in operator
+	which causes the arguments to be summed (if possible).
+	Evaluation can be nested as well as definition and assignation. When a
+	form is evaluated, the result of the evaluation is made available to
+	the calling form. If the result is obtained at the top level, the
+	result is discarded.<ie>Symbol</ie>
+      </p>
+
+      <example>
+	const  b (trans a (+ 1 2))
+	assert a 3
+	assert b 3
+      </example>
+
+      <p>
+	This program illustrates the mechanic of the evaluation
+	process. The evaluation is done recursively. The <code>(+ 1
+	2)</code> form is evaluated as 3 and the result transmitted to
+	the form <code>(trans a 3)</code>. This form not only creates
+	the symbol <code>a</code> and binds to it the integer 3, but
+	returns also 3 which is the result of the previous
+	evaluation. Finally, the form <code>(const b 3)</code> is
+	evaluated, that is, the symbol <code>b</code> is created and the
+	result discarded. Internally, things are a little more complex,
+	but the idea remains the same. This program illustrates also the
+	usage of the <code>assert</code> keyword.<ie>Evaluation</ie>
+      </p>
+    </subsect>
+
+    <!-- lambda expression -->
+    <subsect>
+      <title>Lambda expression</title>
+
+      <p>
+	A <em>lambda expression</em> is another name for a function.
+	The term comes historically from Lisp to express the
+	fact that a lambda expression is analog to the concept of
+	expression found in the lambda calculus. There are various ways to 
+	create a lambda expression. A lambda expression is created with
+	the <code>trans</code> reserved keyword. A lambda expression
+	takes 0 or more arguments and returns an object. A lambda
+	expression is also an object by itself When a lambda expression
+	is called, the arguments are evaluated from left to right.
+	The function is then called and the object result is transmitted
+	to the calling form. The use of <code>trans</code> vs
+	<code>const</code> is explain later. To illustrate the use of a
+	lambda expression, the computation of an integer factorial is
+	described in the next example.<ie>Lambda expression</ie>
+      </p>
+    
+      <example>
+	# declare the factorial function
+	trans fact (n) (
+	if (== n 1) 1 (* n (fact (- n 1))))
+	
+	# compute factorial 5
+	println "factorial 5 = " (fact 5)
+      </example>
+      
+      <p>
+	This example calls for several comments. First the
+	<code>trans</code> keyword defines a new function object with one
+	argument called <code>n</code>. The body of the function is
+	defined with the <code>if</code> special form and can be
+	easily understood. The function is called in the next form when
+	the <code>println</code> special form is executed. Note that
+	here, the call to <code>fact</code> produces an integer object,
+	which is converted automatically by the <code>println</code>
+	keyword.<ie>Special form</ie>
+      </p>
+    </subsect>
+
+    <!-- block form -->
+    <subsect>
+      <title>Block form</title>
+      
+      <p>
+	The notation used in the <code>fact</code> program is the
+	standard form notation originating from Lisp and the Scheme
+	dialect. There is also another notation called the <em>block
+	form</em> notation with the use of the <code>{</code> and
+	<code>}</code> characters. A block form is a syntactic notation
+	where each form in the block form is executed sequentially. The
+	form can be either an implicit or a regular form. The
+	<code>fact</code> procedure can be rewritten with the block
+	notation as illustrated below.<ie>Block form</ie>
+      </p>
+      
+      <example>
+	# declare the factorial procedure
+	trans fact (n) {
+        if (== n 1) 1 (* n (fact (- n 1)))
+	}
+	
+	# compute factorial 5
+	println "factorial 5 = " (fact 5)
+      </example>
+      
+      <p>
+	Another way to create a lambda expression is via the 
+	<code>lambda</code> special form. Recall that a lambda
+	expression is an object. So when such object is created, it
+	can be bounded to a symbol. The factorial example could be
+	rewritten with an explicit lambda call.<ie>Factorial</ie>
+      </p>
+
+      <example>
+	# declare the factorial procedure
+	const fact (lambda (n) (
+        if (== n 1) 1 (* n (fact (- n 1)))))
+	
+	# compute factorial 5
+	println "factorial 5 = " (fact 5)
+      </example>
+      
+      <p>
+	Note that here, the symbol <code>fact</code> is a constant
+	symbol. The use of <code>const</code> is reserved for the
+	creation of <em>gamma expression</em>.<ie>Gamma expression</ie> 
+      </p>
+    </subsect>
+    
+    <!-- gamma expression -->
+    <subsect>
+      <title>Gamma expression</title>
+      
+      <p>
+	A lambda expression can somehow becomes very slow during the
+	execution, since the symbol evaluation is done within a set of
+	nested call to resolve the symbols. In other words, each
+	recursive call to a function creates a new symbol set which is
+	linked with its parent. When the recursion is becoming deep, so
+	is the path to traverse from the lower set to the top
+	one. There is also another mechanism called <em>gamma
+	expression</em> which binds only the function symbol set to
+	the top level one. The rest remains the same. Using a gamma
+	expression can speedup significantly the execution.
+	<ie>Gamma expression</ie> 
+      </p>
+
+      <example>
+	# declare the factorial procedure
+	const fact (n) (
+        if (== n 1) 1 (* n (fact (- n 1))))
+	
+	# compute factorial 5
+	println "factorial 5 = " (fact 5)
+      </example>
+      
+      <p>
+	We will come back later to the concept of gamma expression. The
+	use of the reserved keyword <code>const</code> to declare 
+	a gamma expression makes now sense. Since most function
+	definitions are constant with one level, it was a design choice to
+	implement this syntactic sugar. Note that <code>gamma</code> is
+	a reserved keyword and can be used to create a gamma expression
+	object. On the other hand, note that the gamma expression
+	mechanism does not work for instance method. We will illustrate
+	this point later in this book.<ie>Factorial</ie>
+      </p>
+    </subsect>
+    
+    <!-- lambda generation -->
+    <subsect>
+      <title>Lambda generation</title>
+      
+      <p>
+	A lambda expression can be used to generate another lambda
+	expression. In other word, a function can generate a function,
+	an that capability is an essential ingredient of the <em>functional
+	programming</em> paradigm. The interesting part with lambda
+	expression is the concept of closed variables. In the next
+	example, looking at the lambda expression
+	inside <code>gen</code>, notice that the argument to the gamma
+	is <code>x</code> while <code>n</code> is marked in a form before
+	the body of the gamma. This notation indicates that the gamma
+	should retain the value of the argument <code>n</code> when the
+	closure is created. In the literature, you might discover a
+	similar mechanism referenced as a <em>closure</em>. A closure is
+	simply a variable which is closed under a certain context. When
+	a variable is reference in a context without any definition,
+	such variable is called a <em>free variable</em>. We will 
+	see later more programs with closures. Note that it is the
+	object created by the lambda or the gamma call which is called a
+	<em>closure</em>.<ie>Lambda expression</ie><ie>Closure</ie>
+      </p>
+
+      <example>
+	# a gamma which creates a lambda
+	const gen (n) (
+        lambda (x) (n) (+ x n))
+	
+	# create a function which add 2 to its argument
+	const add-2 (gen 2)
+	
+	# call add-2 with an argument and check
+	println "result = " (add-2 3)
+      </example>
+
+      <p>
+	In short, a lambda expression is a function with or without
+	closed variables, which works with nested symbol sets also
+	called <em>namesets</em>. A gamma expression is a function with
+	or without closed variable which is bounded to the top level
+	nameset. The reserved keyword <code>trans</code> binds a lambda
+	expression. The reserved keyword <code>const</code> binds a
+	gamma expression. A gamma expression cannot be used as an
+	instance method.<ie>const</ie>
+	<ie>trans</ie>
+      </p>
+    </subsect>
+
+    <!-- multiple argument binding -->
+    <subsect>
+      <title>Multiple arguments binding</title>
+      
+      <p>
+	A lambda or gamma expression can be defined to work with extra
+	arguments using the special <code>args</code> binding. During a
+	lambda or gamma expression execution, the special symbol
+	<code>args</code> is defined with the extra arguments passed at
+	the call. For example, a gamma expression with 0 formal argument
+	and 2 actual arguments has <code>args</code> defined as a <em>cons
+	cell</em>.<ie>args</ie><ie>Argument binding</ie>
+      </p>
+      
+      <example>
+	const proc-nilp (args) {
+        trans result 0
+	for (i) (args) (result:+= i)
+	eval result
+	}
+	assert 3 (proc-nilp 1 2)
+	assert 7 (proc-nilp 1 2 4)
+      </example>
+      
+      <p>
+	The symbol <code>args</code> can also be defined with formal
+	arguments. In that case, <code>args</code> is defined as a cons
+	cell with the remaining actual arguments.
+      </p>
+      
+      <example>
+	# check with arguments
+	const proc-args (a b args) {
+        trans result (+ a b)
+	for (i) (args) (result:+= i)
+        eval result
+	}
+	assert 3 (proc-args 1 2)
+	assert 7 (proc-args 1 2 4)
+      </example>
+      
+      <p>
+	It is an error to specify formal arguments after
+	<code>args</code>. Multiple <code>args</code> formal definition
+	are not allowed. The symbol <code>args</code> can also be
+	defined as a constant argument.<ie>Constant argument</ie>
+      </p>
+      
+      <example>
+	# check with arguments
+	const proc-args (a b (const args)) {
+        trans result (+ a b)
+	for (i) (args) (result:+= i)
+	eval result
+	}
+	assert 7 (proc-args 1 2 4)
+      </example>
+    </subsect>
+  </section>
+  
+  <!-- nameset and bindings -->
+  <section>
+    <title>Nameset and bindings</title>
+
+    <p>
+      A <em>nameset</em> is a container of bindings between a name and
+      <em>symbolic variable</em>. We use the term <em>symbolic variable</em>
+      to denote any binding between a name and an object. There are
+      various ways to express such bindings. The most common one is called a
+      symbol. Another type of binding is an argument. Despite the fact
+      they are different, they share a set of common properties, like
+      being settable. Another point to note is the nature of the
+      nameset. As a matter of fact, there is various type of
+      namesets. The top level nameset is called a <em>global set</em>
+      and is designed to handle a large number of symbols. In a 
+      lambda or gamma expression, the nameset is called a <em>local
+      set</em> and is designed to be fast with a small number of
+      symbols. The moral of this little story is to think always 
+      in terms of namesets, no matter how it is implemented. All
+      namesets support the concept of parent binding. When a nameset is
+      created (typically during the execution of a lambda expression),
+      this nameset is linked with its parent one. This means that a
+      symbol look-up is done by traversing all nameset from the bottom to
+      the top and stopping when one is found. In term of notation, the
+      <em>current nameset</em> is referenced with the special symbol
+      <code>'.'</code>. The <em> parent nameset</em> is referenced with
+      the special symbol <code>'..'</code>. The <em>top level
+      nameset</em> is referenced with the symbol <code>'...'</code>.
+      <ie>Nameset</ie><ie>..</ie><ie>...</ie>
+    </p>
+    
+    <!-- symbol -->
+    <subsect>
+      <title>Symbol</title>
+
+      <p>
+	A symbol is an object which defines a binding between a name and
+	an object. When a symbol is evaluated, the evaluation process
+	consists in returning the associated object. There are various
+	ways to create or set a symbol, and the different reserved
+	keywords account for the various nature of binding which has to
+	be done depending on the current nameset state. One of the
+	symbol property is to be <code>const</code> or not. When a
+	symbol is marked as a constant, it cannot be modified. Note here
+	that it is the symbol which is constant, not the object. A
+	symbol can be created with the reserved keywords <code>const</code>
+	or <code>trans</code>.<ie>Symbol</ie><ie>const</ie>
+	<ie>trans</ie>
+      </p>
+    </subsect>
+
+    <!-- creating a nameset -->
+    <subsect>
+      <title>Creating a nameset</title>
+      
+      <p>
+	A nameset is an object which can be constructed directly by using the
+	object construction notation. Once the object is created, it can be
+	bounded to a symbol. Here is a nameset called
+	<code>example</code> in the top level nameset.
+      </p>
+      
+      <example>
+	# create a new nameset called example
+	const example (nameset .)
+	
+	# bind a symbol in this nameset
+	const example:hello "hello"
+	println example:hello
+      </example>
+    </subsect>
+    
+    <!-- qualified name -->
+    <subsect>
+      <title>Qualified name</title>
+      
+      <p>
+	In the previous example, a symbol is referenced in a given
+	nameset by using a <em>qualified name</em> such like
+	<code>example:hello</code>. A qualified name defines a path to
+	access a symbol. The use of a qualified name is a powerful
+	notation to reference an object in reference to another
+	object. For example, the qualified name <code>.:hello</code>
+	refers to the symbol <code>hello</code> in the current nameset. The
+	qualified name <code>...:hello</code> refers to the symbol 
+	<code>hello</code> in the top level nameset. There are other use
+	for qualified names, like method call with an instance.
+	<ie>Qualified name</ie><ie>:</ie>
+      </p>
+    </subsect>
+    
+    <!-- symbol binding -->
+    <subsect>
+      <title>Symbol binding</title>
+      
+      <p>
+	The <code>trans</code> reserved keyword has been shown in all
+	previous example. The reserved keyword <code>trans</code>
+	creates or set a symbol in the current nameset. For example, the
+	form <code>trans a 1</code> is evaluated as follow. First, a
+	symbol named <code>a</code> is searched in the current
+	nameset. At this stage, two situations can occur. If the symbol
+	is found, it is set with the corresponding value. If the symbol
+	is not found, it is created in the current nameset and set. The
+	use of qualified name is also permitted -- and encouraged --
+	with <code>trans</code>. The exact nature of the symbol binding
+	with a qualified name depends on the partial evaluation of the
+	qualified name. For example, <code>trans example:hello 1</code>
+	will set or create a symbol binding in reference to the
+	<code>example</code> object. If <code>example</code> refers to a
+	nameset, the symbol is bound in this nameset. If
+	<code>example</code> is a class, <code>hello</code> is bounded as a 
+	class symbol. In theory, there is no restriction
+	to use <code>trans</code> on any object. If the object does not
+	have a symbol binding capability, an exception is raised. For
+	example, if <code>n</code> is an integer object, the form
+	<code>trans n:i 1</code> will fail. 
+	
+	With 3 or 4 arguments, <code>trans</code> defines automatically
+	a lambda expression. This notation is a syntactic sugar. The
+	lambda expression is constructed from the argument list and
+	bounded to the specified symbol. The rule used to set or define
+	the symbol are the same as described above.
+	<ie>Symbol</ie><ie>Binding</ie>
+      </p>
+      
+      <example>
+	# create automatically a lambda expression
+	trans min (x y) (if (&lt; x y) x y)
+      </example>
+    </subsect>
+    
+    <!-- constant binding -->
+    <subsect>
+      <title>Constant binding</title>
+      
+      <p>
+	The <code>const</code> reserved keyword is similar to
+	<code>trans</code>, except that it creates a <em>constant
+	symbol</em>. Once the symbol is created, it cannot be
+	changed. This constant property is hold by the symbol
+	itself. When trying to set a constant symbol, an exception is
+	raised. The reserved keyword <code>const</code> works also with
+	qualified  names. The rules described previously are the
+	same. When a partial evaluation is done, the partial object is
+	called to perform a constant binding. If such capability does
+	not exist, an exception is raised.
+	
+	With 3 or 4 arguments, <code>const</code> defines automatically
+	a gamma expression. Like <code>trans</code> the rule are the
+	same except that the symbol is marked constant.<ie>Binding</ie>
+	<ie>const</ie>
+      </p>
+      
+      <example>
+	# create automatically a gamma expression
+	const max (x y) (if (> x y) x y)
+      </example>
+    </subsect>
+    
+    <!-- symbol unreference -->
+    <subsect>
+      <title>Symbol unreferencing</title>
+
+      <p>
+	The <code>unref</code> reserved keyword removes a symbol reference
+	in a given context. When the context is a nameset, the object
+	associated with the symbol is detached from the symbol,
+	eventually destroyed with the symbol removed from the nameset.
+	<ie>unref</ie><ie>Symbol unreferencing</ie>
+      </p>
+
+      <example>
+	# create a symbol number
+	const x 1
+	# unreference it
+	unref x
+      </example>
+    </subsect>
+    
+    <!-- arguments -->
+    <subsect>
+      <title>Arguments</title>
+
+      <p>
+	An expression argument is similar to a symbol, except that it is
+	used only with function argument. The concept of binding between
+	a name and an object is still the same, but with an argument,
+	the object is not stored as part of the argument, but rather at
+	another location which is the execution stack. An argument can
+	also be constant. On the other hand, a single argument can have
+	multiple bindings. Such situation is found during the same
+	function call in two different threads. An argument list is part
+	of the lambda or gamma expression declaration. If the argument
+	is defined as a constant argument a sub form notation is used to
+	defined this matter. For example, the <code>max</code> gamma
+	expression is given below.<ie>Arguments</ie>
+      </p>
+
+      <example>
+	# create a gamma expression with const argument
+	const max (gamma ((const x) (const y)) (if (> x y) x y))
+      </example>
+
+      <p>
+	A special symbols named <code>args</code> is defined during a
+	lambda or gamma expression evaluation with the remaining
+	arguments passed at the time the call is made. The symbol can be
+	either <code>nil</code> or bound to a list of objects.
+	<ie>args</ie>
+      </p>
+      
+      <example>
+	const proc-args (a b) {
+          trans result (+ a b)
+	  for (i) (args) (result:+= i)
+	  eval result
+	}
+	assert 3 (proc-args 1 2)
+	assert 7 (proc-args 1 2 4)
+      </example>
+    </subsect>
+  </section>
+
+  <!-- special forms -->
+  <section>
+    <title>Special forms</title>
+
+    <p>
+      Special forms provides are reserved keywords which are most of
+      the time imperative statement, as part of the writing system.
+      Special forms are an integral part of the writing system and
+      interact directly with the interpreter. In most cases, a special
+      forms returns the last evaluated object. Most of the special
+      forms are control flow statements.<ie>Special form</ie>
+    </p>
+
+    <!-- if special form -->
+    <subsect>
+      <title>If special form</title>
+      
+      <p>
+	The <code>if</code> reserved keyword takes two or three
+	arguments. The first argument is the boolean condition to
+	check. If the condition evaluates to <code>true</code> the
+	second argument is evaluated. The form return the result of such
+	evaluation. If the condition evaluates to <code>false</code>,
+	the third argument is evaluated or nil is returned if it does
+	not exist. An interesting example which combines the
+	<code>if</code> reserved keyword and a deep recursion is the
+	computation of the Fibonacci sequence.<ie>if</ie>
+      </p>
+
+      <example>
+	const fibo (gamma (n) (
+          if (&lt; n 2) n (+ (fibo (- n 1)) (fibo (- n 2))))
+      </example>
+    </subsect>
+
+    <!-- while special form -->
+    <subsect>
+      <title>While special form</title>
+
+      <p>
+	The <code>while</code> reserved keyword takes 2 or 3
+	arguments. With 2 arguments, the loop is constructed with a
+	condition and a form. With 3 arguments, the first argument is an
+	initial condition that is executed only once. When an argument
+	acts as a loop condition, the condition evaluate to a
+	boolean. The loop body is executed as long as the boolean
+	condition is true. An interesting example related to 
+	integer arithmetic with a <code>while</code> loop is the
+	computation of the greatest common divisor or gcd.
+	<ie>while</ie>
+      </p>
+      
+      <example>
+	const gcd (u v) {
+          while (!= v 0) {
+	    trans r (u:mod v)
+	    u:= v
+	    v:= r
+          }
+          eval u
+	}
+      </example>
+
+      <p>
+	Note in this previous example the use of the symbol
+	<code>=</code>. The qualified name <code>u:=</code> is in fact a
+	method call. Here, the integer <code>u</code> is assigned with a
+	value. In this case, the symbol is not changed. It is the object
+	which is muted.
+	
+	In the presence of 3 arguments, the first argument is an
+	initialization condition that is executed only once. In this
+	mode, it is important to note that the loop introduce its own
+	nameset. The loop condition can be used to initialize a local
+	condition variable.
+      </p>
+
+      <example>
+	while (trans valid (is:valid-p)) (valid) {
+	  # do something
+          # adjust condition
+          valid:= (and (is:valid-p) (something-else))
+	}
+      </example>
+    </subsect>
+
+    <!-- do special form -->
+    <subsect>
+      <title>Do special form</title>
+
+      <p>
+	The <code>do</code> reserved keyword is similar to the
+	<code>while</code> reserved keyword, except that the loop
+	condition is evaluated after the body execution. The syntax call
+	is opposite to the <code>while</code>. The loop can accept
+	either 2 or 3 arguments. With 2 arguments, the first argument is
+	the loop body and the second argument is the exit loop
+	condition. With 3 arguments, the first argument is the initial
+	condition that is executed only once.<ie>do</ie>
+      </p>
+
+      <example>
+	# count the number of digits in a string
+	const number-of-digits (s) {
+          const len (s:length)
+          trans index 0
+          trans count 0
+          do {
+            trans c (s:get index)
+            if (c:digit-p) (count:++)
+          } (&lt; (index:++) len)
+          eval count
+        }
+      </example>
+    </subsect>
+
+    <!-- loop special form -->
+    <subsect>
+      <title>Loop special form</title>
+
+      <p>
+	The <code>loop</code> reserved keyword is another form of
+	loop. It take four arguments. The first is the initialize
+	form. The second is the exit condition. The third is the step
+	form and the fourth is the form to execute at each loop
+	step. Unlike the <code>while</code> and <code>do</code> loop,
+	the <code>loop</code> special form creates its own nameset, since
+	the initialize condition generally creates new symbol for the
+	loop only.<ie>loop</ie>
+      </p>
+
+      <example>
+	# a simple loop from 0 to 10
+	loop (trans i 0) (&lt; i 10) (i:++) (println i)
+      </example>
+
+      <p>
+	A loop can also be designed with a <code>Counter</code>
+	object. In this case, a counter is created with an initial and
+	final count values. The counter <code>step-p</code> method can
+	then be used to run the loop
+      </p>
+      
+      <example>
+	# a counter from 0 to 10
+	trans cntr (Counter 10)
+	# a simple loop from 1 to 10
+	loop (cntr:step-p) (println cntr)
+      </example>
+
+      <p>
+	In this example, the counter prints from 1 to 10 since the
+	counter is designed to operate from 0 to 9, and
+	the <code>println</code> function is called after
+	the <code>step-p</code> predicate.
+      </p>
+    </subsect>
+
+    <!-- switch special form -->
+    <subsect>
+      <title>Switch special form</title>
+      
+      <p>
+	The <code>switch</code> reserved keyword is a condition
+	selector. The first argument is the switch selector. The second
+	argument is a list of various value which can be matched by the
+	switch value. A special symbol called <code>else</code> can be
+	used to match any value.<ie>switch</ie>
+      </p>
+
+      <example>
+	# return the primary color in a rgb
+	const get-primary-color (color value) (
+        switch color (
+	  ("red"   (return (value:substr 0 2)))
+	  ("green" (return (value:substr 2 4)))
+	  ("blue"  (return (value:substr 4 6)))
+	))
+      </example>
+    </subsect>
+
+    <!-- return special form -->
+    <subsect>
+      <title>Return special form</title>
+
+      <p>
+	The <code>return</code> reserved keyword indicates an
+	exceptional condition in the flow of execution within a lambda
+	or gamma expression. When a return is executed, the associated
+	argument is returned and the execution terminates. If
+	<code>return</code> is used at the top level, the result is
+	simply discarded.<ie>return</ie>
+      </p>
+
+      <example>
+	# initialize a vector with a value
+	const vector-init (length value) {
+        # treat nil vector first
+	if (&lt;= length 0) return (Vector)
+	trans result (Vector)
+	do (result:add value) (&gt; (length:--) 0)
+	}
+      </example>
+    </subsect>
+
+    <!-- eval and protect -->
+    <subsect>
+      <title>Eval and protect</title>
+
+      <p>
+	The <code>eval</code> reserved keyword forces the evaluation of
+	the object argument. The reserved keyword <code>eval</code> is
+	typically used in a function body to return a particular symbol
+	value. It can also be used to force the evaluation of a
+	<em>protected object</em>. In many cases, <code>eval</code> is
+	more efficient than <code>return</code>. The
+	<code>protect</code> reserved keyword constructs an object
+	without evaluating it. Typically when used with a form,
+	<code>protect</code> return the form itself. It can also be used
+	to prevent a symbol evaluation. When used with a symbol, the
+	symbol object itself is returned.<ie>eval</ie>
+	<ie>protect</ie>
+      </p>
+
+      <example>
+	const add (protect (+ 1 2))
+	(eval add)
+      </example>
+      
+      <p>
+	Note that in the preceding example that the evaluation will
+	return a lambda expression which is evaluated immediately and
+	which return the integer 3.
+      </p>
+    </subsect>
+
+    <!-- assert special form -->
+    <subsect>
+      <title>Assert special form</title>
+      
+      <p>
+	The <code>assert</code> reserved keyword check for equality
+	between the two arguments and abort the execution in case of
+	failure. By default, the assertion checking is turn off, and can
+	be activated with the command option <option>f assert</option>.
+	Needless to say that <code>assert</code> is used for debugging
+	purpose.<ie>assert</ie>
+      </p>
+
+      <example>
+	assert true   (> 2 0)
+	assert 0      (- 2 2)
+	assert "true" (String true)
+      </example>
+    </subsect>
+
+    <!-- block special form -->
+    <subsect>
+      <title>Block special form</title>
+      
+      <p>
+	The <code>block</code> reserved keyword executes a form in a new
+	local set. The local set is destroyed at the completion of the
+	execution. The <code>block</code> reserved keyword returns the
+	value of the last evaluated form. Since a new local set is
+	created, any new symbol created in this nameset is destroyed at
+	the completion of the execution. In other word, the
+	<code>block</code> reserved keyword allows the creation of a
+	local scope.<ie>block</ie>
+      </p>
+
+      <example>
+	trans a 1
+	block {
+          assert    a 1
+	  trans     a (+ 1 1)
+	  assert    a 2
+	  assert ..:a 1
+	}
+	assert 1 a
+      </example>
+    </subsect>
+  </section>
+  
+  <!-- built-in objects -->
+  <section>
+    <title>Built-in objects</title>
+    
+    <p>
+    Several built-in objects and built-in operators for arithmetic and
+    logical operations are also integrated in the writing system. The
+    <code>Integer</code> and <code>Real</code> classes are primarily
+    used to manipulate numbers. The <code>Boolean</code> class is used
+    to for boolean operations. Other built-in objects include
+    <code>Character</code> and <code>String</code>. The exact usage of
+    these objects is described in the next chapter.
+    </p>
+
+    <!-- arithmetic operations -->
+    <subsect>
+      <title>Arithmetic operations</title>
+
+      <p>
+	Support for the arithmetic operations is provided with the
+	standard operator notation. Normally, these operators will
+	tolerate various object type mixing and the returned value will
+	generally be bound to an object that provides the minimum loss
+	of information. Most of the operations are done with the
+	<code>+</code>, <code>-</code>, <code>*</code> and <code>/</code>
+	operators.<ie>+</ie><ie>-</ie><ie>*</ie><ie>/</ie>
+      </p>
+      
+      <example>
+	(+ 1 2)
+	(- 1)
+	(* 3 5.0)
+	(/ 4.0 2)
+      </example>
+    </subsect>
+
+    <!-- logical operations -->
+    <subsect>
+      <title>Logical operations</title>
+
+      <p>
+	The <code>Boolean</code> class is used to represent the boolean
+	value <code>true</code> and <code>false</code>. These last two
+	symbols are built-in in the interpreter as constant
+	symbols. There are also special forms like <code>not</code>,
+	<code>and</code> and <code>or</code>. Their usage is self
+	understandable.<ie>Boolean</ie><ie>and</ie>
+	<ie>not</ie><ie>or</ie>
+	<ie>true</ie><ie>false</ie>
+      </p>
+
+      <example>
+	not true
+	and true (== 1 0)
+	or (&lt; -1 0) (&gt; 1 0)
+      </example>
+    </subsect>
+
+    <!-- predicates -->
+    <subsect>
+      <title>Predicates</title>
+
+      <p>
+	A <em>predicate</em> is a function which returns a boolean
+	object. There is always a built-in predicate associated with a
+	built-in object. By convention, a predicate terminates with the
+	sequence <em>-p</em>. The <code>nil-p</code> predicate is a
+	special predicate which returns true if the object is
+	nil. The <code>object-p</code> predicate is the negation of
+	the <code>nil-p</code> predicate.<ie>Predicate</ie>
+      </p>
+
+      <table>
+       <title>Built-In predicates</title>
+       <tr>
+	 <th>Predicate</th><th>Description</th>
+       </tr>
+       <tr><td>nil-p</td>       <td>check nil object</td></tr>
+       <tr><td>eval-p</td>      <td>check evaluation</td></tr>
+       <tr><td>real-p</td>      <td>check real object</td></tr>
+       <tr><td>regex-p</td>     <td>check regex object</td></tr>
+       <tr><td>object-p</td>    <td>check for non nil object</td></tr>
+       <tr><td>string-p</td>    <td>check string object</td></tr>
+       <tr><td>number-p</td>    <td>check number object</td></tr>
+       <tr><td>method-p</td>    <td>check method object</td></tr>
+       <tr><td>boolean-p</td>   <td>check boolean object</td></tr>
+       <tr><td>integer-p</td>   <td>check integer object</td></tr>
+       <tr><td>character-p</td> <td>check character object</td></tr>
+      </table>
+
+      <p>
+      For example, one can write a function which returns
+      <code>true</code> if the argument is a number, that is, an integer
+      or a real number.
+      <ie>nil-p</ie><ie>eval-p</ie><ie>real-p</ie><ie>regex-p</ie>
+      <ie>object-p</ie><ie>string-p</ie><ie>number-p</ie><ie>method-p</ie>
+      <ie>boolean-p</ie><ie>integer-p</ie><ie>character-p</ie>
+      </p>
+
+      <example>
+	# return true if the argument is a number
+	const number-p (n) (
+          or (integer-p n) (real-p n))
+      </example>
+
+      <p>
+	Special predicates for functional and symbolic programming are also
+	built-in in the engine.
+      </p>
+      
+      <table>
+       <title>Special predicates</title>
+       <tr>
+	 <th>Predicate</th><th>Description</th>
+       </tr>
+       <tr><td>class-p</td>     <td>check class object</td></tr>
+       <tr><td>thread-p</td>    <td>check thread object</td></tr>
+       <tr><td>promise-p</td>   <td>check promise object</td></tr>
+       <tr><td>lexical-p</td>   <td>check lexical object</td></tr>
+       <tr><td>literal-p</td>   <td>check literal object</td></tr>
+       <tr><td>closure-p</td>   <td>check closure object</td></tr>
+       <tr><td>nameset-p</td>   <td>check nameset object</td></tr>
+       <tr><td>instance-p</td>  <td>check instance object</td></tr>
+       <tr><td>qualified-p</td> <td>check qualified object</td></tr>
+      </table>
+      
+      <p>
+	Finally, for each object, a predicate is also associated. For
+	example, <code>cons-p</code> is the predicate for the
+	<code>Cons</code> object and <code>vector-p</code> is the
+	predicate for the <code>Vector</code> object. Another issue
+	related to evaluation, is to decide whether or not an object can
+	be evaluated. The predicate <code>eval-p</code> which is a
+	special form is designed to answer this question. Furthermore, the
+	<code>eval-p</code> predicate is useful to decide whether or not
+	a symbol is defined or if a qualified name can be evaluated.
+	<ie>class-p</ie><ie>thread-p</ie><ie>promise-p</ie>
+	<ie>lexical-p</ie><ie>literal-p</ie><ie>closure-p</ie>
+	<ie>nameset-p</ie><ie>instance-p</ie><ie>qualified-p</ie>
+      </p>
+      
+      <example>
+	assert true  (eval-p .)
+        assert false (eval-p an-unknown-symbol)
+      </example>
+    </subsect>
+  </section>
+
+  <!-- classes and instances -->
+  <section>
+    <title>Class and instance</title>
+    
+    <p>
+      Classes and instances are the fundamental objects that provide
+      support for the object oriented paradigm. A <em>class</em> is a
+      nameset which can be bounded automatically when an
+      <em>instance</em> of that class is created. The class
+      model is sloppy. Compared to other systems, there is no need to
+      declare the data members for a particular class. Data members
+      are created during the instance construction. An instance can
+      also be created without any reference to a class. Methods can be
+      bound to the class or the instance or both. An instance can also
+      be muted during the execution process.
+      <ie>Class</ie><ie>Instance</ie>
+    </p>
+
+    <!-- class and members -->
+    <subsect>
+      <title>Class and members</title>
+
+      <p>
+	A class is declared with the reserved keyword <code>class</code>. 
+	The resulting object acts like a nameset and it is possible to
+	bind symbol to it.<ie>class</ie>
+      </p>
+
+      <example>
+	# create a class object
+	const Circle (class)
+	const Circle:PI 3.1415926535
+	# access by qualified name
+	println Circle:PI
+      </example>
+
+      <p>
+	In the previous example, the symbol <code>Circle</code> is
+	created as a class object. With the help of a qualified name,
+	the symbol <code>PI</code> is created inside the class
+	nameset. In this case, the symbol <code>PI</code> is invariant
+	with respect to the instance object. A form can also be bound to
+	the class nameset. In both cases, the symbol or the form is accessed
+	with the help of a qualified name.
+	<ie>Binding</ie>
+      </p>
+    </subsect>
+
+    <!-- instances -->
+    <subsect>
+      <title>Instances</title>
+
+      <p>
+	An instance of a class is created like any built-in object. If a
+	method called <code>preset</code> is defined for that class,
+	the method is used to initialize the instance.
+	<ie>preset</ie>
+      </p>
+      
+      <example>
+	# create a class
+	const Circle (class)
+	trans Circle:preset (r) {
+          const this:radius (r:clone)
+	}
+	# create a radius 1 circle
+	const c (Circle 1)
+      </example>
+
+      <p>
+	This example calls for several comments. First
+	the <code>preset</code> lambda expression is bound to the
+	class. Since <code>preset</code> is a reserved name for the
+	class object, the form is automatically executed at the instance
+	construction. Second, note that the instance data
+	member <code>radius</code> is created by the lambda expression
+	and another reserved keyword called <code>this</code> is used
+	to reference the instance object as it is customary with
+	other programming systems.<ie>this</ie>
+      </p>
+    </subsect>
+
+    <!-- instance method -->
+    <subsect>
+      <title>Instance method</title>
+      
+      <p>
+	When a lambda expression is bound to the class or the instance,
+	that lambda can be invoked as an instance method.  When an
+	instance method is invoked, the instance nameset is set as the
+	parent nameset for that lambda. This is the main reason why a
+	gamma expression cannot be used as an instance
+	method. Therefore, the use of the reserved keyword 
+	<code>this</code> is not recommended in a gamma expression,
+	although it is perfectly acceptable to create a symbol with such
+	name.<ie>Gamma expression</ie>
+      </p>
+
+      <example>
+	# create a perimeter method
+	trans Circle:perimeter nil (
+          * (* 2.0 Circle:PI) this:radius)
+	# call the method with our circle
+	trans p (c:perimeter)
+      </example>
+      
+      <p>
+	It must be clear that the <code>perimeter</code> symbol defines
+	a method at the class level. It is perfectly acceptable to
+	define a methods at the instance level. Such method is called
+	a <em>specialized method</em>.
+      </p>
+    </subsect>
+  </section>
+  
+  <!-- miscellaneous features -->
+  <section>
+    <title>Miscellaneous features</title>
+
+    <!-- iteration -->
+    <subsect>
+      <title>Iteration</title>
+
+      <p>
+	An iteration facility is provided for some objects known as
+	<em>iterable objects</em>. The <code>Cons</code>,
+	<code>List</code> and <code>Vector</code> are typical iterable
+	objects. There are two ways to iterate with these objects. The
+	first method uses the <code>for</code> reserved keyword. The
+	second method uses an explicit iterator which can be constructed
+	by the object.<ie>Iteration</ie><ie>Cons</ie><ie>Cell</ie>
+      </p>
+
+      <example>
+      # compute the scalar product of two vectors
+      const scalar-product (u v) {
+        trans result 0
+	for (x y) (u v) (result:+= (* x y))
+	eval result
+      }
+      </example>
+
+      <p>
+	The <code>for</code> reserved keyword iterate on both object
+	<code>u</code> and <code>v</code>. For each iteration, the
+	symbol <code>x</code> and <code>y</code> are set with their
+	respective object value. In the example above, the result is
+	obtained by summing all intermediate products.
+	<ie>for</ie>
+      </p>
+
+      <example>
+	# test the scalar product function
+	const v1 (Vector 1 2 3)
+	const v2 (Vector 2 4 6)
+	(scalar-product v1 v2)
+      </example>
+
+      <p>
+	The iteration can be done explicitly by creating an iterator for each
+	vectors and advancing steps by steps.<ie>Iterator</ie>
+      </p>
+
+      <example>
+      # scalar product with explicit iterators
+      const scalar-product (u v) {
+        trans result 0
+	trans u-it   (u:iterator)
+	trans v-it   (v:iterator)
+	while (u:valid-p) {
+	  trans x (u:get-object)
+          trans y (v:get-object)
+          result:+= (* x y)
+          u:next
+          v:next
+        }
+        eval result
+      }
+      </example>
+
+      <p>
+	In the example above, two iterators are constructed for both vectors
+	<code>u</code> and <code>v</code>. The iteration is done in a
+	<code>while</code> loop by invoking the <code>valid-p</code>
+	predicate. The <code>get-object</code> method returns the object
+	value at the current iterator position.
+	<ie>valid-p</ie><ie>get-object</ie>
+      </p>
+    </subsect>
+
+    <!-- exception -->
+    <subsect>
+      <title>Exception</title>
+
+      <p>
+	An <em>exception</em> is an unexpected change in the execution
+	flow. The exception model is based on a mechanism which throws
+	the exception to be caught by a handler. The mechanism is also 
+	designed to be compatible with the native implementation.
+	<ie>Exception</ie>
+	
+	An exception is thrown with the special form
+	<code>throw</code>. When an exception is thrown, the normal flow 
+	of execution is interrupted and an object used to carry the
+	exception information is created. Such exception object is
+	propagated backward in the call stack until an exception handler
+	catch it.<ie>throw</ie>
+	
+	The special form <code>try</code> executes a form and catch
+	an exception if one has been thrown. With one argument, the form
+	is executed and the result is the result of the form execution
+	unless an exception is caught. If an exception is caught, the
+	result is the exception object. If the exception is a native
+	one, the result is nil.<ie>try</ie>
+      </p>
+      
+      <example>
+	try (+ 1 2)
+	try (throw)
+	try (throw "hello")
+	try (throw "hello" "world")
+	try (throw "hello" "world" "folks")
+      </example>
+
+      <p>
+	The exception mechanism is also designed to install an exception
+	handler and eventually retrieve some information from the exception
+	object. The reserved symbol <code>what</code> can be used to
+	retrieve some exception information.<ie>what</ie>
+      </p>
+
+      <example>
+      # protected factorial
+      const fact (n) {
+        if (not (integer-p n)) 
+           (throw "number-error" "invalid argument")
+	if (== n 0) 1 (* n (fact (- n 1)))
+      }
+      # exception handler
+      const handler nil {
+        errorln what:eid ',' what:reason
+      }
+      (try (fact 5)       handler)
+      (try (fact "hello") handler)
+      </example>
+
+      <p>
+	The special symbol <code>what</code> stores the necessary
+	information about the place that generated the exception. Most
+	of the time, the qualified name <code>what:reason</code>
+	or <code>what:about</code> is used.The only difference is
+	that <code>what:about</code> contains the file name and line
+	number associated with the reason that generated the exception.
+      </p>
+      
+    </subsect>
+
+    <!-- regular expressions -->
+    <subsect>
+      <title>Regular Expressions</title>
+
+      <p>
+	A regular expression or <em>regex</em> is an object which is
+	used to match certain text patterns. Regular 
+	expressions are built implicitly by the parser with the
+	use of the <code>[</code> and <code>]</code> characters. Special
+	class of characters are defined with the help of
+	the <code>$</code> character. For example, <code>$d</code> is
+	the class of character digits as defined by the Unicode
+	consortium. Different regular expression can be grouped by
+	region to be matched as indicated in the example below.
+	<ie>Regular expression</ie><ie>Regex</ie>
+      </p>
+
+      <example>
+      if (== (const re [($d$d):($d$d)]) "12:31") {
+        trans hr (re:get 0)
+	 trans mn (re:get 1)
+      }
+      </example>
+
+      <p>
+	In the previous example, a regular expression object is bound to
+	the symbol <code>re</code>. The <code>regex</code> contains two
+	groups. The call to the operator <code>==</code> returns
+	<code>true</code> if the regex matches the argument string. The
+	<code>get</code> method can be used to retrieve the group by index.
+      </p>
+    </subsect>
+
+    <!-- delayed evaluation -->
+    <subsect>
+      <title>Delayed evaluation</title>
+
+      <p>
+	The special form <code>delay</code> creates a special object
+	called a <em>promise</em> which records the form to be later
+	evaluated. The special form <code>force</code> causes a
+	promise to be evaluated. Subsequent call with
+	<code>force</code> will produce the same result.
+	<ie>delay</ie> <ie>force</ie>
+      </p>
+
+      <example>
+	trans   y 3
+	const   l ((lambda (x) (+ x y)) 1)
+	assert  4 (force l)
+	trans   y 0
+	assert  4 (force l)
+      </example>
+    </subsect>
+  </section>
+  
+  <!-- threads -->
+  <section>  
+    <title>Threads</title>
+
+    <p>
+      The interpreter provides a powerful mechanism which allows
+      the concurrent execution of forms and the synchronization of shared
+      objects. The engine provides supports the creation and the
+      synchronization of threads with a native object locking
+      mechanism. During the execution, the interpreter wait until all
+      threads are completed. A threads is created with the reserved
+      keyword <code>launch</code>. In the presence of several threads,
+      the interpreter manages automatically the shared objects and
+      protect them against concurrent access. 
+      <ie>Thread</ie><ie>launch</ie>
+    </p>
+
+    <example>
+      # shared variable access
+      const var 0
+      
+      const decr nil (while true (var:= (- var 1)))
+      const incr nil (while true (var:= (+ var 1)))
+      const prtv nil (while true (println "value = " var))
+      
+      # start 3 threads 
+      launch (prtv)
+      launch (decr)
+      launch (incr)
+    </example>
+
+    <!-- form synchronization -->
+    <subsect>
+      <title>Form synchronization</title>
+      
+      <p>
+	Although, the engine provides an automatic synchronization
+	mechanism for reading or writing an object, it is sometimes
+	necessary to control the execution flow. There are basically two
+	techniques to do so. First, protect a form from being executed
+	by several threads. Second, wait for one or several threads to
+	complete their task before going to the next execution step. The
+	reserved keyword <code>sync</code> can be used to synchronize a
+	form. When a form, is synchronized, the engine guarantees that
+	only one thread will execute this form.
+	<ie>sync</ie><ie>Synchronization</ie>
+      </p>
+
+      <example>
+	const print-message (code mesg) (
+          sync {
+            errorln "error  : " code
+            errorln "message: " mesg
+          }
+        )
+      </example>
+
+      <p>
+	The previous example create a gamma expression which make sure
+	that both the error code and error message are printed in one
+	group, when several threads call it.
+      </p>
+    </subsect>
+
+    <!-- thread completion -->
+    <subsect>
+      <title>Thread completion</title>
+
+      <p>
+	The other piece of synchronization is the thread completion
+	indicator. The thread descriptor contains a method called
+	<code>wait</code> which suspend the calling thread until the
+	thread attached to the descriptor has been completed. If the
+	thread is already completed, the method returns immediately.
+	<ie>Completion</ie>
+      </p>
+      
+      <example>
+	# simple flag
+	const flag false
+	
+	# simple shared tester
+	const ftest (bval) (flag:= bval)
+	
+	# run the thread and wait
+	const thr (launch (ftest true))
+	thr:wait
+	assert true flag
+      </example>
+
+      <p>
+	This example is taken from the test suites. It checks that a boolean
+	variable is set in a thread. Note the use of
+	the <code>wait</code> method to make sure the thread has 
+	completed before checking for the flag value. It is also worth
+	to note that <code>wait</code> is one of the method which
+	guarantees that a thread result is valid.
+	
+	Another use of the <code>wait</code> method can be made with a
+	vector of thread descriptors when one wants to wait until all of
+	them have completed.
+      </p>
+
+      <example>
+	# shared vector of threads descriptors
+	const thr-group (Vector)
+
+	# wait until all threads in the group are finished
+	const wait-all nil (for (thr) (thr-group) (thr:wait))
+      </example>
+    </subsect>
+
+    <!-- condition variable -->
+    <subsect>
+      <title>Condition variable</title>
+
+      <p>
+	A <em>condition variable</em> is another mechanism to
+	synchronize several threads. A condition variable is modeled
+	with the <code>Condvar</code> object. At construction, the
+	condition variable is initialized to <code>false</code>. A
+	thread calling the <code>wait</code> method will block until the
+	condition becomes <code>true</code>. The <code>mark</code>
+	method can be used by a thread to change the state of a
+	condition variable and eventually awake some threads which are
+	blocked on it. The use of condition variable is particularly
+	recommended when one need to make sure a particular thread has
+	been doing a particular task.
+	<ie>Condition variable</ie><ie>Condvar</ie>
+      </p>
+    </subsect>
+
+    <!-- asynchronous evaluation -->
+    <subsect>
+      <title>Asynchronous evaluation</title>
+      
+      <p>
+	The special form <code>future</code> creates a special object
+	called a <em>future</em> which is used to evaluate an object
+	asynchronously. The evalution starts with the help of the
+	<code>force</code> special form. The <code>sync</code> special
+	form can be used to synchronise with the future.
+      </p>
+
+      <example>
+	trans f (future 1)
+	force f
+      </example>
+    </subsect>
+  </section>
+
+  <!-- interpreter object -->
+  <section>  
+    <title>The interpreter object</title>
+
+    <p>
+    The interpreter can also be seen as an object. As such,
+    it provides several special symbols and forms. For example, the
+    symbol <code>argv</code> is the argument vector. The
+    symbol <code>library</code> is an interpreter method that loads a
+    library. A complete description of the interpreter object is made
+    in a special chapter of this book.
+    <ie>Interpreter</ie><ie>Interp</ie>
+    </p>
+  </section>
+</chapter>

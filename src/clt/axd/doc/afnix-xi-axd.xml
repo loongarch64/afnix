@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- = afnix-xi-axd.xml                                                   = -->
+<!-- = afnix cross debugger - appendix i                                  = -->
+<!-- ====================================================================== -->
+<!-- = This  program  is  free  software; you  can redistribute it and/or = -->
+<!-- = modify it provided that this copyright notice is kept intact.      = -->
+<!-- = This program is distributed in the hope that it will be useful but = -->
+<!-- = without  any  warranty;  without  even  the  implied  warranty  of = -->
+<!-- = merchantability or fitness for  a  particular purpose. In no event = -->
+<!-- = shall  the  copyright  holder be liable for any  direct, indirect, = -->
+<!-- = incidental  or special  damages arising  in any way out of the use = -->
+<!-- = of this software.                                                  = -->
+<!-- ====================================================================== -->
+<!-- = copyright (c) 1999-2021 - amaury darsch                            = -->
+<!-- ====================================================================== -->
+
+<appendix client="axd" number="i">
+  <title>Debugger control reference</title>
+  
+  <p>
+    This appendix is a reference of the cross debugger or
+    <product>axd</product>. The cross debugger is started with
+    the <command>axd</command> command. All control commands are bound
+    to the <code>axd</code> nameset.
+  </p>
+
+  <!-- =================================================================== -->
+  <!-- = break control                                                   = -->
+  <!-- =================================================================== -->
+
+  <control nameset="axd">
+    <name>break</name>
+
+    <p>
+      The <code>axd:break</code>break command sets a breakpoint. Without
+      argument a breakpoint is set in the current file at the current
+      line. With a line number, the breakpoint is set in the current
+      file. With two arguments, the first one is used as the file name
+      and the second one is used as the line number.
+    </p>
+
+    <syntax>
+      axd:break
+      axd:break "line"
+      axd:break "file" "line"
+    </syntax>
+
+    <example>
+      (axd) axd:break "demo.als"  12
+      (axd) axd:break 25
+    </example>
+
+    <p>
+      The first example sets a breakpoint in the file
+      <file>demo.als</file> at line 12. The second example sets a
+      breakpoint in the current file at line 25. Without argument, the
+      command sets the breakpoint at the current line. The current line
+      can be seen with the <code>axd:info</code> command.
+    </p>
+  </control>
+
+  <!-- =================================================================== -->
+  <!-- = break-info control                                              = -->
+  <!-- =================================================================== -->
+
+  <control nameset="axd">
+    <name>break-info</name>
+
+    <p>
+      The <code>axd:break-info</code> control command reports some
+      information about the current breakpoints.
+    </p>
+
+    <syntax>
+      axd:break-info
+    </syntax>
+
+    <example>
+      (axd) axd:break "demo.als" 12
+      (axd) axd:break "test.als" 18
+      (axd) axd:break-info
+      Breakpoint 0 in file demo.als at line 12
+      Breakpoint 1 in file test.als at line 18
+    </example>
+
+    <p>
+      In this example, two breakpoints are set. One in file
+      <file>demo.als</file> at line 12 and one in file
+      <file>test.als</file> at line   18. The <code>axd:break-info</code>
+      command reports the current breakpoint settings.
+    </p>
+  </control>
+
+  <!-- =================================================================== -->
+  <!-- = continue control                                                = -->
+  <!-- =================================================================== -->
+
+  <control nameset="axd">
+    <name>continue</name>
+
+    <p>
+      The <code>axd:continue</code> control command resumes the program
+      execution after a breakpoint. The program execution continues
+      until a breakpoint or another terminating condition is reached.
+    </p>
+
+    <syntax>
+      axd:continue
+    </syntax>
+
+    <example>
+      (axd) axd:run
+      Breakpoint 0 in file demo.als at line 12
+      (axd) axd:continue
+    </example>
+
+    <p>
+      In this example, the program is run and stopped at breakpoint
+      0. The <code>axd:continue</code> command resumes the program
+      execution.
+    </p>
+  </control>
+
+  <!-- =================================================================== -->
+  <!-- = exit control                                                    = -->
+  <!-- =================================================================== -->
+
+  <control nameset="axd">
+    <name>exit</name>
+
+    <p>
+      The <code>axd:exit</code> command terminates a debugger
+      session. This command is similar to the <code>axd:quit</code>
+      command.
+    </p>
+
+    <syntax>
+      axd:exit
+    </syntax>
+
+    <example>
+      (axd) axd:exit
+    </example>
+  </control>
+
+  <!-- =================================================================== -->
+  <!-- = info control                                                    = -->
+  <!-- =================================================================== -->
+
+  <control nameset="axd">
+    <name>info</name>
+
+    <p>
+      The <code>axd:info</code> command reports some debugger
+      information. Such information includes the debugger version, the
+      operating system, the primary input file, the primary input file
+      source and more.
+    </p>
+
+    <syntax>
+      axd:info
+    </syntax>
+
+    <example>
+      (axd) axd:info
+      debugger version    : <major/>.<minor/>.<patch/>
+      os name             : linux
+      os type             : unix
+      initial file        : 0501
+      form file name      : 0501.als
+      form line number    : 17
+      verbose mode        : true
+      max line display    : 10
+      defined breakpoints : 0
+    </example>
+  </control>
+
+  <!-- =================================================================== -->
+  <!-- = list control                                                    = -->
+  <!-- =================================================================== -->
+
+  <control nameset="axd">
+    <name>list</name>
+
+    <p>
+      The <code>axd:list</code> command display the form listing
+      starting at the current session line number. The current form line
+      number can also be seen with the <code>axd:info</code>
+      command. The number of line is a debugger parameter. The first
+      line to display can also be set as the first parameter. A file
+      name can also be set.
+    </p>
+
+    <syntax>
+      axd:list
+      axd:list "line"
+      axd:list "file" "line"
+    </syntax>
+
+    <example>
+      (axd) axd:list
+      (axd) axd:list 20
+      (axd) axd:list "file.als" 20
+    </example>
+
+    <p>
+      The first example shows the listing at the current debugger
+      line. The second example starts the listing at line 20. The third
+      example starts at line 20 with file <file>file.als</file>.
+    </p>
+  </control>
+
+  <!-- =================================================================== -->
+  <!-- = load control                                                    = -->
+  <!-- =================================================================== -->
+
+  <control nameset="axd">
+    <name>load</name>
+
+    <p>
+      The <code>axd:load</code> command sets the <em>initial</em> or
+      default file to be used with the <code>axd:run</code> control
+      command.
+    </p>
+
+    <syntax>
+      axd:load "file"
+    </syntax>
+
+    <example>
+      (axd) axd:load "demo.als"
+    </example>
+
+    <p>
+      In this example, the file <file>demo.als</file> is set as the
+      primary file. Using the <code>axd:info</code> command will report
+      at which line, the first available form has been found.
+    </p>
+  </control>
+
+  <!-- =================================================================== -->
+  <!-- = next control                                                    = -->
+  <!-- =================================================================== -->
+
+  <control nameset="axd">
+    <name>next</name>
+
+    <p>
+      The <code>axd:next</code> command executes the next line in the
+      source file. The <code>axd:next</code> command does not take
+      argument.
+    </p>
+
+    <syntax>
+      axd:next
+    </syntax>
+    
+    <example>
+      (axd) axd:next
+    </example>
+  </control>
+
+  <!-- =================================================================== -->
+  <!-- = quit control                                                    = -->
+  <!-- =================================================================== -->
+
+  <control nameset="axd">
+    <name>quit</name>
+
+    <p>
+      The <code>axd:quit</code> command terminates a debugger
+      session. This command is similar to the <code>axd:exit</code>
+      command.
+    </p>
+
+    <syntax>
+      axd:quit
+    </syntax>
+
+    <example>
+      (axd) axd:quit
+    </example>
+  </control>
+
+  <!-- =================================================================== -->
+  <!-- = run control                                                     = -->
+  <!-- =================================================================== -->
+
+  <control nameset="axd">
+    <name>run</name>
+
+    <p>
+      The <code>axd:run</code> command executes the default file in the
+      slave interpreter. Without argument, the <em>initial</em> or
+      default file is executed. The <code>axd:load</code> command can be
+      used to set the <em>initial file</em>. With one argument, the file
+      name argument is used as the <em>initial file</em>. 
+    </p>
+
+    <syntax>
+      axd:run
+      axd:run "file"
+    </syntax>
+
+    <example>
+      (axd) axd:run
+      (axd) axd:run "demo.als"
+    </example>
+
+    <p>
+      The first example runs the initial file. The second example sets
+      the initial file as <file>demo.als</file> and run it.
+    </p>
+  </control>
+</appendix>
