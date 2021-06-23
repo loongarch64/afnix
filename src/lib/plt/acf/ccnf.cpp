@@ -60,6 +60,7 @@
 #define AFNIX_PROCTYPE_AARCH64   18
 #define AFNIX_PROCTYPE_RISCV32   19
 #define AFNIX_PROCTYPE_RISCV64   20
+#define AFNIX_PROCTYPE_LOONGARCH64     21
 
 // recognized processor name
 #define AFNIX_PROCNAME_UNKNOWN   "unknown"
@@ -83,6 +84,7 @@
 #define AFNIX_PROCNAME_AARCH64   "aarch64"
 #define AFNIX_PROCNAME_RISCV32   "riscv32"
 #define AFNIX_PROCNAME_RISCV64   "riscv64"
+#define AFNIX_PROCNAME_LOONGARCH64   "loongarch64"
 
 // force size type with S390/clang
 #if defined(__s390__) || defined(__clang__)
@@ -194,6 +196,9 @@ static int get_procid (const char* proc) {
   // SuperH
   if (strcmp (proc, AFNIX_PROCNAME_SH) == 0)
     return AFNIX_PROCTYPE_SH;
+  // loongarch64
+  if (strcmp (proc, AFNIX_PROCNAME_LOONGARCH64) == 0)
+    return AFNIX_PROCTYPE_LOONGARCH64;
   // unknown
   return AFNIX_PROCTYPE_UNKNOWN;
 }
@@ -221,6 +226,7 @@ static const char* get_procnm (const int id) {
   if (id ==  AFNIX_PROCTYPE_S390X)    return AFNIX_PROCNAME_S390X;
   if (id ==  AFNIX_PROCTYPE_X64)      return AFNIX_PROCNAME_X64;
   if (id ==  AFNIX_PROCTYPE_SH)       return AFNIX_PROCNAME_SH;
+  if (id ==  AFNIX_PROCTYPE_LOONGARCH64)       return AFNIX_PROCNAME_LOONGARCH64;
   return AFNIX_PROCNAME_UNKNOWN;
 }
 
@@ -394,6 +400,8 @@ int main (int, char**) {
 	   AFNIX_PROCTYPE_X64);
   fprintf (stdout, "#define  AFNIX_PROCTYPE_SH        %d\n",
 	   AFNIX_PROCTYPE_SH);
+  fprintf (stdout, "#define  AFNIX_PROCTYPE_LOONGARCH64        %d\n",
+           AFNIX_PROCTYPE_LOONGARCH64);
   fprintf (stdout, "\n");
 
   // recognized processor names
@@ -440,6 +448,8 @@ int main (int, char**) {
 	   AFNIX_PROCNAME_X64);
   fprintf (stdout, "#define  AFNIX_PROCNAME_SH        \"%s\"\n",
 	   AFNIX_PROCNAME_SH);
+  fprintf (stdout, "#define  AFNIX_PROCNAME_LOONGARCH64     \"%s\"\n",
+           AFNIX_PROCNAME_LOONGARCH64);
   fprintf (stdout, "\n");
 
   // install the darwin definition

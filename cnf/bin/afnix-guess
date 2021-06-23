@@ -177,6 +177,7 @@ get_cpunam ()
 	    sh*)       cpunam=sh;;
 	    riscv32)   cpunam=riscv32;;
 	    riscv64)   cpunam=riscv64;;
+	    loongarch64) cpunam=loongarch64;;
 	esac
     fi
 }
@@ -212,6 +213,7 @@ get_cpubit ()
     sh*)      cpubit=32;;
     riscv32)  cpubit=32;;
     riscv64)  cpubit=64;;
+    loongarch64) cpubit=64;;
     esac
 }
 
